@@ -9,7 +9,7 @@ import SwiftUI
 
 /// SwiftUI implementation of a basic QR Code view
 @available(macOS 11, iOS 14.0, tvOS 14.0, *)
-final class QRCodeViewUI: DSFViewRepresentable {
+public final class QRCodeViewUI: DSFViewRepresentable {
 	public typealias NSViewType = QRCodeView
 
 	/// The data to display in the QR Code
@@ -27,7 +27,7 @@ final class QRCodeViewUI: DSFViewRepresentable {
 	///   - errorCorrection: The error correctino level to use
 	///   - foregroundColor: The foreground (dots) color when drawing
 	///   - backgroundColor: The background color
-	public convenience init(_ text: String,
+	public convenience init(text: String,
 		  errorCorrection: QRCodeView.ErrorCorrection = .low,
 		  foregroundColor: Color = .black,
 		  backgroundColor: Color = .white)
@@ -65,22 +65,22 @@ extension QRCodeViewUI {
 		view.correction = self.correction
 
 #if os(macOS)
-		view._foregroundColor = NSColor(self.foregroundColor).cgColor
-		view._backgroundColor = NSColor(self.backgroundColor).cgColor
+		view.foreColor = NSColor(self.foregroundColor).cgColor
+		view.backColor = NSColor(self.backgroundColor).cgColor
 #else
-		view._foregroundColor = UIColor(self.foregroundColor).cgColor
-		view._backgroundColor = UIColor(self.backgroundColor).cgColor
+		view.foreColor = UIColor(self.foregroundColor).cgColor
+		view.backColor = UIColor(self.backgroundColor).cgColor
 #endif
 	}
 }
 
 @available(macOS 11, iOS 9999, tvOS 9999, *)
 extension QRCodeViewUI {
-	func makeNSView(context: Context) -> QRCodeView {
+	public func makeNSView(context: Context) -> QRCodeView {
 		return QRCodeView()
 	}
 
-	func updateNSView(_ nsView: QRCodeView, context: Context) {
+	public func updateNSView(_ nsView: QRCodeView, context: Context) {
 		self.updateContent(nsView, context: context)
 	}
 }
@@ -108,52 +108,52 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 			HStack {
 				VStack {
 					Text("Low (L)")
-					QRCodeViewUI(DemoContent, errorCorrection: .low)
+					QRCodeViewUI(text: DemoContent, errorCorrection: .low)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("Medium (M)")
-					QRCodeViewUI(DemoContent, errorCorrection: .medium)
+					QRCodeViewUI(text: DemoContent, errorCorrection: .medium)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("High (Q)")
-					QRCodeViewUI(DemoContent, errorCorrection: .high)
+					QRCodeViewUI(text: DemoContent, errorCorrection: .high)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("Max (H)")
-					QRCodeViewUI(DemoContent, errorCorrection: .highest)
+					QRCodeViewUI(text: DemoContent, errorCorrection: .max)
 						.frame(width: 150, height: 150)
 				}
 			}
 
 			HStack {
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .red, backgroundColor: .clear)
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .red, backgroundColor: .clear)
 					.frame(width: 100, height: 100)
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .green, backgroundColor: .clear)
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .green, backgroundColor: .clear)
 					.frame(width: 100, height: 100)
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .blue, backgroundColor: .clear)
-					.frame(width: 100, height: 100)
-			}
-
-			HStack {
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .red, backgroundColor: .white)
-					.frame(width: 100, height: 100)
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .green, backgroundColor: .white)
-					.frame(width: 100, height: 100)
-				QRCodeViewUI("caterpillar-noodle", foregroundColor: .blue, backgroundColor: .white)
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .blue, backgroundColor: .clear)
 					.frame(width: 100, height: 100)
 			}
 
 			HStack {
-				QRCodeViewUI(DemoContent2,
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .red, backgroundColor: .white)
+					.frame(width: 100, height: 100)
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .green, backgroundColor: .white)
+					.frame(width: 100, height: 100)
+				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .blue, backgroundColor: .white)
+					.frame(width: 100, height: 100)
+			}
+
+			HStack {
+				QRCodeViewUI(text: DemoContent2,
 								 foregroundColor: Color(.sRGB, red: 0.721, green: 0.376, blue: 0.603, opacity: 1.000),
 								 backgroundColor: Color(.sRGB, red: 1.000, green: 0.709, blue: 0.656, opacity: 1.000))
 					.frame(width: 150, height: 150)
-				QRCodeViewUI(DemoContent2)
+				QRCodeViewUI(text: DemoContent2)
 					.frame(width: 150, height: 150)
-				QRCodeViewUI(DemoContent2)
+				QRCodeViewUI(text: DemoContent2)
 					.frame(width: 300, height: 300)
 			}
 		}

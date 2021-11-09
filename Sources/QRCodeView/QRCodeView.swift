@@ -17,17 +17,17 @@ import UIKit
 // MARK: - QRCode View
 
 /// A simple NSView/UIView that displays a QR Code
-public class QRCodeView: DSFView {
+@IBDesignable public class QRCodeView: DSFView {
 	/// The error correction level
 	public enum ErrorCorrection: String {
-		/// Lowest quality (Recovers 7% of data)
+		/// Lowest error correction (Recovers 7% of data)
 		case low = "L"
-		/// Medium quality (Recovers 15% of data)
+		/// Medium error correction (Recovers 15% of data)
 		case medium = "M"
-		/// High quality (Recovers 25% of data)
+		/// High error correction (Recovers 25% of data)
 		case high = "Q"
-		/// Highest quality (Recovers 30% of data)
-		case highest = "H"
+		/// Maximum error correction (Recovers 30% of data)
+		case max = "H"
 	}
 
 	/// The correction level to use when generating the QR code
@@ -44,25 +44,49 @@ public class QRCodeView: DSFView {
 		}
 	}
 
+	/// Text content to display in the QR code
+	public var content: String {
+		get { String(data: self.data, encoding: .utf8) ?? "" }
+		set { self.data = newValue.data(using: .utf8) ?? Data() }
+	}
+
 	/// The color to use when drawing the foreground
-	public var _foregroundColor = CGColor(gray: 0, alpha: 1) {
+	public var foreColor = CGColor(gray: 0, alpha: 1) {
 		didSet {
 			self.setNeedsDisplay()
 		}
 	}
 
 	/// The color to use when drawing the background
-	public var _backgroundColor = CGColor(gray: 1, alpha: 1) {
+	public var backColor = CGColor(gray: 1, alpha: 1) {
 		didSet {
 			self.setNeedsDisplay()
 		}
 	}
 
+	public convenience init() {
+		self.init(frame: .zero)
+	}
+
+	override public init(frame frameRect: CGRect) {
+		super.init(frame: frameRect)
+		self.setup()
+	}
+
+	public required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.setup()
+	}
+
+	private func setup() {
+		self.regenerate()
+	}
+
 	// Private
 
-#if os(macOS)
+	#if os(macOS)
 	override public var isFlipped: Bool { true }
-#endif
+	#endif
 
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
@@ -70,20 +94,71 @@ public class QRCodeView: DSFView {
 	private var currentDimension = 0
 }
 
+// MARK: - Interface Builder
+
+public extension QRCodeView {
+	@IBInspectable var ibCorrectionLevel: Int {
+		get { return self.correction.tag }
+		set { self.correction = QRCodeView.ErrorCorrection.Tag(newValue) }
+	}
+
+	@IBInspectable var ibTextContent: String {
+		get { String(data: self.data, encoding: .utf8) ?? "" }
+		set { self.data = newValue.data(using: .utf8) ?? Data() }
+	}
+
+	#if os(macOS)
+	@IBInspectable var ibForegroundColor: NSColor {
+		get { NSColor(cgColor: self.foreColor) ?? .black }
+		set { self.foreColor = newValue.cgColor }
+	}
+
+	@IBInspectable var ibBackgroundColor: NSColor {
+		get { NSColor(cgColor: self.backColor) ?? .white }
+		set { self.backColor = newValue.cgColor }
+	}
+	#else
+	@IBInspectable var ibForegroundColor: UIColor {
+		get { UIColor(cgColor: self.foreColor) }
+		set { self.foreColor = newValue.cgColor }
+	}
+
+	@IBInspectable var ibBackgroundColor: UIColor {
+		get { UIColor(cgColor: self.backColor) }
+		set { self.backColor = newValue.cgColor }
+	}
+	#endif
+
+	override func prepareForInterfaceBuilder() {
+		super.prepareForInterfaceBuilder()
+		self.setup()
+	}
+}
+
+public extension QRCodeView {
+	/// Generate an image with the qrcode content
+	static func Image(content: String, size: CGSize) -> DSFImage? {
+		let v = QRCodeView(frame: CGRect(x: 10000, y: 10000, width: size.width, height: size.height))
+		v.content = content
+		return v.snapshot()
+	}
+}
+
+
 extension QRCodeView {
-#if os(macOS)
+	#if os(macOS)
 	override public func draw(_ dirtyRect: NSRect) {
 		if let ctx = NSGraphicsContext.current?.cgContext {
 			self.draw(ctx)
 		}
 	}
-#else
+	#else
 	override public func draw(_ rect: CGRect) {
 		if let ctx = UIGraphicsGetCurrentContext() {
 			self.draw(ctx)
 		}
 	}
-#endif
+	#endif
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
@@ -96,7 +171,7 @@ extension QRCodeView {
 		let xoff = (self.bounds.width - (CGFloat(self.currentDimension) * dm)) / 2.0
 		let yoff = (self.bounds.height - (CGFloat(self.currentDimension) * dm)) / 2.0
 
-		ctx.setFillColor(self._backgroundColor)
+		ctx.setFillColor(self.backColor)
 		ctx.fill(self.bounds)
 
 		var rects = [CGRect]()
@@ -105,15 +180,15 @@ extension QRCodeView {
 			for col in 0 ..< self.currentDimension {
 				if self.current[row][col] == true {
 					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-#if os(macOS)
+					#if os(macOS)
 					rects.append(self.backingAlignedRect(r, options: .alignAllEdgesNearest))
-#else
+					#else
 					rects.append(r)
-#endif
+					#endif
 				}
 			}
 		}
-		ctx.setFillColor(self._foregroundColor)
+		ctx.setFillColor(self.foreColor)
 		ctx.fill(rects)
 	}
 
@@ -162,5 +237,26 @@ extension QRCodeView {
 		self.currentDimension = w
 
 		self.setNeedsDisplay()
+	}
+}
+
+extension QRCodeView.ErrorCorrection {
+	static func Tag(_ value: Int) -> QRCodeView.ErrorCorrection {
+		switch value {
+		case 0: return .low
+		case 1: return .medium
+		case 2: return .high
+		case 3: return .max
+		default: return .low
+		}
+	}
+
+	var tag: Int {
+		switch self {
+		case .low: return 0
+		case .medium: return 1
+		case .high: return 2
+		case .max: return 3
+		}
 	}
 }

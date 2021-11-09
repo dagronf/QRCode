@@ -14,6 +14,7 @@ import SwiftUI
 #if os(macOS)
 import AppKit
 public typealias DSFView = NSView
+public typealias DSFImage = NSImage
 @available(macOS 11, *)
 typealias DSFViewRepresentable = NSViewRepresentable
 
@@ -23,6 +24,7 @@ extension NSView {
 #else
 import UIKit
 public typealias DSFView = UIView
+public typealias DSFImage = UIImage
 @available(iOS 13.0, tvOS 13.0, *)
 typealias DSFViewRepresentable = UIViewRepresentable
 #endif
