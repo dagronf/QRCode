@@ -1,3 +1,5 @@
 # QRCodeView
 
-A description of this package.
+A simple macOS/iOS/tvOS QR Code control
+
+
