@@ -18,9 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Insert code here to initialize your application
 
-		let im: NSImage? = QRCodeView.Image(content: "Message", size: CGSize(width: 100, height: 100))
-
-		Swift.print(im)
+		//let im: NSImage? = QRCodeView.Image(content: "Message", size: CGSize(width: 100, height: 100))
+		//Swift.print(im)
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

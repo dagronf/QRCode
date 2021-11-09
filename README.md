@@ -11,12 +11,23 @@ A simple macOS/iOS/tvOS QR Code control
 
 The NSView/UIView implementation.
 
+### Parameters
+
 | Parameter     | Type                         | Description                                            |
 |---------------|------------------------------|--------------------------------------------------------|
 | `data`        | `Data`                       | The QR Code content                                    |
 | `correction`  | `QRCodeView.ErrorCorrection` | The level of error collection when generating the code |
 | `foreColor`   | `CGColor`                    | The QR code color                                      |
 | `backColor`   | `CGColor`                    | The background color for the control                   |
+
+### Methods
+
+```swift
+static func Image(content: String, size: CGSize) -> IMAGETYPE?
+```
+
+Returns an image representation of the QR code
+
 
 ## QRCodeViewUI
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import QRCodeView
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
