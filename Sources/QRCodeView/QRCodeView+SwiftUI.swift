@@ -81,11 +81,11 @@ extension QRCodeViewUI {
 		view.errorCorrection = self.errorCorrection
 
 #if os(macOS)
-		view.foreColor = NSColor(self.foregroundColor).cgColor
-		view.backColor = NSColor(self.backgroundColor).cgColor
+		view.style.foregroundColor = NSColor(self.foregroundColor).cgColor
+		view.style.backgroundColor = NSColor(self.backgroundColor).cgColor
 #else
-		view.foreColor = UIColor(self.foregroundColor).cgColor
-		view.backColor = UIColor(self.backgroundColor).cgColor
+		view.style.foregroundColor = UIColor(self.foregroundColor).cgColor
+		view.style.backgroundColor = UIColor(self.backgroundColor).cgColor
 #endif
 	}
 }

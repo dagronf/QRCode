@@ -7,5 +7,10 @@ final class QRCodeViewTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         //XCTAssertEqual(QRCodeView().text, "Hello, World!")
+
+		 let q = QRCodeMail(mailTo: "poodlebox@pobox.eu",
+								  subject: "This is a test!",
+								  body: "Groovy and wonderful bits")
+
     }
 }

@@ -45,6 +45,11 @@ import UIKit
 		case max = 3
 	}
 
+	@objc public class Style: NSObject {
+		@objc var foregroundColor = CGColor(gray: 0.0, alpha: 1.0)
+		@objc var backgroundColor = CGColor(gray: 1.0, alpha: 1.0)
+	}
+
 	/// The correction level to use when generating the QR code
 	@objc public var errorCorrection: QRCodeView.ErrorCorrection = .low {
 		didSet {
@@ -60,20 +65,13 @@ import UIKit
 	}
 
 	/// Text content to display in the QR code
-	@objc public var content: String {
+	@objc public var textContent: String {
 		get { String(data: self.data, encoding: .utf8) ?? "" }
 		set { self.data = newValue.data(using: .utf8) ?? Data() }
 	}
 
-	/// The color to use when drawing the foreground
-	@objc public var foreColor = CGColor(gray: 0, alpha: 1) {
-		didSet {
-			self.setNeedsDisplay()
-		}
-	}
-
-	/// The color to use when drawing the background
-	@objc public var backColor = CGColor(gray: 1, alpha: 1) {
+	/// The style to use when drawing the qr code
+	@objc public var style = Style() {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -94,6 +92,10 @@ import UIKit
 	@objc public required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		self.setup()
+	}
+
+	@objc func setMessage(_ msgType: QRCodeMessageFormatter) {
+		self.data = msgType.data
 	}
 
 	// Private
@@ -117,23 +119,23 @@ public extension QRCodeView {
 
 	#if os(macOS)
 	@IBInspectable var ibForegroundColor: NSColor {
-		get { NSColor(cgColor: self.foreColor) ?? .black }
-		set { self.foreColor = newValue.cgColor }
+		get { NSColor(cgColor: self.style.foregroundColor) ?? .black }
+		set { self.style.foregroundColor = newValue.cgColor }
 	}
 
 	@IBInspectable var ibBackgroundColor: NSColor {
-		get { NSColor(cgColor: self.backColor) ?? .white }
-		set { self.backColor = newValue.cgColor }
+		get { NSColor(cgColor: self.style.backgroundColor) ?? .white }
+		set { self.style.backgroundColor = newValue.cgColor }
 	}
 	#else
 	@IBInspectable var ibForegroundColor: UIColor {
-		get { UIColor(cgColor: self.foreColor) }
-		set { self.foreColor = newValue.cgColor }
+		get { UIColor(cgColor: self.style.foregroundColor) }
+		set { self.style.foregroundColor = newValue.cgColor }
 	}
 
 	@IBInspectable var ibBackgroundColor: UIColor {
-		get { UIColor(cgColor: self.backColor) }
-		set { self.backColor = newValue.cgColor }
+		get { UIColor(cgColor: self.style.backgroundColor) }
+		set { self.style.backgroundColor = newValue.cgColor }
 	}
 	#endif
 
@@ -147,7 +149,7 @@ public extension QRCodeView {
 	/// Generate an image with the qrcode content
 	@objc static func Image(content: String, size: CGSize) -> DSFImage? {
 		let v = QRCodeView(frame: CGRect(x: 10000, y: 10000, width: size.width, height: size.height))
-		v.content = content
+		v.textContent = content
 		return v.snapshot()
 	}
 }
@@ -188,7 +190,7 @@ extension QRCodeView {
 		let xoff = (self.bounds.width - (CGFloat(self.minDimension) * dm)) / 2.0
 		let yoff = (self.bounds.height - (CGFloat(self.minDimension) * dm)) / 2.0
 
-		ctx.setFillColor(self.backColor)
+		ctx.setFillColor(self.style.backgroundColor)
 		ctx.fill(self.bounds)
 
 		var rects = [CGRect]()
@@ -205,8 +207,11 @@ extension QRCodeView {
 				}
 			}
 		}
-		ctx.setFillColor(self.foreColor)
+		ctx.setFillColor(self.style.foregroundColor)
 		ctx.fill(rects)
+
+		let pth = CGMutablePath()
+		pth.addRects(rects)
 	}
 
 	// Build up the qr representation
