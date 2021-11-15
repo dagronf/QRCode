@@ -33,25 +33,17 @@ import UIKit
 
 /// A simple NSView/UIView that displays a QR Code
 @objc @IBDesignable public class QRCodeView: DSFView {
-	/// The error correction level
-	@objc public enum ErrorCorrection: Int {
-		/// Lowest error correction (L - Recovers 7% of data)
-		case low = 0
-		/// Medium error correction (M - Recovers 15% of data)
-		case medium = 1
-		/// High error correction (Q - Recovers 25% of data)
-		case high = 2
-		/// Maximum error correction (H - Recovers 30% of data)
-		case max = 3
-	}
 
-	@objc public class Style: NSObject {
+	// The qrcode content generator
+	private let qrCodeContent = QRCodeContent()
+
+	@objc(QRCodeViewStyle) public class Style: NSObject {
 		@objc var foregroundColor = CGColor(gray: 0.0, alpha: 1.0)
 		@objc var backgroundColor = CGColor(gray: 1.0, alpha: 1.0)
 	}
 
 	/// The correction level to use when generating the QR code
-	@objc public var errorCorrection: QRCodeView.ErrorCorrection = .low {
+	@objc public var errorCorrection: QRCodeContent.ErrorCorrection = .low {
 		didSet {
 			self.regenerate()
 		}
@@ -78,7 +70,9 @@ import UIKit
 	}
 
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the dimensions smaller than this
-	@objc dynamic public private(set) var minDimension = 0
+	@objc public var pixelSize: Int {
+		return self.qrCodeContent.pixelSize
+	}
 
 	@objc public convenience init() {
 		self.init(frame: .zero)
@@ -97,11 +91,6 @@ import UIKit
 	@objc func setMessage(_ msgType: QRCodeMessageFormatter) {
 		self.data = msgType.data
 	}
-
-	// Private
-	private let context = CIContext()
-	private let filter = CIFilter(name: "CIQRCodeGenerator")!
-	private var current: [[Bool]] = []
 }
 
 // MARK: - Interface Builder
@@ -109,7 +98,7 @@ import UIKit
 public extension QRCodeView {
 	@IBInspectable var ibCorrectionLevel: Int {
 		get { return self.errorCorrection.rawValue }
-		set { self.errorCorrection = QRCodeView.ErrorCorrection(rawValue: newValue) ?? .low }
+		set { self.errorCorrection = QRCodeContent.ErrorCorrection(rawValue: newValue) ?? .low }
 	}
 
 	@IBInspectable var ibTextContent: String {
@@ -181,95 +170,20 @@ extension QRCodeView {
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
-		let r = self.bounds
-		let dx = r.width / CGFloat(self.minDimension)
-		let dy = r.height / CGFloat(self.minDimension)
 
-		let dm = min(dx, dy)
-
-		let xoff = (self.bounds.width - (CGFloat(self.minDimension) * dm)) / 2.0
-		let yoff = (self.bounds.height - (CGFloat(self.minDimension) * dm)) / 2.0
-
+		// Set the background
 		ctx.setFillColor(self.style.backgroundColor)
 		ctx.fill(self.bounds)
 
-		var rects = [CGRect]()
-
-		for row in 0 ..< self.minDimension {
-			for col in 0 ..< self.minDimension {
-				if self.current[row][col] == true {
-					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					#if os(macOS)
-					rects.append(self.backingAlignedRect(r, options: .alignAllEdgesNearest))
-					#else
-					rects.append(r)
-					#endif
-				}
-			}
-		}
 		ctx.setFillColor(self.style.foregroundColor)
-		ctx.fill(rects)
-
-		let pth = CGMutablePath()
-		pth.addRects(rects)
+		let path = self.qrCodeContent.path(self.bounds.size)
+		ctx.addPath(path)
+		ctx.fillPath()
 	}
 
 	// Build up the qr representation
 	private func regenerate() {
-		self.current = []
-		self.minDimension = 0
-
-		self.filter.setValue(self.data, forKey: "inputMessage")
-		self.filter.setValue(self.errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
-
-		guard
-			let outputImage = filter.outputImage,
-			let qrImage = context.createCGImage(outputImage, from: outputImage.extent) else
-		{
-			return
-		}
-
-		let w = qrImage.width
-		let h = qrImage.height
-		let colorspace = CGColorSpaceCreateDeviceGray()
-
-		var rawData = [UInt8](repeating: 0, count: w * h)
-		rawData.withUnsafeMutableBytes { rawBufferPointer in
-			let rawPtr = rawBufferPointer.baseAddress!
-			let context = CGContext(
-				data: rawPtr,
-				width: w,
-				height: h,
-				bitsPerComponent: 8,
-				bytesPerRow: w,
-				space: colorspace,
-				bitmapInfo: 0
-			)
-			context?.draw(qrImage, in: CGRect(x: 0, y: 0, width: w, height: h))
-		}
-
-		var result = Array(repeating: Array(repeating: false, count: w), count: w)
-		for r in 0 ..< w {
-			for c in 0 ..< w {
-				result[r][c] = rawData[r * w + c] == 0 ? true : false
-			}
-		}
-
-		self.current = result
-		self.minDimension = w
-
+		self.qrCodeContent.generate(self.data, errorCorrection: self.errorCorrection)
 		self.setNeedsDisplay()
-	}
-}
-
-public extension QRCodeView.ErrorCorrection {
-	/// Returns the EC Level identifier for the error correction type (L, M, Q, H)
-	var ECLevel: String {
-		switch self {
-		case .low: return "L"
-		case .medium: return "M"
-		case .high: return "Q"
-		case .max: return "H"
-		}
 	}
 }

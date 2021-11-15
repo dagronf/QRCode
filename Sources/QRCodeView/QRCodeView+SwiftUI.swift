@@ -25,90 +25,75 @@ import SwiftUI
 
 /// SwiftUI implementation of a basic QR Code view
 @available(macOS 11, iOS 14.0, tvOS 14.0, *)
-public final class QRCodeViewUI: DSFViewRepresentable {
-	public typealias NSViewType = QRCodeView
-
-	/// The data to display in the QR Code
-	let data: Data
-	/// The error correction level to use
-	let errorCorrection: QRCodeView.ErrorCorrection
-	/// The color to use when drawing the foreground
-	let foregroundColor: Color
-	/// The color to use when drawing the background
-	let backgroundColor: Color
-
-	/// Create a QR Code view with a UTF8 encoded string
-	/// - Parameters:
-	///   - text: The text to encode within the control
-	///   - errorCorrection: The error correctino level to use
-	///   - foregroundColor: The foreground (dots) color when drawing
-	///   - backgroundColor: The background color
-	public convenience init(text: String,
-		  errorCorrection: QRCodeView.ErrorCorrection = .low,
-		  foregroundColor: Color = .black,
-		  backgroundColor: Color = .white)
-	{
-		self.init(
-			data: text.data(using: .utf8) ?? Data(),
-			errorCorrection: errorCorrection,
-			foregroundColor: foregroundColor,
-			backgroundColor: backgroundColor
-		)
+public struct QRCode: Shape {
+	public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+		self.data = data
+		self.ec = errorCorrection
+		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
-	/// Create a QR Code view
-	/// - Parameters:
-	///   - data: The binary data to encode within the control
-	///   - errorCorrection: The error correctino level to use
-	///   - foregroundColor: The foreground (dots) color when drawing
-	///   - backgroundColor: The background color
-	init(data: Data,
-		  errorCorrection: QRCodeView.ErrorCorrection = .low,
-		  foregroundColor: Color = .black,
-		  backgroundColor: Color = .white)
-	{
-		self.data = data
-		self.errorCorrection = errorCorrection
-		self.foregroundColor = foregroundColor
-		self.backgroundColor = backgroundColor
+	public init(text: String, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+		self.data = text.data(using: .utf8) ?? Data()
+		self.ec = errorCorrection
+		self.generator.generate(data, errorCorrection: errorCorrection)
+	}
+
+	public init(message: QRCodeMessageFormatter, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+		self.data = message.data
+		self.ec = errorCorrection
+		self.generator.generate(data, errorCorrection: errorCorrection)
+	}
+
+	public func path(in rect: CGRect) -> Path {
+		let path = self.generator.path(rect.size)
+		return Path(path)
+	}
+
+	// Private
+	private let data: Data
+	private let ec: QRCodeContent.ErrorCorrection
+	private let generator = QRCodeContent()
+}
+
+@available(macOS 11, iOS 14.0, tvOS 14.0, *)
+public extension QRCode {
+	struct Eye: Shape {
+		public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+			self.data = data
+			self.ec = errorCorrection
+			self.generator.generate(data, errorCorrection: errorCorrection)
+		}
+
+		public func path(in rect: CGRect) -> Path {
+			let path = self.generator.eyesPath(rect.size)
+			return Path(path)
+		}
+
+		// Private
+		private let data: Data
+		private let ec: QRCodeContent.ErrorCorrection
+		private let generator = QRCodeContent()
 	}
 }
 
 @available(macOS 11, iOS 14.0, tvOS 14.0, *)
-extension QRCodeViewUI {
-	func updateContent(_ view: QRCodeView, context: Context) {
-		view.data = self.data
-		view.errorCorrection = self.errorCorrection
+public extension QRCode {
+	struct Content: Shape {
+		public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+			self.data = data
+			self.ec = errorCorrection
+			self.generator.generate(data, errorCorrection: errorCorrection)
+		}
 
-#if os(macOS)
-		view.style.foregroundColor = NSColor(self.foregroundColor).cgColor
-		view.style.backgroundColor = NSColor(self.backgroundColor).cgColor
-#else
-		view.style.foregroundColor = UIColor(self.foregroundColor).cgColor
-		view.style.backgroundColor = UIColor(self.backgroundColor).cgColor
-#endif
-	}
-}
+		public func path(in rect: CGRect) -> Path {
+			let path = self.generator.contentPath(rect.size)
+			return Path(path)
+		}
 
-@available(macOS 11, iOS 9999, tvOS 9999, *)
-extension QRCodeViewUI {
-	public func makeNSView(context: Context) -> QRCodeView {
-		return QRCodeView()
-	}
-
-	public func updateNSView(_ nsView: QRCodeView, context: Context) {
-		self.updateContent(nsView, context: context)
-	}
-}
-
-@available(iOS 14, tvOS 14, macOS 9999, *)
-extension QRCodeViewUI {
-	public func makeUIView(context: Context) -> QRCodeView {
-		return QRCodeView()
-	}
-
-	public func updateUIView(_ uiView: QRCodeView, context: Context) {
-		self.updateContent(uiView, context: context)
+		// Private
+		private let data: Data
+		private let ec: QRCodeContent.ErrorCorrection
+		private let generator = QRCodeContent()
 	}
 }
 
@@ -118,58 +103,65 @@ let DemoContent = "https://goo.gl/maps/Z4d9uVV87gVifrZKA"
 let DemoContent2 = "Harness the power of Quartz technology to perform lightweight 2D rendering with high-fidelity output. Handle path-based drawing, antialiased rendering, gradients, images, color management, PDF documents, and more."
 
 @available(macOS 11, iOS 14, tvOS 14, *)
-struct QRCodeViewUI_Previews: PreviewProvider {
+struct QRCode_Previews: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			HStack {
 				VStack {
 					Text("Low (L)")
-					QRCodeViewUI(text: DemoContent, errorCorrection: .low)
+					QRCode(text: DemoContent, errorCorrection: .low)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("Medium (M)")
-					QRCodeViewUI(text: DemoContent, errorCorrection: .medium)
+					QRCode(text: DemoContent, errorCorrection: .medium)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("High (Q)")
-					QRCodeViewUI(text: DemoContent, errorCorrection: .high)
+					QRCode(text: DemoContent, errorCorrection: .high)
 						.frame(width: 150, height: 150)
 				}
 				VStack {
 					Text("Max (H)")
-					QRCodeViewUI(text: DemoContent, errorCorrection: .max)
+					QRCode(text: DemoContent, errorCorrection: .max)
 						.frame(width: 150, height: 150)
 				}
 			}
 
 			HStack {
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .red, backgroundColor: .clear)
+				QRCode(text: "caterpillar-noodle")
+					.fill(.red)
 					.frame(width: 100, height: 100)
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .green, backgroundColor: .clear)
+				QRCode(text: "caterpillar-noodle")
+					.fill(.green)
 					.frame(width: 100, height: 100)
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .blue, backgroundColor: .clear)
-					.frame(width: 100, height: 100)
-			}
-
-			HStack {
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .red, backgroundColor: .white)
-					.frame(width: 100, height: 100)
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .green, backgroundColor: .white)
-					.frame(width: 100, height: 100)
-				QRCodeViewUI(text: "caterpillar-noodle", foregroundColor: .blue, backgroundColor: .white)
+				QRCode(text: "caterpillar-noodle")
+					.fill(.blue)
 					.frame(width: 100, height: 100)
 			}
 
 			HStack {
-				QRCodeViewUI(text: DemoContent2,
-								 foregroundColor: Color(.sRGB, red: 0.721, green: 0.376, blue: 0.603, opacity: 1.000),
-								 backgroundColor: Color(.sRGB, red: 1.000, green: 0.709, blue: 0.656, opacity: 1.000))
+				QRCode(text: "caterpillar-noodle")
+					.fill(.red)
+					.frame(width: 100, height: 100)
+				QRCode(text: "caterpillar-noodle")
+					.fill(.green)
+					.frame(width: 100, height: 100)
+				QRCode(text: "caterpillar-noodle")
+					.fill(.blue)
+					.frame(width: 100, height: 100)
+			}
+
+			HStack {
+				QRCode(text: DemoContent2)
+					.fill(.black)
 					.frame(width: 150, height: 150)
-				QRCodeViewUI(text: DemoContent2)
+				QRCode(text: DemoContent2)
+					.fill(.black)
 					.frame(width: 150, height: 150)
-				QRCodeViewUI(text: DemoContent2)
+				QRCode(text: DemoContent2)
+					.fill(.black)
 					.frame(width: 300, height: 300)
 			}
 		}

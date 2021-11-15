@@ -8,41 +8,61 @@
 import Foundation
 
 
-@objc protocol QRCodeMessageFormatter {
+@objc public protocol QRCodeMessageFormatter {
 	var data: Data { get }
 }
 
+// MARK: - Data
+
 @objc public class QRCodeData: NSObject, QRCodeMessageFormatter {
-	let data: Data
+	public let data: Data
 	@objc public init(_ data: Data) {
 		self.data = data
 	}
 }
 
+// MARK: - Text
+
 /// A simple text formatter.
 @objc public class QRCodeText: NSObject, QRCodeMessageFormatter {
-	let data: Data
-	@objc public init(_ content: String) {
-		self.data = content.data(using: .utf8) ?? Data()
+	public let data: Data
+	@objc public init?(_ content: String) {
+		guard let msg = content.data(using: .utf8) else { return nil }
+		self.data = msg
 	}
 }
 
+// MARK: - Link
+
 /// A formattter for a generating a QRCode with a url (link)
 @objc public class QRCodeLink: NSObject, QRCodeMessageFormatter {
-	let data: Data
+	public let data: Data
+	/// Create using a url
 	@objc public init(_ url: URL) {
 		let msg = url.absoluteString
 		self.data = msg.data(using: .utf8) ?? Data()
 	}
+	/// Create using the string representation of a URL
+	@objc public init?(string: String) {
+		guard
+			let url = URL(string: string),
+			let msg = url.absoluteString.data(using: .utf8) else
+		{
+			return nil
+		}
+		self.data = msg
+	}
 }
+
+// MARK: - Email
 
 /// A formattter for a generating a QRCode containing a link for generating an email
 @objc public class QRCodeMail: NSObject, QRCodeMessageFormatter {
-	let data: Data
-	@objc public init(mailTo: String, subject: String? = nil, body: String? = nil) {
+	public let data: Data
+	@objc public init?(mailTo: String, subject: String? = nil, body: String? = nil) {
 
 		// // mailto:blah%40noodle.com?subject=This%20is%20a%20test&cc=zomb%40att.com&bcc=catpirler%40superbalh.eu&body=Noodles%20and%20fish%21
-		guard let mt = mailTo.urlQuerySafe else { fatalError() }
+		guard let mt = mailTo.urlQuerySafe else { return nil }
 		var msg = "mailto:\(mt)"
 
 		var queryItems: [URLQueryItem] = []
@@ -58,9 +78,11 @@ import Foundation
 	}
 }
 
+// MARK: - Phone
+
 /// A formattter for a generating a QRCode with a telephone number
 @objc public class QRCodePhone: NSObject, QRCodeMessageFormatter {
-	let data: Data
+	public let data: Data
 	@objc public init(_ phoneNumber: String) {
 		let numbersOnly = phoneNumber.filter { $0.isNumber || $0 == "+" }
 		// TEL:(+)12342341234
@@ -69,6 +91,7 @@ import Foundation
 	}
 }
 
+// MARK: - VCARD
 
 /*
 
@@ -144,7 +167,7 @@ import Foundation
 		}
 	}
 
-	let data: Data
+	public let data: Data
 	@objc public init(
 		name: QRCodeContact.Name,
 		formattedName: String,                  // Name as it is presented to the user

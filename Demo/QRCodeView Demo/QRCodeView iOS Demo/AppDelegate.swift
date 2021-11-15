@@ -15,6 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
+
+
+		let c = QRCodeContent()
+		c.generate("This is a test".data(using: .utf8)!, errorCorrection: .max)
+		let im = c.image(CGSize(width: 400, height: 400))
+		Swift.print(im)
+		let iii = UIImage(cgImage: im!)
+		Swift.print(iii)
+
+
 		return true
 	}
 
