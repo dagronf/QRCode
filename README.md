@@ -59,14 +59,17 @@ view.errorCorrection = .max
 
 ## QRCodeViewUI
 
-The SwiftUI implementation
+The SwiftUI implementation is a basic Shape type. So anything you can do with a (eg.) Swift Rectangle shape you 
+can do with a QRCode.
+
+For example, you can use `.fill` to set the color content (eg. a linear gradient, solid color etc), add a drop shadow,
+add a transform etc...
+
 
 | Parameter         | Type                         | Description                                            |
 |-------------------|------------------------------|--------------------------------------------------------|
 | `data`            | `Data`                       | The QR Code content                                    |
 | `errorCorrection` | `QRCodeView.ErrorCorrection` | The level of error collection when generating the code |
-| `foregroundColor` | `Color`                      | The QR code color                                      |
-| `backgroundColor` | `Color`                      | The background color for the control                   |
 
 ### Example
 
@@ -75,40 +78,16 @@ struct ContentView: View {
 
    @State var content: String = "This is a test of the QR code control"
    @State var correction: QRCodeView.ErrorCorrection = .low
-   @State var foregroundColor = Color.primary
-   @State var backgroundColor = Color.clear
 
    var body: some View {
-      HStack {
-         VStack {
-            HStack {
-               Text("Content")
-               TextField("Text", text: $content)
-            }
-            Picker(selection: $correction, label: Text("Error correction:")) {
-               Text("Low (L)").tag(QRCodeView.ErrorCorrection.low)
-               Text("Medium (M)").tag(QRCodeView.ErrorCorrection.medium)
-               Text("High (Q)").tag(QRCodeView.ErrorCorrection.high)
-               Text("Max (H)").tag(QRCodeView.ErrorCorrection.highest)
-            }.pickerStyle(RadioGroupPickerStyle())
-
-            ColorPicker("Foreground", selection: $foregroundColor)
-            ColorPicker("Background", selection: $backgroundColor)
-
-            Spacer()
-         }
-         .frame(alignment: .top)
-         .padding()
-         
-         QRCodeViewUI(
-            content,
-            errorCorrection: correction,
-            foregroundColor: foregroundColor,
-            backgroundColor: backgroundColor
-         )
-         .frame(alignment: .center)
-         .padding()
-      }
+      Text("Here is my QR code")
+      QRCode(
+         text: content,
+         errorCorrection: correction
+      )
+      .fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+      .shadow(color: .black, radius: 1, x: 1, y: 1)
+      .frame(width: 250, height: 250, alignment: .center)
    }
 }
 ```

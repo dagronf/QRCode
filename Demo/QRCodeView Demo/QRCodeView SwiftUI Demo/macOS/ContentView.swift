@@ -50,7 +50,7 @@ struct ContentView: View {
 					data: content.data(using: .utf8)!,
 					errorCorrection: correction
 				)
-					.fill(foregroundColor)
+				.fill(foregroundColor)
 			}
 
 			.frame(alignment: .center)

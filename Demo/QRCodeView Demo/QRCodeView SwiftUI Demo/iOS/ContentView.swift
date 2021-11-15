@@ -50,9 +50,11 @@ struct ContentView: View {
 				.padding()
 
 				QRCode(
-					message: QRCodeLink(string: "https://wwww.apple.com.au/")!
+					message: QRCodeLink(string: "https://wwww.apple.com.au/")!,
+					errorCorrection: .max
 				)
 				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+				.shadow(color: .black, radius: 1, x: 1, y: 1)
 				.frame(width: 250, height: 250, alignment: .center)
 			}
 		}

@@ -24,7 +24,7 @@ import CoreImage
 import SwiftUI
 
 /// SwiftUI implementation of a basic QR Code view
-@available(macOS 11, iOS 14.0, tvOS 14.0, *)
+@available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public struct QRCode: Shape {
 	public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 		self.data = data
@@ -32,8 +32,9 @@ public struct QRCode: Shape {
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
-	public init(text: String, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
-		self.data = text.data(using: .utf8) ?? Data()
+	public init?(text: String, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
+		guard let data = text.data(using: .utf8) else { return nil }
+		self.data = data
 		self.ec = errorCorrection
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
@@ -130,40 +131,68 @@ struct QRCode_Previews: PreviewProvider {
 			}
 
 			HStack {
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.red)
 					.frame(width: 100, height: 100)
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.green)
 					.frame(width: 100, height: 100)
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.blue)
 					.frame(width: 100, height: 100)
 			}
 
 			HStack {
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.red)
 					.frame(width: 100, height: 100)
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.green)
 					.frame(width: 100, height: 100)
-				QRCode(text: "caterpillar-noodle")
+				QRCode(text: "caterpillar-noodle")!
 					.fill(.blue)
 					.frame(width: 100, height: 100)
 			}
 
 			HStack {
-				QRCode(text: DemoContent2)
+				QRCode(text: DemoContent2)!
 					.fill(.black)
 					.frame(width: 150, height: 150)
-				QRCode(text: DemoContent2)
+				QRCode(text: DemoContent2)!
 					.fill(.black)
 					.frame(width: 150, height: 150)
-				QRCode(text: DemoContent2)
+				QRCode(text: DemoContent2)!
 					.fill(.black)
 					.frame(width: 300, height: 300)
 			}
 		}
+	}
+}
+
+@available(macOS 11, iOS 13.0, tvOS 13.0, *)
+struct ContentView22: View {
+
+	@State var content: String = "This is a test of the QR code control"
+	@State var correction: QRCodeContent.ErrorCorrection = .low
+	let gradient = Gradient(colors: [.black, .pink])
+	
+	var body: some View {
+		VStack {
+			Text("Here is my QR code")
+			QRCode(
+				text: content,
+				errorCorrection: correction
+			)!
+			.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+			.frame(width: 250, height: 250, alignment: .center)
+			.shadow(color: .blue, radius: 1, x: 1, y: 1)
+		}
+	}
+}
+
+@available(macOS 11, iOS 14, tvOS 14, *)
+struct ContentView22_Previews: PreviewProvider {
+	static var previews: some View {
+		ContentView22()
 	}
 }
