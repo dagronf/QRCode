@@ -26,12 +26,14 @@ import SwiftUI
 /// SwiftUI implementation of a basic QR Code view
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public struct QRCode: Shape {
+	/// Create a QRCode shape using the specified data and error correction
 	public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 		self.data = data
 		self.ec = errorCorrection
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
+	/// Create a QRCode shape using the specified text and error correction
 	public init?(text: String, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data = data
@@ -39,6 +41,7 @@ public struct QRCode: Shape {
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
+	/// Create a QRCode shape using the specified message formatter and error correction
 	public init(message: QRCodeMessageFormatter, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 		self.data = message.data
 		self.ec = errorCorrection
@@ -58,6 +61,7 @@ public struct QRCode: Shape {
 
 @available(macOS 11, iOS 14.0, tvOS 14.0, *)
 public extension QRCode {
+	/// A shape representing just the 'eyes' of the QR Code
 	struct Eye: Shape {
 		public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 			self.data = data
@@ -66,7 +70,7 @@ public extension QRCode {
 		}
 
 		public func path(in rect: CGRect) -> Path {
-			let path = self.generator.eyesPath(rect.size)
+			let path = self.generator.path(rect.size, generationType: .eyesOnly)
 			return Path(path)
 		}
 
@@ -79,6 +83,7 @@ public extension QRCode {
 
 @available(macOS 11, iOS 14.0, tvOS 14.0, *)
 public extension QRCode {
+	/// A shape representing just the data content of the QR Code (ie. everything but the eyes)
 	struct Content: Shape {
 		public init(data: Data, errorCorrection: QRCodeContent.ErrorCorrection = .low) {
 			self.data = data
@@ -87,7 +92,7 @@ public extension QRCode {
 		}
 
 		public func path(in rect: CGRect) -> Path {
-			let path = self.generator.contentPath(rect.size)
+			let path = self.generator.path(rect.size, generationType: .contentOnly)
 			return Path(path)
 		}
 

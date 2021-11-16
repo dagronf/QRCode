@@ -25,6 +25,7 @@
 import CoreGraphics
 import CoreImage
 import Foundation
+import SwiftUI
 
 /// A QRCode generator class
 @objc public class QRCodeContent: NSObject {
@@ -55,7 +56,7 @@ import Foundation
 		return self.current.rows
 	}
 
-	/// Update the content with the provided data
+	/// Build the QR Code using the given data and error correction
 	@objc public func generate(_ data: Data, errorCorrection: ErrorCorrection) {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
@@ -89,41 +90,14 @@ import Foundation
 		self.current = Array2D(rows: w, columns: w, flattened: rawData.map { $0 == 0 ? true : false })
 	}
 
-	/// Generate a QRCode from a QR message formatter
+	/// Build the QR Code using the given text and error correction
 	@objc public func generate(text: String, errorCorrection: ErrorCorrection) {
 		self.generate(text.data(using: .utf8) ?? Data(), errorCorrection: errorCorrection)
 	}
 
-	/// Generate a QRCode from a QR message formatter
+	/// Build the QR Code using the given message formatter and error correction
 	@objc public func generate(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection) {
 		self.generate(message.data, errorCorrection: errorCorrection)
-	}
-
-	/// Return a CGPath containing the 'on' pixels of the QRCode
-	@objc public func path(_ size: CGSize) -> CGPath {
-		let dx = size.width / CGFloat(self.pixelSize)
-		let dy = size.height / CGFloat(self.pixelSize)
-
-		let dm = min(dx, dy)
-
-		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
-
-		var rects = [CGRect]()
-
-		for row in 0 ..< self.pixelSize {
-			for col in 0 ..< self.pixelSize {
-				if self.current[row, col] == true {
-					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					rects.append(r)
-				}
-			}
-		}
-
-		let pth = CGMutablePath()
-		pth.addRects(rects)
-
-		return pth
 	}
 
 	// Private
@@ -132,11 +106,18 @@ import Foundation
 	private var current = Array2D(rows: 0, columns: 0, initialValue: false)
 }
 
-// MARK: - Eye positioning/paths
+// MARK: - QR Code path generation
 
 public extension QRCodeContent {
-	/// Return a CGPath containing the 'on' pixels of the QRCode
-	@objc func eyesPath(_ size: CGSize) -> CGPath {
+	/// The type of path generation to perform
+	@objc enum PathGenerationType: Int {
+		case all = 0
+		case eyesOnly = 1
+		case contentOnly = 2
+	}
+
+	/// Return a CGPath containing the entire QR code
+	@objc func path(_ size: CGSize, generationType: PathGenerationType = .all, pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()) -> CGPath {
 		let dx = size.width / CGFloat(self.pixelSize)
 		let dy = size.height / CGFloat(self.pixelSize)
 
@@ -145,23 +126,35 @@ public extension QRCodeContent {
 		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
 		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
 
-		var rects = [CGRect]()
-
+		let path = CGMutablePath()
 		for row in 0 ..< self.pixelSize {
 			for col in 0 ..< self.pixelSize {
-				if isEye(row, col), self.current[row, col] == true {
-					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					rects.append(r)
+				if self.current[row, col] == false {
+					// Nothing to do
+					continue
 				}
+
+				let isEyeSection = isEyePixel(row, col)
+				if generationType == .contentOnly, isEyeSection {
+					// skip it
+					continue
+				}
+				else if generationType == .eyesOnly, !isEyeSection {
+					// skip it
+					continue
+				}
+
+				let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
+				path.addPath(pixelStyle.path(rect: r))
 			}
 		}
-
-		let pth = CGMutablePath()
-		pth.addRects(rects)
-
-		return pth
+		return path
 	}
+}
 
+// MARK: - Eye positioning/paths
+
+public extension QRCodeContent {
 	@objc class EyePositions: NSObject {
 		@objc init(topLeft: CGRect, topRight: CGRect, bottomLeft: CGRect) {
 			self.topLeft = topLeft
@@ -187,7 +180,8 @@ public extension QRCodeContent {
 		return EyePositions(topLeft: tl, topRight: tr, bottomLeft: bl)
 	}
 
-	private func isEye(_ row: Int, _ col: Int) -> Bool {
+	// Is the row/col within an 'eye' of the qr code?
+	private func isEyePixel(_ row: Int, _ col: Int) -> Bool {
 		if row < 9 {
 			if col < 9 {
 				return true
@@ -203,42 +197,16 @@ public extension QRCodeContent {
 	}
 }
 
-// MARK: - Non-eye positioning/paths
-
-public extension QRCodeContent {
-	/// Return a CGPath containing the 'on' pixels of the QRCode
-	@objc func contentPath(_ size: CGSize) -> CGPath {
-		let dx = size.width / CGFloat(self.pixelSize)
-		let dy = size.height / CGFloat(self.pixelSize)
-
-		let dm = min(dx, dy)
-
-		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
-
-		var rects = [CGRect]()
-
-		for row in 0 ..< self.pixelSize {
-			for col in 0 ..< self.pixelSize {
-				if !isEye(row, col), self.current[row, col] == true {
-					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					rects.append(r)
-				}
-			}
-		}
-
-		let pth = CGMutablePath()
-		pth.addRects(rects)
-
-		return pth
-	}
-}
-
 // MARK: - Image generation
 
 public extension QRCodeContent {
-	/// Returns an image representation of the qr code
-	@objc func image(_ size: CGSize, scale: CGFloat = 1) -> CGImage? {
+	/// Returns an image representation of the qr code using the specified style
+	/// - Parameters:
+	///   - size: The pixel size of the image to generate
+	///   - scale: The scale
+	///   - style: The style to use when generating the image
+	/// - Returns: The image, or nil if an error occurred
+	@objc func image(_ size: CGSize, scale: CGFloat = 1, style: QRCodeContent.Style = QRCodeContent.Style()) -> CGImage? {
 		let width = Int(size.width)
 		let height = Int(size.height)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -255,20 +223,27 @@ public extension QRCodeContent {
 			return nil
 		}
 
-		let qrPath = self.path(size)
-
 		context.scaleBy(x: 1, y: -1)
 		context.translateBy(x: 0, y: -size.height)
 
-		context.setFillColor(CGColor(gray: 1, alpha: 1))
-		context.fill(CGRect(origin: .zero, size: size))
-
-		context.setFillColor(CGColor(gray: 0, alpha: 1))
-		context.addPath(qrPath)
-		context.fillPath()
+		// Draw the qr with the required styles
+		self.draw(ctx: context, rect: CGRect(origin: .zero, size: size), style: style)
 
 		let im = context.makeImage()
-
 		return im
+	}
+
+	/// Draw the current qrcode into the context using the specified style
+	func draw(ctx: CGContext, rect: CGRect, style: QRCodeContent.Style) {
+		// Fill the background first
+		ctx.saveGState()
+		style.backgroundStyle.fill(ctx: ctx, rect: rect)
+		ctx.restoreGState()
+
+		// Now, the pixels
+		let qrPath = self.path(rect.size, pixelStyle: style.pixelStyle)
+		ctx.saveGState()
+		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
+		ctx.restoreGState()
 	}
 }
