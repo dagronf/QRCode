@@ -109,15 +109,22 @@ import SwiftUI
 // MARK: - QR Code path generation
 
 public extension QRCodeContent {
-	/// The type of path generation to perform
+	/// The type of path to generate
 	@objc enum PathGenerationType: Int {
+		/// Path contains both eyes and content
 		case all = 0
+		/// Path contains only the eyes of the qr code
 		case eyesOnly = 1
+		/// Path contains only the content of the qr code
 		case contentOnly = 2
 	}
 
 	/// Return a CGPath containing the entire QR code
-	@objc func path(_ size: CGSize, generationType: PathGenerationType = .all, pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()) -> CGPath {
+	@objc func path(
+		_ size: CGSize,
+		generationType: PathGenerationType = .all,
+		pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+	) -> CGPath {
 		let dx = size.width / CGFloat(self.pixelSize)
 		let dy = size.height / CGFloat(self.pixelSize)
 
@@ -234,7 +241,7 @@ public extension QRCodeContent {
 	}
 
 	/// Draw the current qrcode into the context using the specified style
-	func draw(ctx: CGContext, rect: CGRect, style: QRCodeContent.Style) {
+	@objc func draw(ctx: CGContext, rect: CGRect, style: QRCodeContent.Style) {
 		// Fill the background first
 		ctx.saveGState()
 		style.backgroundStyle.fill(ctx: ctx, rect: rect)
