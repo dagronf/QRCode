@@ -29,9 +29,9 @@ public struct QRCodeUI: Shape {
 	/// Create a QRCode shape using the specified data
 	public init(
 		data: Data,
-		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGeneration = .all,
-		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
+		errorCorrection: QRCode.ErrorCorrection = .low,
+		masking: QRCode.PathGeneration = .all,
+		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		self.data = data
 		self.errorCorrection = errorCorrection
@@ -43,9 +43,9 @@ public struct QRCodeUI: Shape {
 	/// Create a QRCode shape using the specified text
 	public init?(
 		text: String,
-		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGeneration = .all,
-		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
+		errorCorrection: QRCode.ErrorCorrection = .low,
+		masking: QRCode.PathGeneration = .all,
+		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data = data
@@ -58,9 +58,9 @@ public struct QRCodeUI: Shape {
 	/// Create a QRCode shape using the specified message formatter
 	public init(
 		message: QRCodeMessageFormatter,
-		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGeneration = .all,
-		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
+		errorCorrection: QRCode.ErrorCorrection = .low,
+		masking: QRCode.PathGeneration = .all,
+		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		self.data = message.data
 		self.errorCorrection = errorCorrection
@@ -71,10 +71,10 @@ public struct QRCodeUI: Shape {
 
 	// Private
 	private let data: Data
-	private let contentShape: QRCodeContent.Shape
-	private let masking: QRCodeContent.PathGeneration
-	private let errorCorrection: QRCodeContent.ErrorCorrection
-	private let generator = QRCodeContent()
+	private let contentShape: QRCode.Shape
+	private let masking: QRCode.PathGeneration
+	private let errorCorrection: QRCode.ErrorCorrection
+	private let generator = QRCode()
 }
 
 // MARK: - Modifiers
@@ -82,7 +82,7 @@ public struct QRCodeUI: Shape {
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public extension QRCodeUI {
 	/// Returns a copy of the qrcode using the specified mask
-	func masking(_ masking: QRCodeContent.PathGeneration) -> QRCodeUI {
+	func masking(_ masking: QRCode.PathGeneration) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
@@ -92,7 +92,7 @@ public extension QRCodeUI {
 	}
 
 	/// Returns a copy of the qrcode using the specified pixel style
-	func contentShape(_ shape: QRCodeContent.Shape) -> QRCodeUI {
+	func contentShape(_ shape: QRCode.Shape) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
@@ -102,7 +102,7 @@ public extension QRCodeUI {
 	}
 
 	/// Returns a copy of the qrcode using the specified error correction level
-	func errorCorrection(_ errorCorrection: QRCodeContent.ErrorCorrection) -> QRCodeUI {
+	func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: errorCorrection,

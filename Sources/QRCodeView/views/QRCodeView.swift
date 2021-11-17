@@ -35,10 +35,10 @@ import UIKit
 @objc @IBDesignable public class QRCodeView: DSFView {
 
 	// The qrcode content generator
-	private let qrCodeContent = QRCodeContent()
+	private let qrCodeContent = QRCode()
 
 	/// The correction level to use when generating the QR code
-	@objc public var errorCorrection: QRCodeContent.ErrorCorrection = .low {
+	@objc public var errorCorrection: QRCode.ErrorCorrection = .low {
 		didSet {
 			self.regenerate()
 		}
@@ -58,7 +58,7 @@ import UIKit
 	}
 
 	/// The style to use when drawing the qr code
-	@objc public var style = QRCodeContent.Style() {
+	@objc public var style = QRCode.Style() {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -93,7 +93,7 @@ import UIKit
 public extension QRCodeView {
 	@IBInspectable var ibCorrectionLevel: Int {
 		get { return self.errorCorrection.rawValue }
-		set { self.errorCorrection = QRCodeContent.ErrorCorrection(rawValue: newValue) ?? .low }
+		set { self.errorCorrection = QRCode.ErrorCorrection(rawValue: newValue) ?? .low }
 	}
 
 	@IBInspectable var ibTextContent: String {

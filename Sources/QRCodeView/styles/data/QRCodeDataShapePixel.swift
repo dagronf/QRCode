@@ -49,7 +49,7 @@ import CoreGraphics
 		super.init()
 	}
 
-	private func path(size: CGSize, data: QRCodeContent, isOn: Bool) -> CGPath {
+	private func path(size: CGSize, data: QRCode, isOn: Bool) -> CGPath {
 
 		let dx = size.width / CGFloat(data.pixelSize)
 		let dy = size.height / CGFloat(data.pixelSize)
@@ -89,11 +89,11 @@ import CoreGraphics
 		}
 		return path
 	}
-	public func onPath(size: CGSize, data: QRCodeContent) -> CGPath {
+	public func onPath(size: CGSize, data: QRCode) -> CGPath {
 		return path(size: size, data: data, isOn: true)
 	}
 
-	public func offPath(size: CGSize, data: QRCodeContent) -> CGPath {
+	public func offPath(size: CGSize, data: QRCode) -> CGPath {
 		return path(size: size, data: data, isOn: false)
 	}
 }

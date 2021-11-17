@@ -11,7 +11,7 @@ import QRCodeView
 struct ContentView: View {
 
 	@State var content: String = "This is a test of the QR code control"
-	@State var correction: QRCodeContent.ErrorCorrection = .low
+	@State var correction: QRCode.ErrorCorrection = .low
 
 	@State var dataColor: Color = .primary
 	@State var eyeColor: Color = .primary
@@ -82,10 +82,10 @@ struct ContentView: View {
 					TextField("Text", text: $content)
 				}
 				Picker(selection: $correction, label: Text("Error correction:")) {
-					Text("Low (L)").tag(QRCodeContent.ErrorCorrection.low)
-					Text("Medium (M)").tag(QRCodeContent.ErrorCorrection.medium)
-					Text("High (Q)").tag(QRCodeContent.ErrorCorrection.high)
-					Text("Max (H)").tag(QRCodeContent.ErrorCorrection.max)
+					Text("Low (L)").tag(QRCode.ErrorCorrection.low)
+					Text("Medium (M)").tag(QRCode.ErrorCorrection.medium)
+					Text("High (Q)").tag(QRCode.ErrorCorrection.high)
+					Text("Max (H)").tag(QRCode.ErrorCorrection.max)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Picker(selection: $dataShape, label: Text("Data Shape:")) {
 					Text("Square").tag(DataShapeType.square)

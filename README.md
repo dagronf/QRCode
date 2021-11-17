@@ -27,6 +27,25 @@ It's nice to have a simple drop-in component for displaying a QR code.
 * Supports NSView (macOS), UIView (iOS/tvOS) and SwiftUI
 * Size to fit available provided space
 * Configurable foreground/background colors
+* Configurable designs
+
+## QRCode
+
+The QRCode class is the core generator class.  It is not tied to any presentation medium.
+
+```swift
+@objc public func generate(_ data: Data, errorCorrection: ErrorCorrection)
+@objc public func generate(text: String, errorCorrection: ErrorCorrection)
+@objc public func generate(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection)
+```
+
+Update the qrcode with the specified data.
+
+```swift
+@objc func path(_ size: CGSize, generationType: PathGeneration = .all, pixelShape: QRCode.Shape = QRCode.Shape())
+``
+
+
 
 ## QRCodeView
 

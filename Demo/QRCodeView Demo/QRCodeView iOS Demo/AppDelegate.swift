@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 
 
-//		let c = QRCodeContent()
+//		let c = QRCode()
 //		c.generate("This is a test".data(using: .utf8)!, errorCorrection: .max)
 //		let im = c.image(CGSize(width: 400, height: 400))
 //		Swift.print(im)

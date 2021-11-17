@@ -1,5 +1,5 @@
 //
-//  QRCodeContent+Style.swift
+//  QRCode+Style.swift
 //
 //  Created by Darren Ford on 16/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -23,12 +23,12 @@
 import CoreGraphics
 import Foundation
 
-public extension QRCodeContent {
+public extension QRCode {
 	/// QR Code styler
-	@objc(QRCodeContentStyle) class Style: NSObject {
+	@objc(QRCodeStyle) class Style: NSObject {
 		@objc public var foregroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 0.0, alpha: 1.0))
 		@objc public var backgroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 1.0, alpha: 1.0))
-		@objc public var shape = QRCodeContent.Shape()
+		@objc public var shape = QRCode.Shape()
 
 		/// Copy the style
 		public func copyStyle() -> Style {
@@ -40,7 +40,8 @@ public extension QRCodeContent {
 		}
 	}
 
-	@objc(QRCodeContentShape) class Shape: NSObject {
+	/// Represents the shape when generating the qr code
+	@objc(QRCodeShape) class Shape: NSObject {
 		/// The shape of the pixels
 		@objc public var dataShape: QRCodeDataShape = QRCodeDataShapePixel(pixelType: .square)
 		/// The style of eyes to display
@@ -69,6 +70,6 @@ public extension QRCodeContent {
 
 @objc public protocol QRCodeDataShape {
 	func copyShape() -> QRCodeDataShape
-	func onPath(size: CGSize, data: QRCodeContent) -> CGPath
-	func offPath(size: CGSize, data: QRCodeContent) -> CGPath
+	func onPath(size: CGSize, data: QRCode) -> CGPath
+	func offPath(size: CGSize, data: QRCode) -> CGPath
 }
