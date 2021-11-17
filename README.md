@@ -57,7 +57,7 @@ view.content = "QR Code content"
 view.errorCorrection = .max
 ```
 
-## QRCodeViewUI
+## SwiftUI
 
 The SwiftUI implementation is a basic Shape type. So anything you can do with a (eg.) Swift Rectangle shape you 
 can do with a QRCode.
@@ -70,6 +70,15 @@ add a transform etc...
 |-------------------|------------------------------|--------------------------------------------------------|
 | `data`            | `Data`                       | The QR Code content                                    |
 | `errorCorrection` | `QRCodeView.ErrorCorrection` | The level of error collection when generating the code |
+
+### Modifiers
+
+#### `pixelStyle`
+
+#### `masking`
+
+
+
 
 ### Example
 

@@ -18,9 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Insert code here to initialize your application
 
-		//let im: NSImage? = QRCodeView.Image(content: "Message", size: CGSize(width: 100, height: 100))
-		//Swift.print(im)
-
 		let gr = QRGradient(pins: [
 			QRGradient.Pin(CGColor.init(red: 1, green: 0, blue: 0, alpha: 1), 0),
 			QRGradient.Pin(CGColor.init(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
@@ -31,8 +28,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		let style = QRCodeContent.Style()
 		style.foregroundStyle = QRCodeFillStyleLinearGradient(gr)
 
-		style.pixelStyle = QRCodePixelStyleRoundedSquare(cornerRadius: 0.8, edgeInsets: 1)
-
+		let contentShape = QRCodeContent.Shape()
+		contentShape.pixelStyle = QRCodePixelStyleRoundedSquare(cornerRadius: 0.8, edgeInset: 1)
+		contentShape.eyeStyle = QRCodeEyeStyleRoundedRect()
+		style.shape = contentShape
 
 		let c = QRCodeContent()
 		c.generate(message: QRCodeLink(string: "https://www.apple.com.au")!, errorCorrection: .max)

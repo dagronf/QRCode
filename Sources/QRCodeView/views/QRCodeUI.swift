@@ -30,13 +30,13 @@ public struct QRCodeUI: Shape {
 	public init(
 		data: Data,
 		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGenerationType = .all,
-		pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+		masking: QRCodeContent.PathGeneration = .all,
+		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
 	) {
 		self.data = data
 		self.errorCorrection = errorCorrection
 		self.masking = masking
-		self.pixelStyle = pixelStyle
+		self.contentShape = contentShape
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
@@ -44,14 +44,14 @@ public struct QRCodeUI: Shape {
 	public init?(
 		text: String,
 		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGenerationType = .all,
-		pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+		masking: QRCodeContent.PathGeneration = .all,
+		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data = data
 		self.errorCorrection = errorCorrection
 		self.masking = masking
-		self.pixelStyle = pixelStyle
+		self.contentShape = contentShape
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
@@ -59,20 +59,20 @@ public struct QRCodeUI: Shape {
 	public init(
 		message: QRCodeMessageFormatter,
 		errorCorrection: QRCodeContent.ErrorCorrection = .low,
-		masking: QRCodeContent.PathGenerationType = .all,
-		pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+		masking: QRCodeContent.PathGeneration = .all,
+		contentShape: QRCodeContent.Shape = QRCodeContent.Shape()
 	) {
 		self.data = message.data
 		self.errorCorrection = errorCorrection
 		self.masking = masking
-		self.pixelStyle = pixelStyle
+		self.contentShape = contentShape
 		self.generator.generate(data, errorCorrection: errorCorrection)
 	}
 
 	// Private
 	private let data: Data
-	private let pixelStyle: QRCodePixelStyle
-	private let masking: QRCodeContent.PathGenerationType
+	private let contentShape: QRCodeContent.Shape
+	private let masking: QRCodeContent.PathGeneration
 	private let errorCorrection: QRCodeContent.ErrorCorrection
 	private let generator = QRCodeContent()
 }
@@ -82,22 +82,22 @@ public struct QRCodeUI: Shape {
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public extension QRCodeUI {
 	/// Returns a copy of the qrcode using the specified mask
-	func masking(_ masking: QRCodeContent.PathGenerationType) -> QRCodeUI {
+	func masking(_ masking: QRCodeContent.PathGeneration) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			masking: masking,
-			pixelStyle: self.pixelStyle
+			contentShape: self.contentShape
 		)
 	}
 
 	/// Returns a copy of the qrcode using the specified pixel style
-	func pixelStyle(_ style: QRCodePixelStyle) -> QRCodeUI {
+	func contentShape(_ shape: QRCodeContent.Shape) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			masking: self.masking,
-			pixelStyle: style
+			contentShape: shape
 		)
 	}
 
@@ -107,7 +107,31 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: errorCorrection,
 			masking: self.masking,
-			pixelStyle: self.pixelStyle
+			contentShape: self.contentShape
+		)
+	}
+
+	/// Change the eye style to another style
+	func eyeStyle(_ eyeStyle: QRCodeEyeShape) -> QRCodeUI {
+		let shape = self.contentShape
+		shape.eyeStyle = eyeStyle
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: errorCorrection,
+			masking: self.masking,
+			contentShape: shape
+		)
+	}
+
+	/// Change the pixel style to another style
+	func pixelStyle(_ pixelStyle: QRCodePixelStyle) -> QRCodeUI {
+		let shape = self.contentShape
+		shape.pixelStyle = pixelStyle
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: errorCorrection,
+			masking: self.masking,
+			contentShape: shape
 		)
 	}
 }
@@ -118,7 +142,7 @@ public extension QRCodeUI {
 public extension QRCodeUI {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
-		let path = self.generator.path(rect.size, generationType: self.masking, pixelStyle: self.pixelStyle)
+		let path = self.generator.path(rect.size, generationType: self.masking, pixelShape: self.contentShape) // pixelStyle: self.pixelStyle)
 		return Path(path)
 	}
 }
@@ -133,7 +157,6 @@ struct QRCodeUI_Previews: PreviewProvider {
 	static var previews: some View {
 		HStack {
 			QRCodeUI(text: DemoContent, errorCorrection: .low)!
-				.pixelStyle(QRCodePixelStyleRoundedSquare(cornerRadius: 0.5))
 				.masking(.all)
 		}
 //		VStack {

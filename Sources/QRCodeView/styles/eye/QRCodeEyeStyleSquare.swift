@@ -1,7 +1,7 @@
 //
-//  QRCodeContent+Style.swift
+//  QRCodeEyeStyleSquare.swift
 //
-//  Created by Darren Ford on 16/11/21.
+//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -23,31 +23,27 @@
 import Foundation
 import CoreGraphics
 
-public extension QRCodeContent {
-	/// QR Code styler
-	@objc(QRCodeContentStyle) class Style: NSObject {
-		@objc public var foregroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 0.0, alpha: 1.0))
-		@objc public var backgroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 1.0, alpha: 1.0))
-		@objc public var shape: QRCodeContent.Shape = QRCodeContent.Shape()
+@objc public class QRCodeEyeStyleSquare: NSObject, QRCodeEyeShape {
+
+	public func eyePath() -> CGPath {
+		let squareEyePath = CGMutablePath()
+		squareEyePath.move(to: CGPoint(x: 70, y: 70))
+		squareEyePath.line(to: CGPoint(x: 20, y: 70))
+		squareEyePath.line(to: CGPoint(x: 20, y: 20))
+		squareEyePath.line(to: CGPoint(x: 70, y: 20))
+		squareEyePath.line(to: CGPoint(x: 70, y: 70))
+		squareEyePath.close()
+		squareEyePath.move(to: CGPoint(x: 80, y: 80))
+		squareEyePath.curve(to: CGPoint(x: 80, y: 10), controlPoint1: CGPoint(x: 80, y: 80), controlPoint2: CGPoint(x: 80, y: 10))
+		squareEyePath.line(to: CGPoint(x: 10, y: 10))
+		squareEyePath.line(to: CGPoint(x: 10, y: 80))
+		squareEyePath.line(to: CGPoint(x: 80, y: 80))
+		squareEyePath.line(to: CGPoint(x: 80, y: 80))
+		squareEyePath.close()
+		return squareEyePath
 	}
 
-	@objc(QRCodeContentShape) class Shape: NSObject {
-		@objc public var pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
-		@objc public var eyeStyle: QRCodeEyeShape = QRCodeEyeStyleSquare()
+	public func pupilPath() -> CGPath {
+		return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
 	}
-}
-
-@objc public protocol QRCodeFillStyle {
-	func fill(ctx: CGContext, rect: CGRect)
-	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
-}
-
-/// Return a styled path representing the pixel defined by 'rect'
-@objc public protocol QRCodePixelStyle {
-	func path(rect: CGRect) -> CGPath
-}
-
-@objc public protocol QRCodeEyeShape {
-	func eyePath() -> CGPath
-	func pupilPath() -> CGPath
 }

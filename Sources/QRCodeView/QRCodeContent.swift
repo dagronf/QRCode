@@ -109,21 +109,37 @@ import SwiftUI
 // MARK: - QR Code path generation
 
 public extension QRCodeContent {
+
 	/// The type of path to generate
-	@objc enum PathGenerationType: Int {
-		/// Path contains both eyes and content
-		case all = 0
-		/// Path contains only the eyes of the qr code
-		case eyesOnly = 1
-		/// Path contains only the content of the qr code
-		case contentOnly = 2
+	@objc class PathGeneration: NSObject, OptionSet {
+		/// The outer ring of the eye
+		public static let eyeOuter = PathGeneration(rawValue: 1 << 0)
+		/// The pupil of the eye
+		public static let eyePupil = PathGeneration(rawValue: 1 << 1)
+		/// The content (non-eye)
+		public static let content = PathGeneration(rawValue: 1 << 2)
+		/// All components of the eye
+		public static let eye: PathGeneration = [PathGeneration.eyeOuter, PathGeneration.eyePupil]
+		/// The entire qrcode
+		public static let all: PathGeneration = [PathGeneration.eyeOuter, PathGeneration.eyePupil, PathGeneration.content]
+
+		public var rawValue: Int8
+		@objc required public init(rawValue: Int8) {
+			self.rawValue = rawValue
+		}
+
+		// MARK: OptionSet
+
+		public func contains(_ member: QRCodeContent.PathGeneration) -> Bool {
+			return (self.rawValue & member.rawValue) != 0
+		}
 	}
 
 	/// Return a CGPath containing the entire QR code
 	@objc func path(
 		_ size: CGSize,
-		generationType: PathGenerationType = .all,
-		pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+		generationType: PathGeneration = .all,
+		pixelShape: QRCodeContent.Shape = QRCodeContent.Shape()
 	) -> CGPath {
 		let dx = size.width / CGFloat(self.pixelSize)
 		let dy = size.height / CGFloat(self.pixelSize)
@@ -132,27 +148,94 @@ public extension QRCodeContent {
 
 		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
 		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
+		let posTransform = CGAffineTransform(translationX: xoff, y: yoff)
+
+		let fitScale = (dm * 9) / 90
+		var scaleTransform = CGAffineTransform.identity
+		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
 
 		let path = CGMutablePath()
-		for row in 0 ..< self.pixelSize {
-			for col in 0 ..< self.pixelSize {
-				if self.current[row, col] == false {
-					// Nothing to do
-					continue
-				}
 
-				let isEyeSection = isEyePixel(row, col)
-				if generationType == .contentOnly, isEyeSection {
-					// skip it
-					continue
-				}
-				else if generationType == .eyesOnly, !isEyeSection {
-					// skip it
-					continue
-				}
+		// The outer part of the eye
+		let eyeStyle = pixelShape.eyeStyle
+		if generationType.contains(.eyeOuter) {
+			let p = eyeStyle.eyePath()
+			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 
-				let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-				path.addPath(pixelStyle.path(rect: r))
+			// top left
+			let tl = p.copy(using: &scaledTopLeft)!
+			path.addPath(tl)
+
+			// bottom left
+			var blt = CGAffineTransform(scaleX: 1, y: -1)
+				.concatenating(CGAffineTransform(translationX: 0, y: 90))
+				.concatenating(scaledTopLeft)
+
+			var bl = p.copy(using: &blt)!
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			bl = bl.copy(using: &bltrans)!
+			path.addPath(bl)
+
+			// top right
+			var tlt = CGAffineTransform(scaleX: -1, y: 1)
+				.concatenating(CGAffineTransform(translationX: 90, y: 0))
+				.concatenating(scaledTopLeft)
+
+			var br = p.copy(using: &tlt)!
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			br = br.copy(using: &brtrans)!
+			path.addPath(br)
+		}
+
+		// Add the pupils if wanted
+
+		if generationType.contains(.eyePupil) {
+			let p = eyeStyle.pupilPath()
+			var scaledTopLeft = scaleTransform.concatenating(posTransform)
+
+			// top left
+			let tl = p.copy(using: &scaledTopLeft)!
+			path.addPath(tl)
+
+			// bottom left
+			var blt = CGAffineTransform(scaleX: 1, y: -1)
+				.concatenating(CGAffineTransform(translationX: 0, y: 90))
+				.concatenating(scaledTopLeft)
+
+			var bl = p.copy(using: &blt)!
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			bl = bl.copy(using: &bltrans)!
+			path.addPath(bl)
+
+			// top right
+			var tlt = CGAffineTransform(scaleX: -1, y: 1)
+				.concatenating(CGAffineTransform(translationX: 90, y: 0))
+				.concatenating(scaledTopLeft)
+
+			var br = p.copy(using: &tlt)!
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			br = br.copy(using: &brtrans)!
+			path.addPath(br)
+		}
+
+
+		// Add in the content
+		if generationType.contains(.content) {
+			for row in 0 ..< self.pixelSize {
+				for col in 0 ..< self.pixelSize {
+					if self.current[row, col] == false {
+						// Nothing to do
+						continue
+					}
+
+					if isEyePixel(row, col) {
+						// skip it
+						continue
+					}
+
+					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
+					path.addPath(pixelShape.pixelStyle.path(rect: r))
+				}
 			}
 		}
 		return path
@@ -248,7 +331,7 @@ public extension QRCodeContent {
 		ctx.restoreGState()
 
 		// Now, the pixels
-		let qrPath = self.path(rect.size, pixelStyle: style.pixelStyle)
+		let qrPath = self.path(rect.size, pixelShape: style.shape)
 		ctx.saveGState()
 		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
 		ctx.restoreGState()

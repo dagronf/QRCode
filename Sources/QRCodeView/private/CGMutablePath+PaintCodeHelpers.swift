@@ -1,7 +1,7 @@
 //
-//  NSUIView+Snapshot.swift
+//  CGMutablePath+PaintCodeHelpers.swift
 //
-//  Created by Darren Ford on 12/2/21.
+//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -20,38 +20,17 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if os(macOS)
-import Cocoa
-#else
-import UIKit
-#endif
+import CoreGraphics.CGPath
 
-#if os(macOS)
-public extension NSView {
-	@objc func snapshot() -> NSImage? {
-		guard let bitmapRep = self.bitmapImageRepForCachingDisplay(in: self.bounds) else { return nil }
-		self.cacheDisplay(in: self.bounds, to: bitmapRep)
-		let image = NSImage()
-		image.addRepresentation(bitmapRep)
-		return image
+extension CGMutablePath {
+	@inlinable @inline(__always) func curve(
+		to endPoint: CGPoint,
+		controlPoint1: CGPoint,
+		controlPoint2: CGPoint
+	) {
+		addCurve(to: endPoint, control1: controlPoint1, control2: controlPoint2)
 	}
-}
-#else
 
-public extension UIView {
-	@objc func snapshot() -> UIImage {
-		if #available(iOS 10.0, tvOS 10.0, *) {
-			let renderer = UIGraphicsImageRenderer(bounds: bounds)
-			return renderer.image { rendererContext in
-				layer.render(in: rendererContext.cgContext)
-			}
-		} else {
-			UIGraphicsBeginImageContext(self.frame.size)
-			self.layer.render(in:UIGraphicsGetCurrentContext()!)
-			let image = UIGraphicsGetImageFromCurrentImageContext()
-			UIGraphicsEndImageContext()
-			return UIImage(cgImage: image!.cgImage!)
-		}
-	}
+	@inlinable @inline(__always) func line(to point: CGPoint) { addLine(to: point) }
+	@inlinable @inline(__always) func close() { closeSubpath() }
 }
-#endif

@@ -15,6 +15,7 @@ struct ContentView: View {
 
 	@State var foregroundColor: Color = .primary
 	@State var eyeColor: Color = .primary
+	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
 	enum PixelType {
@@ -23,6 +24,16 @@ struct ContentView: View {
 		case circle
 	}
 	@State var pixelStyle: PixelType = .square
+
+	enum EyeType {
+		case square
+		case circle
+		case leaf
+		case roundedRect
+		case roundedOuter
+		case roundedPointingIn
+	}
+	@State var eyeStyle: EyeType = .square
 
 	var body: some View {
 
@@ -38,6 +49,23 @@ struct ContentView: View {
 				return QRCodePixelStyleRoundedSquare(cornerRadius: 0.5, edgeInset: 0.5)
 			case .circle:
 				return QRCodePixelStyleCircle(edgeInset: 0.5)
+			}
+		}()
+
+		let eyeStyle: QRCodeEyeShape = {
+			switch self.eyeStyle {
+			case .square:
+				return QRCodeEyeStyleSquare()
+			case .roundedRect:
+				return QRCodeEyeStyleRoundedRect()
+			case .circle:
+				return QRCodeEyeStyleCircle()
+			case .leaf:
+				return QRCodeEyeStyleLeaf()
+			case .roundedOuter:
+				return QRCodeEyeStyleRoundedOuter()
+			case .roundedPointingIn:
+				return QRCodeEyeStyleRoundedPointingIn()
 			}
 		}()
 
@@ -58,8 +86,16 @@ struct ContentView: View {
 					Text("Round Rect").tag(PixelType.roundrect)
 					Text("Circle").tag(PixelType.circle)
 				}.pickerStyle(RadioGroupPickerStyle())
+				Picker(selection: $eyeStyle, label: Text("Eye Style:")) {
+					Text("Square").tag(EyeType.square)
+					Text("Round Rect").tag(EyeType.roundedRect)
+					Text("Circle").tag(EyeType.circle)
+					Text("Leaf").tag(EyeType.leaf)
+					Text("Rounded Outer").tag(EyeType.roundedOuter)
+				}.pickerStyle(RadioGroupPickerStyle())
 				ColorPicker("Foreground", selection: $foregroundColor)
 				ColorPicker("Eye Color", selection: $eyeColor)
+				ColorPicker("Pupil Color", selection: $pupilColor)
 				ColorPicker("Background", selection: $backgroundColor)
 
 				Spacer()
@@ -70,10 +106,15 @@ struct ContentView: View {
 			ZStack {
 				backgroundColor
 				qrContent
-					.masking(.eyesOnly)
+					.masking(.eye)
+					.eyeStyle(eyeStyle)
 					.fill(eyeColor)
 				qrContent
-					.masking(.contentOnly)
+					.masking(.eyePupil)
+					.eyeStyle(eyeStyle)
+					.fill(pupilColor)
+				qrContent
+					.masking(.content)
 					.pixelStyle(pixelStyle)
 					.fill(foregroundColor)
 			}
