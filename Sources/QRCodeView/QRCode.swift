@@ -30,7 +30,7 @@ import SwiftUI
 /// A QRCode generator class
 @objc public class QRCode: NSObject {
 	/// The error correction level
-	@objc public enum ErrorCorrection: Int {
+	@objc(QRCodeErrorCorrection) public enum ErrorCorrection: Int {
 		/// Lowest error correction (L - Recovers 7% of data)
 		case low = 0
 		/// Medium error correction (M - Recovers 15% of data)
@@ -106,6 +106,15 @@ import SwiftUI
 	internal var current = Array2D(rows: 0, columns: 0, initialValue: false)
 }
 
+extension QRCode: NSCopying {
+	/// Return a copy of the QR Code
+	public func copy(with zone: NSZone? = nil) -> Any {
+		let c = QRCode()
+		c.current = current
+		return c
+	}
+}
+
 // MARK: - QR Code path generation
 
 public extension QRCode {
@@ -116,21 +125,23 @@ public extension QRCode {
 		public static let eyeOuter = Components(rawValue: 1 << 0)
 		/// The pupil (center) of the eye
 		public static let eyePupil = Components(rawValue: 1 << 1)
-		/// The non-eye, 'on' pixels
-		public static let content = Components(rawValue: 1 << 2)
-		/// The non-eye, 'off' pixels
-		public static let unsetContent = Components(rawValue: 1 << 3)
 		/// All components of the eye
-		public static let eye: Components = [Components.eyeOuter, Components.eyePupil]
+		public static let eyeAll: Components = [Components.eyeOuter, Components.eyePupil]
+
+		/// The non-eye, 'on' pixels
+		public static let onPixels = Components(rawValue: 1 << 2)
+		/// The non-eye, 'off' pixels
+		public static let offPixels = Components(rawValue: 1 << 3)
+
 		/// The entire qrcode
-		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.content]
+		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
 
 		public var rawValue: Int8
 		@objc required public init(rawValue: Int8) {
 			self.rawValue = rawValue
 		}
 
-		// MARK: OptionSet
+		// OptionSet requirement for class implementation (needed for Objective-C)
 
 		public func contains(_ member: QRCode.Components) -> Bool {
 			return (self.rawValue & member.rawValue) != 0
@@ -227,11 +238,11 @@ public extension QRCode {
 		}
 
 		// 'on' content
-		if components.contains(.content) {
+		if components.contains(.onPixels) {
 			path.addPath(shape.dataShape.onPath(size: size, data: self))
 		}
 
-		if components.contains(.unsetContent) {
+		if components.contains(.offPixels) {
 			path.addPath(shape.dataShape.offPath(size: size, data: self))
 		}
 
@@ -241,32 +252,7 @@ public extension QRCode {
 
 // MARK: - Eye positioning/paths
 
-public extension QRCode {
-	@objc class EyePositions: NSObject {
-		@objc init(topLeft: CGRect, topRight: CGRect, bottomLeft: CGRect) {
-			self.topLeft = topLeft
-			self.topRight = topRight
-			self.bottomLeft = bottomLeft
-		}
-
-		public let topLeft: CGRect
-		public let topRight: CGRect
-		public let bottomLeft: CGRect
-	}
-
-	/// Returns the eye positions for the given size
-	@objc func eyePositions(_ size: CGSize) -> EyePositions {
-		let dx = size.width / CGFloat(self.pixelSize)
-		let dy = size.height / CGFloat(self.pixelSize)
-		let dm = min(dx, dy)
-		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let tl = CGRect(x: xoff, y: yoff, width: 9 * dm, height: 9 * dm)
-		let bl = CGRect(x: xoff, y: yoff + (CGFloat(pixelSize) * dm) - (9 * dm), width: 9 * dm, height: 9 * dm)
-		let tr = CGRect(x: xoff + (CGFloat(pixelSize) * dm) - (9 * dm), y: yoff, width: 9 * dm, height: 9 * dm)
-		return EyePositions(topLeft: tl, topRight: tr, bottomLeft: bl)
-	}
-
+extension QRCode {
 	// Is the row/col within an 'eye' of the qr code?
 	internal func isEyePixel(_ row: Int, _ col: Int) -> Bool {
 		if row < 9 {

@@ -23,38 +23,41 @@
 import Foundation
 import CoreGraphics
 
-/// A simple single-color solid fill style
-@objc public class QRCodeFillStyleLinearGradient: NSObject, QRCodeFillStyle {
-	let gradient: QRGradient
+public extension QRCode.FillStyle {
+	/// A simple linear gradient fill style
+	@objc(QRCodeFillStyleLinearGradient)
+	class LinearGradient: NSObject, QRCodeFillStyleGenerator {
+		let gradient: QRGradient
 
-	/// Fill the specified path/rect with a gradient
-	/// - Parameters:
-	///   - gradient: The color gradient to use
-	@objc public init(_ gradient: QRGradient) {
-		self.gradient = gradient
-	}
+		/// Fill the specified path/rect with a gradient
+		/// - Parameters:
+		///   - gradient: The color gradient to use
+		@objc public init(_ gradient: QRGradient) {
+			self.gradient = gradient
+		}
 
-	public func copyStyle() -> QRCodeFillStyle {
-		return QRCodeFillStyleLinearGradient(self.gradient.copy() as! QRGradient)
-	}
+		public func copyStyle() -> QRCodeFillStyleGenerator {
+			return LinearGradient(self.gradient.copy() as! QRGradient)
+		}
 
-	/// Fill the specified rect with the gradient
-	public func fill(ctx: CGContext, rect: CGRect) {
-		ctx.drawLinearGradient(
-			self.gradient.cgGradient,
-			start: self.gradient.gradientStartPt(forSize: rect.width),
-			end: self.gradient.gradientEndPt(forSize: rect.width),
-			options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
-	}
+		/// Fill the specified rect with the gradient
+		public func fill(ctx: CGContext, rect: CGRect) {
+			ctx.drawLinearGradient(
+				self.gradient.cgGradient,
+				start: self.gradient.gradientStartPt(forSize: rect.width),
+				end: self.gradient.gradientEndPt(forSize: rect.width),
+				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
+		}
 
-	/// Fill the specified path with the gradient
-	public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
-		ctx.addPath(path)
-		ctx.clip()
-		ctx.drawLinearGradient(
-			self.gradient.cgGradient,
-			start: self.gradient.gradientStartPt(forSize: rect.width),
-			end: self.gradient.gradientEndPt(forSize: rect.width),
-			options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
+		/// Fill the specified path with the gradient
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
+			ctx.addPath(path)
+			ctx.clip()
+			ctx.drawLinearGradient(
+				self.gradient.cgGradient,
+				start: self.gradient.gradientStartPt(forSize: rect.width),
+				end: self.gradient.gradientEndPt(forSize: rect.width),
+				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
+		}
 	}
 }

@@ -23,37 +23,40 @@
 import CoreGraphics
 import Foundation
 
-@objc public class QRCodeEyeStyleRoundedOuter: NSObject, QRCodeEyeShape {
-
-	public func copyShape() -> QRCodeEyeShape {
-		return QRCodeEyeStyleRoundedOuter()
-	}
-
-	public func eyePath() -> CGPath {
-		let roundedSharpOuterPath = CGMutablePath()
-		roundedSharpOuterPath.move(to: CGPoint(x: 20, y: 70))
-		roundedSharpOuterPath.line(to: CGPoint(x: 70, y: 70))
-		roundedSharpOuterPath.line(to: CGPoint(x: 70, y: 20))
-		roundedSharpOuterPath.line(to: CGPoint(x: 31, y: 20))
-		roundedSharpOuterPath.curve(to: CGPoint(x: 20, y: 31), controlPoint1: CGPoint(x: 24.92, y: 20), controlPoint2: CGPoint(x: 20, y: 24.92))
-		roundedSharpOuterPath.line(to: CGPoint(x: 20, y: 70))
-		roundedSharpOuterPath.close()
-		roundedSharpOuterPath.move(to: CGPoint(x: 10, y: 80))
-		roundedSharpOuterPath.curve(to: CGPoint(x: 10, y: 30), controlPoint1: CGPoint(x: 10, y: 80), controlPoint2: CGPoint(x: 10, y: 30))
-		roundedSharpOuterPath.curve(to: CGPoint(x: 30, y: 10), controlPoint1: CGPoint(x: 10, y: 18.95), controlPoint2: CGPoint(x: 18.95, y: 10))
-		roundedSharpOuterPath.line(to: CGPoint(x: 80, y: 10))
-		roundedSharpOuterPath.curve(to: CGPoint(x: 80, y: 80), controlPoint1: CGPoint(x: 80, y: 10.34), controlPoint2: CGPoint(x: 80, y: 80))
-		roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
-		roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
-		roundedSharpOuterPath.close()
-		return roundedSharpOuterPath
-	}
-
-	public func pupilPath() -> CGPath {
-		let roundedPupil = CGPath.RoundRect(
-			rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-			topLeftRadius: CGSize(width: 6, height: 6)
-		)
-		return roundedPupil
+public extension QRCode.EyeShape {
+	/// A 'leaf' style eye design
+	@objc(QRCodeEyeStyleRoundedOuter) class RoundedOuter: NSObject, QRCodeEyeShapeHandler {
+		
+		public func copyShape() -> QRCodeEyeShapeHandler {
+			return RoundedOuter()
+		}
+		
+		public func eyePath() -> CGPath {
+			let roundedSharpOuterPath = CGMutablePath()
+			roundedSharpOuterPath.move(to: CGPoint(x: 20, y: 70))
+			roundedSharpOuterPath.line(to: CGPoint(x: 70, y: 70))
+			roundedSharpOuterPath.line(to: CGPoint(x: 70, y: 20))
+			roundedSharpOuterPath.line(to: CGPoint(x: 31, y: 20))
+			roundedSharpOuterPath.curve(to: CGPoint(x: 20, y: 31), controlPoint1: CGPoint(x: 24.92, y: 20), controlPoint2: CGPoint(x: 20, y: 24.92))
+			roundedSharpOuterPath.line(to: CGPoint(x: 20, y: 70))
+			roundedSharpOuterPath.close()
+			roundedSharpOuterPath.move(to: CGPoint(x: 10, y: 80))
+			roundedSharpOuterPath.curve(to: CGPoint(x: 10, y: 30), controlPoint1: CGPoint(x: 10, y: 80), controlPoint2: CGPoint(x: 10, y: 30))
+			roundedSharpOuterPath.curve(to: CGPoint(x: 30, y: 10), controlPoint1: CGPoint(x: 10, y: 18.95), controlPoint2: CGPoint(x: 18.95, y: 10))
+			roundedSharpOuterPath.line(to: CGPoint(x: 80, y: 10))
+			roundedSharpOuterPath.curve(to: CGPoint(x: 80, y: 80), controlPoint1: CGPoint(x: 80, y: 10.34), controlPoint2: CGPoint(x: 80, y: 80))
+			roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
+			roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
+			roundedSharpOuterPath.close()
+			return roundedSharpOuterPath
+		}
+		
+		public func pupilPath() -> CGPath {
+			let roundedPupil = CGPath.RoundRect(
+				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
+				topLeftRadius: CGSize(width: 6, height: 6)
+			)
+			return roundedPupil
+		}
 	}
 }

@@ -26,8 +26,8 @@ import Foundation
 public extension QRCode {
 	/// QR Code styler
 	@objc(QRCodeStyle) class Style: NSObject {
-		@objc public var foregroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 0.0, alpha: 1.0))
-		@objc public var backgroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 1.0, alpha: 1.0))
+		@objc public var foregroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		@objc public var backgroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 		@objc public var shape = QRCode.Shape()
 
 		/// Copy the style
@@ -42,10 +42,14 @@ public extension QRCode {
 
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeShape) class Shape: NSObject {
-		/// The shape of the pixels
-		@objc public var dataShape: QRCodeDataShape = QRCodeDataShapePixel(pixelType: .square)
+		/// The shape of the pixels.
+		///
+		/// Defaults to simple square 'pixels'
+		@objc public var dataShape: QRCodeDataShapeHandler = QRCode.DataShape.Pixel(pixelType: .square)
 		/// The style of eyes to display
-		@objc public var eyeShape: QRCodeEyeShape = QRCodeEyeStyleSquare()
+		///
+		/// Defaults to a simple square eye
+		@objc public var eyeShape: QRCodeEyeShapeHandler = QRCode.EyeShape.Square()
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
 			let c = Shape()
@@ -56,20 +60,39 @@ public extension QRCode {
 	}
 }
 
-@objc public protocol QRCodeFillStyle {
-	func copyStyle() -> QRCodeFillStyle
+// MARK: - Fill style support
+
+public extension QRCode {
+	@objc(QRCodeFillStyle) class FillStyle: NSObject {}
+}
+
+/// A protocol for wrapping fill styles for image generation
+@objc public protocol QRCodeFillStyleGenerator {
+	func copyStyle() -> QRCodeFillStyleGenerator
 	func fill(ctx: CGContext, rect: CGRect)
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
 
-@objc public protocol QRCodeEyeShape {
-	func copyShape() -> QRCodeEyeShape
+public extension QRCode {
+	/// The shape of an 'eye' within the qr code
+	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
+}
+
+/// A protocol for wrapping generating the eye shapes for a path
+@objc public protocol QRCodeEyeShapeHandler {
+	func copyShape() -> QRCodeEyeShapeHandler
 	func eyePath() -> CGPath
 	func pupilPath() -> CGPath
 }
 
-@objc public protocol QRCodeDataShape {
-	func copyShape() -> QRCodeDataShape
+public extension QRCode {
+	/// The shape of the data within the qr code.
+	@objc(QRCodeDataShape) class DataShape: NSObject {}
+}
+
+/// A protocol for wrapping generating the data shape for a path
+@objc public protocol QRCodeDataShapeHandler {
+	func copyShape() -> QRCodeDataShapeHandler
 	func onPath(size: CGSize, data: QRCode) -> CGPath
 	func offPath(size: CGSize, data: QRCode) -> CGPath
 }

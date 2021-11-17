@@ -104,23 +104,23 @@ public extension QRCodeView {
 
 #if os(macOS)
 	@IBInspectable var ibForegroundColor: NSColor {
-		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCodeFillStyleSolid)?.color ?? .black) ?? .black }
-		set { self.style.foregroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibBackgroundColor: NSColor {
-		get { NSColor(cgColor: (self.style.backgroundStyle as? QRCodeFillStyleSolid)?.color ?? .white) ?? .white }
-		set { self.style.backgroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
+		set { self.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 #else
 	@IBInspectable var ibForegroundColor: UIColor {
-		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCodeFillStyleSolid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.style.foregroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibBackgroundColor: UIColor {
-		get { UIColor(cgColor: (self.style.backgroundStyle as? QRCodeFillStyleSolid)?.color ?? CGColor(gray: 1, alpha: 1)) }
-		set { self.style.backgroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
+		set { self.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 #endif
 

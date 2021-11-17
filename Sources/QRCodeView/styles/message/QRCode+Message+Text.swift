@@ -1,5 +1,5 @@
 //
-//  QRCode+MessageFormatters.swift
+//  QRCode+Message+Text.swift
 //
 //  Created by Darren Ford on 10/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -22,11 +22,13 @@
 
 import Foundation
 
-/// Protocol for generating data from a formatted QR Code message
-@objc public protocol QRCodeMessageFormatter {
-	var data: Data { get }
-}
-
-public extension QRCode {
-	@objc(QRCodeMessage) class Message: NSObject { }
+public extension QRCode.Message {
+	/// A simple text formatter.
+	@objc(QRCodeMessageText) class Text: NSObject, QRCodeMessageFormatter {
+		public let data: Foundation.Data
+		@objc public init?(_ content: String) {
+			guard let msg = content.data(using: .utf8) else { return nil }
+			self.data = msg
+		}
+	}
 }

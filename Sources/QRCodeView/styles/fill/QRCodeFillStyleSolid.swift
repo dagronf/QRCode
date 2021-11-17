@@ -24,25 +24,26 @@ import Foundation
 import CoreGraphics
 
 /// A simple single-color solid fill style
-@objc public class QRCodeFillStyleSolid: NSObject, QRCodeFillStyle {
-	let color: CGColor
-	@objc public init(_ color: CGColor) {
-		self.color = color
-	}
+public extension QRCode.FillStyle {
+	@objc(QRCodeFillStyleSolid) class Solid: NSObject, QRCodeFillStyleGenerator {
+		let color: CGColor
+		@objc public init(_ color: CGColor) {
+			self.color = color
+		}
 
-	public func copyStyle() -> QRCodeFillStyle {
-		return QRCodeFillStyleSolid(self.color.copy()!)
-	}
+		public func copyStyle() -> QRCodeFillStyleGenerator {
+			return Solid(self.color.copy()!)
+		}
 
-	public func fill(ctx: CGContext, rect: CGRect) {
-		ctx.setFillColor(color)
-		ctx.fill(rect)
-	}
+		public func fill(ctx: CGContext, rect: CGRect) {
+			ctx.setFillColor(color)
+			ctx.fill(rect)
+		}
 
-	public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
-		ctx.setFillColor(color)
-		ctx.addPath(path)
-		ctx.fillPath()
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
+			ctx.setFillColor(color)
+			ctx.addPath(path)
+			ctx.fillPath()
+		}
 	}
 }
-

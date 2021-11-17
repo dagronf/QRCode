@@ -83,25 +83,6 @@ public struct QRCodeUI: Shape {
 
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public extension QRCodeUI {
-	/// Returns a copy of the qrcode using the specified mask
-	func components(_ components: QRCode.Components) -> QRCodeUI {
-		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: self.contentShape.copyShape()
-		)
-	}
-
-	/// Returns a copy of the qrcode using the specified pixel style
-	func contentShape(_ shape: QRCode.Shape) -> QRCodeUI {
-		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape
-		)
-	}
 
 	/// Returns a copy of the qrcode using the specified error correction level
 	func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
@@ -113,8 +94,28 @@ public extension QRCodeUI {
 		)
 	}
 
+	/// Returns a copy of the qrcode using the specified mask
+	func components(_ components: QRCode.Components) -> QRCodeUI {
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: self.errorCorrection,
+			components: components,
+			contentShape: self.contentShape.copyShape()
+		)
+	}
+
+	/// Returns a copy of the qrcode using the specified pixel style
+	func contentShape(_ shape: QRCode.Shape) -> QRCodeUI {
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: self.errorCorrection,
+			components: self.components,
+			contentShape: shape.copyShape()
+		)
+	}
+
 	/// Change the eye shape to another shape
-	func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI {
+	func eyeShape(_ eyeShape: QRCodeEyeShapeHandler) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
 		shape.eyeShape = eyeShape
 		return QRCodeUI(
@@ -126,7 +127,7 @@ public extension QRCodeUI {
 	}
 
 	/// Change the data shape to another shape
-	func dataShape(_ dataShape: QRCodeDataShape) -> QRCodeUI {
+	func dataShape(_ dataShape: QRCodeDataShapeHandler) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
 		shape.dataShape = dataShape
 		return QRCodeUI(

@@ -44,35 +44,35 @@ struct ContentView: View {
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
-		let dataShape: QRCodeDataShape = {
+		let dataShape: QRCodeDataShapeHandler = {
 			switch self.dataShape {
 			case .square:
-				return QRCodeDataShapePixel(pixelType: .square)
+				return QRCode.DataShape.Pixel(pixelType: .square)
 			case .roundrect:
-				return QRCodeDataShapePixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
+				return QRCode.DataShape.Pixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
 			case .circle:
-				return QRCodeDataShapePixel(pixelType: .circle)
+				return QRCode.DataShape.Pixel(pixelType: .circle)
 			case .horizontal:
-				return QRCodeDataShapeHorizontal(inset: 1, cornerRadiusFraction: 1)
+				return QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 1)
 			case .vertical:
-				return QRCodeDataShapeVertical(inset: 1, cornerRadiusFraction: 1)
+				return QRCode.DataShape.Vertical(inset: 1, cornerRadiusFraction: 1)
 			}
 		}()
 
-		let eyeStyle: QRCodeEyeShape = {
+		let eyeStyle: QRCodeEyeShapeHandler = {
 			switch self.eyeStyle {
 			case .square:
-				return QRCodeEyeStyleSquare()
+				return QRCode.EyeShape.Square()
 			case .roundedRect:
-				return QRCodeEyeStyleRoundedRect()
+				return QRCode.EyeShape.RoundedRect()
 			case .circle:
-				return QRCodeEyeStyleCircle()
+				return QRCode.EyeShape.Circle()
 			case .leaf:
-				return QRCodeEyeStyleLeaf()
+				return QRCode.EyeShape.Leaf()
 			case .roundedOuter:
-				return QRCodeEyeStyleRoundedOuter()
+				return QRCode.EyeShape.RoundedOuter()
 			case .roundedPointingIn:
-				return QRCodeEyeStyleRoundedPointingIn()
+				return QRCode.EyeShape.RoundedPointingIn()
 			}
 		}()
 
@@ -116,7 +116,7 @@ struct ContentView: View {
 				ZStack {
 					backgroundColor
 					qrContent
-						.components(.eye)
+						.components(.eyeOuter)
 						.eyeShape(eyeStyle)
 						.fill(eyeColor)
 					qrContent
@@ -124,7 +124,7 @@ struct ContentView: View {
 						.eyeShape(eyeStyle)
 						.fill(pupilColor)
 					qrContent
-						.components(.content)
+						.components(.onPixels)
 						.dataShape(dataShape)
 						.fill(dataColor)
 				}
@@ -135,7 +135,7 @@ struct ContentView: View {
 					text: content,
 					errorCorrection: .max
 				)!
-				.eyeShape(QRCodeEyeStyleLeaf())
+					.eyeShape(QRCode.EyeShape.Leaf())
 				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
 				.shadow(color: .black, radius: 1, x: 1, y: 1)
 				.frame(width: 250, height: 250, alignment: .center)

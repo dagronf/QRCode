@@ -1,6 +1,6 @@
 # QRCodeView
 
-A simple macOS/iOS/tvOS QR Code generator view for Swift, Objective-C and SwiftUI.
+A simple and quick macOS/iOS/tvOS QR Code generator for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCodeView" />
@@ -24,14 +24,26 @@ It's nice to have a simple drop-in component for displaying a QR code.
 ## Features
 
 * Supports Swift and Objective-C
-* Supports NSView (macOS), UIView (iOS/tvOS) and SwiftUI
-* Size to fit available provided space
-* Configurable foreground/background colors
+* Supports SwiftUI, NSView (macOS) and UIView (iOS/tvOS)
 * Configurable designs
+* Configurable fill styles
 
 ## QRCode
 
 The QRCode class is the core generator class.  It is not tied to any presentation medium.
+
+### Simple example
+
+```swift
+let c = QRCode()
+c.update(text: "This is my QR code", errorCorrection: .max)
+
+// Generate a path
+let path = c.path(CGSize(width: 400, height: 400))
+
+// Generate an image
+let image = c.image(CGSize(width: 400, height: 400))
+```
 
 ### Update the QR content
 
@@ -85,16 +97,17 @@ path using different fill styles.
 
 A convenience method for generating an image from the QR Code.
 
+## Message Formatters
 
+There are a number of built-in formatters for common QR Code types
 
-## QRCodeView
+## NSView/UIView
 
-A NSView/UIView implementation.
-
+`QRCodeView` is an NSView/UIView implementation.
 
 ## SwiftUI
 
-The SwiftUI implementation is a basic Shape type. So anything you can do with a (eg.) Swift Rectangle shape you 
+`QRCodeUI` is the SwiftUI implementation which presents as a Shape. So anything you can do with a (eg.) SwiftUI Rectangle shape you 
 can do with a QRCode.
 
 For example, you can use `.fill` to set the color content (eg. a linear gradient, solid color etc), add a drop shadow,
@@ -113,21 +126,22 @@ func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
 ```
 Set the error correction level
 
-```
+```swift
 func components(_ components: QRCode.Components) -> QRCodeUI
 ```
 
-Set the components of the 
+Set which components of the QR code to be added to the path
 
+```swift
+func contentShape(_ shape: QRCode.Shape) -> QRCodeUI
+func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI
+func dataShape(_ dataShape: QRCodeDataShape) -> QRCodeUI
+```
 
-#### `pixelStyle`
+Set the shape for the eye/data or both
 
-#### `components`
-
-
-
-
-### Example
+<details>
+<summary>Example</summary> 
 
 ```swift
 struct ContentView: View {
@@ -147,6 +161,33 @@ struct ContentView: View {
    }
 }
 ```
+</details>
+
+## Objective-C
+
+The `QRCode` library fully supports Objective-C
+
+<details>
+<summary>Example</summary> 
+
+```objc
+QRCode* code = [[QRCode alloc] init];
+[code updateWithText: @"This message"
+     errorCorrection: QRCodeErrorCorrectionMax];
+
+QRCodeStyle* style = [[QRCodeStyle alloc] init];
+
+// Set the foreground color to a solid red
+style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+
+// Use the leaf style
+style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];
+
+// Generate the image
+CGImageRef image = [code image: CGSizeMake(400, 400) scale: 1.0 style: style];
+NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
+```
+</details>
 
 ## License
 

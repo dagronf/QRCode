@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 
+@import CoreGraphics;
 @import QRCodeView;
 
 @implementation ViewController
@@ -15,6 +16,27 @@
 	[super viewDidLoad];
 
 	// Do any additional setup after loading the view.
+
+	QRCode* code = [[QRCode alloc] init];
+	[code updateWithText: @"This message"
+		  errorCorrection: QRCodeErrorCorrectionMax];
+
+	QRCodeStyle* style = [[QRCodeStyle alloc] init];
+
+	// Set the foreground color to a solid red
+	
+	style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+
+	// Use the leaf style
+	style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];
+
+	// Generate the image
+	CGImageRef image = [code image: CGSizeMake(400, 400)
+									 scale: 1.0
+									 style: style];
+
+	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
+	NSLog(@"Image -> %@", nsImage);
 }
 
 

@@ -20,43 +20,45 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-@objc public class QRCodeEyeStyleRoundedRect: NSObject, QRCodeEyeShape {
+public extension QRCode.EyeShape {
+	/// A 'rounded rect with a pointy bit facing inwards' style eye design
+	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeHandler {
+			return RoundedRect()
+		}
 
-	public func copyShape() -> QRCodeEyeShape {
-		return QRCodeEyeStyleRoundedRect()
-	}
+		public func eyePath() -> CGPath {
+			let roundedRectEyePath = CGMutablePath()
+			roundedRectEyePath.move(to: CGPoint(x: 65, y: 20))
+			roundedRectEyePath.line(to: CGPoint(x: 25, y: 20))
+			roundedRectEyePath.curve(to: CGPoint(x: 20, y: 25), controlPoint1: CGPoint(x: 22.24, y: 20), controlPoint2: CGPoint(x: 20, y: 22.24))
+			roundedRectEyePath.line(to: CGPoint(x: 20, y: 65))
+			roundedRectEyePath.curve(to: CGPoint(x: 25, y: 70), controlPoint1: CGPoint(x: 20, y: 67.76), controlPoint2: CGPoint(x: 22.24, y: 70))
+			roundedRectEyePath.line(to: CGPoint(x: 65, y: 70))
+			roundedRectEyePath.curve(to: CGPoint(x: 70, y: 65), controlPoint1: CGPoint(x: 67.76, y: 70), controlPoint2: CGPoint(x: 70, y: 67.76))
+			roundedRectEyePath.line(to: CGPoint(x: 70, y: 25))
+			roundedRectEyePath.curve(to: CGPoint(x: 65, y: 20), controlPoint1: CGPoint(x: 70, y: 22.24), controlPoint2: CGPoint(x: 67.76, y: 20))
+			roundedRectEyePath.close()
+			roundedRectEyePath.move(to: CGPoint(x: 80, y: 20))
+			roundedRectEyePath.line(to: CGPoint(x: 80, y: 70))
+			roundedRectEyePath.curve(to: CGPoint(x: 70, y: 80), controlPoint1: CGPoint(x: 80, y: 75.52), controlPoint2: CGPoint(x: 75.52, y: 80))
+			roundedRectEyePath.line(to: CGPoint(x: 20, y: 80))
+			roundedRectEyePath.curve(to: CGPoint(x: 10, y: 70), controlPoint1: CGPoint(x: 14.48, y: 80), controlPoint2: CGPoint(x: 10, y: 75.52))
+			roundedRectEyePath.line(to: CGPoint(x: 10, y: 20))
+			roundedRectEyePath.curve(to: CGPoint(x: 20, y: 10), controlPoint1: CGPoint(x: 10, y: 14.48), controlPoint2: CGPoint(x: 14.48, y: 10))
+			roundedRectEyePath.line(to: CGPoint(x: 70, y: 10))
+			roundedRectEyePath.curve(to: CGPoint(x: 80, y: 20), controlPoint1: CGPoint(x: 75.52, y: 10), controlPoint2: CGPoint(x: 80, y: 14.48))
+			roundedRectEyePath.close()
 
-	public func eyePath() -> CGPath {
-		let roundedRectEyePath = CGMutablePath()
-		roundedRectEyePath.move(to: CGPoint(x: 65, y: 20))
-		roundedRectEyePath.line(to: CGPoint(x: 25, y: 20))
-		roundedRectEyePath.curve(to: CGPoint(x: 20, y: 25), controlPoint1: CGPoint(x: 22.24, y: 20), controlPoint2: CGPoint(x: 20, y: 22.24))
-		roundedRectEyePath.line(to: CGPoint(x: 20, y: 65))
-		roundedRectEyePath.curve(to: CGPoint(x: 25, y: 70), controlPoint1: CGPoint(x: 20, y: 67.76), controlPoint2: CGPoint(x: 22.24, y: 70))
-		roundedRectEyePath.line(to: CGPoint(x: 65, y: 70))
-		roundedRectEyePath.curve(to: CGPoint(x: 70, y: 65), controlPoint1: CGPoint(x: 67.76, y: 70), controlPoint2: CGPoint(x: 70, y: 67.76))
-		roundedRectEyePath.line(to: CGPoint(x: 70, y: 25))
-		roundedRectEyePath.curve(to: CGPoint(x: 65, y: 20), controlPoint1: CGPoint(x: 70, y: 22.24), controlPoint2: CGPoint(x: 67.76, y: 20))
-		roundedRectEyePath.close()
-		roundedRectEyePath.move(to: CGPoint(x: 80, y: 20))
-		roundedRectEyePath.line(to: CGPoint(x: 80, y: 70))
-		roundedRectEyePath.curve(to: CGPoint(x: 70, y: 80), controlPoint1: CGPoint(x: 80, y: 75.52), controlPoint2: CGPoint(x: 75.52, y: 80))
-		roundedRectEyePath.line(to: CGPoint(x: 20, y: 80))
-		roundedRectEyePath.curve(to: CGPoint(x: 10, y: 70), controlPoint1: CGPoint(x: 14.48, y: 80), controlPoint2: CGPoint(x: 10, y: 75.52))
-		roundedRectEyePath.line(to: CGPoint(x: 10, y: 20))
-		roundedRectEyePath.curve(to: CGPoint(x: 20, y: 10), controlPoint1: CGPoint(x: 10, y: 14.48), controlPoint2: CGPoint(x: 14.48, y: 10))
-		roundedRectEyePath.line(to: CGPoint(x: 70, y: 10))
-		roundedRectEyePath.curve(to: CGPoint(x: 80, y: 20), controlPoint1: CGPoint(x: 75.52, y: 10), controlPoint2: CGPoint(x: 80, y: 14.48))
-		roundedRectEyePath.close()
+			return roundedRectEyePath
+		}
 
-		return roundedRectEyePath
-	}
-
-	public func pupilPath() -> CGPath {
-		//NSBezierPath(roundedRect: NSRect(x: 30, y: 30, width: 30, height: 30), xRadius: 4, yRadius: 4)
-		return CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
+		public func pupilPath() -> CGPath {
+			// NSBezierPath(roundedRect: NSRect(x: 30, y: 30, width: 30, height: 30), xRadius: 4, yRadius: 4)
+			return CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
+		}
 	}
 }

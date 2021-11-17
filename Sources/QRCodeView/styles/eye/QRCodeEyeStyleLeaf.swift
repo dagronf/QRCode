@@ -20,55 +20,45 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-@objc public class QRCodeEyeStyleLeaf: NSObject, QRCodeEyeShape {
+public extension QRCode.EyeShape {
+	/// A 'leaf' style eye design
+	@objc(QRCodeEyeStyleLeaf) class Leaf: NSObject, QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeHandler {
+			return Leaf()
+		}
 
-	public func copyShape() -> QRCodeEyeShape {
-		return QRCodeEyeStyleLeaf()
+		public func eyePath() -> CGPath {
+			let eyePath = CGMutablePath()
+			eyePath.move(to: CGPoint(x: 20, y: 20))
+			eyePath.addLine(to: CGPoint(x: 60, y: 20))
+			eyePath.addCurve(to: CGPoint(x: 70, y: 30), control1: CGPoint(x: 65.52, y: 20), control2: CGPoint(x: 70, y: 24.48))
+			eyePath.addLine(to: CGPoint(x: 70, y: 70))
+			eyePath.addLine(to: CGPoint(x: 30, y: 70))
+			eyePath.addCurve(to: CGPoint(x: 20, y: 60), control1: CGPoint(x: 24.48, y: 70), control2: CGPoint(x: 20, y: 65.52))
+			eyePath.addLine(to: CGPoint(x: 20, y: 20))
+			eyePath.close()
+			eyePath.move(to: CGPoint(x: 10, y: 10))
+			eyePath.addCurve(to: CGPoint(x: 10, y: 60), control1: CGPoint(x: 10, y: 10), control2: CGPoint(x: 10, y: 60))
+			eyePath.addCurve(to: CGPoint(x: 30, y: 80), control1: CGPoint(x: 10, y: 71.05), control2: CGPoint(x: 18.95, y: 80))
+			eyePath.addLine(to: CGPoint(x: 80, y: 80))
+			eyePath.addLine(to: CGPoint(x: 80, y: 30))
+			eyePath.addCurve(to: CGPoint(x: 60, y: 10), control1: CGPoint(x: 80, y: 18.95), control2: CGPoint(x: 71.05, y: 10))
+			eyePath.addLine(to: CGPoint(x: 10, y: 10))
+			eyePath.addLine(to: CGPoint(x: 10, y: 10))
+			eyePath.close()
+			return eyePath
+		}
+
+		public func pupilPath() -> CGPath {
+			let roundedPupil = CGPath.RoundRect(
+				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
+				cornerRadius: 6,
+				byRoundingCorners: [.topRight, .bottomLeft]
+			)
+			return roundedPupil
+		}
 	}
-
-	public func eyePath() -> CGPath {
-		let eyePath = CGMutablePath()
-		eyePath.move(to: CGPoint(x: 20, y: 20))
-		eyePath.addLine(to: CGPoint(x: 60, y: 20))
-		eyePath.addCurve(to: CGPoint(x: 70, y: 30), control1: CGPoint(x: 65.52, y: 20), control2: CGPoint(x: 70, y: 24.48))
-		eyePath.addLine(to: CGPoint(x: 70, y: 70))
-		eyePath.addLine(to: CGPoint(x: 30, y: 70))
-		eyePath.addCurve(to: CGPoint(x: 20, y: 60), control1: CGPoint(x: 24.48, y: 70), control2: CGPoint(x: 20, y: 65.52))
-		eyePath.addLine(to: CGPoint(x: 20, y: 20))
-		eyePath.close()
-		eyePath.move(to: CGPoint(x: 10, y: 10))
-		eyePath.addCurve(to: CGPoint(x: 10, y: 60), control1: CGPoint(x: 10, y: 10), control2: CGPoint(x: 10, y: 60))
-		eyePath.addCurve(to: CGPoint(x: 30, y: 80), control1: CGPoint(x: 10, y: 71.05), control2: CGPoint(x: 18.95, y: 80))
-		eyePath.addLine(to: CGPoint(x: 80, y: 80))
-		eyePath.addLine(to: CGPoint(x: 80, y: 30))
-		eyePath.addCurve(to: CGPoint(x: 60, y: 10), control1: CGPoint(x: 80, y: 18.95), control2: CGPoint(x: 71.05, y: 10))
-		eyePath.addLine(to: CGPoint(x: 10, y: 10))
-		eyePath.addLine(to: CGPoint(x: 10, y: 10))
-		eyePath.close()
-		return eyePath
-	}
-
-	public func pupilPath() -> CGPath {
-//		let pupilCornerRadius: CGFloat = 4
-//		let pupilRect = CGRect(x: 30, y: 30, width: 30, height: 30)
-//		let pupilInnerRect = pupilRect.insetBy(dx: pupilCornerRadius, dy: pupilCornerRadius)
-//		let pupilPath = CGMutablePath()
-//		pupilPath.addArc(center: CGPoint(x: pupilInnerRect.minX, y: pupilInnerRect.minY), radius: pupilCornerRadius, startAngle:  180, endAngle: 270, clockwise: true)
-//		pupilPath.line(to: CGPoint(x: pupilRect.maxX, y: pupilRect.minY))
-//		pupilPath.addArc(center: CGPoint(x: pupilInnerRect.maxX, y: pupilInnerRect.maxY), radius: pupilCornerRadius, startAngle: 0, endAngle: 90, clockwise: false)
-//		pupilPath.line(to: CGPoint(x: pupilRect.minX, y: pupilRect.maxY))
-//		pupilPath.close()
-//		return pupilPath
-
-		let roundedPupil = CGPath.RoundRect(
-			rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-			cornerRadius: 6,
-			byRoundingCorners: [.topRight, .bottomLeft]
-		)
-		return roundedPupil
-	}
-
 }

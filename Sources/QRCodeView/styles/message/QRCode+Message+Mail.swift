@@ -1,5 +1,5 @@
 //
-//  QRCode+MessageFormatters.swift
+//  QRCode+Message+Mail.swift
 //
 //  Created by Darren Ford on 10/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -22,11 +22,25 @@
 
 import Foundation
 
-/// Protocol for generating data from a formatted QR Code message
-@objc public protocol QRCodeMessageFormatter {
-	var data: Data { get }
-}
+public extension QRCode.Message {
+	/// A formattter for a generating a QRCode containing a link for generating an email
+	@objc(QRCodeMessageMail) class Mail: NSObject, QRCodeMessageFormatter {
+		public let data: Foundation.Data
+		@objc public init?(mailTo: String, subject: String? = nil, body: String? = nil) {
+			// mailto:blah%40noodle.com?subject=This%20is%20a%20test&cc=zomb%40att.com&bcc=catpirler%40superbalh.eu&body=Noodles%20and%20fish%21
+			guard let mt = mailTo.urlQuerySafe else { return nil }
+			var msg = "mailto:\(mt)"
 
-public extension QRCode {
-	@objc(QRCodeMessage) class Message: NSObject { }
+			var queryItems: [URLQueryItem] = []
+			if let s = subject?.urlQuerySafe { queryItems.append(URLQueryItem(name: "subject", value: s)) }
+			if let b = body?.urlQuerySafe { queryItems.append(URLQueryItem(name: "body", value: b)) }
+
+			var u = URLComponents()
+			u.queryItems = queryItems
+			if let q = u.query, q.count > 0 {
+				msg += "?\(q)"
+			}
+			self.data = msg.data(using: .utf8) ?? Foundation.Data()
+		}
+	}
 }

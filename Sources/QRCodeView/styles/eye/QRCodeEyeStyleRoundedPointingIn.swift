@@ -20,44 +20,46 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-@objc public class QRCodeEyeStyleRoundedPointingIn: NSObject, QRCodeEyeShape {
-	public func copyShape() -> QRCodeEyeShape {
-		return QRCodeEyeStyleRoundedPointingIn()
+public extension QRCode.EyeShape {
+	/// A 'rounded rect with a pointy bit facing inwards' style eye design
+	@objc(QRCodeEyeStyleRoundedPointingIn) class RoundedPointingIn: NSObject, QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeHandler {
+			return RoundedPointingIn()
+		}
+
+		public func eyePath() -> CGPath {
+			let tearEyePath = CGMutablePath()
+			tearEyePath.move(to: CGPoint(x: 57, y: 20))
+			tearEyePath.addLine(to: CGPoint(x: 33, y: 20))
+			tearEyePath.addCurve(to: CGPoint(x: 20, y: 33), control1: CGPoint(x: 25.82, y: 20), control2: CGPoint(x: 20, y: 25.82))
+			tearEyePath.addLine(to: CGPoint(x: 20, y: 57))
+			tearEyePath.addCurve(to: CGPoint(x: 33, y: 70), control1: CGPoint(x: 20, y: 64.18), control2: CGPoint(x: 25.82, y: 70))
+			tearEyePath.addLine(to: CGPoint(x: 70, y: 70))
+			tearEyePath.addLine(to: CGPoint(x: 70, y: 33))
+			tearEyePath.addCurve(to: CGPoint(x: 57, y: 20), control1: CGPoint(x: 70, y: 25.82), control2: CGPoint(x: 64.18, y: 20))
+			tearEyePath.close()
+			tearEyePath.move(to: CGPoint(x: 80, y: 33))
+			tearEyePath.addLine(to: CGPoint(x: 80, y: 80))
+			tearEyePath.addLine(to: CGPoint(x: 33, y: 80))
+			tearEyePath.addCurve(to: CGPoint(x: 10, y: 57), control1: CGPoint(x: 20.3, y: 80), control2: CGPoint(x: 10, y: 69.7))
+			tearEyePath.addLine(to: CGPoint(x: 10, y: 33))
+			tearEyePath.addCurve(to: CGPoint(x: 33, y: 10), control1: CGPoint(x: 10, y: 20.3), control2: CGPoint(x: 20.3, y: 10))
+			tearEyePath.addLine(to: CGPoint(x: 57, y: 10))
+			tearEyePath.addCurve(to: CGPoint(x: 80, y: 33), control1: CGPoint(x: 69.7, y: 10), control2: CGPoint(x: 80, y: 20.3))
+			tearEyePath.close()
+			return tearEyePath
+		}
+
+		public func pupilPath() -> CGPath {
+			let roundedPupil = CGPath.RoundRect(
+				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
+				cornerRadius: 6,
+				byRoundingCorners: [.topLeft, .bottomLeft, .topRight]
+			)
+			return roundedPupil
+		}
 	}
-
-	public func eyePath() -> CGPath {
-		let tearEyePath = CGMutablePath()
-		tearEyePath.move(to: CGPoint(x: 57, y: 20))
-		tearEyePath.addLine(to: CGPoint(x: 33, y: 20))
-		tearEyePath.addCurve(to: CGPoint(x: 20, y: 33), control1: CGPoint(x: 25.82, y: 20), control2: CGPoint(x: 20, y: 25.82))
-		tearEyePath.addLine(to: CGPoint(x: 20, y: 57))
-		tearEyePath.addCurve(to: CGPoint(x: 33, y: 70), control1: CGPoint(x: 20, y: 64.18), control2: CGPoint(x: 25.82, y: 70))
-		tearEyePath.addLine(to: CGPoint(x: 70, y: 70))
-		tearEyePath.addLine(to: CGPoint(x: 70, y: 33))
-		tearEyePath.addCurve(to: CGPoint(x: 57, y: 20), control1: CGPoint(x: 70, y: 25.82), control2: CGPoint(x: 64.18, y: 20))
-		tearEyePath.close()
-		tearEyePath.move(to: CGPoint(x: 80, y: 33))
-		tearEyePath.addLine(to: CGPoint(x: 80, y: 80))
-		tearEyePath.addLine(to: CGPoint(x: 33, y: 80))
-		tearEyePath.addCurve(to: CGPoint(x: 10, y: 57), control1: CGPoint(x: 20.3, y: 80), control2: CGPoint(x: 10, y: 69.7))
-		tearEyePath.addLine(to: CGPoint(x: 10, y: 33))
-		tearEyePath.addCurve(to: CGPoint(x: 33, y: 10), control1: CGPoint(x: 10, y: 20.3), control2: CGPoint(x: 20.3, y: 10))
-		tearEyePath.addLine(to: CGPoint(x: 57, y: 10))
-		tearEyePath.addCurve(to: CGPoint(x: 80, y: 33), control1: CGPoint(x: 69.7, y: 10), control2: CGPoint(x: 80, y: 20.3))
-		tearEyePath.close()
-		return tearEyePath
-	}
-
-	public func pupilPath() -> CGPath {
-		let roundedPupil = CGPath.RoundRect(
-			rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-			cornerRadius: 6,
-			byRoundingCorners: [.topLeft, .bottomLeft, .topRight]
-		)
-		return roundedPupil
-	}
-
 }

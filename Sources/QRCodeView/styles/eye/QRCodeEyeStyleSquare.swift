@@ -20,34 +20,36 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-@objc public class QRCodeEyeStyleSquare: NSObject, QRCodeEyeShape {
-
-	public func copyShape() -> QRCodeEyeShape {
-		return QRCodeEyeStyleSquare()
-	}
-
-	public func eyePath() -> CGPath {
-		let squareEyePath = CGMutablePath()
-		squareEyePath.move(to: CGPoint(x: 70, y: 70))
-		squareEyePath.line(to: CGPoint(x: 20, y: 70))
-		squareEyePath.line(to: CGPoint(x: 20, y: 20))
-		squareEyePath.line(to: CGPoint(x: 70, y: 20))
-		squareEyePath.line(to: CGPoint(x: 70, y: 70))
-		squareEyePath.close()
-		squareEyePath.move(to: CGPoint(x: 80, y: 80))
-		squareEyePath.curve(to: CGPoint(x: 80, y: 10), controlPoint1: CGPoint(x: 80, y: 80), controlPoint2: CGPoint(x: 80, y: 10))
-		squareEyePath.line(to: CGPoint(x: 10, y: 10))
-		squareEyePath.line(to: CGPoint(x: 10, y: 80))
-		squareEyePath.line(to: CGPoint(x: 80, y: 80))
-		squareEyePath.line(to: CGPoint(x: 80, y: 80))
-		squareEyePath.close()
-		return squareEyePath
-	}
-
-	public func pupilPath() -> CGPath {
-		return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
+public extension QRCode.EyeShape {
+	/// A 'rounded rect with a pointy bit facing inwards' style eye design
+	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeHandler {
+			return Square()
+		}
+		
+		public func eyePath() -> CGPath {
+			let squareEyePath = CGMutablePath()
+			squareEyePath.move(to: CGPoint(x: 70, y: 70))
+			squareEyePath.line(to: CGPoint(x: 20, y: 70))
+			squareEyePath.line(to: CGPoint(x: 20, y: 20))
+			squareEyePath.line(to: CGPoint(x: 70, y: 20))
+			squareEyePath.line(to: CGPoint(x: 70, y: 70))
+			squareEyePath.close()
+			squareEyePath.move(to: CGPoint(x: 80, y: 80))
+			squareEyePath.curve(to: CGPoint(x: 80, y: 10), controlPoint1: CGPoint(x: 80, y: 80), controlPoint2: CGPoint(x: 80, y: 10))
+			squareEyePath.line(to: CGPoint(x: 10, y: 10))
+			squareEyePath.line(to: CGPoint(x: 10, y: 80))
+			squareEyePath.line(to: CGPoint(x: 80, y: 80))
+			squareEyePath.line(to: CGPoint(x: 80, y: 80))
+			squareEyePath.close()
+			return squareEyePath
+		}
+		
+		public func pupilPath() -> CGPath {
+			return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
+		}
 	}
 }
