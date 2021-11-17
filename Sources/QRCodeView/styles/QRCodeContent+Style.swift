@@ -32,8 +32,15 @@ public extension QRCodeContent {
 	}
 
 	@objc(QRCodeContentShape) class Shape: NSObject {
-		@objc public var pixelStyle: QRCodePixelStyle = QRCodePixelStyleSquare()
+		@objc public var dataShape: QRCodeDataShape = QRCodeDataShapePixel(pixelType: .square)
 		@objc public var eyeStyle: QRCodeEyeShape = QRCodeEyeStyleSquare()
+
+		public func copyShape() -> Shape {
+			let c = Shape()
+			c.dataShape = dataShape.copyShape()
+			c.eyeStyle = eyeStyle.copyShape()
+			return c
+		}
 	}
 }
 
@@ -42,12 +49,14 @@ public extension QRCodeContent {
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
 
-/// Return a styled path representing the pixel defined by 'rect'
-@objc public protocol QRCodePixelStyle {
-	func path(rect: CGRect) -> CGPath
-}
-
 @objc public protocol QRCodeEyeShape {
+	func copyShape() -> QRCodeEyeShape
 	func eyePath() -> CGPath
 	func pupilPath() -> CGPath
+}
+
+@objc public protocol QRCodeDataShape {
+	func copyShape() -> QRCodeDataShape
+	func onPath(size: CGSize, data: QRCodeContent) -> CGPath
+	func offPath(size: CGSize, data: QRCodeContent) -> CGPath
 }

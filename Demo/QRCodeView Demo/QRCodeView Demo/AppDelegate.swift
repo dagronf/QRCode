@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		style.foregroundStyle = QRCodeFillStyleLinearGradient(gr)
 
 		let contentShape = QRCodeContent.Shape()
-		contentShape.pixelStyle = QRCodePixelStyleRoundedSquare(cornerRadius: 0.8, edgeInset: 1)
+		contentShape.dataShape = QRCodeDataShapePixel(pixelType: .roundedRect, inset: 1, cornerRadiusFraction: 0.8)
 		contentShape.eyeStyle = QRCodeEyeStyleRoundedRect()
 		style.shape = contentShape
 

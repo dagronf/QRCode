@@ -25,6 +25,10 @@ import CoreGraphics
 
 @objc public class QRCodeEyeStyleLeaf: NSObject, QRCodeEyeShape {
 
+	public func copyShape() -> QRCodeEyeShape {
+		return QRCodeEyeStyleLeaf()
+	}
+
 	public func eyePath() -> CGPath {
 		let eyePath = CGMutablePath()
 		eyePath.move(to: CGPoint(x: 20, y: 20))

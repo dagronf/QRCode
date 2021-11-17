@@ -103,7 +103,7 @@ import SwiftUI
 	// Private
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
-	private var current = Array2D(rows: 0, columns: 0, initialValue: false)
+	internal var current = Array2D(rows: 0, columns: 0, initialValue: false)
 }
 
 // MARK: - QR Code path generation
@@ -118,6 +118,8 @@ public extension QRCodeContent {
 		public static let eyePupil = PathGeneration(rawValue: 1 << 1)
 		/// The content (non-eye)
 		public static let content = PathGeneration(rawValue: 1 << 2)
+		/// Path for the content that IS NOT drawn
+		public static let unsetContent = PathGeneration(rawValue: 1 << 3)
 		/// All components of the eye
 		public static let eye: PathGeneration = [PathGeneration.eyeOuter, PathGeneration.eyePupil]
 		/// The entire qrcode
@@ -218,26 +220,42 @@ public extension QRCodeContent {
 			path.addPath(br)
 		}
 
+		// 'on' content
+		if generationType.contains(.content) {
+			path.addPath(pixelShape.dataShape.onPath(size: size, data: self))
+		}
+
+		if generationType.contains(.unsetContent) {
+			path.addPath(pixelShape.dataShape.offPath(size: size, data: self))
+		}
 
 		// Add in the content
-		if generationType.contains(.content) {
-			for row in 0 ..< self.pixelSize {
-				for col in 0 ..< self.pixelSize {
-					if self.current[row, col] == false {
-						// Nothing to do
-						continue
-					}
-
-					if isEyePixel(row, col) {
-						// skip it
-						continue
-					}
-
-					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					path.addPath(pixelShape.pixelStyle.path(rect: r))
-				}
-			}
-		}
+//		if generationType.contains(.content) || generationType.contains(.unsetContent) {
+//			for row in 0 ..< self.pixelSize {
+//				for col in 0 ..< self.pixelSize {
+//
+//					if isEyePixel(row, col) {
+//						// skip it
+//						continue
+//					}
+//
+//					if generationType.contains(.unsetContent) && self.current[row, col] == true {
+//						continue
+//					}
+//					if generationType.contains(.content) && self.current[row, col] == false {
+//						continue
+//					}
+//
+//					if generationType.contains(.unsetContent),
+//						row == 0 || col == 0 || row == self.pixelSize - 1 || col == self.pixelSize - 1 {
+//						continue
+//					}
+//
+//					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
+//					path.addPath(pixelShape.pixelStyle.path(rect: r))
+//				}
+//			}
+//		}
 		return path
 	}
 }
@@ -271,16 +289,16 @@ public extension QRCodeContent {
 	}
 
 	// Is the row/col within an 'eye' of the qr code?
-	private func isEyePixel(_ row: Int, _ col: Int) -> Bool {
+	internal func isEyePixel(_ row: Int, _ col: Int) -> Bool {
 		if row < 9 {
 			if col < 9 {
 				return true
 			}
-			if col > (self.pixelSize - 9) {
+			if col >= (self.pixelSize - 9) {
 				return true
 			}
 		}
-		else if row > (self.pixelSize - 9), col < 9 {
+		else if row >= (self.pixelSize - 9), col < 9 {
 			return true
 		}
 		return false

@@ -12,17 +12,19 @@ struct ContentView: View {
 	@State var content: String = "This is a test of the QR code control"
 	@State var correction: QRCodeContent.ErrorCorrection = .low
 
-	@State var foregroundColor: Color = .primary
+	@State var dataColor: Color = .primary
 	@State var eyeColor: Color = .primary
 	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
-	enum PixelType {
+	enum DataShapeType {
 		case square
 		case roundrect
 		case circle
+		case horizontal
+		case vertical
 	}
-	@State var pixelStyle: PixelType = .square
+	@State var dataShape: DataShapeType = .square
 
 	enum EyeType {
 		case square
@@ -42,14 +44,18 @@ struct ContentView: View {
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
-		let pixelStyle: QRCodePixelStyle = {
-			switch self.pixelStyle {
+		let dataShape: QRCodeDataShape = {
+			switch self.dataShape {
 			case .square:
-				return QRCodePixelStyleSquare()
+				return QRCodeDataShapePixel(pixelType: .square)
 			case .roundrect:
-				return QRCodePixelStyleRoundedSquare(cornerRadius: 0.5, edgeInset: 0.5)
+				return QRCodeDataShapePixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
 			case .circle:
-				return QRCodePixelStyleCircle(edgeInset: 0.5)
+				return QRCodeDataShapePixel(pixelType: .circle)
+			case .horizontal:
+				return QRCodeDataShapeHorizontal(inset: 1, cornerRadiusFraction: 1)
+			case .vertical:
+				return QRCodeDataShapeVertical(inset: 1, cornerRadiusFraction: 1)
 			}
 		}()
 
@@ -83,10 +89,12 @@ struct ContentView: View {
 						Text("High (Q)").tag(QRCodeContent.ErrorCorrection.high)
 						Text("Max (H)").tag(QRCodeContent.ErrorCorrection.max)
 					}.pickerStyle(WheelPickerStyle())
-					Picker(selection: $pixelStyle, label: Text("Pixel Style:")) {
-						Text("Square").tag(PixelType.square)
-						Text("Round Rect").tag(PixelType.roundrect)
-						Text("Circle").tag(PixelType.circle)
+					Picker(selection: $dataShape, label: Text("Data Shape:")) {
+						Text("Square").tag(DataShapeType.square)
+						Text("Round Rect").tag(DataShapeType.roundrect)
+						Text("Circle").tag(DataShapeType.circle)
+						Text("Horizontal").tag(DataShapeType.horizontal)
+						Text("Vertical").tag(DataShapeType.vertical)
 					}.pickerStyle(WheelPickerStyle())
 					Picker(selection: $eyeStyle, label: Text("Eye Style:")) {
 						Text("Square").tag(EyeType.square)
@@ -96,7 +104,7 @@ struct ContentView: View {
 						Text("Rounded Outer").tag(EyeType.roundedOuter)
 						Text("Rounded Pointing In").tag(EyeType.roundedPointingIn)
 					}.pickerStyle(WheelPickerStyle())
-					ColorPicker("Foreground", selection: $foregroundColor)
+					ColorPicker("Data Color", selection: $dataColor)
 					ColorPicker("Eye Color", selection: $eyeColor)
 					ColorPicker("Pupil Color", selection: $pupilColor)
 					ColorPicker("Background", selection: $backgroundColor)
@@ -117,8 +125,8 @@ struct ContentView: View {
 						.fill(pupilColor)
 					qrContent
 						.masking(.content)
-						.pixelStyle(pixelStyle)
-						.fill(foregroundColor)
+						.dataShape(dataShape)
+						.fill(dataColor)
 				}
 				.frame(width: 250, height: 250, alignment: .center)
 				.padding()

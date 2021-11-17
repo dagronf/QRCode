@@ -24,6 +24,9 @@ import Foundation
 import CoreGraphics
 
 @objc public class QRCodeEyeStyleRoundedPointingIn: NSObject, QRCodeEyeShape {
+	public func copyShape() -> QRCodeEyeShape {
+		return QRCodeEyeStyleRoundedPointingIn()
+	}
 
 	public func eyePath() -> CGPath {
 		let tearEyePath = CGMutablePath()

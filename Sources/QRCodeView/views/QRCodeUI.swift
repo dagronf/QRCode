@@ -87,7 +87,7 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			masking: masking,
-			contentShape: self.contentShape
+			contentShape: self.contentShape.copyShape()
 		)
 	}
 
@@ -107,13 +107,13 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: errorCorrection,
 			masking: self.masking,
-			contentShape: self.contentShape
+			contentShape: self.contentShape.copyShape()
 		)
 	}
 
 	/// Change the eye style to another style
 	func eyeStyle(_ eyeStyle: QRCodeEyeShape) -> QRCodeUI {
-		let shape = self.contentShape
+		let shape = self.contentShape.copyShape()
 		shape.eyeStyle = eyeStyle
 		return QRCodeUI(
 			data: self.data,
@@ -124,9 +124,9 @@ public extension QRCodeUI {
 	}
 
 	/// Change the pixel style to another style
-	func pixelStyle(_ pixelStyle: QRCodePixelStyle) -> QRCodeUI {
-		let shape = self.contentShape
-		shape.pixelStyle = pixelStyle
+	func dataShape(_ dataShape: QRCodeDataShape) -> QRCodeUI {
+		let shape = self.contentShape.copyShape()
+		shape.dataShape = dataShape
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: errorCorrection,

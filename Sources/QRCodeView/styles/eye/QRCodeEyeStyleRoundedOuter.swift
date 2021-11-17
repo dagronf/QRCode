@@ -24,6 +24,11 @@ import CoreGraphics
 import Foundation
 
 @objc public class QRCodeEyeStyleRoundedOuter: NSObject, QRCodeEyeShape {
+
+	public func copyShape() -> QRCodeEyeShape {
+		return QRCodeEyeStyleRoundedOuter()
+	}
+
 	public func eyePath() -> CGPath {
 		let roundedSharpOuterPath = CGMutablePath()
 		roundedSharpOuterPath.move(to: CGPoint(x: 20, y: 70))
