@@ -33,48 +33,64 @@ It's nice to have a simple drop-in component for displaying a QR code.
 
 The QRCode class is the core generator class.  It is not tied to any presentation medium.
 
+### Update the QR content
+
 ```swift
-@objc public func generate(_ data: Data, errorCorrection: ErrorCorrection)
-@objc public func generate(text: String, errorCorrection: ErrorCorrection)
-@objc public func generate(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection)
+@objc public func update(_ data: Data, errorCorrection: ErrorCorrection)
+@objc public func update(text: String, errorCorrection: ErrorCorrection)
+@objc public func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection)
 ```
 
-Update the qrcode with the specified data.
+Update the qrcode with the specified data and error correction.
+
+### Generate a path
 
 ```swift
-@objc func path(_ size: CGSize, generationType: PathGeneration = .all, pixelShape: QRCode.Shape = QRCode.Shape())
-``
+@objc func path(_ size: CGSize, components: Components = .all, shape: QRCode.Shape = QRCode.Shape())
+```
+
+Produces a CGPath representation of the QRCode
+
+* The size in pixels of the generated path
+* The components of the qr code to include in the path (defaults to the standard QR components)
+   * The eye 'outer' ring
+   * The eye pupil
+   * The pixels that are 'on' within the QR Code
+   * The pixels that are 'off' within the QR Code
+* The shape of the qr components
+
+The components allow the caller to generate individual paths for the QR code components which can then be combined
+together later on.  For example, the SwiftUI implementation is a Shape object, and you can use a ZStack to overlay each 
+path using different fill styles.
+
+```swift
+   let qrContent = QRCodeUI(myData)
+   ...
+   qrContent
+      .components(.eye)
+      .fill(.green)
+   qrContent
+      .components(.eyePupil)
+      .fill(.teal)
+   qrContent
+      .components(.content)
+      .fill(.black)
+```
+
+### Generate an image
+
+```swift
+@objc func image(_ size: CGSize, scale: CGFloat = 1, style: QRCode.Style = QRCode.Style()) -> CGImage?
+```
+
+A convenience method for generating an image from the QR Code.
 
 
 
 ## QRCodeView
 
-The NSView/UIView implementation.
+A NSView/UIView implementation.
 
-### Parameters
-
-| Parameter          | Type                         | Description                                            |
-|--------------------|------------------------------|--------------------------------------------------------|
-| `data`             | `Data`                       | The QR Code content                                    |
-| `errorCorrection`  | `QRCodeView.ErrorCorrection` | The level of error collection when generating the code |
-| `foreColor`        | `CGColor`                    | The QR code color                                      |
-| `backColor`        | `CGColor`                    | The background color for the control                   |
-
-### Methods
-
-```swift
-static func Image(content: String, size: CGSize) -> IMAGETYPE?
-```
-
-Returns an image representation of the QR code
-
-### Example
-
-```swift
-let view = QRCodeView()
-view.content = "QR Code content"
-view.errorCorrection = .max
-```
 
 ## SwiftUI
 
@@ -92,9 +108,21 @@ add a transform etc...
 
 ### Modifiers
 
+```swift
+func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
+```
+Set the error correction level
+
+```
+func components(_ components: QRCode.Components) -> QRCodeUI
+```
+
+Set the components of the 
+
+
 #### `pixelStyle`
 
-#### `masking`
+#### `components`
 
 
 

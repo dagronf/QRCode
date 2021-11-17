@@ -45,12 +45,12 @@ public extension QRCode {
 		/// The shape of the pixels
 		@objc public var dataShape: QRCodeDataShape = QRCodeDataShapePixel(pixelType: .square)
 		/// The style of eyes to display
-		@objc public var eyeStyle: QRCodeEyeShape = QRCodeEyeStyleSquare()
+		@objc public var eyeShape: QRCodeEyeShape = QRCodeEyeStyleSquare()
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
 			let c = Shape()
 			c.dataShape = self.dataShape.copyShape()
-			c.eyeStyle = self.eyeStyle.copyShape()
+			c.eyeShape = self.eyeShape.copyShape()
 			return c
 		}
 	}

@@ -29,8 +29,8 @@ class ViewController: NSViewController {
 extension ViewController: NSControlTextEditingDelegate {
 	func controlTextDidChange(_ obj: Notification) {
 		guard let msg = (obj.object as? NSTextField)?.stringValue else { return }
-		q1.textContent = msg
-		q2.textContent = msg
-		q3.textContent = msg
+		q1.setString(msg)
+		q2.setString(msg)
+		q3.setString(msg)
 	}
 }

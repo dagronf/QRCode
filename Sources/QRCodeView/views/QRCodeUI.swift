@@ -20,6 +20,8 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+// SwiftUI implementation
+
 import CoreImage
 import SwiftUI
 
@@ -30,49 +32,49 @@ public struct QRCodeUI: Shape {
 	public init(
 		data: Data,
 		errorCorrection: QRCode.ErrorCorrection = .low,
-		masking: QRCode.PathGeneration = .all,
+		components: QRCode.Components = .all,
 		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		self.data = data
 		self.errorCorrection = errorCorrection
-		self.masking = masking
+		self.components = components
 		self.contentShape = contentShape
-		self.generator.generate(data, errorCorrection: errorCorrection)
+		self.generator.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified text
 	public init?(
 		text: String,
 		errorCorrection: QRCode.ErrorCorrection = .low,
-		masking: QRCode.PathGeneration = .all,
+		components: QRCode.Components = .all,
 		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data = data
 		self.errorCorrection = errorCorrection
-		self.masking = masking
+		self.components = components
 		self.contentShape = contentShape
-		self.generator.generate(data, errorCorrection: errorCorrection)
+		self.generator.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified message formatter
 	public init(
 		message: QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
-		masking: QRCode.PathGeneration = .all,
+		components: QRCode.Components = .all,
 		contentShape: QRCode.Shape = QRCode.Shape()
 	) {
 		self.data = message.data
 		self.errorCorrection = errorCorrection
-		self.masking = masking
+		self.components = components
 		self.contentShape = contentShape
-		self.generator.generate(data, errorCorrection: errorCorrection)
+		self.generator.update(self.data, errorCorrection: errorCorrection)
 	}
 
 	// Private
 	private let data: Data
 	private let contentShape: QRCode.Shape
-	private let masking: QRCode.PathGeneration
+	private let components: QRCode.Components
 	private let errorCorrection: QRCode.ErrorCorrection
 	private let generator = QRCode()
 }
@@ -82,11 +84,11 @@ public struct QRCodeUI: Shape {
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public extension QRCodeUI {
 	/// Returns a copy of the qrcode using the specified mask
-	func masking(_ masking: QRCode.PathGeneration) -> QRCodeUI {
+	func components(_ components: QRCode.Components) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
-			masking: masking,
+			components: self.components,
 			contentShape: self.contentShape.copyShape()
 		)
 	}
@@ -96,7 +98,7 @@ public extension QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
-			masking: self.masking,
+			components: self.components,
 			contentShape: shape
 		)
 	}
@@ -106,31 +108,31 @@ public extension QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: errorCorrection,
-			masking: self.masking,
+			components: self.components,
 			contentShape: self.contentShape.copyShape()
 		)
 	}
 
-	/// Change the eye style to another style
-	func eyeStyle(_ eyeStyle: QRCodeEyeShape) -> QRCodeUI {
+	/// Change the eye shape to another shape
+	func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
-		shape.eyeStyle = eyeStyle
+		shape.eyeShape = eyeShape
 		return QRCodeUI(
 			data: self.data,
-			errorCorrection: errorCorrection,
-			masking: self.masking,
+			errorCorrection: self.errorCorrection,
+			components: self.components,
 			contentShape: shape
 		)
 	}
 
-	/// Change the pixel style to another style
+	/// Change the data shape to another shape
 	func dataShape(_ dataShape: QRCodeDataShape) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
 		shape.dataShape = dataShape
 		return QRCodeUI(
 			data: self.data,
-			errorCorrection: errorCorrection,
-			masking: self.masking,
+			errorCorrection: self.errorCorrection,
+			components: self.components,
 			contentShape: shape
 		)
 	}
@@ -142,7 +144,7 @@ public extension QRCodeUI {
 public extension QRCodeUI {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
-		let path = self.generator.path(rect.size, generationType: self.masking, pixelShape: self.contentShape) // pixelStyle: self.pixelStyle)
+		let path = self.generator.path(rect.size, components: self.components, shape: self.contentShape) // pixelStyle: self.pixelStyle)
 		return Path(path)
 	}
 }
@@ -152,100 +154,16 @@ public extension QRCodeUI {
 let DemoContent = "https://goo.gl/maps/Z4d9uVV87gVifrZKA"
 let DemoContent2 = "Harness the power of Quartz technology to perform lightweight 2D rendering with high-fidelity output. Handle path-based drawing, antialiased rendering, gradients, images, color management, PDF documents, and more."
 
+// Unfortunately, there is no point in creating more previews as
+// XCode refuses to display them either with a compilation error, or with a
+// 'fail to send message to helper'.  Grrrr...
+
 @available(macOS 11, iOS 14, tvOS 14, *)
 struct QRCodeUI_Previews: PreviewProvider {
 	static var previews: some View {
 		HStack {
 			QRCodeUI(text: DemoContent, errorCorrection: .low)!
-				.masking(.all)
+				.components(.all)
 		}
-//		VStack {
-//			HStack {
-//				VStack {
-//					Text("Low (L)")
-//					QRCodeUI(text: DemoContent, errorCorrection: .low)
-//						.frame(width: 150, height: 150)
-//				}
-//				VStack {
-//					Text("Medium (M)")
-//					QRCodeUI(text: DemoContent, errorCorrection: .medium)
-//						.frame(width: 150, height: 150)
-//				}
-//				VStack {
-//					Text("High (Q)")
-//					QRCodeUI(text: DemoContent, errorCorrection: .high)
-//						.frame(width: 150, height: 150)
-//				}
-//				VStack {
-//					Text("Max (H)")
-//					QRCodeUI(text: DemoContent, errorCorrection: .max)
-//						.frame(width: 150, height: 150)
-//				}
-//			}
-//
-//			HStack {
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.red)
-//					.frame(width: 100, height: 100)
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.green)
-//					.frame(width: 100, height: 100)
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.blue)
-//					.frame(width: 100, height: 100)
-//			}
-//
-//			HStack {
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.red)
-//					.frame(width: 100, height: 100)
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.green)
-//					.frame(width: 100, height: 100)
-//				QRCodeUI(text: "caterpillar-noodle")!
-//					.fill(.blue)
-//					.frame(width: 100, height: 100)
-//			}
-//
-//			HStack {
-//				QRCodeUI(text: DemoContent2)!
-//					.fill(.black)
-//					.frame(width: 150, height: 150)
-//				QRCodeUI(text: DemoContent2)!
-//					.fill(.black)
-//					.frame(width: 150, height: 150)
-//				QRCodeUI(text: DemoContent2)!
-//					.fill(.black)
-//					.frame(width: 300, height: 300)
-//			}
-//		}
 	}
 }
-
-//@available(macOS 11, iOS 13.0, tvOS 13.0, *)
-//struct ContentView22: View {
-//
-//	@State var content: String = "This is a test of the QR code control"
-//	@State var correction: QRCodeContent.ErrorCorrection = .low
-//	let gradient = Gradient(colors: [.black, .pink])
-//
-//	var body: some View {
-//		VStack {
-//			Text("Here is my QR code")
-//			QRCodeUI(
-//				text: content,
-//				errorCorrection: correction
-//			)!
-//			.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
-//			.frame(width: 250, height: 250, alignment: .center)
-//			.shadow(color: .blue, radius: 1, x: 1, y: 1)
-//		}
-//	}
-//}
-//
-//@available(macOS 11, iOS 14, tvOS 14, *)
-//struct ContentView22_Previews: PreviewProvider {
-//	static var previews: some View {
-//		ContentView22()
-//	}
-//}

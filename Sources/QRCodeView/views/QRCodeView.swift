@@ -33,7 +33,6 @@ import UIKit
 
 /// A simple NSView/UIView that displays a QR Code
 @objc @IBDesignable public class QRCodeView: DSFView {
-
 	// The qrcode content generator
 	private let qrCodeContent = QRCode()
 
@@ -51,12 +50,6 @@ import UIKit
 		}
 	}
 
-	/// Text content to display in the QR code
-	@objc public var textContent: String {
-		get { String(data: self.data, encoding: .utf8) ?? "" }
-		set { self.data = newValue.data(using: .utf8) ?? Data() }
-	}
-
 	/// The style to use when drawing the qr code
 	@objc public var style = QRCode.Style() {
 		didSet {
@@ -64,7 +57,7 @@ import UIKit
 		}
 	}
 
-	/// This is the pixel dimension for the QR Code.  You shouldn't make the dimensions smaller than this
+	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
 	@objc public var pixelSize: Int {
 		return self.qrCodeContent.pixelSize
 	}
@@ -83,12 +76,20 @@ import UIKit
 		self.setup()
 	}
 
-	@objc func setMessage(_ msgType: QRCodeMessageFormatter) {
+	/// Text content to display in the QR code
+	@objc @inlinable public func setString(_ text: String) -> Bool {
+		guard let msg = text.data(using: .utf8) else { return false }
+		self.data = msg
+		return true
+	}
+
+	/// Set the content of the displayed QR code using the provided message formatter
+	@objc @inlinable func setMessage(_ msgType: QRCodeMessageFormatter) {
 		self.data = msgType.data
 	}
 }
 
-// MARK: - Interface Builder
+// MARK: - Interface Builder conveniences
 
 public extension QRCodeView {
 	@IBInspectable var ibCorrectionLevel: Int {
@@ -101,7 +102,7 @@ public extension QRCodeView {
 		set { self.data = newValue.data(using: .utf8) ?? Data() }
 	}
 
-	#if os(macOS)
+#if os(macOS)
 	@IBInspectable var ibForegroundColor: NSColor {
 		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCodeFillStyleSolid)?.color ?? .black) ?? .black }
 		set { self.style.foregroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
@@ -111,7 +112,7 @@ public extension QRCodeView {
 		get { NSColor(cgColor: (self.style.backgroundStyle as? QRCodeFillStyleSolid)?.color ?? .white) ?? .white }
 		set { self.style.backgroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
 	}
-	#else
+#else
 	@IBInspectable var ibForegroundColor: UIColor {
 		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCodeFillStyleSolid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.style.foregroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
@@ -121,7 +122,7 @@ public extension QRCodeView {
 		get { UIColor(cgColor: (self.style.backgroundStyle as? QRCodeFillStyleSolid)?.color ?? CGColor(gray: 1, alpha: 1)) }
 		set { self.style.backgroundStyle = QRCodeFillStyleSolid(newValue.cgColor) }
 	}
-	#endif
+#endif
 
 	override func prepareForInterfaceBuilder() {
 		super.prepareForInterfaceBuilder()
@@ -129,29 +130,30 @@ public extension QRCodeView {
 	}
 }
 
-extension QRCodeView {
+// MARK: - Drawing
 
-	#if os(macOS)
+extension QRCodeView {
+#if os(macOS)
 	override public var isFlipped: Bool { true }
-	#endif
+#endif
 
 	private func setup() {
 		self.regenerate()
 	}
 
-	#if os(macOS)
+#if os(macOS)
 	override public func draw(_ dirtyRect: NSRect) {
 		if let ctx = NSGraphicsContext.current?.cgContext {
 			self.draw(ctx)
 		}
 	}
-	#else
+#else
 	override public func draw(_ rect: CGRect) {
 		if let ctx = UIGraphicsGetCurrentContext() {
 			self.draw(ctx)
 		}
 	}
-	#endif
+#endif
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
@@ -160,7 +162,7 @@ extension QRCodeView {
 
 	// Build up the qr representation
 	private func regenerate() {
-		self.qrCodeContent.generate(self.data, errorCorrection: self.errorCorrection)
+		self.qrCodeContent.update(self.data, errorCorrection: self.errorCorrection)
 		self.setNeedsDisplay()
 	}
 }

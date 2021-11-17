@@ -57,7 +57,7 @@ import SwiftUI
 	}
 
 	/// Build the QR Code using the given data and error correction
-	@objc public func generate(_ data: Data, errorCorrection: ErrorCorrection) {
+	@objc public func update(_ data: Data, errorCorrection: ErrorCorrection) {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
 
@@ -91,13 +91,13 @@ import SwiftUI
 	}
 
 	/// Build the QR Code using the given text and error correction
-	@objc public func generate(text: String, errorCorrection: ErrorCorrection) {
-		self.generate(text.data(using: .utf8) ?? Data(), errorCorrection: errorCorrection)
+	@objc public func update(text: String, errorCorrection: ErrorCorrection) {
+		self.update(text.data(using: .utf8) ?? Data(), errorCorrection: errorCorrection)
 	}
 
 	/// Build the QR Code using the given message formatter and error correction
-	@objc public func generate(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection) {
-		self.generate(message.data, errorCorrection: errorCorrection)
+	@objc public func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection) {
+		self.update(message.data, errorCorrection: errorCorrection)
 	}
 
 	// Private
@@ -110,20 +110,20 @@ import SwiftUI
 
 public extension QRCode {
 
-	/// The type of path to generate
-	@objc class PathGeneration: NSObject, OptionSet {
+	/// The components of the QR code
+	@objc(QRCodeComponents) class Components: NSObject, OptionSet {
 		/// The outer ring of the eye
-		public static let eyeOuter = PathGeneration(rawValue: 1 << 0)
-		/// The pupil of the eye
-		public static let eyePupil = PathGeneration(rawValue: 1 << 1)
-		/// The content (non-eye)
-		public static let content = PathGeneration(rawValue: 1 << 2)
-		/// Path for the content that IS NOT drawn
-		public static let unsetContent = PathGeneration(rawValue: 1 << 3)
+		public static let eyeOuter = Components(rawValue: 1 << 0)
+		/// The pupil (center) of the eye
+		public static let eyePupil = Components(rawValue: 1 << 1)
+		/// The non-eye, 'on' pixels
+		public static let content = Components(rawValue: 1 << 2)
+		/// The non-eye, 'off' pixels
+		public static let unsetContent = Components(rawValue: 1 << 3)
 		/// All components of the eye
-		public static let eye: PathGeneration = [PathGeneration.eyeOuter, PathGeneration.eyePupil]
+		public static let eye: Components = [Components.eyeOuter, Components.eyePupil]
 		/// The entire qrcode
-		public static let all: PathGeneration = [PathGeneration.eyeOuter, PathGeneration.eyePupil, PathGeneration.content]
+		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.content]
 
 		public var rawValue: Int8
 		@objc required public init(rawValue: Int8) {
@@ -132,16 +132,22 @@ public extension QRCode {
 
 		// MARK: OptionSet
 
-		public func contains(_ member: QRCode.PathGeneration) -> Bool {
+		public func contains(_ member: QRCode.Components) -> Bool {
 			return (self.rawValue & member.rawValue) != 0
 		}
 	}
 
-	/// Return a CGPath containing the entire QR code
+
+	/// Generate a path containing the QR Code components
+	/// - Parameters:
+	///   - size: The dimensions of the generated path
+	///   - components: The components of the QR code to include in the path
+	///   - shape: The shape definitions for genering the path components
+	/// - Returns: A path containing the components
 	@objc func path(
 		_ size: CGSize,
-		generationType: PathGeneration = .all,
-		pixelShape: QRCode.Shape = QRCode.Shape()
+		components: Components = .all,
+		shape: QRCode.Shape = QRCode.Shape()
 	) -> CGPath {
 		let dx = size.width / CGFloat(self.pixelSize)
 		let dy = size.height / CGFloat(self.pixelSize)
@@ -159,8 +165,8 @@ public extension QRCode {
 		let path = CGMutablePath()
 
 		// The outer part of the eye
-		let eyeStyle = pixelShape.eyeStyle
-		if generationType.contains(.eyeOuter) {
+		let eyeStyle = shape.eyeShape
+		if components.contains(.eyeOuter) {
 			let p = eyeStyle.eyePath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 
@@ -191,7 +197,7 @@ public extension QRCode {
 
 		// Add the pupils if wanted
 
-		if generationType.contains(.eyePupil) {
+		if components.contains(.eyePupil) {
 			let p = eyeStyle.pupilPath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 
@@ -221,12 +227,12 @@ public extension QRCode {
 		}
 
 		// 'on' content
-		if generationType.contains(.content) {
-			path.addPath(pixelShape.dataShape.onPath(size: size, data: self))
+		if components.contains(.content) {
+			path.addPath(shape.dataShape.onPath(size: size, data: self))
 		}
 
-		if generationType.contains(.unsetContent) {
-			path.addPath(pixelShape.dataShape.offPath(size: size, data: self))
+		if components.contains(.unsetContent) {
+			path.addPath(shape.dataShape.offPath(size: size, data: self))
 		}
 
 		return path
@@ -322,7 +328,7 @@ public extension QRCode {
 		ctx.restoreGState()
 
 		// Now, the pixels
-		let qrPath = self.path(rect.size, pixelShape: style.shape)
+		let qrPath = self.path(rect.size, shape: style.shape)
 		ctx.saveGState()
 		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
 		ctx.restoreGState()

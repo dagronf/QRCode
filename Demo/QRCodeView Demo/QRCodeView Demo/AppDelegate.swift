@@ -30,11 +30,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		let contentShape = QRCode.Shape()
 		contentShape.dataShape = QRCodeDataShapePixel(pixelType: .roundedRect, inset: 1, cornerRadiusFraction: 0.8)
-		contentShape.eyeStyle = QRCodeEyeStyleRoundedRect()
+		contentShape.eyeShape = QRCodeEyeStyleRoundedRect()
 		style.shape = contentShape
 
 		let c = QRCode()
-		c.generate(message: QRCode.Message.Link(string: "https://www.apple.com.au")!, errorCorrection: .max)
+		c.update(message: QRCode.Message.Link(string: "https://www.apple.com.au")!, errorCorrection: .max)
 		let im = c.image(CGSize(width: 400, height: 400), style: style)
 		Swift.print(im)
 		let iii = NSImage(cgImage: im!, size: .zero)

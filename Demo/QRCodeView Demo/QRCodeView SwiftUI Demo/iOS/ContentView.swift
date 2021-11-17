@@ -26,7 +26,7 @@ struct ContentView: View {
 	}
 	@State var dataShape: DataShapeType = .square
 
-	enum EyeType {
+	enum EyeShapeType {
 		case square
 		case circle
 		case leaf
@@ -34,7 +34,7 @@ struct ContentView: View {
 		case roundedOuter
 		case roundedPointingIn
 	}
-	@State var eyeStyle: EyeType = .square
+	@State var eyeStyle: EyeShapeType = .square
 
 	let gradient = Gradient(colors: [.black, .pink])
 
@@ -96,13 +96,13 @@ struct ContentView: View {
 						Text("Horizontal").tag(DataShapeType.horizontal)
 						Text("Vertical").tag(DataShapeType.vertical)
 					}.pickerStyle(WheelPickerStyle())
-					Picker(selection: $eyeStyle, label: Text("Eye Style:")) {
-						Text("Square").tag(EyeType.square)
-						Text("Round Rect").tag(EyeType.roundedRect)
-						Text("Circle").tag(EyeType.circle)
-						Text("Leaf").tag(EyeType.leaf)
-						Text("Rounded Outer").tag(EyeType.roundedOuter)
-						Text("Rounded Pointing In").tag(EyeType.roundedPointingIn)
+					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
+						Text("Square").tag(EyeShapeType.square)
+						Text("Round Rect").tag(EyeShapeType.roundedRect)
+						Text("Circle").tag(EyeShapeType.circle)
+						Text("Leaf").tag(EyeShapeType.leaf)
+						Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
+						Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
 					}.pickerStyle(WheelPickerStyle())
 					ColorPicker("Data Color", selection: $dataColor)
 					ColorPicker("Eye Color", selection: $eyeColor)
@@ -116,15 +116,15 @@ struct ContentView: View {
 				ZStack {
 					backgroundColor
 					qrContent
-						.masking(.eye)
-						.eyeStyle(eyeStyle)
+						.components(.eye)
+						.eyeShape(eyeStyle)
 						.fill(eyeColor)
 					qrContent
-						.masking(.eyePupil)
-						.eyeStyle(eyeStyle)
+						.components(.eyePupil)
+						.eyeShape(eyeStyle)
 						.fill(pupilColor)
 					qrContent
-						.masking(.content)
+						.components(.content)
 						.dataShape(dataShape)
 						.fill(dataColor)
 				}
@@ -135,7 +135,7 @@ struct ContentView: View {
 					text: content,
 					errorCorrection: .max
 				)!
-				.eyeStyle(QRCodeEyeStyleLeaf())
+				.eyeShape(QRCodeEyeStyleLeaf())
 				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
 				.shadow(color: .black, radius: 1, x: 1, y: 1)
 				.frame(width: 250, height: 250, alignment: .center)

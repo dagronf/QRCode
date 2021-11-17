@@ -27,7 +27,7 @@ struct ContentView: View {
 	}
 	@State var dataShape: DataShapeType = .square
 
-	enum EyeType {
+	enum EyeShapeType {
 		case square
 		case circle
 		case leaf
@@ -35,7 +35,7 @@ struct ContentView: View {
 		case roundedOuter
 		case roundedPointingIn
 	}
-	@State var eyeStyle: EyeType = .square
+	@State var eyeStyle: EyeShapeType = .square
 
 	var body: some View {
 
@@ -94,12 +94,12 @@ struct ContentView: View {
 					Text("Horizontal").tag(DataShapeType.horizontal)
 					Text("Vertical").tag(DataShapeType.vertical)
 				}.pickerStyle(RadioGroupPickerStyle())
-				Picker(selection: $eyeStyle, label: Text("Eye Style:")) {
-					Text("Square").tag(EyeType.square)
-					Text("Round Rect").tag(EyeType.roundedRect)
-					Text("Circle").tag(EyeType.circle)
-					Text("Leaf").tag(EyeType.leaf)
-					Text("Rounded Outer").tag(EyeType.roundedOuter)
+				Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
+					Text("Square").tag(EyeShapeType.square)
+					Text("Round Rect").tag(EyeShapeType.roundedRect)
+					Text("Circle").tag(EyeShapeType.circle)
+					Text("Leaf").tag(EyeShapeType.leaf)
+					Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
 				}.pickerStyle(RadioGroupPickerStyle())
 				HStack {
 					ColorPicker("Data Color", selection: $dataColor)
@@ -118,19 +118,19 @@ struct ContentView: View {
 			ZStack {
 				backgroundColor
 				qrContent
-					.masking(.eye)
-					.eyeStyle(eyeStyle)
+					.components(.eye)
+					.eyeShape(eyeStyle)
 					.fill(eyeColor)
 				qrContent
-					.masking(.eyePupil)
-					.eyeStyle(eyeStyle)
+					.components(.eyePupil)
+					.eyeShape(eyeStyle)
 					.fill(pupilColor)
 				qrContent
-					.masking(.content)
+					.components(.content)
 					.dataShape(dataShape)
 					.fill(dataColor)
 //				qrContent
-//					.masking(.unsetContent)
+//					.components(.unsetContent)
 //					.dataShape(dataShape)
 //					.fill(.gray.opacity(0.2))
 			}
