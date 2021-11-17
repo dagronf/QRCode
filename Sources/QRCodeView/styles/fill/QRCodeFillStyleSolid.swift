@@ -30,6 +30,10 @@ import CoreGraphics
 		self.color = color
 	}
 
+	public func copyStyle() -> QRCodeFillStyle {
+		return QRCodeFillStyleSolid(self.color.copy()!)
+	}
+
 	public func fill(ctx: CGContext, rect: CGRect) {
 		ctx.setFillColor(color)
 		ctx.fill(rect)

@@ -101,10 +101,14 @@ struct ContentView: View {
 					Text("Leaf").tag(EyeType.leaf)
 					Text("Rounded Outer").tag(EyeType.roundedOuter)
 				}.pickerStyle(RadioGroupPickerStyle())
-				ColorPicker("Data Color", selection: $dataColor)
-				ColorPicker("Eye Color", selection: $eyeColor)
-				ColorPicker("Pupil Color", selection: $pupilColor)
-				ColorPicker("Background", selection: $backgroundColor)
+				HStack {
+					ColorPicker("Data Color", selection: $dataColor)
+					ColorPicker("Background", selection: $backgroundColor)
+				}
+				HStack {
+					ColorPicker("Eye Color", selection: $eyeColor)
+					ColorPicker("Pupil Color", selection: $pupilColor)
+				}
 
 				Spacer()
 			}

@@ -20,31 +20,43 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCodeContent {
 	/// QR Code styler
 	@objc(QRCodeContentStyle) class Style: NSObject {
 		@objc public var foregroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 0.0, alpha: 1.0))
 		@objc public var backgroundStyle: QRCodeFillStyle = QRCodeFillStyleSolid(CGColor(gray: 1.0, alpha: 1.0))
-		@objc public var shape: QRCodeContent.Shape = QRCodeContent.Shape()
+		@objc public var shape = QRCodeContent.Shape()
+
+		/// Copy the style
+		public func copyStyle() -> Style {
+			let c = Style()
+			c.shape = self.shape.copyShape()
+			c.foregroundStyle = self.foregroundStyle.copyStyle()
+			c.backgroundStyle = self.backgroundStyle.copyStyle()
+			return c
+		}
 	}
 
 	@objc(QRCodeContentShape) class Shape: NSObject {
+		/// The shape of the pixels
 		@objc public var dataShape: QRCodeDataShape = QRCodeDataShapePixel(pixelType: .square)
+		/// The style of eyes to display
 		@objc public var eyeStyle: QRCodeEyeShape = QRCodeEyeStyleSquare()
-
+		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
 			let c = Shape()
-			c.dataShape = dataShape.copyShape()
-			c.eyeStyle = eyeStyle.copyShape()
+			c.dataShape = self.dataShape.copyShape()
+			c.eyeStyle = self.eyeStyle.copyShape()
 			return c
 		}
 	}
 }
 
 @objc public protocol QRCodeFillStyle {
+	func copyStyle() -> QRCodeFillStyle
 	func fill(ctx: CGContext, rect: CGRect)
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }

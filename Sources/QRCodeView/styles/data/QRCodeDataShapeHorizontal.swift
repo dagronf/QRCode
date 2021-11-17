@@ -36,7 +36,7 @@ import CoreGraphics
 	let cornerRadiusFraction: CGFloat
 	@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
 		self.inset = inset
-		self.cornerRadiusFraction = cornerRadiusFraction
+		self.cornerRadiusFraction = min(1, max(0, cornerRadiusFraction))
 		super.init()
 	}
 

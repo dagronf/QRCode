@@ -34,6 +34,10 @@ import CoreGraphics
 		self.gradient = gradient
 	}
 
+	public func copyStyle() -> QRCodeFillStyle {
+		return QRCodeFillStyleLinearGradient(self.gradient.copy() as! QRGradient)
+	}
+
 	/// Fill the specified rect with the gradient
 	public func fill(ctx: CGContext, rect: CGRect) {
 		ctx.drawLinearGradient(

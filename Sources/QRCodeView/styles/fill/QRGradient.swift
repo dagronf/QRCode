@@ -24,14 +24,17 @@ import Foundation
 import CoreGraphics
 
 /// A gradient
-@objc public class QRGradient: NSObject {
+@objc public class QRGradient: NSObject, NSCopying {
 
-	@objc(QRGradientPin) public class Pin: NSObject {
+	@objc(QRGradientPin) public class Pin: NSObject, NSCopying {
 		let color: CGColor
 		let position: CGFloat
 		public init(_ color: CGColor, _ position: CGFloat) {
 			self.color = color
 			self.position = max(0, min(position, 1.0))
+		}
+		public func copy(with zone: NSZone? = nil) -> Any {
+			return Pin(self.color.copy()!, self.position)
 		}
 	}
 
@@ -46,6 +49,11 @@ import CoreGraphics
 	public var center: CGPoint = CGPoint(x: 0.5, y: 0.5)
 
 	public let cgGradient: CGGradient
+
+	public func copy(with zone: NSZone? = nil) -> Any {
+		return QRGradient(pins: self.pins, start: start, end: end)!
+	}
+
 
 	/// Create a linear gradient
 	/// - Parameters:
