@@ -33,10 +33,8 @@ extension AppDelegate {
 			QRGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
 			QRGradient.Pin(CGColor(red: 0, green: 0, blue: 1, alpha: 1), 1),
 		])!
-		gr.start = CGPoint(x: 0, y: 0.5)
-		gr.end = CGPoint(x: 1, y: 0.5)
 		let style = QRCode.Style()
-		style.foregroundStyle = QRCode.FillStyle.LinearGradient(gr)
+		style.foregroundStyle = QRCode.FillStyle.LinearGradient(gr, startPoint: CGPoint(x: 0, y: 0.5), endPoint: CGPoint(x: 1, y: 0.5))
 
 		let contentShape = QRCode.Shape()
 		contentShape.dataShape = QRCode.DataShape.Pixel(pixelType: .roundedRect, inset: 1, cornerRadiusFraction: 0.8)
