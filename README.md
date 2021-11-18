@@ -3,7 +3,7 @@
 A simple and quick macOS/iOS/tvOS QR Code generator for SwiftUI, Swift and Objective-C.
 
 <p align="center">
-    <img src="https://img.shields.io/github/v/tag/dagronf/QRCodeView" />
+    <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
     <img src="https://img.shields.io/badge/macOS-10.11+-red" />
     <img src="https://img.shields.io/badge/iOS-13+-blue" />
     <img src="https://img.shields.io/badge/tvOS-13+-orange" />
