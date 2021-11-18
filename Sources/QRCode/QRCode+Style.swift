@@ -73,6 +73,8 @@ public extension QRCode {
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
 
+// MARK: - Eye shape
+
 public extension QRCode {
 	/// The shape of an 'eye' within the qr code
 	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
@@ -84,6 +86,8 @@ public extension QRCode {
 	func eyePath() -> CGPath
 	func pupilPath() -> CGPath
 }
+
+// MARK: - Data shape
 
 public extension QRCode {
 	/// The shape of the data within the qr code.

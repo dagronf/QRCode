@@ -39,6 +39,8 @@ import SwiftUI
 		case high = 2
 		/// Maximum error correction (H - Recovers 30% of data)
 		case max = 3
+		/// The default error correction level if it is not specified by the user
+		public static let `default` = ErrorCorrection.high
 
 		/// Returns the EC Level identifier for the error correction type (L, M, Q, H)
 		var ECLevel: String {
@@ -54,6 +56,30 @@ import SwiftUI
 	/// This is the pixel dimension for the QR Code.
 	@objc public var pixelSize: Int {
 		return self.current.rows
+	}
+
+	/// Create a blank QRCode
+	@objc public override init() {
+		super.init()
+		self.update(Data(), errorCorrection: .default)
+	}
+
+	/// Create a QRCode with the given data and error correction
+	@objc public init(_ data: Data, errorCorrection: ErrorCorrection = .default) {
+		super.init()
+		self.update(data, errorCorrection: errorCorrection)
+	}
+
+	/// Create a QRCode with the given text and error correction
+	@objc public init(text: String, errorCorrection: ErrorCorrection = .default) {
+		super.init()
+		self.update(text: text, errorCorrection: errorCorrection)
+	}
+
+	/// Create a QRCode with the given message and error correction
+	@objc public init(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
+		super.init()
+		self.update(message: message, errorCorrection: errorCorrection)
 	}
 
 	/// The QR code content as a 2D array of bool values
@@ -94,12 +120,12 @@ import SwiftUI
 	}
 
 	/// Build the QR Code using the given text and error correction
-	@objc public func update(text: String, errorCorrection: ErrorCorrection) {
+	@objc public func update(text: String, errorCorrection: ErrorCorrection = .default) {
 		self.update(text.data(using: .utf8) ?? Data(), errorCorrection: errorCorrection)
 	}
 
 	/// Build the QR Code using the given message formatter and error correction
-	@objc public func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection) {
+	@objc public func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
 		self.update(message.data, errorCorrection: errorCorrection)
 	}
 
