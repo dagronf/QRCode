@@ -8,7 +8,7 @@
 #import "ViewController.h"
 
 @import CoreGraphics;
-@import QRCodeView;
+@import QRCode;
 
 @implementation ViewController
 

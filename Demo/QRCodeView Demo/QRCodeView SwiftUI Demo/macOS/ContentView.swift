@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import QRCodeView
+import QRCode
 
 struct ContentView: View {
 

@@ -727,7 +727,7 @@
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kVg-Kg-Qas">
                                         <rect key="frame" x="141" y="0.0" width="159" height="459"/>
                                         <subviews>
-                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="GMF-gI-9Ka" customClass="QRCodeView" customModule="QRCodeView">
+                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="GMF-gI-9Ka" customClass="QRCodeView" customModule="QRCode">
                                                 <rect key="frame" x="0.0" y="105" width="163" height="250"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
@@ -742,7 +742,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </customView>
-                                            <customView id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCodeView">
+                                            <customView id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCode">
                                                 <rect key="frame" x="-7" y="100" width="163" height="230"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <userDefinedRuntimeAttributes>
@@ -758,7 +758,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </customView>
-                                            <customView id="eKM-kc-OYa" customClass="QRCodeView" customModule="QRCodeView">
+                                            <customView id="eKM-kc-OYa" customClass="QRCodeView" customModule="QRCode">
                                                 <rect key="frame" x="-4" y="115" width="163" height="230"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <userDefinedRuntimeAttributes>

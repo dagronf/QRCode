@@ -5,7 +5,7 @@
 //  Created by Darren Ford on 9/11/21.
 //
 
-import QRCodeView
+import QRCode
 import UIKit
 
 @main

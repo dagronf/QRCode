@@ -5,7 +5,7 @@
 //  Created by Darren Ford on 8/11/21.
 //
 
-import QRCodeView
+import QRCode
 import SwiftUI
 
 struct ContentView: View {

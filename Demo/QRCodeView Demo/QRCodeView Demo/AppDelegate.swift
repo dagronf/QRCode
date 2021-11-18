@@ -7,7 +7,7 @@
 
 import Cocoa
 
-import QRCodeView
+import QRCode
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {

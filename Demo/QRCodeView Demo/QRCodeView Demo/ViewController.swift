@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-import QRCodeView
+import QRCode
 
 class ViewController: NSViewController {
 	@IBOutlet weak var q1: QRCodeView!
@@ -29,8 +29,8 @@ class ViewController: NSViewController {
 extension ViewController: NSControlTextEditingDelegate {
 	func controlTextDidChange(_ obj: Notification) {
 		guard let msg = (obj.object as? NSTextField)?.stringValue else { return }
-		q1.setString(msg)
-		q2.setString(msg)
-		q3.setString(msg)
+		_ = q1.setString(msg)
+		_ = q2.setString(msg)
+		_ = q3.setString(msg)
 	}
 }

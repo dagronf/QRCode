@@ -1,4 +1,4 @@
-# QRCodeView
+# QRCode
 
 A simple and quick macOS/iOS/tvOS QR Code generator for SwiftUI, Swift and Objective-C.
 
