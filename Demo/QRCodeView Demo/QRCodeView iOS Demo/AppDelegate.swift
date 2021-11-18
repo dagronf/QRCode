@@ -5,26 +5,14 @@
 //  Created by Darren Ford on 9/11/21.
 //
 
-import UIKit
 import QRCodeView
+import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-
-
-//		let c = QRCode()
-//		c.generate("This is a test".data(using: .utf8)!, errorCorrection: .max)
-//		let im = c.image(CGSize(width: 400, height: 400))
-//		Swift.print(im)
-//		let iii = UIImage(cgImage: im!)
-//		Swift.print(iii)
-
-
+		self.generateQRCodeImage()
 		return true
 	}
 
@@ -41,7 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
 		// Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 	}
-
-
 }
 
+extension AppDelegate {
+	func generateQRCodeImage() {
+		let c = QRCode()
+		c.update("This is a test".data(using: .utf8)!, errorCorrection: .max)
+		let im = c.image(CGSize(width: 400, height: 400))
+		let iii = UIImage(cgImage: im!)
+		Swift.print(iii)
+	}
+}

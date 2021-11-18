@@ -1,6 +1,5 @@
 //
-//  File.swift
-//
+//  QRCodeDataShapePixel.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.

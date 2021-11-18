@@ -53,9 +53,9 @@ struct ContentView: View {
 			case .circle:
 				return QRCode.DataShape.Pixel(pixelType: .circle)
 			case .horizontal:
-				return QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 1)
+				return QRCode.DataShape.Horizontal(inset: 0.5, cornerRadiusFraction: 1)
 			case .vertical:
-				return QRCode.DataShape.Vertical(inset: 1, cornerRadiusFraction: 1)
+				return QRCode.DataShape.Vertical(inset: 0.5, cornerRadiusFraction: 1)
 			}
 		}()
 

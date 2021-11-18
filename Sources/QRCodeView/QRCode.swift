@@ -56,6 +56,9 @@ import SwiftUI
 		return self.current.rows
 	}
 
+	/// The QR code content as a 2D array of bool values
+	public private(set) var current = Array2D(rows: 0, columns: 0, initialValue: false)
+
 	/// Build the QR Code using the given data and error correction
 	@objc public func update(_ data: Data, errorCorrection: ErrorCorrection) {
 		self.filter.setValue(data, forKey: "inputMessage")
@@ -103,7 +106,6 @@ import SwiftUI
 	// Private
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
-	internal var current = Array2D(rows: 0, columns: 0, initialValue: false)
 }
 
 extension QRCode: NSCopying {
@@ -279,7 +281,11 @@ public extension QRCode {
 	///   - scale: The scale
 	///   - style: The style to use when generating the image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func image(_ size: CGSize, scale: CGFloat = 1, style: QRCode.Style = QRCode.Style()) -> CGImage? {
+	@objc func image(
+		_ size: CGSize,
+		scale: CGFloat = 1,
+		style: QRCode.Style = QRCode.Style()) -> CGImage?
+	{
 		let width = Int(size.width)
 		let height = Int(size.height)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()

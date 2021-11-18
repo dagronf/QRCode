@@ -1,5 +1,5 @@
 //
-//  QRCodeView.swift
+//  QRCodeUI.swift
 //
 //  Created by Darren Ford on 9/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -94,7 +94,7 @@ public extension QRCodeUI {
 		)
 	}
 
-	/// Returns a copy of the qrcode using the specified mask
+	/// Returns a copy of the qrcode using only the specified components being generated.
 	func components(_ components: QRCode.Components) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
@@ -104,7 +104,7 @@ public extension QRCodeUI {
 		)
 	}
 
-	/// Returns a copy of the qrcode using the specified pixel style
+	/// Returns a copy of the qrcode using the specified shape (both eye and data)
 	func contentShape(_ shape: QRCode.Shape) -> QRCodeUI {
 		return QRCodeUI(
 			data: self.data,
