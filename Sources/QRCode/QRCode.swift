@@ -269,6 +269,7 @@ public extension QRCode {
 			path.addPath(shape.dataShape.onPath(size: size, data: self))
 		}
 
+		// 'off' pixels
 		if components.contains(.offPixels) {
 			path.addPath(shape.dataShape.offPath(size: size, data: self))
 		}

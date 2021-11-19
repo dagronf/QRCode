@@ -41,6 +41,12 @@ struct QRCodeGen: ParsableCommand {
 	@Option(name: [.customShort("n"), .long], help: "The data shape inset")
 	var inset: Double?
 
+	@Option(name: [.long], help: "The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var bgc: String?
+
+	@Option(name: [.long], help: "The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var dc: String?
+
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("r"), .long], help: "The data shape corner radius fractional value (0.0 -> 1.0)")
 	var dataShapeCornerRadius: Double?
@@ -69,6 +75,16 @@ struct QRCodeGen: ParsableCommand {
 		}
 
 		let style = QRCode.Style()
+
+		// Colors
+
+		if let backgroundColor = parseColor(self.bgc) {
+			style.backgroundStyle = QRCode.FillStyle.Solid(backgroundColor)
+		}
+
+		if let dataColor = parseColor(self.dc) {
+			style.foregroundStyle = QRCode.FillStyle.Solid(dataColor)
+		}
 
 		// The eye shape
 
