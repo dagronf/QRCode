@@ -25,6 +25,9 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeVertical) class Vertical: NSObject, QRCodeDataShapeHandler {
+
+		public let name: String = "vertical"
+
 		public func copyShape() -> QRCodeDataShapeHandler {
 			return Vertical(
 				inset: self.inset,

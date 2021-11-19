@@ -24,12 +24,14 @@ import Foundation
 import CoreGraphics
 
 public extension QRCode.EyeShape {
-	@objc(QRCodeEyeStyleCircle) class Circle : NSObject, QRCodeEyeShapeHandler {
-		
+	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeHandler {
+
+		public let name: String = "circle"
+
 		public func copyShape() -> QRCodeEyeShapeHandler {
 			return Circle()
 		}
-		
+
 		public func eyePath() -> CGPath {
 			let circleEyePath = CGMutablePath()
 			circleEyePath.move(to: CGPoint(x: 45, y: 20))
@@ -48,7 +50,7 @@ public extension QRCode.EyeShape {
 			circleEyePath.close()
 			return circleEyePath
 		}
-		
+
 		public func pupilPath() -> CGPath {
 			return CGPath(ellipseIn: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
 		}

@@ -75,30 +75,5 @@ public extension QRCode {
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
 
-// MARK: - Eye shape
 
-public extension QRCode {
-	/// The shape of an 'eye' within the qr code
-	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
-}
 
-/// A protocol for wrapping generating the eye shapes for a path
-@objc public protocol QRCodeEyeShapeHandler {
-	func copyShape() -> QRCodeEyeShapeHandler
-	func eyePath() -> CGPath
-	func pupilPath() -> CGPath
-}
-
-// MARK: - Data shape
-
-public extension QRCode {
-	/// The shape of the data within the qr code.
-	@objc(QRCodeDataShape) class DataShape: NSObject {}
-}
-
-/// A protocol for wrapping generating the data shape for a path
-@objc public protocol QRCodeDataShapeHandler {
-	func copyShape() -> QRCodeDataShapeHandler
-	func onPath(size: CGSize, data: QRCode) -> CGPath
-	func offPath(size: CGSize, data: QRCode) -> CGPath
-}

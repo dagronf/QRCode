@@ -1,5 +1,5 @@
 //
-//  QRCodeEyeStyleSquare.swift
+//  QRCodeEyeStyleCircle.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -20,36 +20,48 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import CoreGraphics
 import Foundation
+import CoreGraphics
 
-public extension QRCode.EyeShape {
-	/// A 'rounded rect with a pointy bit facing inwards' style eye design
-	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeHandler {
-		public func copyShape() -> QRCodeEyeShapeHandler {
-			return Square()
-		}
-		
-		public func eyePath() -> CGPath {
-			let squareEyePath = CGMutablePath()
-			squareEyePath.move(to: CGPoint(x: 70, y: 70))
-			squareEyePath.line(to: CGPoint(x: 20, y: 70))
-			squareEyePath.line(to: CGPoint(x: 20, y: 20))
-			squareEyePath.line(to: CGPoint(x: 70, y: 20))
-			squareEyePath.line(to: CGPoint(x: 70, y: 70))
-			squareEyePath.close()
-			squareEyePath.move(to: CGPoint(x: 80, y: 80))
-			squareEyePath.curve(to: CGPoint(x: 80, y: 10), controlPoint1: CGPoint(x: 80, y: 80), controlPoint2: CGPoint(x: 80, y: 10))
-			squareEyePath.line(to: CGPoint(x: 10, y: 10))
-			squareEyePath.line(to: CGPoint(x: 10, y: 80))
-			squareEyePath.line(to: CGPoint(x: 80, y: 80))
-			squareEyePath.line(to: CGPoint(x: 80, y: 80))
-			squareEyePath.close()
-			return squareEyePath
-		}
-		
-		public func pupilPath() -> CGPath {
-			return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
-		}
+// MARK: - Eye shape
+
+public extension QRCode {
+	/// The shape of an 'eye' within the qr code
+	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
+}
+
+/// A protocol for wrapping generating the eye shapes for a path
+@objc public protocol QRCodeEyeShapeHandler {
+	var name: String { get }
+	func copyShape() -> QRCodeEyeShapeHandler
+	func eyePath() -> CGPath
+	func pupilPath() -> CGPath
+}
+
+public class QRCodeEyeShapeFactory {
+	public private(set) var eyeShapes: [QRCodeEyeShapeHandler] = []
+	init() {
+		self.register()
+	}
+
+	func register() {
+		self.eyeShapes = [
+			QRCode.EyeShape.Circle(),
+			QRCode.EyeShape.Leaf(),
+			QRCode.EyeShape.RoundedOuter(),
+			QRCode.EyeShape.RoundedPointingIn(),
+			QRCode.EyeShape.RoundedRect(),
+			QRCode.EyeShape.Square(),
+		]
+	}
+
+	public var knownTypes: [String] {
+		self.eyeShapes.map { $0.name }
+	}
+
+	public func named(_ name: String) -> QRCodeEyeShapeHandler? {
+		return self.eyeShapes.first { h in h.name == name }
 	}
 }
+
+public let EyeShapeFactory = QRCodeEyeShapeFactory()
