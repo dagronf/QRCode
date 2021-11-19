@@ -59,7 +59,7 @@ import SwiftUI
 	}
 
 	/// Create a blank QRCode
-	@objc public override init() {
+	@objc override public init() {
 		super.init()
 		self.update(Data(), errorCorrection: .default)
 	}
@@ -132,13 +132,14 @@ import SwiftUI
 	// Private
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
+	private let DefaultPDFResolution: CGFloat = 72
 }
 
 extension QRCode: NSCopying {
 	/// Return a copy of the QR Code
 	public func copy(with zone: NSZone? = nil) -> Any {
 		let c = QRCode()
-		c.current = current
+		c.current = self.current
 		return c
 	}
 }
@@ -146,7 +147,6 @@ extension QRCode: NSCopying {
 // MARK: - QR Code path generation
 
 public extension QRCode {
-
 	/// The components of the QR code
 	@objc(QRCodeComponents) class Components: NSObject, OptionSet {
 		/// The outer ring of the eye
@@ -165,7 +165,7 @@ public extension QRCode {
 		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
 
 		public var rawValue: Int8
-		@objc required public init(rawValue: Int8) {
+		@objc public required init(rawValue: Int8) {
 			self.rawValue = rawValue
 		}
 
@@ -175,7 +175,6 @@ public extension QRCode {
 			return (self.rawValue & member.rawValue) != 0
 		}
 	}
-
 
 	/// Generate a path containing the QR Code components
 	/// - Parameters:
@@ -282,7 +281,7 @@ public extension QRCode {
 
 extension QRCode {
 	// Is the row/col within an 'eye' of the qr code?
-	internal func isEyePixel(_ row: Int, _ col: Int) -> Bool {
+	func isEyePixel(_ row: Int, _ col: Int) -> Bool {
 		if row < 9 {
 			if col < 9 {
 				return true
@@ -298,7 +297,7 @@ extension QRCode {
 	}
 }
 
-// MARK: - Image generation
+// MARK: - Imaging
 
 public extension QRCode {
 	/// Returns an image representation of the qr code using the specified style
@@ -310,8 +309,8 @@ public extension QRCode {
 	@objc func image(
 		_ size: CGSize,
 		scale: CGFloat = 1,
-		style: QRCode.Style = QRCode.Style()) -> CGImage?
-	{
+		style: QRCode.Style = QRCode.Style()
+	) -> CGImage? {
 		let width = Int(size.width)
 		let height = Int(size.height)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -338,12 +337,37 @@ public extension QRCode {
 		return im
 	}
 
+	/// Returns an pdf representation of the qr code using the specified style
+	/// - Parameters:
+	///   - size: The page size of the generated PDF
+	///   - pdfResolution: The resolution of the pdf output
+	///   - style: The style to apply to the QR Code when generating
+	/// - Returns: A data object containing the PDF representation of the QR code
+	@objc func pdfData(
+		_ size: CGSize,
+		pdfResolution: CGFloat = 72.0,
+		style: QRCode.Style = QRCode.Style()
+	) -> Data? {
+		// Create a PDF context with a single page, and draw into that
+		return UsingSinglePagePDFContext(size: size, pdfResolution: pdfResolution) { ctx, drawRect in
+
+			// Need to flip the PDF context as it begins at the bottom right. We want top left.
+			let af = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: drawRect.height)
+			ctx.concatenate(af)
+
+			// Draw the qr with the required styles
+			self.draw(ctx: ctx, rect: drawRect, style: style)
+		}
+	}
+
 	/// Draw the current qrcode into the context using the specified style
 	@objc func draw(ctx: CGContext, rect: CGRect, style: QRCode.Style) {
 		// Fill the background first
-		ctx.saveGState()
-		style.backgroundStyle.fill(ctx: ctx, rect: rect)
-		ctx.restoreGState()
+		if let background = style.backgroundStyle {
+			ctx.saveGState()
+			background.fill(ctx: ctx, rect: rect)
+			ctx.restoreGState()
+		}
 
 		// Now, the pixels
 		let qrPath = self.path(rect.size, shape: style.shape)

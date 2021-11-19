@@ -31,6 +31,7 @@ It's nice to have a simple, quick drop-in component for displaying a QR code.
 
 * Supports Swift and Objective-C
 * Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS)
+* Generate images or scalable PDFs.
 * Configurable designs
 * Configurable fill styles for image generation
 
@@ -53,6 +54,9 @@ let path = c.path(CGSize(width: 400, height: 400))
 
 // Generate an image using the default styling (square, black foreground, white background)
 let image = c.image(CGSize(width: 400, height: 400))
+
+// Generate pdf data containing the qr code
+let pdfdata = c.pdfData(CGSize(width: 400, height: 400))
 ```
 
 </details>
@@ -111,7 +115,15 @@ component using different a different fill style (for example).
 @objc func image(_ size: CGSize, scale: CGFloat = 1, style: QRCode.Style = QRCode.Style()) -> CGImage?
 ```
 
-A convenience method for generating an image from the QR Code.
+Generate an image from the QR Code.
+
+### Generate a scalable PDF representation of the QR Code
+
+```swift
+@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat, style: QRCode.Style) -> Data?
+```
+
+Generate a scalable PDF from the QRCode with the applied stylings and resolution
 
 ## Styling
 

@@ -26,8 +26,10 @@ import Foundation
 public extension QRCode {
 	/// QR Code styler
 	@objc(QRCodeStyle) class Style: NSObject {
+		/// The foreground style for the QR code
 		@objc public var foregroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
-		@objc public var backgroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
+		/// The background style for the QR code. If nil, no background is drawn
+		@objc public var backgroundStyle: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 		@objc public var shape = QRCode.Shape()
 
 		/// Copy the style
@@ -35,7 +37,7 @@ public extension QRCode {
 			let c = Style()
 			c.shape = self.shape.copyShape()
 			c.foregroundStyle = self.foregroundStyle.copyStyle()
-			c.backgroundStyle = self.backgroundStyle.copyStyle()
+			c.backgroundStyle = self.backgroundStyle?.copyStyle()
 			return c
 		}
 	}
