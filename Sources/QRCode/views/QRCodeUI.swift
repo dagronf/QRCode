@@ -117,7 +117,7 @@ public extension QRCodeUI {
 	/// Change the eye shape to another shape
 	func eyeShape(_ eyeShape: QRCodeEyeShapeHandler) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
-		shape.eyeShape = eyeShape
+		shape.eye = eyeShape
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
@@ -129,7 +129,7 @@ public extension QRCodeUI {
 	/// Change the data shape to another shape
 	func dataShape(_ dataShape: QRCodeDataShapeHandler) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
-		shape.dataShape = dataShape
+		shape.data = dataShape
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,

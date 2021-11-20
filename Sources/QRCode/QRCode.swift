@@ -203,9 +203,9 @@ public extension QRCode {
 		let path = CGMutablePath()
 
 		// The outer part of the eye
-		let eyeStyle = shape.eyeShape
+		let eyeShape = shape.eye
 		if components.contains(.eyeOuter) {
-			let p = eyeStyle.eyePath()
+			let p = eyeShape.eyePath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 
 			// top left
@@ -236,7 +236,7 @@ public extension QRCode {
 		// Add the pupils if wanted
 
 		if components.contains(.eyePupil) {
-			let p = eyeStyle.pupilPath()
+			let p = eyeShape.pupilPath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 
 			// top left
@@ -266,12 +266,12 @@ public extension QRCode {
 
 		// 'on' content
 		if components.contains(.onPixels) {
-			path.addPath(shape.dataShape.onPath(size: size, data: self))
+			path.addPath(shape.data.onPath(size: size, data: self))
 		}
 
 		// 'off' pixels
-		if components.contains(.offPixels) {
-			path.addPath(shape.dataShape.offPath(size: size, data: self))
+		if components.contains(.offPixels), let offPixelShape = shape.dataInverted {
+			path.addPath(offPixelShape.offPath(size: size, data: self))
 		}
 
 		return path
@@ -367,7 +367,7 @@ public extension QRCode {
 		let style = design.style
 
 		// Fill the background first
-		if let background = style.backgroundStyle {
+		if let background = style.background {
 			ctx.saveGState()
 			background.fill(ctx: ctx, rect: rect)
 			ctx.restoreGState()
@@ -376,21 +376,29 @@ public extension QRCode {
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 		ctx.saveGState()
-		let outerStyle = style.eyeOuterStyle ?? style.foregroundStyle
+		let outerStyle = style.eye ?? style.data
 		outerStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
 		ctx.restoreGState()
 
 		// Draw the eye 'pupil'
 		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
 		ctx.saveGState()
-		let pupilStyle = style.eyePupilStyle ?? style.foregroundStyle
+		let pupilStyle = style.pupil ?? style.eye ?? style.data
 		pupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
 		ctx.restoreGState()
 
 		// Now, the 'on' pixels
 		let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape)
 		ctx.saveGState()
-		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
+		style.data.fill(ctx: ctx, rect: rect, path: qrPath)
 		ctx.restoreGState()
+
+		// The 'off' pixels ONLY IF the user specifies both a data inverted shape and a data inverted style.
+		if let s = style.dataInverted, let _ = design.shape.dataInverted {
+			let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape)
+			ctx.saveGState()
+			s.fill(ctx: ctx, rect: rect, path: qrPath)
+			ctx.restoreGState()
+		}
 	}
 }

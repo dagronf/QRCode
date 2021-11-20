@@ -75,7 +75,7 @@ Update the qrcode with the specified data and error correction.
 ### Generate a path
 
 ```swift
-@objc func path(_ size: CGSize, components: Components = .all, shape: QRCode.Shape = QRCode.Shape()) -> CGPath
+@objc func path(_ size: CGSize, components: Components = .all, design: QRCode.Design = QRCode.Design()) -> CGPath
 ```
 
 Produces a CGPath representation of the QRCode
@@ -126,9 +126,17 @@ Generate an image from the QR Code.
 
 Generate a scalable PDF from the QRCode with the applied stylings and resolution
 
-## Styling
+## QR Code Design
 
-`QRCode` supports a number of ways of stying your code
+`QRCode` supports a number of ways of 'designing' your qr code
+
+### Fill styles
+
+You can provide a custom fill for any of the individual components (eyes, pupils, data) of the qr code. This library supports the current fill types.
+
+* solid fill
+* linear gradient
+* radial gradient
 
 ### Eye shape
 
@@ -233,7 +241,7 @@ QRCode* code = [[QRCode alloc] init];
 QRCodeStyle* style = [[QRCodeStyle alloc] init];
 
 // Set the foreground color to a solid red
-style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+style.data = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
 
 // Use the leaf style
 style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];

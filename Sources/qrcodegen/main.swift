@@ -126,19 +126,19 @@ struct QRCodeGen: ParsableCommand {
 		// Colors
 
 		if let backgroundColor = parseColor(self.bgColor) {
-			design.style.backgroundStyle = QRCode.FillStyle.Solid(backgroundColor)
+			design.style.background = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
 		if let dataColor = parseColor(self.dataColor) {
-			design.style.foregroundStyle = QRCode.FillStyle.Solid(dataColor)
+			design.style.data = QRCode.FillStyle.Solid(dataColor)
 		}
 
 		if let eyeColor = parseColor(self.eyeColor) {
-			design.style.eyeOuterStyle = QRCode.FillStyle.Solid(eyeColor)
+			design.style.eye = QRCode.FillStyle.Solid(eyeColor)
 		}
 
 		if let pupilColor = parseColor(self.pupilColor) {
-			design.style.eyePupilStyle = QRCode.FillStyle.Solid(pupilColor)
+			design.style.pupil = QRCode.FillStyle.Solid(pupilColor)
 		}
 
 		// The eye shape
@@ -150,7 +150,7 @@ struct QRCodeGen: ParsableCommand {
 				Swift.print("Available eye styles are \(known)")
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
-			design.shape.eyeShape = shape
+			design.shape.eye = shape
 		}
 
 		// The data shape
@@ -162,7 +162,7 @@ struct QRCodeGen: ParsableCommand {
 			Swift.print("Available data styles are \(known) ")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}
-		design.shape.dataShape = shape
+		design.shape.data = shape
 
 		// Error correction
 

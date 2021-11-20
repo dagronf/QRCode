@@ -51,23 +51,27 @@ public extension QRCode {
 		/// Convenience for objc
 		@objc public static func create() -> Style { return Style() }
 
-		/// The foreground style for the QR code
-		@objc public var foregroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
-		/// The background style for the QR code. If nil, no background is drawn
-		@objc public var backgroundStyle: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
+		/// The style for the data component QR code
+		@objc public var data: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		/// The style for drawing the non-drawn sections of the qr code.
+		@objc public var dataInverted: QRCodeFillStyleGenerator?
 
-		/// The pupil of the eye. By default, this is the same color as the foregroundStyle
-		@objc public var eyePupilStyle: QRCodeFillStyleGenerator?
-		/// The border around the eye.  By default, this is the same color as the foregroundStyle
-		@objc public var eyeOuterStyle: QRCodeFillStyleGenerator?
+		/// The background style for the QR code. If nil, no background is drawn
+		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
+
+		/// The border around the eye.  By default, this is the same color as the data
+		@objc public var eye: QRCodeFillStyleGenerator?
+
+		/// The pupil of the eye. By default, this is the same color as the eye, and failing that the data
+		@objc public var pupil: QRCodeFillStyleGenerator?
 
 		/// Copy the style
 		public func copyStyle() -> Style {
 			let c = Style()
-			c.foregroundStyle = self.foregroundStyle.copyStyle()
-			c.backgroundStyle = self.backgroundStyle?.copyStyle()
-			c.eyePupilStyle = self.eyePupilStyle?.copyStyle()
-			c.eyeOuterStyle = self.eyeOuterStyle?.copyStyle()
+			c.data = self.data.copyStyle()
+			c.background = self.background?.copyStyle()
+			c.eye = self.eye?.copyStyle()
+			c.pupil = self.pupil?.copyStyle()
 			return c
 		}
 	}
@@ -81,16 +85,20 @@ public extension QRCode {
 		/// The shape of the pixels.
 		///
 		/// Defaults to simple square 'pixels'
-		@objc public var dataShape: QRCodeDataShapeHandler = QRCode.DataShape.Pixel(pixelType: .square)
+		@objc public var data: QRCodeDataShapeHandler = QRCode.DataShape.Pixel(pixelType: .square)
+
+		/// The shape for drawing the non-drawn sections of the qr code.
+		@objc public var dataInverted: QRCodeDataShapeHandler?
+
 		/// The style of eyes to display
 		///
 		/// Defaults to a simple square eye
-		@objc public var eyeShape: QRCodeEyeShapeHandler = QRCode.EyeShape.Square()
+		@objc public var eye: QRCodeEyeShapeHandler = QRCode.EyeShape.Square()
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
 			let c = Shape()
-			c.dataShape = self.dataShape.copyShape()
-			c.eyeShape = self.eyeShape.copyShape()
+			c.data = self.data.copyShape()
+			c.eye = self.eye.copyShape()
 			return c
 		}
 	}
