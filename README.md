@@ -126,9 +126,9 @@ Generate an image from the QR Code.
 
 Generate a scalable PDF from the QRCode with the applied stylings and resolution
 
-## QR Code Design
+## Design
 
-`QRCode` supports a number of ways of 'designing' your qr code
+`QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
 
 ### Fill styles
 
@@ -146,8 +146,13 @@ square, circle, rounded rectangle, and more.
 ### Data shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
-however you can supply a `DataShape` object to custom-draw the data.  There are built-in generators for simple square, 
-circle, rounded rectangle and some more complex ones (horizontal bars for example).
+however you can supply a `DataShape` object to custom-draw the data.  There are built-in generators for
+
+* `square`: A basic square pixel
+* `circle`: A basic circle pixel
+* `roundrect`: A basic rounded rectangle pixel with configurable radius
+* `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
+* `vertical`: The pixels are vertically joined to make continuous vertical bars
 
 ## Message Formatters
 

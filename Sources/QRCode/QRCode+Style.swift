@@ -56,14 +56,13 @@ public extension QRCode {
 		/// The style for drawing the non-drawn sections of the qr code.
 		@objc public var dataInverted: QRCodeFillStyleGenerator?
 
-		/// The background style for the QR code. If nil, no background is drawn
-		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
-
 		/// The border around the eye.  By default, this is the same color as the data
 		@objc public var eye: QRCodeFillStyleGenerator?
-
 		/// The pupil of the eye. By default, this is the same color as the eye, and failing that the data
 		@objc public var pupil: QRCodeFillStyleGenerator?
+
+		/// The background style for the QR code. If nil, no background is drawn
+		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 
 		/// Copy the style
 		public func copyStyle() -> Style {

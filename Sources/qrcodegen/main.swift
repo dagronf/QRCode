@@ -80,7 +80,7 @@ struct QRCodeGen: ParsableCommand {
 	var dataShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this
-	@Option(name: [.customShort("n"), .long], help: "The data shape inset")
+	@Option(name: [.customShort("n"), .long], help: "The spacing around each individual pixel in the data section")
 	var inset: Double?
 
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
