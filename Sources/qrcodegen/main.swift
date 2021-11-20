@@ -1,5 +1,5 @@
 //
-//  qrcodegen.swift
+//  main.swift
 //
 //  Created by Darren Ford on 19/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -19,6 +19,8 @@
 //  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+// Command line access to qrcode
 
 import AppKit
 import ArgumentParser
@@ -118,24 +120,25 @@ struct QRCodeGen: ParsableCommand {
 			QRCodeGen.exit(withError: ExitCode(-1))
 		}
 
-		let style = QRCode.Style()
+		// Create the design to use
+		let design = QRCode.Design()
 
 		// Colors
 
 		if let backgroundColor = parseColor(self.bgColor) {
-			style.backgroundStyle = QRCode.FillStyle.Solid(backgroundColor)
+			design.style.backgroundStyle = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
 		if let dataColor = parseColor(self.dataColor) {
-			style.foregroundStyle = QRCode.FillStyle.Solid(dataColor)
+			design.style.foregroundStyle = QRCode.FillStyle.Solid(dataColor)
 		}
 
 		if let eyeColor = parseColor(self.eyeColor) {
-			style.eyeOuterStyle = QRCode.FillStyle.Solid(eyeColor)
+			design.style.eyeOuterStyle = QRCode.FillStyle.Solid(eyeColor)
 		}
 
 		if let pupilColor = parseColor(self.pupilColor) {
-			style.eyePupilStyle = QRCode.FillStyle.Solid(pupilColor)
+			design.style.eyePupilStyle = QRCode.FillStyle.Solid(pupilColor)
 		}
 
 		// The eye shape
@@ -147,7 +150,7 @@ struct QRCodeGen: ParsableCommand {
 				Swift.print("Available eye styles are \(known)")
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
-			style.shape.eyeShape = shape
+			design.shape.eyeShape = shape
 		}
 
 		// The data shape
@@ -159,7 +162,7 @@ struct QRCodeGen: ParsableCommand {
 			Swift.print("Available data styles are \(known) ")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}
-		style.shape.dataShape = shape
+		design.shape.dataShape = shape
 
 		// Error correction
 
@@ -202,7 +205,7 @@ struct QRCodeGen: ParsableCommand {
 
 		switch outputType {
 		case .png:
-			guard let image = qrCode.image(outputSize, scale: 1, style: style) else {
+			guard let image = qrCode.image(outputSize, scale: 1, design: design) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
@@ -216,7 +219,7 @@ struct QRCodeGen: ParsableCommand {
 			}
 
 		case .pdf:
-			guard let data = qrCode.pdfData(outputSize, style: style) else {
+			guard let data = qrCode.pdfData(outputSize, design: design) else {
 				Swift.print("Unable to write to output file \(outURL.absoluteString)")
 				QRCodeGen.exit(withError: ExitCode(-8))
 			}

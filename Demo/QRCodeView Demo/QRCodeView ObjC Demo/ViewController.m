@@ -21,20 +21,20 @@
 	[code updateWithText: @"This message"
 		  errorCorrection: QRCodeErrorCorrectionMax];
 
-	QRCodeStyle* style = [[QRCodeStyle alloc] init];
+	QRCodeDesign* design = [QRCodeDesign create];
 
 	// Set the foreground color to a solid red
 	
-	style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
-	style.eyeOuterStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
+	design.style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+	design.style.eyeOuterStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
 
 	// Use the leaf style
-	style.shape.eyeShape = [[QRCodeEyeShapeLeaf alloc] init];
+	design.shape.eyeShape = [[QRCodeEyeShapeLeaf alloc] init];
 
 	// Generate the image
 	CGImageRef image = [code image: CGSizeMake(400, 400)
 									 scale: 1.0
-									 style: style];
+									design: design];
 
 	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
 	NSLog(@"Image -> %@", nsImage);

@@ -51,7 +51,7 @@ import UIKit
 	}
 
 	/// The style to use when drawing the qr code
-	@objc public var style = QRCode.Style() {
+	@objc public var design = QRCode.Design() {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -104,43 +104,43 @@ public extension QRCodeView {
 
 #if os(macOS)
 	@IBInspectable var ibForegroundColor: NSColor {
-		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.design.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.design.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibEyeOuterColor: NSColor {
-		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.design.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.design.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibEyePupilColor: NSColor {
-		get { NSColor(cgColor: (self.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.design.style.eyePupilStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.design.style.eyePupilStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibBackgroundColor: NSColor {
-		get { NSColor(cgColor: (self.style.eyePupilStyle as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
-		set { self.style.eyePupilStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.design.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
+		set { self.design.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 #else
 	@IBInspectable var ibForegroundColor: UIColor {
-		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.design.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.design.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibEyeOuterColor: UIColor {
-		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.design.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.design.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibEyePupilColor: UIColor {
-		get { UIColor(cgColor: (self.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.design.style.eyePupilStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.design.style.eyePupilStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	@IBInspectable var ibBackgroundColor: UIColor {
-		get { UIColor(cgColor: (self.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
-		set { self.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.design.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
+		set { self.design.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 
@@ -179,7 +179,7 @@ extension QRCodeView {
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
-		self.qrCodeContent.draw(ctx: ctx, rect: self.bounds, style: self.style)
+		self.qrCodeContent.draw(ctx: ctx, rect: self.bounds, design: self.design)
 	}
 
 	// Build up the qr representation

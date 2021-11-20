@@ -24,8 +24,33 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode {
-	/// QR Code styler
+	/// The design for the qr code output
+	@objc(QRCodeDesign) class Design: NSObject {
+
+		/// Convenience for objc
+		@objc public static func create() -> Design { return Design() }
+
+		/// The display style for the qr code.
+		@objc public var style = QRCode.Style()
+
+		/// The drawing shape for the qr code.
+		@objc public var shape = QRCode.Shape()
+
+		/// Copy the design
+		public func copyDesign() -> Design {
+			let c = Design()
+			c.shape = self.shape.copyShape()
+			c.style = self.style.copyStyle()
+			return c
+		}
+	}
+
+	/// Represents the shape when generating the qr code
 	@objc(QRCodeStyle) class Style: NSObject {
+
+		/// Convenience for objc
+		@objc public static func create() -> Style { return Style() }
+
 		/// The foreground style for the QR code
 		@objc public var foregroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
 		/// The background style for the QR code. If nil, no background is drawn
@@ -36,21 +61,23 @@ public extension QRCode {
 		/// The border around the eye.  By default, this is the same color as the foregroundStyle
 		@objc public var eyeOuterStyle: QRCodeFillStyleGenerator?
 
-		/// The drawing shape for the qr code.
-		@objc public var shape = QRCode.Shape()
-
 		/// Copy the style
 		public func copyStyle() -> Style {
 			let c = Style()
-			c.shape = self.shape.copyShape()
 			c.foregroundStyle = self.foregroundStyle.copyStyle()
 			c.backgroundStyle = self.backgroundStyle?.copyStyle()
+			c.eyePupilStyle = self.eyePupilStyle?.copyStyle()
+			c.eyeOuterStyle = self.eyeOuterStyle?.copyStyle()
 			return c
 		}
 	}
 
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeShape) class Shape: NSObject {
+
+		/// Convenience for objc
+		@objc public static func create() -> Shape { return Shape() }
+
 		/// The shape of the pixels.
 		///
 		/// Defaults to simple square 'pixels'

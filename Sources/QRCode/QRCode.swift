@@ -305,12 +305,12 @@ public extension QRCode {
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	///   - scale: The scale
-	///   - style: The style to use when generating the image
+	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred
 	@objc func image(
 		_ size: CGSize,
 		scale: CGFloat = 1,
-		style: QRCode.Style = QRCode.Style()
+		design: QRCode.Design = QRCode.Design()
 	) -> CGImage? {
 		let width = Int(size.width)
 		let height = Int(size.height)
@@ -332,7 +332,7 @@ public extension QRCode {
 		context.translateBy(x: 0, y: -size.height)
 
 		// Draw the qr with the required styles
-		self.draw(ctx: context, rect: CGRect(origin: .zero, size: size), style: style)
+		self.draw(ctx: context, rect: CGRect(origin: .zero, size: size), design: design)
 
 		let im = context.makeImage()
 		return im
@@ -342,12 +342,12 @@ public extension QRCode {
 	/// - Parameters:
 	///   - size: The page size of the generated PDF
 	///   - pdfResolution: The resolution of the pdf output
-	///   - style: The style to apply to the QR Code when generating
+	///   - design: The design to use when generating the pdf output
 	/// - Returns: A data object containing the PDF representation of the QR code
 	@objc func pdfData(
 		_ size: CGSize,
 		pdfResolution: CGFloat = 72.0,
-		style: QRCode.Style = QRCode.Style()
+		design: QRCode.Design = QRCode.Design()
 	) -> Data? {
 		// Create a PDF context with a single page, and draw into that
 		return UsingSinglePagePDFContext(size: size, pdfResolution: pdfResolution) { ctx, drawRect in
@@ -357,12 +357,15 @@ public extension QRCode {
 			ctx.concatenate(af)
 
 			// Draw the qr with the required styles
-			self.draw(ctx: ctx, rect: drawRect, style: style)
+			self.draw(ctx: ctx, rect: drawRect, design: design)
 		}
 	}
 
 	/// Draw the current qrcode into the context using the specified style
-	@objc func draw(ctx: CGContext, rect: CGRect, style: QRCode.Style) {
+	@objc func draw(ctx: CGContext, rect: CGRect, design: QRCode.Design) {
+
+		let style = design.style
+
 		// Fill the background first
 		if let background = style.backgroundStyle {
 			ctx.saveGState()
@@ -371,21 +374,21 @@ public extension QRCode {
 		}
 
 		// Draw the outer eye
-		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: style.shape)
+		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 		ctx.saveGState()
 		let outerStyle = style.eyeOuterStyle ?? style.foregroundStyle
 		outerStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
 		ctx.restoreGState()
 
 		// Draw the eye 'pupil'
-		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: style.shape)
+		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
 		ctx.saveGState()
 		let pupilStyle = style.eyePupilStyle ?? style.foregroundStyle
 		pupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
 		ctx.restoreGState()
 
 		// Now, the 'on' pixels
-		let qrPath = self.path(rect.size, components: .onPixels, shape: style.shape)
+		let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape)
 		ctx.saveGState()
 		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
 		ctx.restoreGState()

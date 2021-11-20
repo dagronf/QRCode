@@ -8,9 +8,9 @@ final class QRCodeTests: XCTestCase {
         // results.
         //XCTAssertEqual(QRCodeView().text, "Hello, World!")
 
-		 let q = QRCode.Message.Mail(mailTo: "poodlebox@pobox.eu",
-											  subject: "This is a test!",
-											  body: "Groovy and wonderful bits")
+//		 let q = QRCode.Message.Mail(mailTo: "poodlebox@pobox.eu",
+//											  subject: "This is a test!",
+//											  body: "Groovy and wonderful bits")
 
     }
 }
