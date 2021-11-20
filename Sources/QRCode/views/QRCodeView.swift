@@ -108,9 +108,19 @@ public extension QRCodeView {
 		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	@IBInspectable var ibEyeOuterColor: NSColor {
+		get { NSColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+	}
+
+	@IBInspectable var ibEyePupilColor: NSColor {
+		get { NSColor(cgColor: (self.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+	}
+
 	@IBInspectable var ibBackgroundColor: NSColor {
-		get { NSColor(cgColor: (self.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
-		set { self.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.style.eyePupilStyle as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
+		set { self.style.eyePupilStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 #else
 	@IBInspectable var ibForegroundColor: UIColor {
@@ -118,10 +128,22 @@ public extension QRCodeView {
 		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	@IBInspectable var ibEyeOuterColor: UIColor {
+		get { UIColor(cgColor: (self.style.foregroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.style.foregroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+	}
+
+	@IBInspectable var ibEyePupilColor: UIColor {
+		get { UIColor(cgColor: (self.style.eyeOuterStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.style.eyeOuterStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
+	}
+
 	@IBInspectable var ibBackgroundColor: UIColor {
 		get { UIColor(cgColor: (self.style.backgroundStyle as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
 		set { self.style.backgroundStyle = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
+
+
 #endif
 
 	override func prepareForInterfaceBuilder() {

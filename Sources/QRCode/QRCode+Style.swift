@@ -31,11 +31,12 @@ public extension QRCode {
 		/// The background style for the QR code. If nil, no background is drawn
 		@objc public var backgroundStyle: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 
-		/// The pupil of the eye.  By default, this is the same color as the foregroundStyle
-		@objc public var eyePupilStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		/// The pupil of the eye. By default, this is the same color as the foregroundStyle
+		@objc public var eyePupilStyle: QRCodeFillStyleGenerator?
 		/// The border around the eye.  By default, this is the same color as the foregroundStyle
-		@objc public var eyeOuterStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		@objc public var eyeOuterStyle: QRCodeFillStyleGenerator?
 
+		/// The drawing shape for the qr code.
 		@objc public var shape = QRCode.Shape()
 
 		/// Copy the style
@@ -80,6 +81,3 @@ public extension QRCode {
 	func fill(ctx: CGContext, rect: CGRect)
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
-
-
-

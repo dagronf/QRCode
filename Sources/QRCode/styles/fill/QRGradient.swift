@@ -54,8 +54,6 @@ import Foundation
 	/// - Parameters:
 	///   - pins: The color pins to use when generating the gradient
 	///   - colorspace: The colorspace to use. If not specified uses DeviceRGB
-	///   - start: The fractional position within the drawing rectangle to START the gradient at (0,0 == top left, 1,1 == bottom right)
-	///   - end: The fractional position within the drawing rectangle to END the gradient at (0,0 == top left, 1,1 == bottom right)
 	@objc public init?(
 		pins: [Pin],
 		colorspace: CGColorSpace? = CGColorSpaceCreateDeviceRGB()

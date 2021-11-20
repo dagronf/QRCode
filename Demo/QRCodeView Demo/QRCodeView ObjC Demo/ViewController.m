@@ -26,9 +26,10 @@
 	// Set the foreground color to a solid red
 	
 	style.foregroundStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+	style.eyeOuterStyle = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
 
 	// Use the leaf style
-	style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];
+	style.shape.eyeShape = [[QRCodeEyeShapeLeaf alloc] init];
 
 	// Generate the image
 	CGImageRef image = [code image: CGSizeMake(400, 400)

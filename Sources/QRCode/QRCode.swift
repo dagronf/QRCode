@@ -373,13 +373,15 @@ public extension QRCode {
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: style.shape)
 		ctx.saveGState()
-		style.eyeOuterStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
+		let outerStyle = style.eyeOuterStyle ?? style.foregroundStyle
+		outerStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
 		ctx.restoreGState()
 
 		// Draw the eye 'pupil'
 		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: style.shape)
 		ctx.saveGState()
-		style.eyePupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
+		let pupilStyle = style.eyePupilStyle ?? style.foregroundStyle
+		pupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
 		ctx.restoreGState()
 
 		// Now, the 'on' pixels
