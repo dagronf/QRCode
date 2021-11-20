@@ -1,11 +1,43 @@
 //
-//  File.swift
-//
+//  utils.swift
 //
 //  Created by Darren Ford on 20/11/21.
+//  Copyright © 2021 Darren Ford. All rights reserved.
+//
+//  MIT license
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial
+//  portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+//  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+//  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 import AppKit
+
+// MARK: - stdin handling
+
+func readSTDIN() -> String? {
+	var input: String?
+
+	while let line = readLine() {
+		if input == nil {
+			input = line
+		}
+		else {
+			input! += "\n" + line
+		}
+	}
+
+	return input
+}
 
 // MARK: - Image output handling
 
@@ -68,7 +100,15 @@ func temporaryFile(extn: String) -> URL {
 func parseColor(_ string: String?) -> CGColor? {
 	guard let s = string else { return nil }
 	let comp = s.split(separator: ",").map { String($0) }
-	let fls = comp.compactMap { Float($0) }
+	let fls = comp.compactMap { Float($0) }.map { max(0, min(1, $0)) }
 	guard fls.count == 4 else { return nil }
 	return CGColor(red: CGFloat(fls[0]), green: CGFloat(fls[1]), blue: CGFloat(fls[2]), alpha: CGFloat(fls[3]))
+}
+
+// MARK: - Ints
+
+extension Int {
+	@inlinable @inline(__always) var isOdd: Bool {
+		self % 2 == 1
+	}
 }

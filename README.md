@@ -34,6 +34,7 @@ It's nice to have a simple, quick drop-in component for displaying a QR code.
 * Generate images or scalable PDFs.
 * Configurable designs
 * Configurable fill styles for image generation
+* Command line tool for generating qr codes from the command line
 
 ## QRCode
 

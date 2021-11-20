@@ -1,8 +1,23 @@
 //
-//  File.swift
-//
+//  qrcodegen.swift
 //
 //  Created by Darren Ford on 19/11/21.
+//  Copyright © 2021 Darren Ford. All rights reserved.
+//
+//  MIT license
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial
+//  portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+//  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+//  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 import AppKit
@@ -10,23 +25,48 @@ import ArgumentParser
 import Foundation
 import QRCode
 
+enum SupportedExtensions: String {
+	case png
+	case pdf
+	case ascii
+	case smallascii
+
+	var fileBased: Bool {
+		return self == .png || self == .pdf
+	}
+}
+
 struct QRCodeGen: ParsableCommand {
 	// @Flag(help: "Generate a QR code.")
+
+	static var configuration: CommandConfiguration {
+		CommandConfiguration(
+			abstract: "Create a qr code",
+			discussion: """
+	* If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
+	* If you don't specify an output file, the generated qr code will be written to a temporary file
+	and presented in Preview
+	"""
+		)
+	}
 
 	@Argument(help: "The QR code dimension.")
 	var dimension: Double
 
-	@Option(name: [.customShort("i"), .long], help: "The input file")
+	@Option(help: "The file containing the content for the QR code")
 	var inputFile: String?
 
-	@Option(name: [.customShort("o"), .long], help: "The output file")
+	@Option(help: "The output file")
 	var outputFile: String?
 
-	@Option(name: [.customShort("t"), .long], help: "The text")
+	@Option(help: "The output format (png [default],pdf,ascii,smallascii)")
+	var outputFormat: String?
+
+	@Option(name: [.customShort("t"), .long], help: "The text to be stored in the QR code")
 	var text: String?
 
-	@Option(name: [.customShort("f"), .long], help: "The output format (png [default], pdf)")
-	var format: String?
+	@Flag(name: [.customShort("s"), .long], help: "Silence any output")
+	var silence = false
 
 	@Option(name: [.customShort("c"), .long], help: "The level of error correction. (low [\"L\"], medium [\"M\", default], high [\"Q\"], max [\"H\"])")
 	var errorCorrection: String?
@@ -41,20 +81,24 @@ struct QRCodeGen: ParsableCommand {
 	@Option(name: [.customShort("n"), .long], help: "The data shape inset")
 	var inset: Double?
 
-	@Option(name: [.long], help: "The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
-	var bgc: String?
-
-	@Option(name: [.long], help: "The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
-	var dc: String?
-
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("r"), .long], help: "The data shape corner radius fractional value (0.0 -> 1.0)")
 	var dataShapeCornerRadius: Double?
 
+	@Option(name: [.long], help: "The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var bgColor: String?
+
+	@Option(name: [.long], help: "The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var dataColor: String?
+
+	@Option(name: [.long], help: "The eye color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var eyeColor: String?
+
+	@Option(name: [.long], help: "The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	var pupilColor: String?
+
 	func run() throws {
 		let data: Data
-
-		Swift.print("got here")
 
 		let outputSize = CGSize(width: self.dimension, height: self.dimension)
 
@@ -65,25 +109,33 @@ struct QRCodeGen: ParsableCommand {
 			guard let s = t.data(using: .utf8) else { return }
 			data = s
 		}
-		else if let t = stdinText {
+		else if let t = readSTDIN() {
 			Swift.print("reading from stdin")
 			guard let s = t.data(using: .utf8) else { return }
 			data = s
 		}
 		else {
-			return
+			QRCodeGen.exit(withError: ExitCode(-1))
 		}
 
 		let style = QRCode.Style()
 
 		// Colors
 
-		if let backgroundColor = parseColor(self.bgc) {
+		if let backgroundColor = parseColor(self.bgColor) {
 			style.backgroundStyle = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
-		if let dataColor = parseColor(self.dc) {
+		if let dataColor = parseColor(self.dataColor) {
 			style.foregroundStyle = QRCode.FillStyle.Solid(dataColor)
+		}
+
+		if let eyeColor = parseColor(self.eyeColor) {
+			style.eyeOuterStyle = QRCode.FillStyle.Solid(eyeColor)
+		}
+
+		if let pupilColor = parseColor(self.pupilColor) {
+			style.eyePupilStyle = QRCode.FillStyle.Solid(pupilColor)
 		}
 
 		// The eye shape
@@ -91,21 +143,21 @@ struct QRCodeGen: ParsableCommand {
 		if let name = eyeShape {
 			guard let shape = EyeShapeFactory.named(name) else {
 				Swift.print("Unknown eye style '\(name)'.")
-				let known = EyeShapeFactory.knownTypes.joined(separator: ", ")
-				Swift.print("Available eye styles are \(known) ")
-				return
+				let known = EyeShapeFactory.knownTypes.joined(separator: ",")
+				Swift.print("Available eye styles are \(known)")
+				QRCodeGen.exit(withError: ExitCode(-2))
 			}
 			style.shape.eyeShape = shape
 		}
 
 		// The data shape
 
-		let dataShapeName = dataShape ?? "square"
+		let dataShapeName = self.dataShape ?? "square"
 		guard let shape = DataShapeFactory.named(dataShapeName, inset: inset ?? 0, cornerRadiusFraction: dataShapeCornerRadius ?? 0) else {
 			Swift.print("Unknown data style '\(dataShapeName)'.")
 			let known = DataShapeFactory.knownTypes.joined(separator: ",")
 			Swift.print("Available data styles are \(known) ")
-			return
+			QRCodeGen.exit(withError: ExitCode(-3))
 		}
 		style.shape.dataShape = shape
 
@@ -120,24 +172,20 @@ struct QRCodeGen: ParsableCommand {
 			case "max": errorCorrection = .max
 			default:
 				Swift.print("Unknown error correction level '\(ec)'.")
-				// QRCodeGen.exit(withError: error)
-				return
+				QRCodeGen.exit(withError: ExitCode(-4))
 			}
 		}
 
 		// Output format
+		let extnString = self.outputFormat ?? "png"
+		guard let outputType = SupportedExtensions(rawValue: extnString) else {
+			Swift.print("Unknown output format '\(self.outputFormat ?? "")'. Supported formats are png,pdf,ascii,smallascii.")
+			QRCodeGen.exit(withError: ExitCode(-5))
+		}
 
-		let outputExtn: String = {
-			if format == nil || format == "png" {
-				return "png"
-			}
-			else if format == "pdf" {
-				return format!
-			}
-			else {
-				fatalError()
-			}
-		}()
+		if !self.silence, self.dimension > 8192 {
+			Swift.print("WARNING: Large image size. Suggest using PDF output at a smaller size")
+		}
 
 		// Output URL
 
@@ -146,63 +194,87 @@ struct QRCodeGen: ParsableCommand {
 				return URL(fileURLWithPath: o)
 			}
 			else {
-				return temporaryFile(extn: outputExtn)
+				return temporaryFile(extn: outputType.rawValue)
 			}
 		}()
 
 		let qrCode = QRCode(data, errorCorrection: errorCorrection)
 
-		if format == nil || format == "png" {
-			guard
-				let image = qrCode.image(outputSize, scale: 1, style: style)
-			else {
-				return
+		switch outputType {
+		case .png:
+			guard let image = qrCode.image(outputSize, scale: 1, style: style) else {
+				Swift.print("Unable to generate image from qrcode")
+				QRCodeGen.exit(withError: ExitCode(-6))
 			}
 			let nsImage = NSImage(cgImage: image, size: .zero)
-			try writeImage(image: nsImage, usingType: .png, withSizeInPixels: outputSize, to: outURL)
-		}
-		else if format == "pdf" {
-			guard
-				let data = qrCode.pdfData(outputSize, style: style),
-				let _ = try? data.write(to: outURL, options: .atomic)
-			else {
-				return
+			do {
+				try writeImage(image: nsImage, usingType: .png, withSizeInPixels: outputSize, to: outURL)
+			}
+			catch {
+				Swift.print("Unable to write to output file \(outURL.absoluteString) - error was \(error)")
+				QRCodeGen.exit(withError: ExitCode(-7))
+			}
+
+		case .pdf:
+			guard let data = qrCode.pdfData(outputSize, style: style) else {
+				Swift.print("Unable to write to output file \(outURL.absoluteString)")
+				QRCodeGen.exit(withError: ExitCode(-8))
+			}
+			do {
+				try data.write(to: outURL, options: .atomic)
+			}
+			catch {
+				Swift.print("Unable to write to output file \(outURL.absoluteString)")
+				QRCodeGen.exit(withError: ExitCode(-9))
+			}
+
+		case .ascii:
+			for row in 0 ..< qrCode.current.rows {
+				var rowString = ""
+				for col in 0 ..< qrCode.current.columns {
+					if qrCode.current[row, col] == true {
+						rowString += "██"
+					}
+					else {
+						rowString += "  "
+					}
+				}
+				Swift.print(rowString)
+			}
+
+		case .smallascii:
+			for row in stride(from: 0, to: qrCode.current.rows, by: 2) {
+				var rowString = ""
+				for col in 0 ..< qrCode.current.columns {
+					let top = qrCode.current[row, col]
+
+					if row <= qrCode.current.rows - 2 {
+						let bottom = qrCode.current[row + 1, col]
+						if top,!bottom { rowString += "▀" }
+						if !top, bottom { rowString += "▄" }
+						if top, bottom { rowString += "█" }
+						if !top, !bottom { rowString += " " }
+					}
+					else {
+						if top { rowString += "▀" }
+						else { rowString += " " }
+					}
+				}
+				Swift.print(rowString)
+			}
+			if qrCode.current.rows.isOdd {
+				Swift.print(String(repeating: " ", count: qrCode.current.columns))
 			}
 		}
-		else {
-			return
-		}
 
-		if outputFile == nil {
+		if outputType.fileBased && self.outputFile == nil {
 			// If the output file isn't specified, just open it using the default application
 			NSWorkspace.shared.open(outURL)
 		}
 	}
 }
 
-func readSTDIN() -> String? {
-	var input: String?
-
-	while let line = readLine() {
-		if input == nil {
-			input = line
-		}
-		else {
-			input! += "\n" + line
-		}
-	}
-
-	return input
-}
-
-var stdinText: String?
-
-if CommandLine.arguments.count == 1 || CommandLine.arguments.last == "-" {
-	if CommandLine.arguments.last == "-" {
-		CommandLine.arguments.removeLast()
-	}
-	stdinText = readSTDIN()
-}
+// MARK: - main application
 
 // Remove the application name
 let args = [String](CommandLine.arguments.dropFirst())

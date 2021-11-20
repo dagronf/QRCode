@@ -370,8 +370,20 @@ public extension QRCode {
 			ctx.restoreGState()
 		}
 
-		// Now, the pixels
-		let qrPath = self.path(rect.size, shape: style.shape)
+		// Draw the outer eye
+		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: style.shape)
+		ctx.saveGState()
+		style.eyeOuterStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
+		ctx.restoreGState()
+
+		// Draw the eye 'pupil'
+		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: style.shape)
+		ctx.saveGState()
+		style.eyePupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
+		ctx.restoreGState()
+
+		// Now, the 'on' pixels
+		let qrPath = self.path(rect.size, components: .onPixels, shape: style.shape)
 		ctx.saveGState()
 		style.foregroundStyle.fill(ctx: ctx, rect: rect, path: qrPath)
 		ctx.restoreGState()

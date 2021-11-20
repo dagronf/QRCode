@@ -30,6 +30,12 @@ public extension QRCode {
 		@objc public var foregroundStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
 		/// The background style for the QR code. If nil, no background is drawn
 		@objc public var backgroundStyle: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
+
+		/// The pupil of the eye.  By default, this is the same color as the foregroundStyle
+		@objc public var eyePupilStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		/// The border around the eye.  By default, this is the same color as the foregroundStyle
+		@objc public var eyeOuterStyle: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+
 		@objc public var shape = QRCode.Shape()
 
 		/// Copy the style
