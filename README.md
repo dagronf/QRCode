@@ -1,6 +1,6 @@
 # QRCode
 
-A simple and quick macOS/iOS/tvOS QR Code generator for SwiftUI, Swift and Objective-C.
+A simple and quick macOS/iOS/tvOS QR Code generator library for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
@@ -25,13 +25,17 @@ A simple and quick macOS/iOS/tvOS QR Code generator for SwiftUI, Swift and Objec
 
 ## Why?
 
-It's nice to have a simple, quick drop-in component for displaying a QR code.
+It's nice to have a simple, quick drop-in component for displaying a QR code when you need one :-).
+
+This also contains a command-line application for generating a qrcode from the command line (`qrcodegen`).
 
 ## Features
 
 * Supports Swift and Objective-C
+* Generate a QR code without access to a UI.
+* Supports all error correction levels
 * Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS)
-* Generate images or scalable PDFs.
+* Generate images, scalable PDFs and `CGPath`
 * Configurable designs
 * Configurable fill styles for image generation
 * Command line tool for generating qr codes from the command line
@@ -41,23 +45,25 @@ It's nice to have a simple, quick drop-in component for displaying a QR code.
 The QRCode class is the core generator class. It is not tied to any presentation medium.
 
 You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using
-Swift you can additionally retrieve the raw qr code data as a 2D array of Bool.
+Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
 
 <details>
 <summary>Example</summary>
  
 ```swift
-let c = QRCode()
-c.update(text: "This is my QR code", errorCorrection: .max)
+let qrCode = QRCode()
 
-// Generate a path containing the QR code
-let path = c.path(CGSize(width: 400, height: 400))
+// Create a qr code containing "Example Text" and set the error correction to maximum ('H') 
+qrCode.update(text: "Example text", errorCorrection: .max)
+
+// Generate a CGPath object containing the QR code
+let path = qrCode.path(CGSize(width: 400, height: 400))
 
 // Generate an image using the default styling (square, black foreground, white background)
-let image = c.image(CGSize(width: 400, height: 400))
+let image = qrCode.image(CGSize(width: 400, height: 400))
 
 // Generate pdf data containing the qr code
-let pdfdata = c.pdfData(CGSize(width: 400, height: 400))
+let pdfdata = qrCode.pdfData(CGSize(width: 400, height: 400))
 ```
 
 </details>
@@ -175,17 +181,11 @@ There are a number of built-in formatters for some common QR Code types. These c
 
 ### SwiftUI
 
-`QRCodeUI` is the SwiftUI implementation which presents as a Shape. So anything you can do with a (eg.) SwiftUI Rectangle shape you 
-can do with a QRCode.
+`QRCodeUI` is the SwiftUI implementation which presents as a Shape. So anything you can do with any SwiftUI shape object 
+(eg. a rectangle) you can now do with a styled QRCode shape outline. 
 
 For example, you can use `.fill` to set the color content (eg. a linear gradient, solid color etc), add a drop shadow,
 add a transform etc...
-
-
-| Parameter         | Type                         | Description                                            |
-|-------------------|------------------------------|--------------------------------------------------------|
-| `data`            | `Data`                       | The QR Code content                                    |
-| `errorCorrection` | `QRCodeView.ErrorCorrection` | The level of error collection when generating the code |
 
 ### Modifiers
 

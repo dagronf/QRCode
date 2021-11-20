@@ -47,8 +47,7 @@ extension AppDelegate {
 
 		let c = QRCode()
 		c.update(message: QRCode.Message.Link(string: "https://www.apple.com.au")!, errorCorrection: .max)
-		let im = c.image(CGSize(width: 400, height: 400), design: design)
-		let iii = NSImage(cgImage: im!, size: .zero)
+		let iii = c.nsImage(CGSize(width: 400, height: 400), design: design)!
 		Swift.print(iii)
 	}
 }

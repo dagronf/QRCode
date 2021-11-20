@@ -45,10 +45,10 @@ struct QRCodeGen: ParsableCommand {
 		CommandConfiguration(
 			abstract: "Create a qr code",
 			discussion: """
-	* If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
-	* If you don't specify an output file, the generated qr code will be written to a temporary file
-	and presented in Preview
-	"""
+* If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
+* If you don't specify an output file, the generated qr code will be written to a temporary file
+  and opened in the default application.
+"""
 		)
 	}
 

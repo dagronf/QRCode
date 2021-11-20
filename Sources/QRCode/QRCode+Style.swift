@@ -34,11 +34,11 @@ public extension QRCode {
 		/// Convenience initializer for objc
 		@objc public static func create() -> Design { return Design() }
 
-		/// The display style for the qr code.
-		@objc public var style = QRCode.Style()
-
 		/// The drawing shape for the qr code.
 		@objc public var shape = QRCode.Shape()
+		
+		/// The display style for the qr code.
+		@objc public var style = QRCode.Style()
 
 		/// Copy the design
 		public func copyDesign() -> Design {

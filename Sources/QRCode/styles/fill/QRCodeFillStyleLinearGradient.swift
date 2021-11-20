@@ -68,6 +68,7 @@ public extension QRCode.FillStyle {
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
+		/// Create a copy of the style
 		public func copyStyle() -> QRCodeFillStyleGenerator {
 			return LinearGradient(
 				self.gradient.copyGradient(),
