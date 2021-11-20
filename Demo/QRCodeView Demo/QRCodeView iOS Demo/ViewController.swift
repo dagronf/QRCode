@@ -5,15 +5,20 @@
 //  Created by Darren Ford on 9/11/21.
 //
 
+import QRCode
 import UIKit
 
 class ViewController: UIViewController {
+	@IBOutlet var qrCodeView: QRCodeView!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+
+		// Put a custom eye design
+		let eyeShape = QRCode.EyeShape.RoundedOuter()
+		self.qrCodeView.design.shape.eye = eyeShape
+
+		let dataShape = QRCode.DataShape.Horizontal(inset: 0.1, cornerRadiusFraction: 1)
+		self.qrCodeView.design.shape.data = dataShape
 	}
-
-
 }
-

@@ -17,27 +17,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZHz-cN-jSC" customClass="QRCodeView" customModule="QRCode">
-                                <rect key="frame" x="20" y="44" width="250" height="250"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="10" verticalHuggingPriority="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZHz-cN-jSC" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="77" y="323" width="260" height="260"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ZHz-cN-jSC" secondAttribute="height" multiplier="1:1" id="3Xv-iw-Q0E"/>
+                                    <constraint firstAttribute="width" constant="260" id="Idq-ad-7QU"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibForegroundColor">
-                                        <color key="value" systemColor="systemIndigoColor"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="Testing the QRView for iOS targets"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                        <color key="value" red="0.14026922653108873" green="0.13745216328272736" blue="0.33269563268442626" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                        <color key="value" red="1" green="0.97549992767423266" blue="0.74109951540623498" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibEyeOuterColor">
-                                        <color key="value" red="0.85366278890000002" green="0.49959516529999998" blue="0.49142730239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibEyeColor">
+                                        <color key="value" red="0.26134853675717218" green="0.15141784842553238" blue="0.1493204916399874" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPupilColor">
+                                        <color key="value" red="0.21092865346117581" green="0.34618140048668034" blue="0.1895222496643772" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="ibCorrectionLevel">
+                                        <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="8QY-04-9Tx"/>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="sh1-yG-zNm"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="qrCodeView" destination="ZHz-cN-jSC" id="mdb-6W-up2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -47,9 +63,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemIndigoColor">
-            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

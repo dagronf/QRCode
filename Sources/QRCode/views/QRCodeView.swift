@@ -103,17 +103,17 @@ public extension QRCodeView {
 	}
 
 #if os(macOS)
-	@IBInspectable var ibForegroundColor: NSColor {
+	@IBInspectable var ibDataColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
-	@IBInspectable var ibEyeOuterColor: NSColor {
+	@IBInspectable var ibEyeColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
-	@IBInspectable var ibEyePupilColor: NSColor {
+	@IBInspectable var ibPupilColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
@@ -123,17 +123,17 @@ public extension QRCodeView {
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 #else
-	@IBInspectable var ibForegroundColor: UIColor {
+	@IBInspectable var ibDataColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
-	@IBInspectable var ibEyeOuterColor: UIColor {
+	@IBInspectable var ibEyeColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
-	@IBInspectable var ibEyePupilColor: UIColor {
+	@IBInspectable var ibPupilColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}

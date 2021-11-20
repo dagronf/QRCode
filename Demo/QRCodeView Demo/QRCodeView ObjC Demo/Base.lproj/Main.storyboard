@@ -714,7 +714,7 @@
                                 <rect key="frame" x="20" y="20" width="440" height="230"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is an Objective-C test"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibForegroundColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
                                         <color key="value" red="0.53686392309999997" green="0.40097856520000003" blue="0.67384272810000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">

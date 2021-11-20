@@ -24,10 +24,14 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode {
-	/// The design for the qr code output
+	/// The design for the qr code output.
+	///
+	/// This combines :-
+	/// * a 'shape' (the outline shape of the component of the qr code), and
+	/// * a 'style' (the fill styles for each component of the qr code)
 	@objc(QRCodeDesign) class Design: NSObject {
 
-		/// Convenience for objc
+		/// Convenience initializer for objc
 		@objc public static func create() -> Design { return Design() }
 
 		/// The display style for the qr code.
@@ -48,7 +52,7 @@ public extension QRCode {
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeStyle) class Style: NSObject {
 
-		/// Convenience for objc
+		/// Convenience initializer for objc
 		@objc public static func create() -> Style { return Style() }
 
 		/// The style for the data component QR code
@@ -78,7 +82,7 @@ public extension QRCode {
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeShape) class Shape: NSObject {
 
-		/// Convenience for objc
+		/// Convenience initializer for objc
 		@objc public static func create() -> Shape { return Shape() }
 
 		/// The shape of the pixels.

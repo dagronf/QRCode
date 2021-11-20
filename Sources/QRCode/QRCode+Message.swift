@@ -24,6 +24,8 @@ import Foundation
 
 /// Protocol for generating data from a formatted QR Code message
 @objc public protocol QRCodeMessageFormatter {
+
+	/// Must be supplied in order to get the message's formatted data
 	var data: Data { get }
 }
 
