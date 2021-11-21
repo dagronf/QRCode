@@ -30,11 +30,12 @@ import QRCode
 enum SupportedExtensions: String {
 	case png
 	case pdf
+	case jpg
 	case ascii
 	case smallascii
 
 	var fileBased: Bool {
-		return self == .png || self == .pdf
+		return self == .png || self == .pdf || self == .jpg
 	}
 }
 
@@ -63,6 +64,9 @@ struct QRCodeGen: ParsableCommand {
 
 	@Option(help: "The output format (png [default],pdf,ascii,smallascii)")
 	var outputFormat: String?
+
+	@Option(help: "The output format compression factor (if the output format supports it, png,jpg)")
+	var outputCompression: Double?
 
 	@Option(name: [.customShort("t"), .long], help: "The text to be stored in the QR code")
 	var text: String?
@@ -182,9 +186,11 @@ struct QRCodeGen: ParsableCommand {
 		// Output format
 		let extnString = self.outputFormat ?? "png"
 		guard let outputType = SupportedExtensions(rawValue: extnString) else {
-			Swift.print("Unknown output format '\(self.outputFormat ?? "")'. Supported formats are png,pdf,ascii,smallascii.")
+			Swift.print("Unknown output format '\(self.outputFormat ?? "")'. Supported formats are png,jpg,pdf,ascii,smallascii.")
 			QRCodeGen.exit(withError: ExitCode(-5))
 		}
+
+		let outputCompr = max(0.0, min(1.0, outputCompression ?? 1.0))
 
 		if !self.silence, self.dimension > 8192 {
 			Swift.print("WARNING: Large image size. Suggest using PDF output at a smaller size")
@@ -211,7 +217,31 @@ struct QRCodeGen: ParsableCommand {
 			}
 			let nsImage = NSImage(cgImage: image, size: .zero)
 			do {
-				try writeImage(image: nsImage, usingType: .png, withSizeInPixels: outputSize, to: outURL)
+				try writeImage(
+					image: nsImage,
+					usingType: .png,
+					withSizeInPixels: outputSize,
+					compressionFactor: outputCompr,
+					to: outURL)
+			}
+			catch {
+				Swift.print("Unable to write to output file \(outURL.absoluteString) - error was \(error)")
+				QRCodeGen.exit(withError: ExitCode(-7))
+			}
+
+		case .jpg:
+			guard let image = qrCode.image(outputSize, scale: 1, design: design) else {
+				Swift.print("Unable to generate image from qrcode")
+				QRCodeGen.exit(withError: ExitCode(-6))
+			}
+			let nsImage = NSImage(cgImage: image, size: .zero)
+			do {
+				try writeImage(
+					image: nsImage,
+					usingType: .jpeg,
+					withSizeInPixels: outputSize,
+					compressionFactor: outputCompr,
+					to: outURL)
 			}
 			catch {
 				Swift.print("Unable to write to output file \(outURL.absoluteString) - error was \(error)")

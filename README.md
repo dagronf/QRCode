@@ -38,7 +38,7 @@ This also contains a command-line application for generating a qrcode from the c
 * Generate images, scalable PDFs and `CGPath`
 * Configurable designs
 * Configurable fill styles for image generation
-* Command line tool for generating qr codes from the command line
+* Command line tool for generating qr codes from the command line (macOS 10.13+)
 
 ## QRCode
 

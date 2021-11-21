@@ -69,6 +69,7 @@ func writeImage(
 	image: NSImage,
 	usingType type: NSBitmapImageRep.FileType,
 	withSizeInPixels size: NSSize?,
+	compressionFactor: CGFloat = 1.0,
 	to url: URL
 ) throws {
 	if let size = size {
@@ -76,7 +77,7 @@ func writeImage(
 	}
 	let rep = unscaledBitmapImageRep(forImage: image)
 
-	guard let data = rep.representation(using: type, properties: [.compressionFactor: 1.0]) else {
+	guard let data = rep.representation(using: type, properties: [.compressionFactor: compressionFactor]) else {
 		preconditionFailure()
 	}
 
