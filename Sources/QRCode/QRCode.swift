@@ -278,26 +278,6 @@ public extension QRCode {
 	}
 }
 
-// MARK: - Eye positioning/paths
-
-extension QRCode {
-	// Is the row/col within an 'eye' of the qr code?
-	func isEyePixel(_ row: Int, _ col: Int) -> Bool {
-		if row < 9 {
-			if col < 9 {
-				return true
-			}
-			if col >= (self.pixelSize - 9) {
-				return true
-			}
-		}
-		else if row >= (self.pixelSize - 9), col < 9 {
-			return true
-		}
-		return false
-	}
-}
-
 // MARK: - Imaging
 
 public extension QRCode {
@@ -368,37 +348,57 @@ public extension QRCode {
 
 		// Fill the background first
 		if let background = style.background {
-			ctx.saveGState()
-			background.fill(ctx: ctx, rect: rect)
-			ctx.restoreGState()
+			ctx.usingGState { context in
+				background.fill(ctx: context, rect: rect)
+			}
 		}
 
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
-		ctx.saveGState()
-		let outerStyle = style.eye ?? style.data
-		outerStyle.fill(ctx: ctx, rect: rect, path: eyeOuterPath)
-		ctx.restoreGState()
+		ctx.usingGState { context in
+			let outerStyle = style.eye ?? style.data
+			outerStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
+		}
 
 		// Draw the eye 'pupil'
 		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
-		ctx.saveGState()
-		let pupilStyle = style.pupil ?? style.eye ?? style.data
-		pupilStyle.fill(ctx: ctx, rect: rect, path: eyePupilPath)
-		ctx.restoreGState()
+		ctx.usingGState { context in
+			let pupilStyle = style.pupil ?? style.eye ?? style.data
+			pupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
+		}
 
 		// Now, the 'on' pixels
 		let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape)
-		ctx.saveGState()
-		style.data.fill(ctx: ctx, rect: rect, path: qrPath)
-		ctx.restoreGState()
+		ctx.usingGState { context in
+			style.data.fill(ctx: context, rect: rect, path: qrPath)
+		}
 
 		// The 'off' pixels ONLY IF the user specifies both a data inverted shape and a data inverted style.
 		if let s = style.dataInverted, let _ = design.shape.dataInverted {
 			let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape)
-			ctx.saveGState()
-			s.fill(ctx: ctx, rect: rect, path: qrPath)
-			ctx.restoreGState()
+			ctx.usingGState { context in
+				s.fill(ctx: context, rect: rect, path: qrPath)
+			}
 		}
+	}
+}
+
+// MARK: - Eye positioning/paths
+
+internal extension QRCode {
+	// Is the row/col within an 'eye' of the qr code?
+	func isEyePixel(_ row: Int, _ col: Int) -> Bool {
+		if row < 9 {
+			if col < 9 {
+				return true
+			}
+			if col >= (self.pixelSize - 9) {
+				return true
+			}
+		}
+		else if row >= (self.pixelSize - 9), col < 9 {
+			return true
+		}
+		return false
 	}
 }

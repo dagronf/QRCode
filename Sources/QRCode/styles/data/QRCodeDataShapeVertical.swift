@@ -39,7 +39,7 @@ public extension QRCode.DataShape {
 		let cornerRadiusFraction: CGFloat
 		@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
 			self.inset = inset
-			self.cornerRadiusFraction = min(1, max(0, cornerRadiusFraction))
+			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 			super.init()
 		}
 		
