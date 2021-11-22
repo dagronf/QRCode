@@ -383,6 +383,56 @@ public extension QRCode {
 	}
 }
 
+// MARK: - Ascii representations
+
+public extension QRCode {
+
+	/// Return an ASCII representation of the QR code using the extended ASCII code set
+	///
+	/// Only makes sense if presented using a fixed-width font
+	@objc func asciiRepresentation() -> String {
+		var result = ""
+		for row in 0 ..< self.current.rows {
+			for col in 0 ..< self.current.columns {
+				if self.current[row, col] == true {
+					result += "██"
+				}
+				else {
+					result += "  "
+				}
+			}
+			result += "\n"
+		}
+		return result
+	}
+
+	/// Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
+	///
+	/// Only makes sense if presented using a fixed-width font
+	@objc func smallAsciiRepresentation() -> String {
+		var result = ""
+		for row in stride(from: 0, to: self.current.rows, by: 2) {
+			for col in 0 ..< self.current.columns {
+				let top = self.current[row, col]
+
+				if row <= self.current.rows - 2 {
+					let bottom = self.current[row + 1, col]
+					if top,!bottom { result += "▀" }
+					if !top, bottom { result += "▄" }
+					if top, bottom { result += "█" }
+					if !top, !bottom { result += " " }
+				}
+				else {
+					if top { result += "▀" }
+					else { result += " " }
+				}
+			}
+			result += "\n"
+		}
+		return result
+	}
+}
+
 // MARK: - Eye positioning/paths
 
 internal extension QRCode {

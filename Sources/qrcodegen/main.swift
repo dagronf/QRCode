@@ -129,19 +129,23 @@ struct QRCodeGen: ParsableCommand {
 
 		// Colors
 
-		if let backgroundColor = parseColor(self.bgColor) {
+		if let archive = self.bgColor,
+			let backgroundColor = CGColor.UnarchiveSRGBA(archive) {
 			design.style.background = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
-		if let dataColor = parseColor(self.dataColor) {
+		if let archive = self.dataColor,
+			let dataColor = CGColor.UnarchiveSRGBA(archive) {
 			design.style.data = QRCode.FillStyle.Solid(dataColor)
 		}
 
-		if let eyeColor = parseColor(self.eyeColor) {
+		if let archive = self.eyeColor,
+			let eyeColor = CGColor.UnarchiveSRGBA(archive) {
 			design.style.eye = QRCode.FillStyle.Solid(eyeColor)
 		}
 
-		if let pupilColor = parseColor(self.pupilColor) {
+		if let archive = self.pupilColor,
+			let pupilColor = CGColor.UnarchiveSRGBA(archive) {
 			design.style.pupil = QRCode.FillStyle.Solid(pupilColor)
 		}
 
@@ -262,42 +266,10 @@ struct QRCodeGen: ParsableCommand {
 			}
 
 		case .ascii:
-			for row in 0 ..< qrCode.current.rows {
-				var rowString = ""
-				for col in 0 ..< qrCode.current.columns {
-					if qrCode.current[row, col] == true {
-						rowString += "██"
-					}
-					else {
-						rowString += "  "
-					}
-				}
-				Swift.print(rowString)
-			}
+			Swift.print(qrCode.asciiRepresentation())
 
 		case .smallascii:
-			for row in stride(from: 0, to: qrCode.current.rows, by: 2) {
-				var rowString = ""
-				for col in 0 ..< qrCode.current.columns {
-					let top = qrCode.current[row, col]
-
-					if row <= qrCode.current.rows - 2 {
-						let bottom = qrCode.current[row + 1, col]
-						if top,!bottom { rowString += "▀" }
-						if !top, bottom { rowString += "▄" }
-						if top, bottom { rowString += "█" }
-						if !top, !bottom { rowString += " " }
-					}
-					else {
-						if top { rowString += "▀" }
-						else { rowString += " " }
-					}
-				}
-				Swift.print(rowString)
-			}
-			if qrCode.current.rows.isOdd {
-				Swift.print(String(repeating: " ", count: qrCode.current.columns))
-			}
+			Swift.print(qrCode.smallAsciiRepresentation())
 		}
 
 		if outputType.fileBased && self.outputFile == nil {

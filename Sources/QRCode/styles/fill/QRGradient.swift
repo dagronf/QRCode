@@ -58,7 +58,8 @@ import Foundation
 		pins: [Pin],
 		colorspace: CGColorSpace? = CGColorSpaceCreateDeviceRGB()
 	) {
-		self.pins = pins
+		// Sort by the position from 0 -> 1
+		self.pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
 
 		let cgcolors: [CGColor] = self.pins.map { $0.color }
 		let positions: [CGFloat] = self.pins.map { $0.position }
@@ -70,5 +71,74 @@ import Foundation
 			return nil
 		}
 		self.cgGradient = gr
+	}
+}
+
+public extension QRGradient {
+
+	// Format (all values fractional between 0.0 and 1.0):
+	// red,green,blue,alpha,position|red,green,blue,alpha,position|red,green,blue,alpha,position:...
+	//  0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0
+
+	/// Create a string 'archive' of the qr gradient
+	@objc func archive() -> String? {
+		var result = ""
+		for pin in self.pins {
+			if result.count > 0 { result += "|" }
+			guard
+				let pc = pin.color.converted(
+					to: CGColorSpace(name: CGColorSpace.genericRGBLinear)!,
+					intent: .defaultIntent,
+					options: nil),
+				let comps = pc.components,
+				pc.numberOfComponents == 4
+			else {
+				return nil
+			}
+			result += "\(pin.position):\(comps[0]),\(comps[1]),\(comps[2]),\(comps[3])"
+		}
+		return result
+	}
+
+	/// Create a QRGradient from a qrgradient archive format
+	/// - Parameter content: The archive 'string'
+	/// - Returns: The QRGradient, or nil if the content didn't contain a valid qrgradient archive
+	@objc static func Unarchive(from content: String) -> QRGradient? {
+
+		// Split out the pins
+		let pinsS = content.split(separator: "|")
+
+		// If the number of pins is < 2, then its an invalid gradient
+		guard pinsS.count > 1 else { return nil }
+
+		var pins: [Pin] = []
+
+		for pinS in pinsS {
+
+			// Pin format is "0.5: 1, 0, 0, 0.1"
+
+			let grPin = pinS
+				.split(separator: ":")                             // Split into pin:color
+				.map { $0.trimmingCharacters(in: .whitespaces) }   // Trim whitespace on each component
+			guard grPin.count == 2 else { return nil }
+
+			// First component is the fractional pin position
+			guard var pos = CGFloat(grPin[0]) else { return nil }
+			pos = pos.clamped(to: 0.0 ... 1.0)
+
+			// Second component is the RGBA color component
+			let compsS = grPin[1].split(separator: ",")
+			let comps: [CGFloat] = compsS
+				.map { $0.trimmingCharacters(in: .whitespaces) }    // Trim whitespaces
+				.compactMap { CGFloat($0) }                         // Attempt to convert each component to a CGFloat
+				.map { $0.clamped(to: 0 ... 1) }                    // Clamp the value to 0 -> 1
+			guard comps.count == 4 else { return nil }
+
+			let pin = Pin(CGColor(red: comps[0], green: comps[1], blue: comps[2], alpha: comps[3]), pos)
+			pins.append(pin)
+		}
+
+		pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
+		return QRGradient(pins: pins)
 	}
 }

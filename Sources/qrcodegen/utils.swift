@@ -95,21 +95,3 @@ func temporaryFile(extn: String) -> URL {
 	)
 	.appendingPathComponent(UUID().uuidString + "." + extn)
 }
-
-// MARK: - Simple color parsing
-
-func parseColor(_ string: String?) -> CGColor? {
-	guard let s = string else { return nil }
-	let comp = s.split(separator: ",").map { String($0) }
-	let fls = comp.compactMap { Float($0) }.map { max(0, min(1, $0)) }
-	guard fls.count == 4 else { return nil }
-	return CGColor(red: CGFloat(fls[0]), green: CGFloat(fls[1]), blue: CGFloat(fls[2]), alpha: CGFloat(fls[3]))
-}
-
-// MARK: - Ints
-
-extension Int {
-	@inlinable @inline(__always) var isOdd: Bool {
-		self % 2 == 1
-	}
-}

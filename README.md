@@ -132,6 +132,24 @@ Generate an image from the QR Code.
 
 Generate a scalable PDF from the QRCode with the applied stylings and resolution
 
+### Generate a text representation of the QR code
+
+```swift
+@objc func asciiRepresentation() -> String
+```
+
+Return an ASCII representation of the QR code using the extended ASCII code set
+
+Only makes sense if presented using a fixed-width font.
+	
+```swift
+@objc func smallAsciiRepresentation() -> String
+```
+
+Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
+
+Only makes sense if presented using a fixed-width font.
+
 ## Design
 
 `QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
