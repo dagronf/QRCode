@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		2345F6D227488AC40087569B /* All */ = {
+		2345F6D227488AC40087569B /* All macOS */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 2345F6D527488AC40087569B /* Build configuration list for PBXAggregateTarget "All" */;
+			buildConfigurationList = 2345F6D527488AC40087569B /* Build configuration list for PBXAggregateTarget "All macOS" */;
 			buildPhases = (
 			);
 			dependencies = (
@@ -19,8 +19,20 @@
 				2345F6DD27488ADA0087569B /* PBXTargetDependency */,
 				2345F6DF27488ADA0087569B /* PBXTargetDependency */,
 			);
-			name = All;
+			name = "All macOS";
 			productName = All;
+		};
+		236B0438274B5DEA004F0146 /* All iOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 236B0439274B5DEA004F0146 /* Build configuration list for PBXAggregateTarget "All iOS" */;
+			buildPhases = (
+			);
+			dependencies = (
+				236B043D274B5DFA004F0146 /* PBXTargetDependency */,
+				236B043F274B5DFA004F0146 /* PBXTargetDependency */,
+			);
+			name = "All iOS";
+			productName = "All iOS";
 		};
 /* End PBXAggregateTarget section */
 
@@ -89,6 +101,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2348FB9E273A310A004DB2BF;
 			remoteInfo = "QRCodeView SwiftUI Demo (iOS)";
+		};
+		236B043C274B5DFA004F0146 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2348FB9E273A310A004DB2BF;
+			remoteInfo = "QRCodeView SwiftUI Demo (iOS)";
+		};
+		236B043E274B5DFA004F0146 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2348FB7D273A2EF3004DB2BF;
+			remoteInfo = "QRCodeView iOS Demo";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -424,6 +450,9 @@
 					2348FBA3273A310A004DB2BF = {
 						CreatedOnToolsVersion = 13.1;
 					};
+					236B0438274B5DEA004F0146 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					23F8AE64273A493A00ED6288 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -447,7 +476,8 @@
 				2348FB9E273A310A004DB2BF /* QRCodeView SwiftUI Demo (iOS) */,
 				2348FBA3273A310A004DB2BF /* QRCodeView SwiftUI Demo (macOS) */,
 				23F8AE64273A493A00ED6288 /* QRCodeView ObjC Demo */,
-				2345F6D227488AC40087569B /* All */,
+				2345F6D227488AC40087569B /* All macOS */,
+				236B0438274B5DEA004F0146 /* All iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -574,6 +604,16 @@
 			isa = PBXTargetDependency;
 			target = 2348FB9E273A310A004DB2BF /* QRCodeView SwiftUI Demo (iOS) */;
 			targetProxy = 2345F6E0274890860087569B /* PBXContainerItemProxy */;
+		};
+		236B043D274B5DFA004F0146 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2348FB9E273A310A004DB2BF /* QRCodeView SwiftUI Demo (iOS) */;
+			targetProxy = 236B043C274B5DFA004F0146 /* PBXContainerItemProxy */;
+		};
+		236B043F274B5DFA004F0146 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2348FB7D273A2EF3004DB2BF /* QRCodeView iOS Demo */;
+			targetProxy = 236B043E274B5DFA004F0146 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -994,6 +1034,26 @@
 			};
 			name = Release;
 		};
+		236B043A274B5DEA004F0146 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		236B043B274B5DEA004F0146 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
 		23F8AE75273A493C00ED6288 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1055,7 +1115,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2345F6D527488AC40087569B /* Build configuration list for PBXAggregateTarget "All" */ = {
+		2345F6D527488AC40087569B /* Build configuration list for PBXAggregateTarget "All macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2345F6D327488AC40087569B /* Debug */,
@@ -1105,6 +1165,15 @@
 			buildConfigurations = (
 				2348FBB1273A310A004DB2BF /* Debug */,
 				2348FBB2273A310A004DB2BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		236B0439274B5DEA004F0146 /* Build configuration list for PBXAggregateTarget "All iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				236B043A274B5DEA004F0146 /* Debug */,
+				236B043B274B5DEA004F0146 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
