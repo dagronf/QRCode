@@ -27,7 +27,7 @@ public extension QRCode.FillStyle {
 	/// A simple radial gradient fill
 	@objc(QRCodeFillStyleRadialGradient)
 	class RadialGradient: NSObject, QRCodeFillStyleGenerator {
-		let gradient: QRGradient
+		let gradient: DSFGradient
 
 		// For radial gradients, the center point
 		public var centerPoint: CGPoint
@@ -36,7 +36,7 @@ public extension QRCode.FillStyle {
 		/// - Parameters:
 		///   - gradient: The color gradient to use
 		///   - centerPoint: The fractional position within the fill rect to start the radial fill (0.0 -> 1.0)
-		@objc public init(_ gradient: QRGradient, centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)) {
+		@objc public init(_ gradient: DSFGradient, centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)) {
 			self.gradient = gradient
 			self.centerPoint = centerPoint
 		}

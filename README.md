@@ -4,17 +4,21 @@ A simple and quick macOS/iOS/tvOS QR Code generator library for SwiftUI, Swift a
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
-    <img src="https://img.shields.io/badge/macOS-10.11+-red" />
-    <img src="https://img.shields.io/badge/iOS-13+-blue" />
-    <img src="https://img.shields.io/badge/tvOS-13+-orange" />
-</p>
-<p align="center">
-    <img src="https://img.shields.io/badge/Swift-blue" />
-    <img src="https://img.shields.io/badge/ObjectiveC-green" />
     <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
     </a>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/macOS-10.11+-red" />
+    <img src="https://img.shields.io/badge/iOS-13+-blue" />
+    <img src="https://img.shields.io/badge/tvOS-13+-orange" />
+    <img src="https://img.shields.io/badge/macCatalyst-1.0+-purple" />
+</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-5.4-blueviolet" />
+    <img src="https://img.shields.io/badge/ObjectiveC-2.0-ff69b4" />
+    <img src="https://img.shields.io/badge/SwiftUI-2.0+-9cf" />
 </p>
 
 <p align="center">
@@ -31,14 +35,14 @@ This also contains a command-line application for generating a qrcode from the c
 
 ## Features
 
-* Supports Swift and Objective-C
+* Supports Swift and Objective-C.
 * Generate a QR code without access to a UI.
-* Supports all error correction levels
-* Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS)
-* Generate images, scalable PDFs and `CGPath`
-* Configurable designs
-* Configurable fill styles for image generation
-* Command line tool for generating qr codes from the command line (macOS 10.13+)
+* Supports all error correction levels.
+* Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS).
+* Generate images, scalable PDFs and `CGPath`.
+* Configurable designs.
+* Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
+* Command line tool for generating qr codes from the command line (macOS 10.13+).
 
 ## QRCode
 
@@ -48,7 +52,7 @@ You can use this class to generate a QR Code and present the result as a `CGPath
 Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
 
 <details>
-<summary>Example</summary>
+<summary>tl;dr Simple Example</summary>
  
 ```swift
 let qrCode = QRCode()
@@ -116,21 +120,33 @@ component using different a different fill style (for example).
    }
 ```
 
-### Generate an image
+### Generating a styled image
 
 ```swift
-@objc func image(_ size: CGSize, scale: CGFloat = 1, style: QRCode.Style = QRCode.Style()) -> CGImage?
+@objc func image(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> CGImage?
 ```
 
-Generate an image from the QR Code.
-
-### Generate a scalable PDF representation of the QR Code
+Generate an image from the QR Code, using an (optional) design object for styling the QR code
 
 ```swift
-@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat, style: QRCode.Style) -> Data?
+@objc func nsImage(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> NSImage?
 ```
 
-Generate a scalable PDF from the QRCode with the applied stylings and resolution
+*(macOS only)* Generate an NSImage from the QR Code, using an (optional) design object for styling the QR code
+
+```swift
+@objc func uiImage(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> UIImage?
+```
+
+*(iOS/tvOS only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
+
+### Generate a styled, scalable PDF representation of the QR Code
+
+```swift
+@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat, design: QRCode.Design = QRCode.Design()) -> Data?
+```
+
+Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution
 
 ### Generate a text representation of the QR code
 
@@ -193,9 +209,11 @@ There are a number of built-in formatters for some common QR Code types. These c
 
 ## Presentation
 
+This library provides drop-in components for presenting a styled QR code.
+
 ### NSView/UIView
 
-`QRCodeView` is an NSView (macOS)/UIView (iOS/tvOS) implementation for displaying the content of a `QRCode` object.
+`QRCodeView` is an `NSView` (macOS)/`UIView` (iOS/tvOS) implementation for displaying the content of a `QRCode` object.
 
 ### SwiftUI
 
@@ -274,6 +292,65 @@ CGImageRef image = [code image: CGSizeMake(400, 400) scale: 1.0 style: style];
 NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
 ```
 </details>
+
+## Demo
+
+There are a number of demo apps which you can find in the `Demo` subfolder.  There are simple demo applications for
+
+* SwiftUI (macOS, iOS, macCatalyst)
+* iOS (Swift, including macCatalyst)
+* macOS (Swift and Objective-C)
+
+## Command line tool
+
+You can build the command line tool by opening a terminal window, `cd` into the QRCode folder and build using
+
+`swift build -c release`
+
+The `qrcodegen` tool can be found in the `.build/release` folder.
+
+
+```zsh
+% .build/release/qrcodegen --help
+OVERVIEW: Create a qr code
+
+* If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
+* If you don't specify an output file, the generated qr code will be written to a temporary file
+  and opened in the default application.
+
+USAGE: qr-code-gen [<options>] <dimension>
+
+ARGUMENTS:
+  <dimension>             The QR code dimension. 
+
+OPTIONS:
+  --input-file <input-file>
+                          The file containing the content for the QR code 
+  --output-file <output-file>
+                          The output file 
+  --output-format <output-format>
+                          The output format (png [default],pdf,ascii,smallascii) 
+  --output-compression <output-compression>
+                          The output format compression factor (if the output format supports it, png,jpg) 
+  -t, --text <text>       The text to be stored in the QR code 
+  -s, --silence           Silence any output 
+  -c, --error-correction <error-correction>
+                          The level of error correction. (low ["L"], medium ["M", default], high ["Q"], max ["H"]) 
+  -e, --eye-shape <eye-shape>
+                          The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin, roundrect, square 
+  -d, --data-shape <data-shape>
+                          The data shape to use. Available shapes are square, circle, roundrect, horizontal, vertical 
+  -n, --inset <inset>     The spacing around each individual pixel in the data section 
+  -r, --data-shape-corner-radius <data-shape-corner-radius>
+                          The data shape corner radius fractional value (0.0 -> 1.0) 
+  --bg-color <bg-color>   The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
+  --data-color <data-color>
+                          The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
+  --eye-color <eye-color> The eye color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
+  --pupil-color <pupil-color>
+                          The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
+  -h, --help              Show help information.
+```
 
 ## License
 

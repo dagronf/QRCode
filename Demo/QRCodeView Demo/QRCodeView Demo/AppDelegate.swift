@@ -28,10 +28,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
 	func generateQRCodeImage() {
-		let gr = QRGradient(pins: [
-			QRGradient.Pin(CGColor(red: 1, green: 0, blue: 0, alpha: 1), 0),
-			QRGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
-			QRGradient.Pin(CGColor(red: 0, green: 0, blue: 1, alpha: 1), 1),
+		let gr = DSFGradient(pins: [
+			DSFGradient.Pin(CGColor(red: 1, green: 0, blue: 0, alpha: 1), 0),
+			DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
+			DSFGradient.Pin(CGColor(red: 0, green: 0, blue: 1, alpha: 1), 1),
 		])!
 
 		let design = QRCode.Design()

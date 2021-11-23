@@ -27,7 +27,7 @@ public extension QRCode.FillStyle {
 	/// A simple linear gradient fill style
 	@objc(QRCodeFillStyleLinearGradient)
 	class LinearGradient: NSObject, QRCodeFillStyleGenerator {
-		let gradient: QRGradient
+		let gradient: DSFGradient
 
 		// For linear
 		@objc public var startPoint: CGPoint
@@ -39,7 +39,7 @@ public extension QRCode.FillStyle {
 		///   - startPoint: The fractional position within the fill rect to start the gradient (0.0 -> 1.0)
 		///   - endPoint: The fractional position within the fill rect to end the gradient (0.0 -> 1.0)
 		@objc public init(
-			_ gradient: QRGradient,
+			_ gradient: DSFGradient,
 			startPoint: CGPoint = CGPoint(x: 0, y: 0),
 			endPoint: CGPoint = CGPoint(x: 1, y: 1)
 		) {

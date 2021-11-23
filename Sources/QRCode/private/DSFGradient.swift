@@ -1,5 +1,5 @@
 //
-//  QRGradient.swift
+//  DSFGradient.swift
 //
 //  Created by Darren Ford on 16/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -23,31 +23,44 @@
 import CoreGraphics
 import Foundation
 
-/// A gradient
-@objc(QRGradient) public class QRGradient: NSObject {
-	@objc(QRGradientPin) public class Pin: NSObject {
-		let color: CGColor
-		let position: CGFloat
+/// A color gradient represented as 'pins' of color along a 0.0 -> 1.0 range
+@objc(DSFGradient) public class DSFGradient: NSObject, NSCopying {
+	@objc(DSFGradientPin) public class Pin: NSObject, NSCopying {
+		@objc public let position: CGFloat
+		@objc public let color: CGColor
+
+		/// Create a color pin
 		@objc public init(_ color: CGColor, _ position: CGFloat) {
 			self.color = color
 			self.position = max(0, min(position, 1.0))
 		}
 
-		public func copyPin() -> Pin {
-			let p = Pin(self.color.copy()!, self.position)
-			return p
+		/// Make a copy of the pin
+		@objc @inlinable public func copyPin() -> Pin {
+			return Pin(self.color.copy()!, self.position)
+		}
+
+		/// NSCopying conformance for objc
+		@objc public func copy(with zone: NSZone? = nil) -> Any {
+			return self.copyPin()
 		}
 	}
 
 	// The pinned colors along the gradient path
-	private let pins: [Pin]
+	@objc public let pins: [Pin]
 
 	// The CoreGraphics gradient object
-	public let cgGradient: CGGradient
+	@objc public let cgGradient: CGGradient
 
-	public func copyGradient() -> QRGradient {
+	/// Make a copy of the gradient
+	@objc @inlinable public func copyGradient() -> DSFGradient {
 		let pins = self.pins.map { $0.copyPin() }
-		return QRGradient(pins: pins)!
+		return DSFGradient(pins: pins)!
+	}
+
+	/// NSCopying conformance for objc
+	@objc public func copy(with zone: NSZone? = nil) -> Any {
+		return self.copyGradient()
 	}
 
 	/// Create a linear gradient
@@ -58,7 +71,7 @@ import Foundation
 		pins: [Pin],
 		colorspace: CGColorSpace? = CGColorSpaceCreateDeviceRGB()
 	) {
-		// Sort by the position from 0 -> 1
+		// Sort by the position from 0 (start position) -> 1 (end position)
 		self.pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
 
 		let cgcolors: [CGColor] = self.pins.map { $0.color }
@@ -74,14 +87,14 @@ import Foundation
 	}
 }
 
-public extension QRGradient {
+public extension DSFGradient {
 
 	// Format (all values fractional between 0.0 and 1.0):
 	// red,green,blue,alpha,position|red,green,blue,alpha,position|red,green,blue,alpha,position:...
 	//  0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0
 
-	/// Create a string 'archive' of the qr gradient
-	@objc func archive() -> String? {
+	/// Create a string 'archive' of the object
+	@objc func asRGBAGradientString() -> String? {
 		var result = ""
 		for pin in self.pins {
 			if result.count > 0 { result += "|" }
@@ -100,10 +113,10 @@ public extension QRGradient {
 		return result
 	}
 
-	/// Create a QRGradient from a qrgradient archive format
+	/// Create a DSFGradient from a DSFGradient archive format
 	/// - Parameter content: The archive 'string'
-	/// - Returns: The QRGradient, or nil if the content didn't contain a valid qrgradient archive
-	@objc static func Unarchive(from content: String) -> QRGradient? {
+	/// - Returns: The DSFGradient, or nil if the content didn't contain a valid DSFGradient archive
+	@objc static func FromRGBAGradientString(_ content: String) -> DSFGradient? {
 
 		// Split out the pins
 		let pinsS = content.split(separator: "|")
@@ -115,10 +128,10 @@ public extension QRGradient {
 
 		for pinS in pinsS {
 
-			// Pin format is "0.5: 1, 0, 0, 0.1"
+			// Pin format is "0.5:1,0,0,0.1"
 
 			let grPin = pinS
-				.split(separator: ":")                             // Split into pin:color
+				.split(separator: ":")                             // Split into position:color
 				.map { $0.trimmingCharacters(in: .whitespaces) }   // Trim whitespace on each component
 			guard grPin.count == 2 else { return nil }
 
@@ -139,6 +152,6 @@ public extension QRGradient {
 		}
 
 		pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
-		return QRGradient(pins: pins)
+		return DSFGradient(pins: pins)
 	}
 }
