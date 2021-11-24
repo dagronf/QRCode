@@ -25,7 +25,7 @@ public extension QRCode {
 
 public class QRCodeDataShapeFactory {
 	public var knownTypes: [String] {
-		["square", "circle", "roundrect", "horizontal", "vertical"]
+		["square", "circle", "roundrect", "horizontal", "vertical", "roundedpath"]
 	}
 
 	public func named(_ name: String, inset: CGFloat, cornerRadiusFraction: CGFloat) -> QRCodeDataShapeHandler? {
@@ -43,6 +43,9 @@ public class QRCodeDataShapeFactory {
 		}
 		else if name == "vertical" {
 			return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		}
+		else if name == "roundedpath" {
+			return QRCode.DataShape.RoundedPath()
 		}
 		return nil
 	}

@@ -24,6 +24,7 @@ struct ContentView: View {
 		case circle
 		case horizontal
 		case vertical
+		case roundedpath
 	}
 	@State var dataShape: DataShapeType = .square
 
@@ -55,6 +56,8 @@ struct ContentView: View {
 				return QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 1)
 			case .vertical:
 				return QRCode.DataShape.Vertical(inset: 1, cornerRadiusFraction: 1)
+			case .roundedpath:
+				return QRCode.DataShape.RoundedPath()
 			}
 		}()
 
@@ -93,6 +96,7 @@ struct ContentView: View {
 					Text("Circle").tag(DataShapeType.circle)
 					Text("Horizontal").tag(DataShapeType.horizontal)
 					Text("Vertical").tag(DataShapeType.vertical)
+					Text("Rounded Path").tag(DataShapeType.roundedpath)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
 					Text("Square").tag(EyeShapeType.square)
