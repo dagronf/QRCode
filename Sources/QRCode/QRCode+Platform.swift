@@ -70,6 +70,12 @@ public extension QRCode {
 		return UIImage(cgImage: qrImage)
 	}
 }
+
+extension CGColor {
+	/// Convenience for a 'clear' color
+	static let clear = CGColor(gray: 0, alpha: 0)
+}
+
 #endif
 
 #if canImport(SwiftUI)

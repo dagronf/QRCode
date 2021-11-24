@@ -347,10 +347,9 @@ public extension QRCode {
 		let style = design.style
 
 		// Fill the background first
-		if let background = style.background {
-			ctx.usingGState { context in
-				background.fill(ctx: context, rect: rect)
-			}
+		let backgroundStyle = style.background ?? QRCode.FillStyle.clear
+		ctx.usingGState { context in
+			backgroundStyle.fill(ctx: context, rect: rect)
 		}
 
 		// Draw the outer eye
@@ -373,7 +372,7 @@ public extension QRCode {
 			style.data.fill(ctx: context, rect: rect, path: qrPath)
 		}
 
-		// The 'off' pixels ONLY IF the user specifies both a data inverted shape and a data inverted style.
+		// The 'off' pixels ONLY IF the user specifies both a data inverted shape AND a data inverted style.
 		if let s = style.dataInverted, let _ = design.shape.dataInverted {
 			let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape)
 			ctx.usingGState { context in

@@ -23,10 +23,12 @@
 import Foundation
 import CoreGraphics
 
-/// A simple single-color solid fill style
 public extension QRCode.FillStyle {
+
+	/// A simple single-color solid fill style
 	@objc(QRCodeFillStyleSolid) class Solid: NSObject, QRCodeFillStyleGenerator {
 		let color: CGColor
+		/// Create with a color
 		@objc public init(_ color: CGColor) {
 			self.color = color
 		}

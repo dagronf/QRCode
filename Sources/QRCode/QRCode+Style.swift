@@ -23,6 +23,8 @@
 import CoreGraphics
 import Foundation
 
+// MARK: - The design
+
 public extension QRCode {
 	/// The design for the qr code output.
 	///
@@ -40,6 +42,21 @@ public extension QRCode {
 		/// The display style for the qr code.
 		@objc public var style = QRCode.Style()
 
+		/// Basic initializer for the default style
+		@objc public override init() {
+			super.init()
+		}
+
+		/// Convenience creator for a simple background and foreground color
+		/// - Parameters:
+		///   - foregroundColor: The color to use for the foreground
+		///   - backgroundColor: (Optional) The color to use for the background.
+		@objc public init(foregroundColor: CGColor, backgroundColor: CGColor? = nil) {
+			super.init()
+			self.foregroundColor(foregroundColor)
+				.backgroundColor(backgroundColor)
+		}
+
 		/// Copy the design
 		public func copyDesign() -> Design {
 			let c = Design()
@@ -48,25 +65,51 @@ public extension QRCode {
 			return c
 		}
 	}
+}
 
-	/// Represents the shape when generating the qr code
+// MARK: Some conveniences on the design object
+
+public extension QRCode.Design {
+	/// Set the foreground color for the design
+	/// - Parameter color: The color to set
+	/// - Returns: This design object
+	@discardableResult
+	@objc func foregroundColor(_ color: CGColor) -> QRCode.Design {
+		self.style.data = QRCode.FillStyle.Solid(color)
+		return self
+	}
+
+	/// Set the background color for the design
+	/// - Parameter color: The color to set. If nil, the background color is set to clear
+	/// - Returns: This design object
+	@discardableResult
+	@objc func backgroundColor(_ color: CGColor?) -> QRCode.Design {
+		self.style.background = color.unwrapping { QRCode.FillStyle.Solid($0) } ?? QRCode.FillStyle.Solid(.clear)
+		return self
+	}
+}
+
+// MARK: - The style
+
+public extension QRCode {
+	/// Represents the style when drawing the qr code
 	@objc(QRCodeStyle) class Style: NSObject {
 
 		/// Convenience initializer for objc
 		@objc public static func create() -> Style { return Style() }
 
-		/// The style for the data component QR code
+		/// The background style for the QR code. If nil, no background is drawn
+		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
+
+		/// The style for the data component for the QR code
 		@objc public var data: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
-		/// The style for drawing the non-drawn sections of the qr code.
+		/// The style for drawing the non-drawn sections for the qr code.
 		@objc public var dataInverted: QRCodeFillStyleGenerator?
 
-		/// The border around the eye.  By default, this is the same color as the data
+		/// The border around the eye. By default, this is the same color as the data
 		@objc public var eye: QRCodeFillStyleGenerator?
 		/// The pupil of the eye. By default, this is the same color as the eye, and failing that the data
 		@objc public var pupil: QRCodeFillStyleGenerator?
-
-		/// The background style for the QR code. If nil, no background is drawn
-		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 
 		/// Copy the style
 		public func copyStyle() -> Style {
@@ -78,7 +121,11 @@ public extension QRCode {
 			return c
 		}
 	}
+}
 
+// MARK: - The shape
+
+public extension QRCode {
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeShape) class Shape: NSObject {
 
@@ -110,7 +157,10 @@ public extension QRCode {
 // MARK: - Fill style support
 
 public extension QRCode {
-	@objc(QRCodeFillStyle) class FillStyle: NSObject {}
+	@objc(QRCodeFillStyle) class FillStyle: NSObject {
+		/// Simple convenience for a clear fill
+		@objc public static let clear = FillStyle.Solid(.clear)
+	}
 }
 
 /// A protocol for wrapping fill styles for image generation
