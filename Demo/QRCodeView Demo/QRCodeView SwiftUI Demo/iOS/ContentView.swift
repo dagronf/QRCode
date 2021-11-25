@@ -59,6 +59,7 @@ struct ContentView: View {
 						Text("Leaf").tag(EyeShapeType.leaf)
 						Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
 						Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
+						Text("Squircle").tag(EyeShapeType.squircle)
 					}.pickerStyle(WheelPickerStyle())
 					ColorPicker("Data Color", selection: $dataColor)
 					ColorPicker("Eye Color", selection: $eyeColor)

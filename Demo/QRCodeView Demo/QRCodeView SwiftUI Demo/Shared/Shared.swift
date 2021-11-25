@@ -24,6 +24,7 @@ enum EyeShapeType {
 	case roundedRect
 	case roundedOuter
 	case roundedPointingIn
+	case squircle
 }
 
 func dataShapeHandler(_ dataShape: DataShapeType) -> QRCodeDataShapeHandler {
@@ -57,5 +58,7 @@ func eyeShapeHandler(_ eyeStyle: EyeShapeType) -> QRCodeEyeShapeHandler {
 		return QRCode.EyeShape.RoundedOuter()
 	case .roundedPointingIn:
 		return QRCode.EyeShape.RoundedPointingIn()
+	case .squircle:
+		return QRCode.EyeShape.Squircle()
 	}
 }

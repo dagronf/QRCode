@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 		super.viewDidLoad()
 
 		// Put a custom eye design
-		let eyeShape = QRCode.EyeShape.RoundedOuter()
+	let eyeShape = QRCode.EyeShape.Squircle()
 		self.qrCodeView.design.shape.eye = eyeShape
 
 		let dataShape = QRCode.DataShape.Horizontal(inset: 0.1, cornerRadiusFraction: 1)

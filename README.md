@@ -183,6 +183,14 @@ You can provide a custom fill for any of the individual components (eyes, pupils
 You can provide an `EyeShape` object to style just the eyes of the generated qr code. There are built-in generators for
 square, circle, rounded rectangle, and more.
 
+* `square`: Simple square (default)
+* `circle`: Simple circle
+* `roundrect`: Simple rounded rect
+* `roundedouter`: A square with the outer corner rounded.
+* `roundedpointingin`: A rounded rect with the 'inner' corner as a point
+* `leaf`: An eye that look like a leaf
+* `squircle`: A superellipse (somewhere between a square and a circle)
+
 ### Data shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
@@ -310,7 +318,6 @@ You can build the command line tool by opening a terminal window, `cd` into the 
 
 The `qrcodegen` tool can be found in the `.build/release` folder.
 
-
 ```zsh
 % .build/release/qrcodegen --help
 OVERVIEW: Create a qr code
@@ -338,9 +345,11 @@ OPTIONS:
   -c, --error-correction <error-correction>
                           The level of error correction. (low ["L"], medium ["M", default], high ["Q"], max ["H"]) 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin, roundrect, square 
+                          The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin,
+                          roundrect, squircle, square 
   -d, --data-shape <data-shape>
-                          The data shape to use. Available shapes are square, circle, roundrect, horizontal, vertical, roundedpath
+                          The data shape to use. Available shapes are square, circle, roundrect, horizontal, vertical,
+                          roundedpath 
   -n, --inset <inset>     The spacing around each individual pixel in the data section 
   -r, --data-shape-corner-radius <data-shape-corner-radius>
                           The data shape corner radius fractional value (0.0 -> 1.0) 

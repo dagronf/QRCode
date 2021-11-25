@@ -51,6 +51,7 @@ public class QRCodeEyeShapeFactory {
 			QRCode.EyeShape.RoundedOuter(),
 			QRCode.EyeShape.RoundedPointingIn(),
 			QRCode.EyeShape.RoundedRect(),
+			QRCode.EyeShape.Squircle(),
 			QRCode.EyeShape.Square(),
 		]
 	}
