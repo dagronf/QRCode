@@ -59,6 +59,8 @@
 		234DE70D2745D76000EC7FD2 /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 234DE70C2745D76000EC7FD2 /* QRCodeStatic */; };
 		234DE70F2745D76C00EC7FD2 /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 234DE70E2745D76C00EC7FD2 /* QRCodeStatic */; };
 		235F82752741F1B300E81D98 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235F82742741F1B300E81D98 /* ContentView.swift */; };
+		237E4000274F08AE003E5E24 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E3FFF274F08AE003E5E24 /* Shared.swift */; };
+		237E4001274F08AE003E5E24 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E3FFF274F08AE003E5E24 /* Shared.swift */; };
 		23F8AE69273A493B00ED6288 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE68273A493B00ED6288 /* AppDelegate.m */; };
 		23F8AE6C273A493B00ED6288 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE6B273A493B00ED6288 /* ViewController.m */; };
 		23F8AE6E273A493C00ED6288 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F8AE6D273A493C00ED6288 /* Assets.xcassets */; };
@@ -156,6 +158,7 @@
 		2348FBA6273A310A004DB2BF /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		234DE7042745D72D00EC7FD2 /* QRCode */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QRCode; path = ../..; sourceTree = "<group>"; };
 		235F82742741F1B300E81D98 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		237E3FFF274F08AE003E5E24 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		23F8AE65273A493A00ED6288 /* QRCodeView ObjC Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCodeView ObjC Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F8AE67273A493B00ED6288 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		23F8AE68273A493B00ED6288 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -275,6 +278,7 @@
 			children = (
 				2348FB98273A3109004DB2BF /* QRCodeView_SwiftUI_DemoApp.swift */,
 				2348FB9A273A310A004DB2BF /* Assets.xcassets */,
+				237E3FFF274F08AE003E5E24 /* Shared.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -553,6 +557,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237E4000274F08AE003E5E24 /* Shared.swift in Sources */,
 				235F82752741F1B300E81D98 /* ContentView.swift in Sources */,
 				2348FBA7273A310A004DB2BF /* QRCodeView_SwiftUI_DemoApp.swift in Sources */,
 			);
@@ -562,6 +567,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237E4001274F08AE003E5E24 /* Shared.swift in Sources */,
 				2348FBAA273A310A004DB2BF /* ContentView.swift in Sources */,
 				2348FBA8273A310A004DB2BF /* QRCodeView_SwiftUI_DemoApp.swift in Sources */,
 			);

@@ -17,23 +17,7 @@ struct ContentView: View {
 	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
-	enum DataShapeType {
-		case square
-		case roundrect
-		case circle
-		case horizontal
-		case vertical
-	}
 	@State var dataShape: DataShapeType = .square
-
-	enum EyeShapeType {
-		case square
-		case circle
-		case leaf
-		case roundedRect
-		case roundedOuter
-		case roundedPointingIn
-	}
 	@State var eyeStyle: EyeShapeType = .square
 
 	let gradient = Gradient(colors: [.black, .pink])
@@ -44,37 +28,8 @@ struct ContentView: View {
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
-		let dataShape: QRCodeDataShapeHandler = {
-			switch self.dataShape {
-			case .square:
-				return QRCode.DataShape.Pixel(pixelType: .square)
-			case .roundrect:
-				return QRCode.DataShape.Pixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
-			case .circle:
-				return QRCode.DataShape.Pixel(pixelType: .circle)
-			case .horizontal:
-				return QRCode.DataShape.Horizontal(inset: 0.5, cornerRadiusFraction: 1)
-			case .vertical:
-				return QRCode.DataShape.Vertical(inset: 0.5, cornerRadiusFraction: 1)
-			}
-		}()
-
-		let eyeStyle: QRCodeEyeShapeHandler = {
-			switch self.eyeStyle {
-			case .square:
-				return QRCode.EyeShape.Square()
-			case .roundedRect:
-				return QRCode.EyeShape.RoundedRect()
-			case .circle:
-				return QRCode.EyeShape.Circle()
-			case .leaf:
-				return QRCode.EyeShape.Leaf()
-			case .roundedOuter:
-				return QRCode.EyeShape.RoundedOuter()
-			case .roundedPointingIn:
-				return QRCode.EyeShape.RoundedPointingIn()
-			}
-		}()
+		let dataShape = dataShapeHandler(self.dataShape)
+		let eyeStyle = eyeShapeHandler(self.eyeStyle)
 
 		ScrollView {
 			VStack {
@@ -95,6 +50,7 @@ struct ContentView: View {
 						Text("Circle").tag(DataShapeType.circle)
 						Text("Horizontal").tag(DataShapeType.horizontal)
 						Text("Vertical").tag(DataShapeType.vertical)
+						Text("Rounded Path").tag(DataShapeType.roundedpath)
 					}.pickerStyle(WheelPickerStyle())
 					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
 						Text("Square").tag(EyeShapeType.square)
@@ -132,10 +88,11 @@ struct ContentView: View {
 				.padding()
 
 				QRCodeUI(
-					text: content,
+					text: "A static simple QR code with some basic styling",
 					errorCorrection: .max
 				)!
-					.eyeShape(QRCode.EyeShape.Leaf())
+				.eyeShape(QRCode.EyeShape.Leaf())
+				.dataShape(QRCode.DataShape.RoundedPath())
 				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
 				.shadow(color: .black, radius: 1, x: 1, y: 1)
 				.frame(width: 250, height: 250, alignment: .center)

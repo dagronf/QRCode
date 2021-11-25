@@ -18,24 +18,7 @@ struct ContentView: View {
 	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
-	enum DataShapeType {
-		case square
-		case roundrect
-		case circle
-		case horizontal
-		case vertical
-		case roundedpath
-	}
 	@State var dataShape: DataShapeType = .square
-
-	enum EyeShapeType {
-		case square
-		case circle
-		case leaf
-		case roundedRect
-		case roundedOuter
-		case roundedPointingIn
-	}
 	@State var eyeStyle: EyeShapeType = .square
 
 	var body: some View {
@@ -44,39 +27,9 @@ struct ContentView: View {
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
-		let dataShape: QRCodeDataShapeHandler = {
-			switch self.dataShape {
-			case .square:
-				return QRCode.DataShape.Pixel(pixelType: .square)
-			case .roundrect:
-				return QRCode.DataShape.Pixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
-			case .circle:
-				return QRCode.DataShape.Pixel(pixelType: .circle)
-			case .horizontal:
-				return QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 1)
-			case .vertical:
-				return QRCode.DataShape.Vertical(inset: 1, cornerRadiusFraction: 1)
-			case .roundedpath:
-				return QRCode.DataShape.RoundedPath()
-			}
-		}()
-
-		let eyeStyle: QRCodeEyeShapeHandler = {
-			switch self.eyeStyle {
-			case .square:
-				return QRCode.EyeShape.Square()
-			case .roundedRect:
-				return QRCode.EyeShape.RoundedRect()
-			case .circle:
-				return QRCode.EyeShape.Circle()
-			case .leaf:
-				return QRCode.EyeShape.Leaf()
-			case .roundedOuter:
-				return QRCode.EyeShape.RoundedOuter()
-			case .roundedPointingIn:
-				return QRCode.EyeShape.RoundedPointingIn()
-			}
-		}()
+		
+		let dataShape = dataShapeHandler(self.dataShape)
+		let eyeStyle = eyeShapeHandler(self.eyeStyle)
 
 		HSplitView {
 			VStack {
