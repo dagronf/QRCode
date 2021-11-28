@@ -74,7 +74,7 @@ struct QRCodeGen: ParsableCommand {
 	@Flag(name: [.customShort("s"), .long], help: "Silence any output")
 	var silence = false
 
-	@Option(name: [.customShort("c"), .long], help: "The level of error correction. (low [\"L\"], medium [\"M\", default], high [\"Q\"], max [\"H\"])")
+	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H" (max)"#)
 	var errorCorrection: String?
 
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(EyeShapeFactory.knownTypes.joined(separator: ", "))")
@@ -176,11 +176,11 @@ struct QRCodeGen: ParsableCommand {
 
 		var errorCorrection: QRCode.ErrorCorrection = .default
 		if let ec = self.errorCorrection {
-			switch ec {
-			case "low": errorCorrection = .low
-			case "medium": errorCorrection = .medium
-			case "high": errorCorrection = .high
-			case "max": errorCorrection = .max
+			switch ec.lowercased() {
+			case "l": errorCorrection = .low
+			case "m": errorCorrection = .medium
+			case "q": errorCorrection = .high
+			case "h": errorCorrection = .max
 			default:
 				Swift.print("Unknown error correction level '\(ec)'.")
 				QRCodeGen.exit(withError: ExitCode(-4))

@@ -185,7 +185,7 @@ square, circle, rounded rectangle, and more.
 
 * `square`: Simple square (default)
 * `circle`: Simple circle
-* `roundrect`: Simple rounded rect
+* `roundedrect`: Simple rounded rect
 * `roundedouter`: A square with the outer corner rounded.
 * `roundedpointingin`: A rounded rect with the 'inner' corner as a point
 * `leaf`: An eye that look like a leaf
@@ -198,7 +198,7 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 
 * `square`: A basic square pixel
 * `circle`: A basic circle pixel
-* `roundrect`: A basic rounded rectangle pixel with configurable radius
+* `roundedrect`: A basic rounded rectangle pixel with configurable radius
 * `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
 * `vertical`: The pixels are vertically joined to make continuous vertical bars
 * `roundedpath`: A smooth rounded-edge path
@@ -343,13 +343,14 @@ OPTIONS:
   -t, --text <text>       The text to be stored in the QR code 
   -s, --silence           Silence any output 
   -c, --error-correction <error-correction>
-                          The level of error correction. (low ["L"], medium ["M", default], high ["Q"], max ["H"]) 
+                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H"
+                          (max) 
   -e, --eye-shape <eye-shape>
                           The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin,
-                          roundrect, squircle, square 
+                          roundedrect, squircle, square 
   -d, --data-shape <data-shape>
-                          The data shape to use. Available shapes are square, circle, roundrect, horizontal, vertical,
-                          roundedpath 
+                          The data shape to use. Available shapes are square, circle, roundedrect, horizontal,
+                          vertical, roundedpath 
   -n, --inset <inset>     The spacing around each individual pixel in the data section 
   -r, --data-shape-corner-radius <data-shape-corner-radius>
                           The data shape corner radius fractional value (0.0 -> 1.0) 
@@ -360,7 +361,6 @@ OPTIONS:
   --pupil-color <pupil-color>
                           The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   -h, --help              Show help information.
-```
 
 ## License
 

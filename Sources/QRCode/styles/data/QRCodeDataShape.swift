@@ -25,18 +25,18 @@ public extension QRCode {
 
 public class QRCodeDataShapeFactory {
 	public var knownTypes: [String] {
-		["square", "circle", "roundrect", "horizontal", "vertical", "roundedpath"]
+		["square", "circle", "roundedrect", "horizontal", "vertical", "roundedpath"]
 	}
 
 	public func named(_ name: String, inset: CGFloat, cornerRadiusFraction: CGFloat) -> QRCodeDataShapeHandler? {
 		if name == "square" {
-			return QRCode.DataShape.Pixel(pixelType: .square, inset: inset)
+			return QRCode.DataShape.Square(inset: inset)
 		}
 		else if name == "circle" {
-			return QRCode.DataShape.Pixel(pixelType: .circle, inset: inset)
+			return QRCode.DataShape.Circle(inset: inset)
 		}
-		else if name == "roundrect" {
-			return QRCode.DataShape.Pixel(pixelType: .roundedRect, inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		else if name == "roundedrect" {
+			return QRCode.DataShape.RoundedRect(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 		}
 		else if name == "horizontal" {
 			return QRCode.DataShape.Horizontal(inset: inset, cornerRadiusFraction: cornerRadiusFraction)

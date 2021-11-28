@@ -10,7 +10,7 @@ import QRCode
 
 enum DataShapeType {
 	case square
-	case roundrect
+	case roundedrect
 	case circle
 	case horizontal
 	case vertical
@@ -30,11 +30,11 @@ enum EyeShapeType {
 func dataShapeHandler(_ dataShape: DataShapeType) -> QRCodeDataShapeHandler {
 	switch dataShape {
 	case .square:
-		return QRCode.DataShape.Pixel(pixelType: .square)
-	case .roundrect:
-		return QRCode.DataShape.Pixel(pixelType: .roundedRect, cornerRadiusFraction: 0.7)
+		return QRCode.DataShape.Square()
+	case .roundedrect:
+		return QRCode.DataShape.RoundedRect(cornerRadiusFraction: 0.7)
 	case .circle:
-		return QRCode.DataShape.Pixel(pixelType: .circle)
+		return QRCode.DataShape.Circle()
 	case .horizontal:
 		return QRCode.DataShape.Horizontal(inset: 0.5, cornerRadiusFraction: 1)
 	case .vertical:

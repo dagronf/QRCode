@@ -56,7 +56,7 @@ public extension QRCode.EyeShape {
 		}
 
 		public func pupilPath() -> CGPath {
-			let roundedPupil = CGPath.RoundRect(
+			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerRadius: 6,
 				byRoundingCorners: [.topRight, .bottomLeft]

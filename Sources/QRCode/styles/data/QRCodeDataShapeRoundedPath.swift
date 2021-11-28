@@ -47,44 +47,44 @@ public extension QRCode.DataShape {
 		}()
 
 		static let templateRoundTop: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  topLeftRadius: RoundedPath.DefaultRadius,
 								  topRightRadius: RoundedPath.DefaultRadius)
 		}()
 		static let templateRoundRight: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  topRightRadius: RoundedPath.DefaultRadius,
 								  bottomRightRadius: RoundedPath.DefaultRadius)
 		}()
 		static let templateRoundBottom: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  bottomLeftRadius: RoundedPath.DefaultRadius,
 								  bottomRightRadius: RoundedPath.DefaultRadius)
 		}()
 
 		static let templateRoundLeft: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  topLeftRadius: RoundedPath.DefaultRadius,
 								  bottomLeftRadius: RoundedPath.DefaultRadius)
 		}()
 
 		static let templateBottomRight: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  bottomRightRadius: RoundedPath.DefaultRadius)
 		}()
 
 		static let templateTopRight: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  topRightRadius: RoundedPath.DefaultRadius)
 		}()
 
 		static let templateTopLeft: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  topLeftRadius: RoundedPath.DefaultRadius)
 		}()
 
 		static let templateBottomLeft: CGPath = {
-			CGPath.RoundRect(rect: RoundedPath.DefaultRect,
+			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
 								  bottomLeftRadius: RoundedPath.DefaultRadius)
 		}()
 

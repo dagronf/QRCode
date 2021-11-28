@@ -35,7 +35,7 @@ public extension QRCode {
 		/// The shape of the pixels.
 		///
 		/// Defaults to simple square 'pixels'
-		@objc public var data: QRCodeDataShapeHandler = QRCode.DataShape.Pixel(pixelType: .square)
+		@objc public var data: QRCodeDataShapeHandler = QRCode.DataShape.Square()
 
 		/// The shape for drawing the non-drawn sections of the qr code.
 		@objc public var dataInverted: QRCodeDataShapeHandler?

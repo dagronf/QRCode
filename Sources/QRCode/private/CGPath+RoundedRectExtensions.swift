@@ -23,7 +23,7 @@
 import CoreGraphics.CGPath
 
 extension CGPath {
-	static func RoundRect(rect: CGRect, topLeftRadius: CGSize = .zero, topRightRadius: CGSize = .zero, bottomLeftRadius: CGSize = .zero, bottomRightRadius: CGSize = .zero) -> CGPath {
+	static func RoundedRect(rect: CGRect, topLeftRadius: CGSize = .zero, topRightRadius: CGSize = .zero, bottomLeftRadius: CGSize = .zero, bottomRightRadius: CGSize = .zero) -> CGPath {
 		let path = CGMutablePath()
 
 		let topLeft = rect.origin
@@ -82,17 +82,17 @@ extension CGPath {
 		return path
 	}
 
-	struct RoundRectCorner: OptionSet {
+	struct RoundedRectCorner: OptionSet {
 		public let rawValue: Int8
-		public static let none: RoundRectCorner = []
-		public static let topLeft = RoundRectCorner(rawValue: 1 << 0)
-		public static let topRight = RoundRectCorner(rawValue: 1 << 1)
-		public static let bottomRight = RoundRectCorner(rawValue: 1 << 2)
-		public static let bottomLeft = RoundRectCorner(rawValue: 1 << 3)
-		public static let all = [RoundRectCorner.topLeft, RoundRectCorner.topRight, RoundRectCorner.bottomRight, RoundRectCorner.bottomLeft]
+		public static let none: RoundedRectCorner = []
+		public static let topLeft = RoundedRectCorner(rawValue: 1 << 0)
+		public static let topRight = RoundedRectCorner(rawValue: 1 << 1)
+		public static let bottomRight = RoundedRectCorner(rawValue: 1 << 2)
+		public static let bottomLeft = RoundedRectCorner(rawValue: 1 << 3)
+		public static let all = [RoundedRectCorner.topLeft, RoundedRectCorner.topRight, RoundedRectCorner.bottomRight, RoundedRectCorner.bottomLeft]
 	}
 
-	static func RoundRect(rect: CGRect, cornerRadius: CGFloat, byRoundingCorners corners: RoundRectCorner) -> CGPath {
+	static func RoundedRect(rect: CGRect, cornerRadius: CGFloat, byRoundingCorners corners: RoundedRectCorner) -> CGPath {
 		var topLeft: CGSize = .zero
 		var topRight: CGSize = .zero
 		var bottomLeft: CGSize = .zero
@@ -105,6 +105,6 @@ extension CGPath {
 		if corners.contains(.bottomLeft) { bottomLeft = fixedSize }
 		if corners.contains(.bottomRight) { bottomRight = fixedSize }
 
-		return Self.RoundRect(rect: rect, topLeftRadius: topLeft, topRightRadius: topRight, bottomLeftRadius: bottomLeft, bottomRightRadius: bottomRight)
+		return Self.RoundedRect(rect: rect, topLeftRadius: topLeft, topRightRadius: topRight, bottomLeftRadius: bottomLeft, bottomRightRadius: bottomRight)
 	}
 }

@@ -26,7 +26,6 @@ import Foundation
 public extension QRCode.DataShape {
 	/// A data shape generator where every pixel in the qr code becomes a discrete shape
 	@objc(QRCodeDataShapePixel) class Pixel: NSObject, QRCodeDataShapeHandler {
-
 		public let name: String = "pixel"
 
 		@objc public enum PixelType: Int32 {
@@ -39,7 +38,8 @@ public extension QRCode.DataShape {
 			return Pixel(
 				pixelType: self.pixelType,
 				inset: self.inset,
-				cornerRadiusFraction: self.cornerRadiusFraction)
+				cornerRadiusFraction: self.cornerRadiusFraction
+			)
 		}
 
 		let inset: CGFloat
@@ -103,6 +103,53 @@ public extension QRCode.DataShape {
 
 		public func offPath(size: CGSize, data: QRCode) -> CGPath {
 			return self.path(size: size, data: data, isOn: false)
+		}
+	}
+}
+
+// MARK: - Convenience types
+
+public extension QRCode.DataShape {
+	/// A square pixel shape
+	@objc(QRCodeDataShapeSquare) class Square: Pixel {
+		/// Create
+		/// - Parameters:
+		///   - inset: The inset within the each square to generate the path
+		@objc public init(inset: CGFloat = 0) {
+			super.init(pixelType: .square, inset: inset)
+		}
+
+		override public func copyShape() -> QRCodeDataShapeHandler {
+			return Square(inset: self.inset)
+		}
+	}
+
+	/// A circle pixel shape
+	@objc(QRCodeDataShapeCircle) class Circle: Pixel {
+		/// Create
+		/// - Parameters:
+		///   - inset: The inset within the each circle to generate the path
+		@objc public init(inset: CGFloat = 0) {
+			super.init(pixelType: .circle, inset: inset)
+		}
+
+		override public func copyShape() -> QRCodeDataShapeHandler {
+			return Circle(inset: self.inset)
+		}
+	}
+
+	/// A rounded rect pixel shape
+	@objc(QRCodeDataShapeRoundedRect) class RoundedRect: Pixel {
+		/// Create
+		/// - Parameters:
+		///   - inset: The inset within the each round rect to generate the path
+		///   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
+		@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+			super.init(pixelType: .roundedRect, inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		}
+
+		override public func copyShape() -> QRCodeDataShapeHandler {
+			return RoundedRect(inset: self.inset, cornerRadiusFraction: self.cornerRadiusFraction)
 		}
 	}
 }

@@ -45,7 +45,7 @@ struct ContentView: View {
 				}.pickerStyle(RadioGroupPickerStyle())
 				Picker(selection: $dataShape, label: Text("Data Shape:")) {
 					Text("Square").tag(DataShapeType.square)
-					Text("Round Rect").tag(DataShapeType.roundrect)
+					Text("Round Rect").tag(DataShapeType.roundedrect)
 					Text("Circle").tag(DataShapeType.circle)
 					Text("Horizontal").tag(DataShapeType.horizontal)
 					Text("Vertical").tag(DataShapeType.vertical)
