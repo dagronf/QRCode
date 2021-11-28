@@ -47,6 +47,7 @@ struct ContentView: View {
 					Text("Square").tag(DataShapeType.square)
 					Text("Round Rect").tag(DataShapeType.roundedrect)
 					Text("Circle").tag(DataShapeType.circle)
+					Text("Squircle").tag(DataShapeType.squircle)
 					Text("Horizontal").tag(DataShapeType.horizontal)
 					Text("Vertical").tag(DataShapeType.vertical)
 					Text("Rounded Path").tag(DataShapeType.roundedpath)

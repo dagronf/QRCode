@@ -198,6 +198,7 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 
 * `square`: A basic square pixel
 * `circle`: A basic circle pixel
+* `squircle`: A superellipse (somewhere between a square and a circle)
 * `roundedrect`: A basic rounded rectangle pixel with configurable radius
 * `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
 * `vertical`: The pixels are vertically joined to make continuous vertical bars
@@ -349,8 +350,8 @@ OPTIONS:
                           The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin,
                           roundedrect, squircle, square 
   -d, --data-shape <data-shape>
-                          The data shape to use. Available shapes are square, circle, roundedrect, horizontal,
-                          vertical, roundedpath 
+                          The data shape to use. Available shapes are circle, horizontal, roundedpath, roundedrect,
+                          square, squircle, vertical 
   -n, --inset <inset>     The spacing around each individual pixel in the data section 
   -r, --data-shape-corner-radius <data-shape-corner-radius>
                           The data shape corner radius fractional value (0.0 -> 1.0) 

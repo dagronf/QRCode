@@ -12,6 +12,7 @@ enum DataShapeType {
 	case square
 	case roundedrect
 	case circle
+	case squircle
 	case horizontal
 	case vertical
 	case roundedpath
@@ -32,14 +33,16 @@ func dataShapeHandler(_ dataShape: DataShapeType) -> QRCodeDataShapeHandler {
 	case .square:
 		return QRCode.DataShape.Square()
 	case .roundedrect:
-		return QRCode.DataShape.RoundedRect(cornerRadiusFraction: 0.7)
+		return QRCode.DataShape.RoundedRect(inset: 0.5, cornerRadiusFraction: 0.7)
 	case .circle:
 		return QRCode.DataShape.Circle()
+	case .squircle:
+		return QRCode.DataShape.Squircle(inset: 0.5)
 	case .horizontal:
 		return QRCode.DataShape.Horizontal(inset: 0.5, cornerRadiusFraction: 1)
 	case .vertical:
 		return QRCode.DataShape.Vertical(inset: 0.5, cornerRadiusFraction: 1)
-	case.roundedpath:
+	case .roundedpath:
 		return QRCode.DataShape.RoundedPath()
 	}
 }
