@@ -148,6 +148,7 @@ public extension QRCode {
 		public func copyShape() -> Shape {
 			let c = Shape()
 			c.data = self.data.copyShape()
+			c.dataInverted = self.dataInverted?.copyShape()
 			c.eye = self.eye.copyShape()
 			return c
 		}
