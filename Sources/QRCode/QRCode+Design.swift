@@ -1,5 +1,5 @@
 //
-//  QRCode+Style.swift
+//  QRCode+Design.swift
 //
 //  Created by Darren Ford on 16/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -22,8 +22,6 @@
 
 import CoreGraphics
 import Foundation
-
-// MARK: - The design
 
 public extension QRCode {
 	/// The design for the qr code output.
@@ -87,86 +85,4 @@ public extension QRCode.Design {
 		self.style.background = color.unwrapping { QRCode.FillStyle.Solid($0) } ?? QRCode.FillStyle.Solid(.clear)
 		return self
 	}
-}
-
-// MARK: - The style
-
-public extension QRCode {
-	/// Represents the style when drawing the qr code
-	@objc(QRCodeStyle) class Style: NSObject {
-
-		/// Convenience initializer for objc
-		@objc public static func create() -> Style { return Style() }
-
-		/// The background style for the QR code. If nil, no background is drawn
-		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
-
-		/// The style for the data component for the QR code
-		@objc public var data: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
-		/// The style for drawing the non-drawn sections for the qr code.
-		@objc public var dataInverted: QRCodeFillStyleGenerator?
-
-		/// The border around the eye. By default, this is the same color as the data
-		@objc public var eye: QRCodeFillStyleGenerator?
-		/// The pupil of the eye. By default, this is the same color as the eye, and failing that the data
-		@objc public var pupil: QRCodeFillStyleGenerator?
-
-		/// Copy the style
-		public func copyStyle() -> Style {
-			let c = Style()
-			c.data = self.data.copyStyle()
-			c.background = self.background?.copyStyle()
-			c.eye = self.eye?.copyStyle()
-			c.pupil = self.pupil?.copyStyle()
-			return c
-		}
-	}
-}
-
-// MARK: - The shape
-
-public extension QRCode {
-	/// Represents the shape when generating the qr code
-	@objc(QRCodeShape) class Shape: NSObject {
-
-		/// Convenience initializer for objc
-		@objc public static func create() -> Shape { return Shape() }
-
-		/// The shape of the pixels.
-		///
-		/// Defaults to simple square 'pixels'
-		@objc public var data: QRCodeDataShapeHandler = QRCode.DataShape.Pixel(pixelType: .square)
-
-		/// The shape for drawing the non-drawn sections of the qr code.
-		@objc public var dataInverted: QRCodeDataShapeHandler?
-
-		/// The style of eyes to display
-		///
-		/// Defaults to a simple square eye
-		@objc public var eye: QRCodeEyeShapeHandler = QRCode.EyeShape.Square()
-		/// Make a copy of the content shape
-		public func copyShape() -> Shape {
-			let c = Shape()
-			c.data = self.data.copyShape()
-			c.dataInverted = self.dataInverted?.copyShape()
-			c.eye = self.eye.copyShape()
-			return c
-		}
-	}
-}
-
-// MARK: - Fill style support
-
-public extension QRCode {
-	@objc(QRCodeFillStyle) class FillStyle: NSObject {
-		/// Simple convenience for a clear fill
-		@objc public static let clear = FillStyle.Solid(.clear)
-	}
-}
-
-/// A protocol for wrapping fill styles for image generation
-@objc public protocol QRCodeFillStyleGenerator {
-	func copyStyle() -> QRCodeFillStyleGenerator
-	func fill(ctx: CGContext, rect: CGRect)
-	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
