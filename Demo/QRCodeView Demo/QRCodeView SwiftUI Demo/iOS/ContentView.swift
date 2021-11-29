@@ -20,6 +20,9 @@ struct ContentView: View {
 	@State var dataShape: DataShapeType = .square
 	@State var eyeStyle: EyeShapeType = .square
 
+	@State var dataInset: Double = 0
+	@State var cornerRadiusFraction: Double = 0.5
+
 	let gradient = Gradient(colors: [.black, .pink])
 
 	var body: some View {
@@ -28,7 +31,10 @@ struct ContentView: View {
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
-		let dataShape = dataShapeHandler(self.dataShape)
+		let dataShape = dataShapeHandler(
+			self.dataShape,
+			inset: dataInset,
+			cornerRadiusFraction: cornerRadiusFraction)
 		let eyeStyle = eyeShapeHandler(self.eyeStyle)
 
 		ScrollView {
@@ -44,6 +50,7 @@ struct ContentView: View {
 						Text("High (Q)").tag(QRCode.ErrorCorrection.high)
 						Text("Max (H)").tag(QRCode.ErrorCorrection.max)
 					}.pickerStyle(WheelPickerStyle())
+
 					Picker(selection: $dataShape, label: Text("Data Shape:")) {
 						Text("Square").tag(DataShapeType.square)
 						Text("Round Rect").tag(DataShapeType.roundedrect)
@@ -53,6 +60,9 @@ struct ContentView: View {
 						Text("Vertical").tag(DataShapeType.vertical)
 						Text("Rounded Path").tag(DataShapeType.roundedpath)
 					}.pickerStyle(WheelPickerStyle())
+					Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
+					Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
+
 					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
 						Text("Square").tag(EyeShapeType.square)
 						Text("Round Rect").tag(EyeShapeType.roundedRect)
@@ -62,6 +72,7 @@ struct ContentView: View {
 						Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
 						Text("Squircle").tag(EyeShapeType.squircle)
 					}.pickerStyle(WheelPickerStyle())
+					
 					ColorPicker("Data Color", selection: $dataColor)
 					ColorPicker("Eye Color", selection: $eyeColor)
 					ColorPicker("Pupil Color", selection: $pupilColor)

@@ -21,6 +21,9 @@ struct ContentView: View {
 	@State var dataShape: DataShapeType = .square
 	@State var eyeStyle: EyeShapeType = .square
 
+	@State var dataInset: Double = 0
+	@State var cornerRadiusFraction: Double = 0.5
+
 	var body: some View {
 
 		let qrContent = QRCodeUI(
@@ -28,7 +31,10 @@ struct ContentView: View {
 			errorCorrection: correction
 		)
 		
-		let dataShape = dataShapeHandler(self.dataShape)
+		let dataShape = dataShapeHandler(
+			self.dataShape,
+			inset: dataInset,
+			cornerRadiusFraction: cornerRadiusFraction)
 		let eyeStyle = eyeShapeHandler(self.eyeStyle)
 
 		HSplitView {
@@ -52,6 +58,8 @@ struct ContentView: View {
 					Text("Vertical").tag(DataShapeType.vertical)
 					Text("Rounded Path").tag(DataShapeType.roundedpath)
 				}.pickerStyle(RadioGroupPickerStyle())
+				Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
+				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 				Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
 					Text("Square").tag(EyeShapeType.square)
 					Text("Round Rect").tag(EyeShapeType.roundedRect)

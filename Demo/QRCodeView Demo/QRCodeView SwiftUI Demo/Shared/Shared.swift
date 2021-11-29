@@ -28,20 +28,20 @@ enum EyeShapeType {
 	case squircle
 }
 
-func dataShapeHandler(_ dataShape: DataShapeType) -> QRCodeDataShapeHandler {
+func dataShapeHandler(_ dataShape: DataShapeType, inset: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodeDataShapeHandler {
 	switch dataShape {
 	case .square:
-		return QRCode.DataShape.Square()
+		return QRCode.DataShape.Square(inset: inset)
 	case .roundedrect:
-		return QRCode.DataShape.RoundedRect(inset: 0.5, cornerRadiusFraction: 0.7)
+		return QRCode.DataShape.RoundedRect(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .circle:
-		return QRCode.DataShape.Circle()
+		return QRCode.DataShape.Circle(inset: inset)
 	case .squircle:
-		return QRCode.DataShape.Squircle(inset: 0.5)
+		return QRCode.DataShape.Squircle(inset: inset)
 	case .horizontal:
-		return QRCode.DataShape.Horizontal(inset: 0.5, cornerRadiusFraction: 1)
+		return QRCode.DataShape.Horizontal(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .vertical:
-		return QRCode.DataShape.Vertical(inset: 0.5, cornerRadiusFraction: 1)
+		return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .roundedpath:
 		return QRCode.DataShape.RoundedPath()
 	}
