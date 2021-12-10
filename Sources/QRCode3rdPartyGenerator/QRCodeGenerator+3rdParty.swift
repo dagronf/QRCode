@@ -21,31 +21,38 @@
 //
 
 import Foundation
-import QRCodeGenerator
+import QRCode
 
-internal class QRCodeGenerator_QRCodeGenerator: QRCodeEngine {
+/// A qr code generator that uses QRCodeGenerator (https://github.com/dagronf/swift-qrcode-generator) as its generator.
+/// This is primarily used for WatchOS, which doesn't support CoreImage filters.
+///
+/// The generator library (https://github.com/fwcd/swift-qrcode-generator) is not automatically imported into the
+/// core QRCode module as some projects may not want to link against a 3rd party library for their
+/// macOS/iOS or tvOS application.
+///
+/// By wrapping the 3rd party library in a separate Swift module it provides the flexibility to ignore it if you
+/// don't need it.
+public class QRCodeGenerator_3rdParty: QRCodeEngine {
 
-	/// A generator that uses swift-qrcode-generator as the generation engine
-	/// See: - 
+	public init() {}
+
+	/// Generate the QR code using the custom generator
 	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> Array2D<Bool>? {
-
-		let mappedECC: QRCodeECC = {
-			switch errorCorrection {
-			case .low: return QRCodeECC.low
-			case .medium: return QRCodeECC.medium
-			case .quantize: return QRCodeECC.quartile
-			case .high: return QRCodeECC.high
-			}
-		}()
-
-		guard let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC) else {
+		guard
+			let qrCode = _generate(data, errorCorrection: errorCorrection.ECLevel),
+			qrCode.count > 0,
+			qrCode[0].count > 0 else
+		{
 			return nil
 		}
+		let sz = qrCode[0].count
 
-		var result = Array2D<Bool>(rows: qrCode.size + 2, columns: qrCode.size + 2, initialValue: false)
-		for row in 0 ..< qrCode.size {
-			for col in 0 ..< qrCode.size {
-				result[row + 1, col + 1] = qrCode.getModule(x: col, y: row)
+		// Map the generic [[Bool]] result to our safer Array2d type
+
+		var result = Array2D<Bool>(rows: sz, columns: sz, initialValue: false)
+		for row in 0 ..< sz {
+			for col in 0 ..< sz {
+				result[row, col] = qrCode[row][col]
 			}
 		}
 		return result

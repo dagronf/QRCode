@@ -54,13 +54,13 @@ public extension QRCode {
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()) -> NSImage?
 	{
-		guard let qrImage = self.image(size, design: design) else { return nil }
+		guard let qrImage = self.cgImage(size, design: design) else { return nil }
 		return NSImage(cgImage: qrImage, size: .zero)
 	}
 }
 #endif
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(watchOS)
 public extension QRCode {
 	/// Returns a UIImage representation of the qr code using the specified style
 	/// - Parameters:
@@ -73,7 +73,7 @@ public extension QRCode {
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()) -> UIImage?
 	{
-		guard let qrImage = self.image(size, design: design) else { return nil }
+		guard let qrImage = self.cgImage(size, design: design) else { return nil }
 		return UIImage(cgImage: qrImage)
 	}
 }
@@ -95,7 +95,7 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		label: Text) -> SwiftUI.Image?
 	{
-		guard let qrImage = self.image(size, design: design) else { return nil }
+		guard let qrImage = self.cgImage(size, design: design) else { return nil }
 		return SwiftUI.Image(qrImage, scale: 1, label: label)
 	}
 }

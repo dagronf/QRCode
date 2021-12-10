@@ -23,6 +23,10 @@ let package = Package(
 			type: .static,
 			targets: ["QRCode"]
 		),
+		.library(
+			name: "QRCode3rdPartyGenerator",
+			type: .static,
+			targets: ["QRCode3rdPartyGenerator"])
 	],
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
@@ -42,11 +46,16 @@ let package = Package(
 		// Targets can depend on other targets in this package, and on products in packages this package depends on.
 		.target(
 			name: "QRCode",
+			dependencies: []
+		),
+		.target(
+			name: "QRCode3rdPartyGenerator",
 			dependencies: [
 				.product(
 					name: "QRCodeGenerator",
 					package: "swift-qrcode-generator"
-				)
+				),
+				.byNameItem(name: "QRCode", condition: nil)
 			]
 		),
 		.executableTarget(

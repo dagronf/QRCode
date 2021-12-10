@@ -7,40 +7,34 @@
 
 import SwiftUI
 import QRCode
+import QRCode3rdPartyGenerator
 
 struct ContentView: View {
-	let fixedCode = QRCodeUI(text: "QRCode WatchOS Demo", errorCorrection: .quantize)!
+	let fixedCode = QRCodeUI(
+		text: "QRCode WatchOS Demo",
+		errorCorrection: .quantize,
+		generator: QRCodeGenerator_3rdParty())!
 
 	var dataColor: Color = Color(red: 1.0, green: 1.0, blue: 0.5)
 	var eyeColor: Color = .yellow
 	var pupilColor: Color = Color(red: 1.0, green: 0.8, blue: 0.3)
 
 	var body: some View {
-		GeometryReader { g in
-			ScrollView {
-				VStack {
-					Text("Here is my QR Code")
-					ZStack {
-						fixedCode
-							.components(.eyeOuter)
-							.eyeShape(QRCode.EyeShape.RoundedOuter())
-							.fill(eyeColor)
-						fixedCode
-							.components(.eyePupil)
-							.eyeShape(QRCode.EyeShape.RoundedOuter())
-							.fill(pupilColor)
-						fixedCode
-							.components(.onPixels)
-							.fill(dataColor)
-					}
-					.background(Color(red: 0.0, green: 0.0, blue: 0.2, opacity: 1.0))
-
-					.frame(width: g.size.width, height: g.size.width)
-
-					Spacer()
-				}
-			}
+		ZStack {
+			fixedCode
+				.components(.eyeOuter)
+				.eyeShape(QRCode.EyeShape.RoundedOuter())
+				.fill(eyeColor)
+			fixedCode
+				.components(.eyePupil)
+				.eyeShape(QRCode.EyeShape.RoundedOuter())
+				.fill(pupilColor)
+			fixedCode
+				.components(.onPixels)
+				.fill(dataColor)
 		}
+		.padding()
+		.background(Color(red: 0.0, green: 0.0, blue: 0.2, opacity: 1.0))
 	}
 }
 

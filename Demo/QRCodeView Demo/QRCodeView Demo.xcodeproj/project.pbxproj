@@ -46,6 +46,7 @@
 		2322B0AF276348320085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0AE276348320085B5EB /* Assets.xcassets */; };
 		2322B0B2276348320085B5EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0B1276348320085B5EB /* Preview Assets.xcassets */; };
 		2322B0C0276348A20085B5EB /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 2322B0BF276348A20085B5EB /* QRCodeStatic */; };
+		2322B0C227636AB10085B5EB /* QRCode3rdPartyGenerator in Frameworks */ = {isa = PBXBuildFile; productRef = 2322B0C127636AB10085B5EB /* QRCode3rdPartyGenerator */; };
 		2348FB68273A2DDB004DB2BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348FB67273A2DDB004DB2BF /* AppDelegate.swift */; };
 		2348FB6A273A2DDB004DB2BF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348FB69273A2DDB004DB2BF /* ViewController.swift */; };
 		2348FB6C273A2DDC004DB2BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348FB6B273A2DDC004DB2BF /* Assets.xcassets */; };
@@ -231,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2322B0C0276348A20085B5EB /* QRCodeStatic in Frameworks */,
+				2322B0C227636AB10085B5EB /* QRCode3rdPartyGenerator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +476,7 @@
 			name = "QRCode WatchOS Demo WatchKit Extension";
 			packageProductDependencies = (
 				2322B0BF276348A20085B5EB /* QRCodeStatic */,
+				2322B0C127636AB10085B5EB /* QRCode3rdPartyGenerator */,
 			);
 			productName = "QRCode WatchOS Demo WatchKit Extension";
 			productReference = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */;
@@ -974,7 +977,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -1007,7 +1010,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -1578,6 +1581,10 @@
 		2322B0BF276348A20085B5EB /* QRCodeStatic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeStatic;
+		};
+		2322B0C127636AB10085B5EB /* QRCode3rdPartyGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCode3rdPartyGenerator;
 		};
 		234DE7052745D73B00EC7FD2 /* QRCodeStatic */ = {
 			isa = XCSwiftPackageProductDependency;

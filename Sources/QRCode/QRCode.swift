@@ -25,60 +25,16 @@
 import CoreGraphics
 import Foundation
 
-/// A protocol for qr code generation
-public protocol QRCodeEngine {
-	/// Generator a 2D QR Code
-	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> Array2D<Bool>?
-}
-
 /// A QRCode generator class
 @objc public class QRCode: NSObject {
-	/// The error correction level
-	@objc(QRCodeErrorCorrection) public enum ErrorCorrection: Int {
-		/// Lowest error correction (L - Recovers 7% of data)
-		case low = 0
-		/// Medium error correction (M - Recovers 15% of data)
-		case medium = 1
-		/// High error correction (Q - Recovers 25% of data)
-		case quantize = 2
-		/// Maximum error correction (H - Recovers 30% of data)
-		case high = 3
-		/// The default error correction level if it is not specified by the user
-		public static let `default` = ErrorCorrection.quantize
-
-		/// Returns the EC Level identifier for the error correction type (L, M, Q, H)
-		var ECLevel: String {
-			switch self {
-			case .low: return "L"
-			case .medium: return "M"
-			case .quantize: return "Q"
-			case .high: return "H"
-			}
-		}
-
-		/// Create an error correction object from a character representation
-		static public func Create(_ type: Character) -> ErrorCorrection? {
-			switch type.lowercased() {
-				case "l": return .low
-				case "m": return .medium
-				case "q": return .quantize
-				case "h": return .high
-				default: return nil
-			}
-		}
-	}
-
-	/// This is the pixel dimension for the QR Code.
-	@objc public var pixelSize: Int {
-		return self.current.rows
-	}
 
 	/// The generator to use when generating the QR code.
-	public var generator: QRCodeEngine = {
+	public var generator: QRCodeEngine? = {
 		#if os(watchOS)
-		QRCodeGenerator_QRCodeGenerator()
+		// You must supply a 3rd party generator for watchOS (see README.md)
+		return nil
 		#else
-		QRCodeGenerator_CoreImage()
+		return QRCodeGenerator_CoreImage()
 		#endif
 	}()
 
@@ -109,9 +65,20 @@ public protocol QRCodeEngine {
 	/// The QR code content as a 2D array of bool values
 	public private(set) var current = Array2D(rows: 0, columns: 0, initialValue: false)
 
+	/// This is the pixel dimension for the QR Code.
+	@objc public var pixelSize: Int {
+		return self.current.rows
+	}
+
 	/// Build the QR Code using the given data and error correction
 	@objc public func update(_ data: Data, errorCorrection: ErrorCorrection) {
-		if let result = self.generator.generate(data, errorCorrection: errorCorrection) {
+
+		guard let generator = self.generator else {
+			// You must supply a qrcode generation engine. If you are running on watchOS, import QRCode3rdPartyGenerator and create an instance of the QRCodeGenerator_3rdParty class to use
+			return
+		}
+
+		if let result = generator.generate(data, errorCorrection: errorCorrection) {
 			self.current = result
 		}
 	}
@@ -182,6 +149,10 @@ public extension QRCode {
 		components: Components = .all,
 		shape: QRCode.Shape = QRCode.Shape()
 	) -> CGPath {
+		if self.pixelSize == 0 {
+			// There is no data in the qrcode
+			return CGPath(rect: .zero, transform: nil)
+		}
 		let dx = size.width / CGFloat(self.pixelSize)
 		let dy = size.height / CGFloat(self.pixelSize)
 
@@ -276,13 +247,13 @@ public extension QRCode {
 // MARK: - Imaging
 
 public extension QRCode {
-	/// Returns an image representation of the qr code using the specified style
+	/// Returns a CGImage representation of the qr code using the specified style
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	///   - scale: The scale
 	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred
-	@objc func image(
+	@objc func cgImage(
 		_ size: CGSize,
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()

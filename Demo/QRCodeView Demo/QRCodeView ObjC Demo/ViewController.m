@@ -32,9 +32,9 @@
 	design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
 
 	// Generate the image
-	CGImageRef image = [code image: CGSizeMake(400, 400)
-									 scale: 1.0
-									design: design];
+	CGImageRef image = [code cgImage: CGSizeMake(400, 400)
+										scale: 1.0
+									  design: design];
 
 	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
 	NSLog(@"Image -> %@", nsImage);

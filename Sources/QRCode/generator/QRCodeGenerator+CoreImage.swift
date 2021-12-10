@@ -26,7 +26,8 @@ import CoreGraphics
 import CoreImage
 import Foundation
 
-internal class QRCodeGenerator_CoreImage: QRCodeEngine {
+/// A QR Code generator that uses Core Image filters to generate a QR Code
+public class QRCodeGenerator_CoreImage: QRCodeEngine {
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 

@@ -32,13 +32,17 @@ public struct QRCodeUI: Shape {
 		data: Data,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape()
+		contentShape: QRCode.Shape = QRCode.Shape(),
+		generator: QRCodeEngine? = nil
 	) {
 		self.data = data
 		self.errorCorrection = errorCorrection
 		self.components = components
 		self.contentShape = contentShape
-		self.generator.update(data, errorCorrection: errorCorrection)
+		if let g = generator {
+			self.qrCodeGenerator.generator = g
+		}
+		self.qrCodeGenerator.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified text
@@ -46,14 +50,18 @@ public struct QRCodeUI: Shape {
 		text: String,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape()
+		contentShape: QRCode.Shape = QRCode.Shape(),
+		generator: QRCodeEngine? = nil
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data = data
 		self.errorCorrection = errorCorrection
 		self.components = components
 		self.contentShape = contentShape
-		self.generator.update(data, errorCorrection: errorCorrection)
+		if let g = generator {
+			self.qrCodeGenerator.generator = g
+		}
+		self.qrCodeGenerator.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified message formatter
@@ -61,13 +69,17 @@ public struct QRCodeUI: Shape {
 		message: QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape()
+		contentShape: QRCode.Shape = QRCode.Shape(),
+		generator: QRCodeEngine? = nil
 	) {
 		self.data = message.data
 		self.errorCorrection = errorCorrection
 		self.components = components
 		self.contentShape = contentShape
-		self.generator.update(self.data, errorCorrection: errorCorrection)
+		if let g = generator {
+			self.qrCodeGenerator.generator = g
+		}
+		self.qrCodeGenerator.update(self.data, errorCorrection: errorCorrection)
 	}
 
 	// Private
@@ -75,7 +87,7 @@ public struct QRCodeUI: Shape {
 	private let contentShape: QRCode.Shape
 	private let components: QRCode.Components
 	private let errorCorrection: QRCode.ErrorCorrection
-	private let generator = QRCode()
+	private let qrCodeGenerator = QRCode()
 }
 
 // MARK: - Modifiers
@@ -89,7 +101,8 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: errorCorrection,
 			components: self.components,
-			contentShape: self.contentShape.copyShape()
+			contentShape: self.contentShape.copyShape(),
+			generator: self.qrCodeGenerator.generator
 		)
 	}
 
@@ -99,7 +112,8 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			components: components,
-			contentShape: self.contentShape.copyShape()
+			contentShape: self.contentShape.copyShape(),
+			generator: self.qrCodeGenerator.generator
 		)
 	}
 
@@ -109,7 +123,8 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			components: self.components,
-			contentShape: shape.copyShape()
+			contentShape: shape.copyShape(),
+			generator: self.qrCodeGenerator.generator
 		)
 	}
 
@@ -121,7 +136,8 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			components: self.components,
-			contentShape: shape
+			contentShape: shape,
+			generator: self.qrCodeGenerator.generator
 		)
 	}
 
@@ -133,7 +149,8 @@ public extension QRCodeUI {
 			data: self.data,
 			errorCorrection: self.errorCorrection,
 			components: self.components,
-			contentShape: shape
+			contentShape: shape,
+			generator: self.qrCodeGenerator.generator
 		)
 	}
 }
@@ -144,7 +161,7 @@ public extension QRCodeUI {
 public extension QRCodeUI {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
-		let path = self.generator.path(rect.size, components: self.components, shape: self.contentShape) // pixelStyle: self.pixelStyle)
+		let path = self.qrCodeGenerator.path(rect.size, components: self.components, shape: self.contentShape) // pixelStyle: self.pixelStyle)
 		return Path(path)
 	}
 }

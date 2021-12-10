@@ -1,6 +1,6 @@
 # QRCode
 
-A simple and quick macOS/iOS/tvOS QR Code generator library for SwiftUI, Swift and Objective-C.
+A simple and quick macOS/iOS/tvOS/watchOS QR Code generator library for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
@@ -13,6 +13,7 @@ A simple and quick macOS/iOS/tvOS QR Code generator library for SwiftUI, Swift a
     <img src="https://img.shields.io/badge/macOS-10.11+-red" />
     <img src="https://img.shields.io/badge/iOS-13+-blue" />
     <img src="https://img.shields.io/badge/tvOS-13+-orange" />
+    <img src="https://img.shields.io/badge/watchOS-6+-brightgreen" />
     <img src="https://img.shields.io/badge/macCatalyst-1.0+-purple" />
 </p>
 <p align="center">
@@ -57,8 +58,8 @@ Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use howev
 ```swift
 let qrCode = QRCode()
 
-// Create a qr code containing "Example Text" and set the error correction to maximum ('H') 
-qrCode.update(text: "Example text", errorCorrection: .max)
+// Create a qr code containing "Example Text" and set the error correction to high ('H') 
+qrCode.update(text: "Example text", errorCorrection: .high)
 
 // Generate a CGPath object containing the QR code
 let path = qrCode.path(CGSize(width: 400, height: 400))
@@ -68,6 +69,39 @@ let image = qrCode.image(CGSize(width: 400, height: 400))
 
 // Generate pdf data containing the qr code
 let pdfdata = qrCode.pdfData(CGSize(width: 400, height: 400))
+```
+
+</details>
+
+### Special requirements for watchOS
+
+Since watchOS doesn't support Core Image filters (which this library uses on macOS/iOS and tvOS for generating the 
+QR Code) a [third-party dependency](https://github.com/fwcd/swift-qrcode-generator) is provided. It has been 
+wrapped in a module (`QRCode3rdPartyGenerator`) to allow you to optionally import when needed.
+
+It is required for watchOS projects, for macOS, iOS and tvOS this module is optional and is not required in your projects. 
+
+The 3rd party QR Code generator may generate different QR Codes from the built-in Core Image generator.
+If you need consistent QR Code generation across platforms that includes watchOS, you should use the third party
+generator (`QRCodeGenerator_3rdParty`) on all platforms.
+
+<details>
+<summary>tl;dr Simple Example</summary>
+
+```swift
+// watchOS generation sample
+
+import QRCode
+import QRCode3rdPartyGenerator
+
+let qrCode = QRCode()
+qrCode.generator = QRCodeGenerator_3rdParty()
+
+// Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
+qrCode.update(text: "Example text", errorCorrection: .high)
+
+// And generate a UIImage from the pdf data
+let generatedImage = qrCode.uiImage(CGSize(width: 400, height: 400))!
 ```
 
 </details>
@@ -138,7 +172,7 @@ Generate an image from the QR Code, using an (optional) design object for stylin
 @objc func uiImage(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> UIImage?
 ```
 
-*(iOS/tvOS only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
+*(iOS/tvOS/watchOS/macCatalyst only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
 
 ### Generate a styled, scalable PDF representation of the QR Code
 
@@ -362,10 +396,26 @@ OPTIONS:
   --pupil-color <pupil-color>
                           The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   -h, --help              Show help information.
+```
+
+## Thanks
+
+### Denso Wave
+
+[Denso Wave](https://www.qrcode.com/en/) 
+
+QR Code is a registered trademark of DENSO WAVE.
+
+### swift-qrcode-generator
+
+Since watchOS doesn't support Core Image filters, I defer to using an (optional) 3rd party for generating QR Codes for
+watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/QR-Code-generator) code.
+
+[swift-qrcode-generator](https://github.com/dagronf/swift-qrcode-generator)
 
 ## License
 
-MIT. Use it for anything you want, just attribute my work. Let me know if you do use it somewhere, I'd love to hear about it!
+MIT. Use it for anything you want, just attribute my work if you do. Let me know if you do use it somewhere, I'd love to hear about it!
 
 ```
 MIT License
