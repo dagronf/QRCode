@@ -34,6 +34,13 @@ import UIKit
 import SwiftUI
 #endif
 
+#if os(iOS) || os(tvOS) || os(watchOS)
+extension CGColor {
+	/// Convenience for a 'clear' color
+	static let clear = CGColor(gray: 0, alpha: 0)
+}
+#endif
+
 #if os(macOS)
 public extension QRCode {
 	/// Returns an NSImage representation of the qr code using the specified style
@@ -70,12 +77,6 @@ public extension QRCode {
 		return UIImage(cgImage: qrImage)
 	}
 }
-
-extension CGColor {
-	/// Convenience for a 'clear' color
-	static let clear = CGColor(gray: 0, alpha: 0)
-}
-
 #endif
 
 #if canImport(SwiftUI)

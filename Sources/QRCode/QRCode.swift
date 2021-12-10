@@ -40,19 +40,30 @@ public protocol QRCodeEngine {
 		/// Medium error correction (M - Recovers 15% of data)
 		case medium = 1
 		/// High error correction (Q - Recovers 25% of data)
-		case high = 2
+		case quantize = 2
 		/// Maximum error correction (H - Recovers 30% of data)
-		case max = 3
+		case high = 3
 		/// The default error correction level if it is not specified by the user
-		public static let `default` = ErrorCorrection.high
+		public static let `default` = ErrorCorrection.quantize
 
 		/// Returns the EC Level identifier for the error correction type (L, M, Q, H)
 		var ECLevel: String {
 			switch self {
 			case .low: return "L"
 			case .medium: return "M"
-			case .high: return "Q"
-			case .max: return "H"
+			case .quantize: return "Q"
+			case .high: return "H"
+			}
+		}
+
+		/// Create an error correction object from a character representation
+		static public func Create(_ type: Character) -> ErrorCorrection? {
+			switch type.lowercased() {
+				case "l": return .low
+				case "m": return .medium
+				case "q": return .quantize
+				case "h": return .high
+				default: return nil
 			}
 		}
 	}
@@ -63,7 +74,13 @@ public protocol QRCodeEngine {
 	}
 
 	/// The generator to use when generating the QR code.
-	public var generator: QRCodeEngine = QRCodeGenerator_CoreImage()
+	public var generator: QRCodeEngine = {
+		#if os(watchOS)
+		QRCodeGenerator_QRCodeGenerator()
+		#else
+		QRCodeGenerator_CoreImage()
+		#endif
+	}()
 
 	/// Create a blank QRCode
 	@objc override public init() {

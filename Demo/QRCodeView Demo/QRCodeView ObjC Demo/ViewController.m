@@ -19,7 +19,7 @@
 
 	QRCode* code = [[QRCode alloc] init];
 	[code updateWithText: @"This message"
-		  errorCorrection: QRCodeErrorCorrectionMax];
+		  errorCorrection: QRCodeErrorCorrectionHigh];
 
 	QRCodeDesign* design = [QRCodeDesign create];
 

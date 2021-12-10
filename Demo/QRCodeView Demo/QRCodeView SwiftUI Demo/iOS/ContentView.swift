@@ -47,8 +47,8 @@ struct ContentView: View {
 					Picker(selection: $correction, label: Text("Error correction:")) {
 						Text("Low (L)").tag(QRCode.ErrorCorrection.low)
 						Text("Medium (M)").tag(QRCode.ErrorCorrection.medium)
-						Text("High (Q)").tag(QRCode.ErrorCorrection.high)
-						Text("Max (H)").tag(QRCode.ErrorCorrection.max)
+						Text("Quantize (Q)").tag(QRCode.ErrorCorrection.quantize)
+						Text("Max (H)").tag(QRCode.ErrorCorrection.high)
 					}.pickerStyle(WheelPickerStyle())
 
 					Picker(selection: $dataShape, label: Text("Data Shape:")) {
@@ -102,7 +102,7 @@ struct ContentView: View {
 
 				QRCodeUI(
 					text: "A static simple QR code with some basic styling",
-					errorCorrection: .max
+					errorCorrection: .high
 				)!
 				.eyeShape(QRCode.EyeShape.Leaf())
 				.dataShape(QRCode.DataShape.RoundedPath())

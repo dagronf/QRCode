@@ -176,15 +176,14 @@ struct QRCodeGen: ParsableCommand {
 
 		var errorCorrection: QRCode.ErrorCorrection = .default
 		if let ec = self.errorCorrection {
-			switch ec.lowercased() {
-			case "l": errorCorrection = .low
-			case "m": errorCorrection = .medium
-			case "q": errorCorrection = .high
-			case "h": errorCorrection = .max
-			default:
+			guard
+				let ch = ec.first,
+				let eet =  QRCode.ErrorCorrection.Create(ch)
+			else {
 				Swift.print("Unknown error correction level '\(ec)'.")
 				QRCodeGen.exit(withError: ExitCode(-4))
 			}
+			errorCorrection = eet
 		}
 
 		// Output format

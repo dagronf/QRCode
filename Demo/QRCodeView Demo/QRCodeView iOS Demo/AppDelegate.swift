@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 	func generateQRCodeImage() {
 		let qrCode = QRCode()
-		qrCode.update("This is a test".data(using: .utf8)!, errorCorrection: .max)
+		qrCode.update("This is a test".data(using: .utf8)!, errorCorrection: .high)
 
 		let iii = qrCode.uiImage(CGSize(width: 400, height: 400))!
 		Swift.print(iii)

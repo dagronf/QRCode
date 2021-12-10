@@ -9,6 +9,15 @@
           "revision": "83b23d940471b313427da226196661856f6ba3e0",
           "version": "0.4.4"
         }
+      },
+      {
+        "package": "swift-qrcode-generator",
+        "repositoryURL": "https://github.com/fwcd/swift-qrcode-generator.git",
+        "state": {
+          "branch": null,
+          "revision": "5ca09b6a2ad190f94aa3d6ddef45b187f8c0343b",
+          "version": "1.0.3"
+        }
       }
     ]
   },

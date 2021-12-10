@@ -46,8 +46,8 @@ struct ContentView: View {
 				Picker(selection: $correction, label: Text("Error correction:")) {
 					Text("Low (L)").tag(QRCode.ErrorCorrection.low)
 					Text("Medium (M)").tag(QRCode.ErrorCorrection.medium)
-					Text("High (Q)").tag(QRCode.ErrorCorrection.high)
-					Text("Max (H)").tag(QRCode.ErrorCorrection.max)
+					Text("Quantize (Q)").tag(QRCode.ErrorCorrection.quantize)
+					Text("High (H)").tag(QRCode.ErrorCorrection.high)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Picker(selection: $dataShape, label: Text("Data Shape:")) {
 					Text("Square").tag(DataShapeType.square)

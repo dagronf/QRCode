@@ -1,7 +1,7 @@
 //
-//  Common.swift
+//  QRCodeGenerator+QRGenerator.swift
 //
-//  Created by Darren Ford on 9/11/21.
+//  Created by Darren Ford on 10/12/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -21,29 +21,33 @@
 //
 
 import Foundation
+import QRCodeGenerator
 
-#if !os(watchOS)
+internal class QRCodeGenerator_QRCodeGenerator: QRCodeEngine {
 
-#if canImport(SwiftUI)
-import SwiftUI
-#endif
+	/// A generator that uses swift-qrcode-generator as the generation engine
+	/// See: - 
+	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> Array2D<Bool>? {
 
-#if os(macOS)
-import AppKit
-public typealias DSFView = NSView
-public typealias DSFImage = NSImage
-@available(macOS 11, *)
-typealias DSFViewRepresentable = NSViewRepresentable
+		let mappedECC: QRCodeECC = {
+			switch errorCorrection {
+			case .low: return QRCodeECC.low
+			case .medium: return QRCodeECC.medium
+			case .quantize: return QRCodeECC.quartile
+			case .high: return QRCodeECC.high
+			}
+		}()
 
-extension NSView {
-	@inlinable func setNeedsDisplay() { self.needsDisplay = true }
+		guard let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC) else {
+			return nil
+		}
+
+		var result = Array2D<Bool>(rows: qrCode.size + 2, columns: qrCode.size + 2, initialValue: false)
+		for row in 0 ..< qrCode.size {
+			for col in 0 ..< qrCode.size {
+				result[row + 1, col + 1] = qrCode.getModule(x: col, y: row)
+			}
+		}
+		return result
+	}
 }
-#else
-import UIKit
-public typealias DSFView = UIView
-public typealias DSFImage = UIImage
-@available(iOS 13.0, tvOS 13.0, *)
-typealias DSFViewRepresentable = UIViewRepresentable
-#endif
-
-#endif

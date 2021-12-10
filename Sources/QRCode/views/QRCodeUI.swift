@@ -22,7 +22,6 @@
 
 // SwiftUI implementation
 
-import CoreImage
 import SwiftUI
 
 /// SwiftUI implementation of a basic QR Code view
@@ -141,7 +140,7 @@ public extension QRCodeUI {
 
 // MARK: - Paths
 
-@available(macOS 11, iOS 13.0, tvOS 13.0, *)
+@available(macOS 11, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension QRCodeUI {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
@@ -159,7 +158,7 @@ let DemoContent2 = "Harness the power of Quartz technology to perform lightweigh
 // XCode refuses to display them either with a compilation error, or with a
 // 'fail to send message to helper'.  Grrrr...
 
-@available(macOS 11, iOS 14, tvOS 14, *)
+@available(macOS 11, iOS 14, tvOS 14, watchOS 6.0, *)
 struct QRCodeUI_Previews: PreviewProvider {
 	static var previews: some View {
 		HStack {
