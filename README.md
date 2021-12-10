@@ -26,6 +26,10 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator library for SwiftUI,
    <a href="./Art/screenshot.png">
       <img src="./Art/screenshot.png" width="500"/>
    </a>
+   &nbsp;
+   <a href="./Art/watchOS.png">
+      <img src="./Art/watchOS.png" width="140"/>
+   </a>
 </p>
 
 ## Why?
