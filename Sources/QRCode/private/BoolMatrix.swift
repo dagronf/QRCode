@@ -1,7 +1,7 @@
 //
-//  QRCodeGenerator+Engine.swift
+//  BoolMatrix.swift
 //
-//  Created by Darren Ford on 10/12/21.
+//  Created by Darren Ford on 11/12/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -22,16 +22,39 @@
 
 import Foundation
 
-/// A protocol for qr code generation
-@objc public protocol QRCodeEngine {
-	/// Generator a 2D QR Code
-	@objc func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
-}
+/// A boolean matrix (Array2D<Bool> wrapper) with equal dimensions in row and column
+@objc(QRCodeBoolMatrix) public class BoolMatrix: NSObject {
 
-// An 'empty' qr code generator which does nothing
-internal class QRCodeGenerator_None: QRCodeEngine {
-	/// Generate the QR code using the custom generator
-	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
-		return nil
+	@objc public override init() {
+		super.init()
 	}
+
+	@objc public init(dimension: Int) {
+		self.content = Array2D(
+			rows: dimension,
+			columns: dimension,
+			initialValue: false)
+	}
+
+	init(dimension: Int, flattened: [Bool]) {
+		self.content = Array2D(
+			rows: dimension,
+			columns: dimension,
+			flattened: flattened)
+	}
+
+	@objc public var dimension: Int {
+		return content.rows
+	}
+
+	@objc public subscript(row: Int, column: Int) -> Bool {
+		get {
+			return content[row, column]
+		}
+		set {
+			content[row, column] = newValue
+		}
+	}
+
+	private var content: Array2D<Bool> = Array2D(rows: 0, columns: 0, initialValue: false)
 }

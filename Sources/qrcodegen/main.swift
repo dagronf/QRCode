@@ -214,11 +214,10 @@ struct QRCodeGen: ParsableCommand {
 
 		switch outputType {
 		case .png:
-			guard let image = qrCode.image(outputSize, scale: 1, design: design) else {
+			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
-			let nsImage = NSImage(cgImage: image, size: .zero)
 			do {
 				try writeImage(
 					image: nsImage,
@@ -233,11 +232,10 @@ struct QRCodeGen: ParsableCommand {
 			}
 
 		case .jpg:
-			guard let image = qrCode.image(outputSize, scale: 1, design: design) else {
+			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
-			let nsImage = NSImage(cgImage: image, size: .zero)
 			do {
 				try writeImage(
 					image: nsImage,

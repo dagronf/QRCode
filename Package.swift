@@ -12,42 +12,48 @@ let package = Package(
 		.watchOS(.v6)
 	],
 	products: [
-		// Products define the executables and libraries a package produces, and make them visible to other packages.
+		// a dynamically linkable QR code library
 		.library(
 			name: "QRCode",
 			type: .dynamic,
 			targets: ["QRCode"]
 		),
+
+		// statically linkable QR code library
 		.library(
 			name: "QRCodeStatic",
 			type: .static,
 			targets: ["QRCode"]
 		),
+
+		// A wrapper around a 3rd party QR Code generator for watchOS
 		.library(
 			name: "QRCode3rdPartyGenerator",
 			type: .static,
 			targets: ["QRCode3rdPartyGenerator"])
 	],
 	dependencies: [
-		// Dependencies declare other packages that this package depends on.
-		// .package(url: /* package url */, from: "1.0.0"),
+		// Swift argument parser is used for the command-line application
 		.package(
 			name: "swift-argument-parser",
 			url: "https://github.com/apple/swift-argument-parser",
 			.upToNextMinor(from: "0.4.3")
 		),
+
+		// A 3rd-party QR code generation library for watchOS, forked from https://github.com/fwcd/swift-qrcode-generator
 		.package(
 			url: "https://github.com/dagronf/swift-qrcode-generator",
-			from: "1.0.0"
+			.upToNextMinor(from: "1.0.3")
 		)
 	],
 	targets: [
-		// Targets are the basic building blocks of a package. A target can define a module or a test suite.
-		// Targets can depend on other targets in this package, and on products in packages this package depends on.
+		// The core qr code library
 		.target(
 			name: "QRCode",
 			dependencies: []
 		),
+
+		// The wrapper library for the 3rd party qr code generator
 		.target(
 			name: "QRCode3rdPartyGenerator",
 			dependencies: [
@@ -58,6 +64,8 @@ let package = Package(
 				.byNameItem(name: "QRCode", condition: nil)
 			]
 		),
+
+		// the qrcodegen command-line tool
 		.executableTarget(
 			 name: "qrcodegen",
 			 dependencies: [

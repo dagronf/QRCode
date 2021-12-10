@@ -11,8 +11,7 @@ import QRCode3rdPartyGenerator
 
 class testing {
 	init() {
-		let qrCode = QRCode()
-		qrCode.generator = QRCodeGenerator_3rdParty()
+		let qrCode = QRCode(generator: QRCodeGenerator_3rdParty())
 		qrCode.update("Generating a QR Code using watchOS".data(using: .utf8)!, errorCorrection: .quantize)
 
 		let generatedImage = qrCode.uiImage(CGSize(width: 400, height: 400))!

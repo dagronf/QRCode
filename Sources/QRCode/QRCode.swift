@@ -29,56 +29,74 @@ import Foundation
 @objc public class QRCode: NSObject {
 
 	/// The generator to use when generating the QR code.
-	public var generator: QRCodeEngine? = {
+	///
+	/// Defaults to CoreImage on macOS/iOS/tvOS, or none on watchOS (import QRCode3rdPartyGenerator for watchOS)
+	@objc public var generator: QRCodeEngine = {
 		#if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
-		return nil
+		return QRCodeGenerator_None()
 		#else
 		return QRCodeGenerator_CoreImage()
 		#endif
 	}()
 
 	/// Create a blank QRCode
-	@objc override public init() {
+	@objc public override init() {
+		super.init()
+		self.update(Data(), errorCorrection: .default)
+	}
+
+	/// Create a blank QRCode with a custom QR code generation engine
+	@objc public init(generator: QRCodeEngine) {
+		self.generator = generator
 		super.init()
 		self.update(Data(), errorCorrection: .default)
 	}
 
 	/// Create a QRCode with the given data and error correction
-	@objc public init(_ data: Data, errorCorrection: ErrorCorrection = .default) {
+	@objc public init(
+		_ data: Data,
+		errorCorrection: ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil)
+	{
+		if let g = generator { self.generator = g }
 		super.init()
 		self.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode with the given text and error correction
-	@objc public init(text: String, errorCorrection: ErrorCorrection = .default) {
+	@objc public init(
+		text: String,
+		errorCorrection: ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil)
+	{
+		if let g = generator { self.generator = g }
 		super.init()
 		self.update(text: text, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode with the given message and error correction
-	@objc public init(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
+	@objc public init(
+		message: QRCodeMessageFormatter,
+		errorCorrection: ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil)
+	{
+		if let g = generator { self.generator = g }
 		super.init()
 		self.update(message: message, errorCorrection: errorCorrection)
 	}
 
 	/// The QR code content as a 2D array of bool values
-	public private(set) var current = Array2D(rows: 0, columns: 0, initialValue: false)
+	public private(set) var current = BoolMatrix()
 
 	/// This is the pixel dimension for the QR Code.
 	@objc public var pixelSize: Int {
-		return self.current.rows
+		return self.current.dimension
 	}
 
 	/// Build the QR Code using the given data and error correction
 	@objc public func update(_ data: Data, errorCorrection: ErrorCorrection) {
-
-		guard let generator = self.generator else {
-			// You must supply a qrcode generation engine. If you are running on watchOS, import QRCode3rdPartyGenerator and create an instance of the QRCodeGenerator_3rdParty class to use
-			return
-		}
-
-		if let result = generator.generate(data, errorCorrection: errorCorrection) {
+		if let result = self.generator.generate(data, errorCorrection: errorCorrection) {
 			self.current = result
 		}
 	}
@@ -357,8 +375,8 @@ public extension QRCode {
 	/// Only makes sense if presented using a fixed-width font
 	@objc func asciiRepresentation() -> String {
 		var result = ""
-		for row in 0 ..< self.current.rows {
-			for col in 0 ..< self.current.columns {
+		for row in 0 ..< self.current.dimension {
+			for col in 0 ..< self.current.dimension {
 				if self.current[row, col] == true {
 					result += "██"
 				}
@@ -376,11 +394,11 @@ public extension QRCode {
 	/// Only makes sense if presented using a fixed-width font
 	@objc func smallAsciiRepresentation() -> String {
 		var result = ""
-		for row in stride(from: 0, to: self.current.rows, by: 2) {
-			for col in 0 ..< self.current.columns {
+		for row in stride(from: 0, to: self.current.dimension, by: 2) {
+			for col in 0 ..< self.current.dimension {
 				let top = self.current[row, col]
 
-				if row <= self.current.rows - 2 {
+				if row <= self.current.dimension - 2 {
 					let bottom = self.current[row + 1, col]
 					if top,!bottom { result += "▀" }
 					if !top, bottom { result += "▄" }

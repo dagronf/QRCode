@@ -94,8 +94,7 @@ generator (`QRCodeGenerator_3rdParty`) on all platforms.
 import QRCode
 import QRCode3rdPartyGenerator
 
-let qrCode = QRCode()
-qrCode.generator = QRCodeGenerator_3rdParty()
+let qrCode = QRCode(generator: QRCodeGenerator_3rdParty())
 
 // Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
 qrCode.update(text: "Example text", errorCorrection: .high)

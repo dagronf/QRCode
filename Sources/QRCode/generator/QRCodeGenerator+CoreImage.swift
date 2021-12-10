@@ -31,7 +31,7 @@ public class QRCodeGenerator_CoreImage: QRCodeEngine {
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 
-	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> Array2D<Bool>? {
+	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
 
@@ -61,7 +61,7 @@ public class QRCodeGenerator_CoreImage: QRCodeEngine {
 			context?.draw(qrImage, in: CGRect(x: 0, y: 0, width: w, height: h))
 		}
 
-		return Array2D(rows: w, columns: w, flattened: rawData.map { $0 == 0 ? true : false })
+		return BoolMatrix(dimension: w, flattened: rawData.map { $0 == 0 ? true : false })
 	}
 }
 
