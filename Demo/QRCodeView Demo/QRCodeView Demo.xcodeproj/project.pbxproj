@@ -37,6 +37,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2322B099276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2322B09E276348310085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B09D276348310085B5EB /* Assets.xcassets */; };
+		2322B0A4276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2322B0A9276348310085B5EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2322B0A8276348310085B5EB /* ContentView.swift */; };
+		2322B0AB276348310085B5EB /* QRCodeView_DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2322B0AA276348310085B5EB /* QRCodeView_DemoApp.swift */; };
+		2322B0AD276348310085B5EB /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2322B0AC276348310085B5EB /* ComplicationController.swift */; };
+		2322B0AF276348320085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0AE276348320085B5EB /* Assets.xcassets */; };
+		2322B0B2276348320085B5EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0B1276348320085B5EB /* Preview Assets.xcassets */; };
+		2322B0C0276348A20085B5EB /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 2322B0BF276348A20085B5EB /* QRCodeStatic */; };
 		2348FB68273A2DDB004DB2BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348FB67273A2DDB004DB2BF /* AppDelegate.swift */; };
 		2348FB6A273A2DDB004DB2BF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348FB69273A2DDB004DB2BF /* ViewController.swift */; };
 		2348FB6C273A2DDC004DB2BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348FB6B273A2DDC004DB2BF /* Assets.xcassets */; };
@@ -69,6 +78,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2322B09A276348300085B5EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2322B097276348300085B5EB;
+			remoteInfo = "QRCode WatchOS Demo WatchKit App";
+		};
+		2322B0A5276348310085B5EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2322B0A2276348310085B5EB;
+			remoteInfo = "QRCode WatchOS Demo WatchKit Extension";
+		};
 		2345F6D627488ADA0087569B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
@@ -121,6 +144,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2322B0B6276348320085B5EB /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				2322B099276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2322B0B9276348320085B5EB /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2322B0A4276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2348FB96273A2F14004DB2BF /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -135,6 +180,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2322B095276348300085B5EB /* QRCode WatchOS Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode WatchOS Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode WatchOS Demo WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2322B09D276348310085B5EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "QRCode WatchOS Demo WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2322B0A8276348310085B5EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2322B0AA276348310085B5EB /* QRCodeView_DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView_DemoApp.swift; sourceTree = "<group>"; };
+		2322B0AC276348310085B5EB /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		2322B0AE276348320085B5EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2322B0B1276348320085B5EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2322B0B3276348320085B5EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2348FB64273A2DDB004DB2BF /* QRCodeView Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCodeView Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348FB67273A2DDB004DB2BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348FB69273A2DDB004DB2BF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +226,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2322B0A0276348310085B5EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322B0C0276348A20085B5EB /* QRCodeStatic in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2348FB61273A2DDB004DB2BF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -214,6 +277,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2322B09C276348300085B5EB /* QRCode WatchOS Demo WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				2322B09D276348310085B5EB /* Assets.xcassets */,
+			);
+			path = "QRCode WatchOS Demo WatchKit App";
+			sourceTree = "<group>";
+		};
+		2322B0A7276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				2322B0A8276348310085B5EB /* ContentView.swift */,
+				2322B0AA276348310085B5EB /* QRCodeView_DemoApp.swift */,
+				2322B0AC276348310085B5EB /* ComplicationController.swift */,
+				2322B0AE276348320085B5EB /* Assets.xcassets */,
+				2322B0B3276348320085B5EB /* Info.plist */,
+				2322B0B0276348320085B5EB /* Preview Content */,
+			);
+			path = "QRCode WatchOS Demo WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		2322B0B0276348320085B5EB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2322B0B1276348320085B5EB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		2348FB5B273A2DDB004DB2BF = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +314,8 @@
 				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,
 				2348FBB3273A311F004DB2BF /* QRCodeView SwiftUI Demo */,
 				23F8AE66273A493A00ED6288 /* QRCodeView ObjC Demo */,
+				2322B09C276348300085B5EB /* QRCode WatchOS Demo WatchKit App */,
+				2322B0A7276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */,
 				2348FB65273A2DDB004DB2BF /* Products */,
 				2348FB77273A2DF5004DB2BF /* Frameworks */,
 			);
@@ -235,6 +329,9 @@
 				2348FB9F273A310A004DB2BF /* QRCodeView SwiftUI Demo iOS.app */,
 				2348FBA4273A310A004DB2BF /* QRCodeView SwiftUI Demo.app */,
 				23F8AE65273A493A00ED6288 /* QRCodeView ObjC Demo.app */,
+				2322B095276348300085B5EB /* QRCode WatchOS Demo.app */,
+				2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */,
+				2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -328,6 +425,60 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2322B094276348300085B5EB /* QRCode WatchOS Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2322B0BE276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo" */;
+			buildPhases = (
+				2322B093276348300085B5EB /* Resources */,
+				2322B0B6276348320085B5EB /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2322B09B276348300085B5EB /* PBXTargetDependency */,
+			);
+			name = "QRCode WatchOS Demo";
+			productName = "QRCode WatchOS Demo";
+			productReference = 2322B095276348300085B5EB /* QRCode WatchOS Demo.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		2322B097276348300085B5EB /* QRCode WatchOS Demo WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2322B0BD276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo WatchKit App" */;
+			buildPhases = (
+				2322B096276348300085B5EB /* Resources */,
+				2322B0B9276348320085B5EB /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2322B0A6276348310085B5EB /* PBXTargetDependency */,
+			);
+			name = "QRCode WatchOS Demo WatchKit App";
+			productName = "QRCode WatchOS Demo WatchKit App";
+			productReference = 2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		2322B0A2276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2322B0BC276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo WatchKit Extension" */;
+			buildPhases = (
+				2322B09F276348310085B5EB /* Sources */,
+				2322B0A0276348310085B5EB /* Frameworks */,
+				2322B0A1276348310085B5EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "QRCode WatchOS Demo WatchKit Extension";
+			packageProductDependencies = (
+				2322B0BF276348A20085B5EB /* QRCodeStatic */,
+			);
+			productName = "QRCode WatchOS Demo WatchKit Extension";
+			productReference = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		2348FB63273A2DDB004DB2BF /* QRCodeView Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2348FB73273A2DDC004DB2BF /* Build configuration list for PBXNativeTarget "QRCodeView Demo" */;
@@ -439,6 +590,15 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					2322B094276348300085B5EB = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					2322B097276348300085B5EB = {
+						CreatedOnToolsVersion = 13.1;
+					};
+					2322B0A2276348310085B5EB = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					2345F6D227488AC40087569B = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -482,11 +642,38 @@
 				23F8AE64273A493A00ED6288 /* QRCodeView ObjC Demo */,
 				2345F6D227488AC40087569B /* All macOS */,
 				236B0438274B5DEA004F0146 /* All iOS */,
+				2322B094276348300085B5EB /* QRCode WatchOS Demo */,
+				2322B097276348300085B5EB /* QRCode WatchOS Demo WatchKit App */,
+				2322B0A2276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2322B093276348300085B5EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2322B096276348300085B5EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322B09E276348310085B5EB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2322B0A1276348310085B5EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322B0B2276348320085B5EB /* Preview Assets.xcassets in Resources */,
+				2322B0AF276348320085B5EB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2348FB62273A2DDB004DB2BF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -534,6 +721,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2322B09F276348310085B5EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2322B0A9276348310085B5EB /* ContentView.swift in Sources */,
+				2322B0AB276348310085B5EB /* QRCodeView_DemoApp.swift in Sources */,
+				2322B0AD276348310085B5EB /* ComplicationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2348FB60273A2DDB004DB2BF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -586,6 +783,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2322B09B276348300085B5EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2322B097276348300085B5EB /* QRCode WatchOS Demo WatchKit App */;
+			targetProxy = 2322B09A276348300085B5EB /* PBXContainerItemProxy */;
+		};
+		2322B0A6276348310085B5EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2322B0A2276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */;
+			targetProxy = 2322B0A5276348310085B5EB /* PBXContainerItemProxy */;
+		};
 		2345F6D727488ADA0087569B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2348FB63273A2DDB004DB2BF /* QRCodeView Demo */;
@@ -659,6 +866,151 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2322B0B4276348320085B5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2322B0B5276348320085B5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2322B0B7276348320085B5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = QRCode_WatchOS_Demo_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		2322B0B8276348320085B5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = QRCode_WatchOS_Demo_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
+		2322B0BA276348320085B5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCode WatchOS Demo WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Debug;
+		};
+		2322B0BB276348320085B5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCode WatchOS Demo WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCode-WatchOS-Demo.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+			};
+			name = Release;
+		};
 		2345F6D327488AC40087569B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1121,6 +1473,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2322B0BC276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2322B0BA276348320085B5EB /* Debug */,
+				2322B0BB276348320085B5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2322B0BD276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2322B0B7276348320085B5EB /* Debug */,
+				2322B0B8276348320085B5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2322B0BE276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2322B0B4276348320085B5EB /* Debug */,
+				2322B0B5276348320085B5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2345F6D527488AC40087569B /* Build configuration list for PBXAggregateTarget "All macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1196,6 +1575,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2322B0BF276348A20085B5EB /* QRCodeStatic */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeStatic;
+		};
 		234DE7052745D73B00EC7FD2 /* QRCodeStatic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeStatic;
