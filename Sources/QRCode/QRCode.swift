@@ -23,9 +23,13 @@
 // QR Code Generator
 
 import CoreGraphics
-import CoreImage
 import Foundation
-import SwiftUI
+
+/// A protocol for qr code generation
+public protocol QRCodeEngine {
+	/// Generator a 2D QR Code
+	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> Array2D<Bool>?
+}
 
 /// A QRCode generator class
 @objc public class QRCode: NSObject {
@@ -58,6 +62,9 @@ import SwiftUI
 		return self.current.rows
 	}
 
+	/// The generator to use when generating the QR code.
+	public var generator: QRCodeEngine = QRCodeGenerator_CoreImage()
+
 	/// Create a blank QRCode
 	@objc override public init() {
 		super.init()
@@ -87,36 +94,9 @@ import SwiftUI
 
 	/// Build the QR Code using the given data and error correction
 	@objc public func update(_ data: Data, errorCorrection: ErrorCorrection) {
-		self.filter.setValue(data, forKey: "inputMessage")
-		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
-
-		guard
-			let outputImage = filter.outputImage,
-			let qrImage = context.createCGImage(outputImage, from: outputImage.extent) else
-			{
-				return
-			}
-
-		let w = qrImage.width
-		let h = qrImage.height
-		let colorspace = CGColorSpaceCreateDeviceGray()
-
-		var rawData = [UInt8](repeating: 0, count: w * h)
-		rawData.withUnsafeMutableBytes { rawBufferPointer in
-			let rawPtr = rawBufferPointer.baseAddress!
-			let context = CGContext(
-				data: rawPtr,
-				width: w,
-				height: h,
-				bitsPerComponent: 8,
-				bytesPerRow: w,
-				space: colorspace,
-				bitmapInfo: 0
-			)
-			context?.draw(qrImage, in: CGRect(x: 0, y: 0, width: w, height: h))
+		if let result = self.generator.generate(data, errorCorrection: errorCorrection) {
+			self.current = result
 		}
-
-		self.current = Array2D(rows: w, columns: w, flattened: rawData.map { $0 == 0 ? true : false })
 	}
 
 	/// Build the QR Code using the given text and error correction
@@ -130,8 +110,6 @@ import SwiftUI
 	}
 
 	// Private
-	private let context = CIContext()
-	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 	private let DefaultPDFResolution: CGFloat = 72
 }
 
