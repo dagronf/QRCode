@@ -37,12 +37,25 @@ final class QRCodeTests: XCTestCase {
 
 	func testBasicEncodeDecode() {
 
-		let doc = QRCodeDocument()
-		doc.data = "this is a test".data(using: .utf8)!
-		let s = doc.settings
+		do {
+			let doc1 = QRCode.Document()
+			doc1.data = "this is a test".data(using: .utf8)!
 
-		let d2 = QRCodeDocument.Create(settings: s)
-		XCTAssertNotNil(d2)
+			let s = doc1.settings()
+			let doc11 = QRCode.Document.Create(settings: s)
+			XCTAssertNotNil(doc11)
+
+			let data = try XCTUnwrap(doc1.jsonData())
+			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
+
+			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data))
+			XCTAssertNotNil(doc111)
+			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
+			XCTAssertEqual(dataStr, data111Str)
+		}
+		catch {
+			fatalError("Caught exception")
+		}
 	}
 
 }
