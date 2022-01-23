@@ -27,7 +27,23 @@ public extension QRCode.FillStyle {
 
 	/// A simple single-color solid fill style
 	@objc(QRCodeFillStyleSolid) class Solid: NSObject, QRCodeFillStyleGenerator {
+
+		@objc public static var name: String { "solid" }
+
 		let color: CGColor
+
+		@objc public func settings() -> [String: Any] {
+			[ "color": color.archiveSRGBA() ?? "1.0,0.0,0.0,0.5" ]
+		}
+
+		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+			if let c = settings["color"] as? String,
+				let g = CGColor.UnarchiveSRGBA(c) {
+				return QRCode.FillStyle.Solid(g)
+			}
+			return nil
+		}
+
 		/// Create with a color
 		@objc public init(_ color: CGColor) {
 			self.color = color

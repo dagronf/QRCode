@@ -33,4 +33,16 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(g11c.pins[1].position, 0.2)
 		XCTAssertEqual(g11c.pins[2].position, 1.0)
 	}
+
+
+	func testBasicEncodeDecode() {
+
+		let doc = QRCodeDocument()
+		doc.data = "this is a test".data(using: .utf8)!
+		let s = doc.settings
+
+		let d2 = QRCodeDocument.Create(settings: s)
+		XCTAssertNotNil(d2)
+	}
+
 }

@@ -65,6 +65,34 @@ public extension QRCode {
 	}
 }
 
+// MARK: Save and restore
+
+public extension QRCode.Design {
+	@objc func settings() -> [String: Any] {
+		return [
+			"shape": shape.settings(),
+			"style": style.settings()
+		]
+	}
+
+	@objc static func Create(settings: [String: Any]) -> QRCode.Design? {
+		let design = QRCode.Design()
+
+		if let sh = settings["shape"] as? [String: Any],
+			let shape = QRCode.Shape.Create(settings: sh) {
+			design.shape = shape
+		}
+
+		if let sh = settings["style"] as? [String: Any],
+			let style = QRCode.Style.Create(settings: sh) {
+			design.style = style
+		}
+
+		return design
+	}
+}
+
+
 // MARK: Some conveniences on the design object
 
 public extension QRCode.Design {

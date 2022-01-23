@@ -17,43 +17,33 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the data shape for a path
 @objc public protocol QRCodeDataShapeHandler {
-	var name: String { get }
+	static var name: String { get }
+	static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler
+
 	func copyShape() -> QRCodeDataShapeHandler
 	func onPath(size: CGSize, data: QRCode) -> CGPath
 	func offPath(size: CGSize, data: QRCode) -> CGPath
+
+	func settings() -> [String: Any]
+
 }
 
 public class QRCodeDataShapeFactory {
-	public var knownTypes: [String] {
-		["square", "circle", "squircle", "roundedrect", "horizontal", "vertical", "roundedpath", "pointy"].sorted()
-	}
 
-	public func named(_ name: String, inset: CGFloat, cornerRadiusFraction: CGFloat) -> QRCodeDataShapeHandler? {
-		if name == "square" {
-			return QRCode.DataShape.Square(inset: inset)
+	static public var registeredTypes: [QRCodeDataShapeHandler.Type] = [
+		QRCode.DataShape.Vertical.self,
+		QRCode.DataShape.Horizontal.self,
+		QRCode.DataShape.Pixel.self,
+		QRCode.DataShape.RoundedPath.self,
+		QRCode.DataShape.Pointy.self
+	]
+
+	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeHandler? {
+		guard let type = settings["type"] as? String else { return nil }
+		guard let f = QRCodeDataShapeFactory.registeredTypes.first(where: { $0.name == type }) else {
+			return nil
 		}
-		else if name == "circle" {
-			return QRCode.DataShape.Circle(inset: inset)
-		}
-		else if name == "squircle" {
-			return QRCode.DataShape.Squircle(inset: inset)
-		}
-		else if name == "roundedrect" {
-			return QRCode.DataShape.RoundedRect(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
-		}
-		else if name == "horizontal" {
-			return QRCode.DataShape.Horizontal(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
-		}
-		else if name == "vertical" {
-			return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
-		}
-		else if name == "roundedpath" {
-			return QRCode.DataShape.RoundedPath()
-		}
-		else if name == "pointy" {
-			return QRCode.DataShape.Pointy()
-		}
-		return nil
+		return f.Create(settings)
 	}
 }
 

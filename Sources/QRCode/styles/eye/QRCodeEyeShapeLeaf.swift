@@ -27,7 +27,11 @@ public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeHandler {
 
-		public let name: String = "leaf"
+		@objc public static let name: String = "leaf"
+		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
+			return QRCode.EyeShape.Leaf()
+		}
+		@objc public func settings() -> [String : Any] { return [:] }
 
 		public func copyShape() -> QRCodeEyeShapeHandler {
 			return Leaf()

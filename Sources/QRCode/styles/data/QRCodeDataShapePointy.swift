@@ -24,8 +24,15 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeHandler {
+		public static var name: String = "pointy"
 
-		public let name: String = "Pointy"
+		public static func Create(_ settings: [String : Any]) -> QRCodeDataShapeHandler {
+			Pointy()
+		}
+
+		public func settings() -> [String : Any] {
+			return [:]
+		}
 
 		static let DefaultSize   = CGSize(width: 10, height: 10)
 		static let DefaultRect   = CGRect(origin: .zero, size: DefaultSize)

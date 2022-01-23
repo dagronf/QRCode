@@ -27,10 +27,32 @@ public extension QRCode.FillStyle {
 	/// A simple radial gradient fill
 	@objc(QRCodeFillStyleRadialGradient)
 	class RadialGradient: NSObject, QRCodeFillStyleGenerator {
+
+		@objc public static var name: String { "radialgradient" }
+
 		let gradient: DSFGradient
 
 		// For radial gradients, the center point
 		public var centerPoint: CGPoint
+
+		@objc public func settings() -> [String: Any] {
+			[
+				"centerX": centerPoint.x,
+				"centerY": centerPoint.y,
+				"gradient": self.gradient.asRGBAGradientString() ?? ""
+			]
+		}
+
+		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+			if let cX = settings["centerX"] as? Double,
+				let cY = settings["centerY"] as? Double,
+				let gs = settings["gradient"] as? String,
+				let grad = DSFGradient.FromRGBAGradientString(gs)
+			{
+				return QRCode.FillStyle.RadialGradient(grad, centerPoint: CGPoint(x: cX, y: cY))
+			}
+			return nil
+		}
 
 		/// Fill the specified path/rect with a gradient
 		/// - Parameters:

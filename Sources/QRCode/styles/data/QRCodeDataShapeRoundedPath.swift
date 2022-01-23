@@ -25,7 +25,15 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeRoundedPath) class RoundedPath: NSObject, QRCodeDataShapeHandler {
-		public var name: String = "RoundedPath"
+
+		static public var name: String = "RoundedPath"
+		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+			return QRCode.DataShape.RoundedPath()
+		}
+
+		public func settings() -> [String : Any] {
+			return [:]
+		}
 
 		static let DefaultSize   = CGSize(width: 10, height: 10)
 		static let DefaultRect   = CGRect(origin: .zero, size: DefaultSize)

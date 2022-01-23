@@ -55,3 +55,47 @@ public extension QRCode {
 		}
 	}
 }
+
+public extension QRCode.Style {
+	@objc func settings() -> [String: Any] {
+		var result = [ "data": data.settings() ]
+		if let e = eye?.settings() {
+			result["eye"] = e
+		}
+		if let p = pupil?.settings() {
+			result["pupil"] = p
+		}
+		if let b = background?.settings() {
+			result["background"] = b
+		}
+		if let di = dataInverted?.settings() {
+			result["dataInverted"] = di
+		}
+		return result
+	}
+
+	@objc static func Create(settings: [String: Any]) -> QRCode.Style? {
+		let style = QRCode.Style()
+
+		if let e = settings["eye"] as? [String: Any],
+			let eye = FillStyleFactory.Create(settings: e) {
+			style.eye = eye
+		}
+
+		if let e = settings["pupil"] as? [String: Any],
+			let pupil = FillStyleFactory.Create(settings: e) {
+			style.pupil = pupil
+		}
+
+		if let e = settings["background"] as? [String: Any],
+			let background = FillStyleFactory.Create(settings: e) {
+			style.background = background
+		}
+
+		if let e = settings["dataInverted"] as? [String: Any],
+			let dataInverted = FillStyleFactory.Create(settings: e) {
+			style.dataInverted = dataInverted
+		}
+		return style
+	}
+}

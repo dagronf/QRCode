@@ -27,11 +27,41 @@ public extension QRCode.FillStyle {
 	/// A simple linear gradient fill style
 	@objc(QRCodeFillStyleLinearGradient)
 	class LinearGradient: NSObject, QRCodeFillStyleGenerator {
+
+		@objc public static var name: String { "lineargradient" }
+
 		let gradient: DSFGradient
 
 		// For linear
 		@objc public var startPoint: CGPoint
 		@objc public var endPoint: CGPoint
+
+		@objc public func settings() -> [String: Any] {
+			[
+				"startX": startPoint.x,
+				"startY": startPoint.y,
+				"endX": startPoint.x,
+				"endY": startPoint.y,
+				"gradient": self.gradient.asRGBAGradientString() ?? ""
+			]
+		}
+
+		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+			if let sX = settings["startX"] as? Double,
+				let sY = settings["startY"] as? Double,
+				let eX = settings["endX"] as? Double,
+				let eY = settings["endY"] as? Double,
+				let gs = settings["gradient"] as? String,
+				let grad = DSFGradient.FromRGBAGradientString(gs)
+			{
+				return QRCode.FillStyle.LinearGradient(
+					grad,
+					startPoint: CGPoint(x: sX, y: sY),
+					endPoint: CGPoint(x: eX, y: eY)
+				)
+			}
+			return nil
+		}
 
 		/// Fill the specified path/rect with a gradient
 		/// - Parameters:

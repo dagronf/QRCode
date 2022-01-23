@@ -26,7 +26,19 @@ import Foundation
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeVertical) class Vertical: NSObject, QRCodeDataShapeHandler {
 
-		public let name: String = "vertical"
+		static public let name: String = "vertical"
+		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+			return QRCode.DataShape.Vertical(
+				inset: settings["inset", default: 0] as? Double ?? 0,
+				cornerRadiusFraction: settings["cornerRadiusFraction", default: 0] as? Double ?? 0)
+		}
+
+		public func settings() -> [String : Any] {
+			return [
+				"inset": self.inset,
+				"cornerRadiusFraction": self.cornerRadiusFraction
+			]
+		}
 
 		public func copyShape() -> QRCodeDataShapeHandler {
 			return Vertical(

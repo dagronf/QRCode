@@ -32,36 +32,36 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the eye shapes for a path
 @objc public protocol QRCodeEyeShapeHandler {
-	var name: String { get }
-	func copyShape() -> QRCodeEyeShapeHandler
-	func eyePath() -> CGPath
-	func pupilPath() -> CGPath
+	@objc static var name: String { get }
+	@objc static func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler
+	@objc func settings() -> [String: Any]
+	@objc func copyShape() -> QRCodeEyeShapeHandler
+	@objc func eyePath() -> CGPath
+	@objc func pupilPath() -> CGPath
 }
 
 public class QRCodeEyeShapeFactory {
-	public private(set) var eyeShapes: [QRCodeEyeShapeHandler] = []
-	init() {
-		self.register()
+
+	static public var registeredTypes: [QRCodeEyeShapeHandler.Type] = [
+		QRCode.EyeShape.Circle.self,
+		QRCode.EyeShape.RoundedRect.self,
+		QRCode.EyeShape.RoundedPointingIn.self,
+		QRCode.EyeShape.Squircle.self,
+		QRCode.EyeShape.RoundedOuter.self,
+		QRCode.EyeShape.Square.self,
+		QRCode.EyeShape.Leaf.self
+	]
+
+	@objc public var knownTypes: [String] {
+		QRCodeEyeShapeFactory.registeredTypes.map { $0.name }
 	}
 
-	func register() {
-		self.eyeShapes = [
-			QRCode.EyeShape.Circle(),
-			QRCode.EyeShape.Leaf(),
-			QRCode.EyeShape.RoundedOuter(),
-			QRCode.EyeShape.RoundedPointingIn(),
-			QRCode.EyeShape.RoundedRect(),
-			QRCode.EyeShape.Squircle(),
-			QRCode.EyeShape.Square(),
-		]
-	}
-
-	public var knownTypes: [String] {
-		self.eyeShapes.map { $0.name }
-	}
-
-	public func named(_ name: String) -> QRCodeEyeShapeHandler? {
-		return self.eyeShapes.first { h in h.name == name }
+	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeHandler? {
+		guard let type = settings["type"] as? String else { return nil }
+		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.name == type }) else {
+			return nil
+		}
+		return f.Create(settings)
 	}
 }
 

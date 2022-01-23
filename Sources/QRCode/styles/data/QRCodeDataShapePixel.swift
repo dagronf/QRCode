@@ -26,7 +26,26 @@ import Foundation
 public extension QRCode.DataShape {
 	/// A data shape generator where every pixel in the qr code becomes a discrete shape
 	@objc(QRCodeDataShapePixel) class Pixel: NSObject, QRCodeDataShapeHandler {
-		public let name: String = "pixel"
+
+		static public let name: String = "pixel"
+		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+			let type = settings["pixelType", default: 0] as? Int32 ?? 0
+			let pixelType = QRCode.DataShape.Pixel.PixelType(rawValue: type) ?? .square
+			let inset = settings["inset", default: 0] as? Double ?? 0
+			let radius = settings["cornerRadiusFraction", default: 0] as? Double ?? 0
+			return QRCode.DataShape.Pixel(
+				pixelType: pixelType,
+				inset: inset,
+				cornerRadiusFraction: radius.clamped(to: 0 ... 1))
+		}
+
+		public func settings() -> [String : Any] {
+			return [
+				"type": self.pixelType.rawValue,
+				"inset": self.inset,
+				"cornerRadiusFraction": self.cornerRadiusFraction
+			]
+		}
 
 		@objc public enum PixelType: Int32 {
 			case square = 0
