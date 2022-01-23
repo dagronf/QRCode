@@ -35,33 +35,31 @@ import UIKit
 
 /// A simple NSView/UIView that displays a QR Code
 @objc @IBDesignable public class QRCodeView: DSFView {
-	// The qrcode content generator
-	private let qrCodeContent = QRCode()
+
+	/// The qrcode document to render
+	@objc public var document = QRCode.Document()
 
 	/// The correction level to use when generating the QR code
-	@objc public var errorCorrection: QRCode.ErrorCorrection = .low {
-		didSet {
-			self.regenerate()
-		}
+	@objc public var errorCorrection: QRCode.ErrorCorrection {
+		get { return document.errorCorrection }
+		set { document.errorCorrection = newValue; setNeedsDisplay() }
 	}
 
 	/// Binary data to display in the QR code
-	@objc public var data = Data() {
-		didSet {
-			self.regenerate()
-		}
+	@objc public var data: Data {
+		get { return document.data }
+		set { document.data = newValue; setNeedsDisplay() }
 	}
 
 	/// The style to use when drawing the qr code
-	@objc public var design = QRCode.Design() {
-		didSet {
-			self.setNeedsDisplay()
-		}
+	@objc public var design: QRCode.Design {
+		get { return document.design }
+		set { document.design = newValue; setNeedsDisplay() }
 	}
 
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
 	@objc public var pixelSize: Int {
-		return self.qrCodeContent.pixelSize
+		get { document.pixelSize }
 	}
 
 	@objc public convenience init() {
@@ -94,9 +92,9 @@ import UIKit
 // MARK: - Interface Builder conveniences
 
 public extension QRCodeView {
-	@IBInspectable var ibCorrectionLevel: Int {
-		get { return self.errorCorrection.rawValue }
-		set { self.errorCorrection = QRCode.ErrorCorrection(rawValue: newValue) ?? .low }
+	@IBInspectable var ibCorrectionLevel: String {
+		get { return self.errorCorrection.ECLevel }
+		set { self.errorCorrection = QRCode.ErrorCorrection.Create(newValue.first ?? "q") ?? .quantize }
 	}
 
 	@IBInspectable var ibTextContent: String {
@@ -181,12 +179,12 @@ extension QRCodeView {
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
-		self.qrCodeContent.draw(ctx: ctx, rect: self.bounds, design: self.design)
+		self.document.draw(ctx: ctx, rect: self.bounds, design: self.design)
 	}
 
 	// Build up the qr representation
 	private func regenerate() {
-		self.qrCodeContent.update(self.data, errorCorrection: self.errorCorrection)
+		self.document.update(self.data, errorCorrection: self.errorCorrection)
 		self.setNeedsDisplay()
 	}
 }

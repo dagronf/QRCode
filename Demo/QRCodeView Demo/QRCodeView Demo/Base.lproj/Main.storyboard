@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -731,9 +731,7 @@
                                                 <rect key="frame" x="0.0" y="105" width="163" height="250"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="ibCorrectionLevel">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="Q"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
                                                         <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </userDefinedRuntimeAttribute>
@@ -746,9 +744,7 @@
                                                 <rect key="frame" x="171" y="115" width="163" height="230"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="ibCorrectionLevel">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="L"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
                                                         <color key="value" red="0.89056569340000002" green="0.70289796589999998" blue="0.81566268210000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </userDefinedRuntimeAttribute>
@@ -761,9 +757,7 @@
                                                 <rect key="frame" x="342" y="115" width="163" height="230"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="ibCorrectionLevel">
-                                                        <integer key="value" value="3"/>
-                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="M"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
                                                         <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </userDefinedRuntimeAttribute>
