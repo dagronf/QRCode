@@ -28,7 +28,7 @@ public extension QRCode.FillStyle {
 	@objc(QRCodeFillStyleRadialGradient)
 	class RadialGradient: NSObject, QRCodeFillStyleGenerator {
 
-		@objc public static var name: String { "radialgradient" }
+		@objc public static var Name: String { "radialgradient" }
 
 		let gradient: DSFGradient
 

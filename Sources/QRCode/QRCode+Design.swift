@@ -75,6 +75,12 @@ public extension QRCode.Design {
 		]
 	}
 
+	/// Generate a JSON string representation of the document.
+	@objc func jsonData() throws -> Data {
+		let dict = self.settings()
+		return try JSONSerialization.data(withJSONObject: dict)
+	}
+
 	@objc static func Create(settings: [String: Any]) -> QRCode.Design? {
 		let design = QRCode.Design()
 
@@ -89,6 +95,17 @@ public extension QRCode.Design {
 		}
 
 		return design
+	}
+
+	/// Create a QRCode document from the provided json formatted data
+	@objc static func Create(jsonData: Data) -> QRCode.Design? {
+		guard
+			let s = try? JSONSerialization.jsonObject(with: jsonData, options: []),
+			let settings = s as? [String: Any]
+		else {
+			return nil
+		}
+		return QRCode.Design.Create(settings: settings)
 	}
 }
 

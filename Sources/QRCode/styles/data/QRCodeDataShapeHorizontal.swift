@@ -26,7 +26,7 @@ import Foundation
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeHorizontal) class Horizontal: NSObject, QRCodeDataShapeHandler {
 
-		static public let name: String = "horizontal"
+		static public let Name: String = "horizontal"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			return QRCode.DataShape.Horizontal(
 				inset: settings["inset", default: 0] as? Double ?? 0,
@@ -55,7 +55,7 @@ public extension QRCode.DataShape {
 			super.init()
 		}
 
-		public func onPath(size: CGSize, data: QRCode) -> CGPath {
+		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -65,11 +65,12 @@ public extension QRCode.DataShape {
 
 			let path = CGMutablePath()
 
-			for row in 1 ..< data.pixelSize - 1 {
+			for row in 0 ..< data.pixelSize {
 				var activeRect: CGRect?
 
-				for col in 1 ..< data.pixelSize - 1 {
-					if data.current[row, col] == false || data.isEyePixel(row, col) {
+				for col in 0 ..< data.pixelSize {
+					let isEye = data.isEyePixel(row, col) && !isTemplate
+					if data.current[row, col] == false || isEye == true {
 						if let r = activeRect {
 							// Close the rect
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)
@@ -99,7 +100,7 @@ public extension QRCode.DataShape {
 			return path
 		}
 
-		public func offPath(size: CGSize, data: QRCode) -> CGPath {
+		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)

@@ -22,12 +22,13 @@
 
 import CoreGraphics
 import Foundation
+import AppKit
 
 public extension QRCode.DataShape {
 	/// A data shape generator where every pixel in the qr code becomes a discrete shape
 	@objc(QRCodeDataShapePixel) class Pixel: NSObject, QRCodeDataShapeHandler {
 
-		static public let name: String = "pixel"
+		static public let Name: String = "pixel"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			let type = settings["pixelType", default: 0] as? Int32 ?? 0
 			let pixelType = QRCode.DataShape.Pixel.PixelType(rawValue: type) ?? .square
@@ -78,7 +79,7 @@ public extension QRCode.DataShape {
 			super.init()
 		}
 
-		private func path(size: CGSize, data: QRCode, isOn: Bool) -> CGPath {
+		private func path(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -88,13 +89,13 @@ public extension QRCode.DataShape {
 
 			let path = CGMutablePath()
 
-			for row in 1 ..< data.pixelSize - 1 {
-				for col in 1 ..< data.pixelSize - 1 {
+			for row in 0 ..< data.pixelSize {
+				for col in 0 ..< data.pixelSize {
 					if data.current[row, col] != isOn {
 						continue
 					}
 
-					if data.isEyePixel(row, col) {
+					if data.isEyePixel(row, col) && !isTemplate {
 						// skip it
 						continue
 					}
@@ -127,12 +128,12 @@ public extension QRCode.DataShape {
 			return path
 		}
 
-		public func onPath(size: CGSize, data: QRCode) -> CGPath {
-			return self.path(size: size, data: data, isOn: true)
+		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+			return self.path(size: size, data: data, isOn: true, isTemplate: isTemplate)
 		}
 
-		public func offPath(size: CGSize, data: QRCode) -> CGPath {
-			return self.path(size: size, data: data, isOn: false)
+		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+			return self.path(size: size, data: data, isOn: false, isTemplate: isTemplate)
 		}
 	}
 }

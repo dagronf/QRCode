@@ -32,12 +32,15 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the eye shapes for a path
 @objc public protocol QRCodeEyeShapeHandler {
-	@objc static var name: String { get }
+	@objc static var Name: String { get }
 	@objc static func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler
 	@objc func settings() -> [String: Any]
 	@objc func copyShape() -> QRCodeEyeShapeHandler
 	@objc func eyePath() -> CGPath
 	@objc func pupilPath() -> CGPath
+}
+public extension QRCodeEyeShapeHandler {
+	var name: String { return Self.Name }
 }
 
 public class QRCodeEyeShapeFactory {
@@ -53,16 +56,81 @@ public class QRCodeEyeShapeFactory {
 	]
 
 	@objc public var knownTypes: [String] {
-		QRCodeEyeShapeFactory.registeredTypes.map { $0.name }
+		QRCodeEyeShapeFactory.registeredTypes.map { $0.Name }
 	}
 
 	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeHandler? {
 		guard let type = settings["type"] as? String else { return nil }
-		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.name == type }) else {
+		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
 		return f.Create(settings)
 	}
+
+//	@objc public func Create(named name: String) -> QRCodeEyeShapeHandler? {
+//		if let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == name }) {
+//			return f.Create(nil)
+//		}
+//		return nil
+//	}
 }
 
 public let EyeShapeFactory = QRCodeEyeShapeFactory()
+
+extension QRCodeEyeShapeFactory {
+	public func image(eye: QRCodeEyeShapeHandler, dimension: CGFloat, foregroundColor: CGColor) -> CGImage? {
+		let width = Int(dimension)
+		let height = Int(dimension)
+		let colorSpace = CGColorSpaceCreateDeviceRGB()
+		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+		guard let context = CGContext(
+			data: nil,
+			width: width,
+			height: height,
+			bitsPerComponent: 8,
+			bytesPerRow: 0,
+			space: colorSpace,
+			bitmapInfo: bitmapInfo.rawValue
+		) else {
+			return nil
+		}
+
+		context.scaleBy(x: 1, y: -1)
+		context.translateBy(x: 0, y: -dimension)
+
+		let fitScale = dimension / 90
+		var scaleTransform = CGAffineTransform.identity
+		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
+
+		// Draw the qr with the required styles
+		let path = CGMutablePath()
+		path.addPath(eye.eyePath(), transform: scaleTransform)
+		path.addPath(eye.pupilPath(), transform: scaleTransform)
+
+		context.addPath(path)
+		context.setFillColor(foregroundColor)
+		context.fillPath()
+
+		let im = context.makeImage()
+		return im
+	}
+}
+
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+extension QRCodeEyeShapeFactory {
+
+	#if os(macOS)
+	public func nsImage(eye: QRCodeEyeShapeHandler, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
+		if let cgi = image(eye: eye, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
+			return NSImage(cgImage: cgi, size: .zero)
+		}
+		return nil
+	}
+	#endif
+
+}

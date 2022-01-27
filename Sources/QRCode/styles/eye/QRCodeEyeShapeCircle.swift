@@ -26,7 +26,7 @@ import CoreGraphics
 public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeHandler {
 
-		@objc public static let name: String = "circle"
+		@objc public static let Name: String = "circle"
 		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
 			return QRCode.EyeShape.Circle()
 		}

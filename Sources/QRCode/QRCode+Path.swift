@@ -149,12 +149,12 @@ public extension QRCode {
 
 		// 'off' pixels
 		if components.contains(.offPixels), let offPixelShape = shape.dataInverted {
-			path.addPath(offPixelShape.offPath(size: size, data: self))
+			path.addPath(offPixelShape.offPath(size: size, data: self, isTemplate: false))
 		}
 
 		// 'on' content
 		if components.contains(.onPixels) {
-			path.addPath(shape.data.onPath(size: size, data: self))
+			path.addPath(shape.data.onPath(size: size, data: self, isTemplate: false))
 		}
 
 		return path

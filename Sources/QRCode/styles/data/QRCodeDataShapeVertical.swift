@@ -26,7 +26,7 @@ import Foundation
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeVertical) class Vertical: NSObject, QRCodeDataShapeHandler {
 
-		static public let name: String = "vertical"
+		static public let Name: String = "vertical"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			return QRCode.DataShape.Vertical(
 				inset: settings["inset", default: 0] as? Double ?? 0,
@@ -55,7 +55,7 @@ public extension QRCode.DataShape {
 			super.init()
 		}
 		
-		public func onPath(size: CGSize, data: QRCode) -> CGPath {
+		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -69,7 +69,9 @@ public extension QRCode.DataShape {
 				var activeRect: CGRect?
 				
 				for row in 1 ..< data.pixelSize - 1 {
-					if data.current[row, col] == false || data.isEyePixel(row, col) {
+					let isEye = data.isEyePixel(row, col) && isTemplate == false
+
+					if data.current[row, col] == false || isEye {
 						if let r = activeRect {
 							// Close the rect
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)
@@ -99,7 +101,7 @@ public extension QRCode.DataShape {
 			return path
 		}
 		
-		public func offPath(size: CGSize, data: QRCode) -> CGPath {
+		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -109,11 +111,13 @@ public extension QRCode.DataShape {
 			
 			let path = CGMutablePath()
 			
-			for col in 1 ..< data.pixelSize - 1 {
+			for col in 0 ..< data.pixelSize {
 				var activeRect: CGRect?
 				
-				for row in 1 ..< data.pixelSize - 1 {
-					if data.current[row, col] == true || data.isEyePixel(row, col) {
+				for row in 0 ..< data.pixelSize {
+					let isEye = data.isEyePixel(row, col) && isTemplate == false
+
+					if data.current[row, col] == true || isEye {
 						if let r = activeRect {
 							// Close the rect
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)

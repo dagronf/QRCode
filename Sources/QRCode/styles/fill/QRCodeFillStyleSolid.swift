@@ -28,7 +28,7 @@ public extension QRCode.FillStyle {
 	/// A simple single-color solid fill style
 	@objc(QRCodeFillStyleSolid) class Solid: NSObject, QRCodeFillStyleGenerator {
 
-		@objc public static var name: String { "solid" }
+		@objc public static var Name: String { "solid" }
 
 		let color: CGColor
 

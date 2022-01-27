@@ -34,13 +34,16 @@ public extension QRCode {
 
 /// A protocol for wrapping fill styles for image generation
 @objc public protocol QRCodeFillStyleGenerator {
-	@objc static var name: String { get }
+	@objc static var Name: String { get }
 	@objc static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator?
 
 	func copyStyle() -> QRCodeFillStyleGenerator
 	func settings() -> [String: Any]
 	func fill(ctx: CGContext, rect: CGRect)
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
+}
+public extension QRCodeFillStyleGenerator {
+	var name: String { return Self.Name }
 }
 
 public class QRCodeFillStyleFactory {
@@ -52,12 +55,12 @@ public class QRCodeFillStyleFactory {
 	]
 
 	@objc public var knownTypes: [String] {
-		QRCodeFillStyleFactory.registeredTypes.map { $0.name }
+		QRCodeFillStyleFactory.registeredTypes.map { $0.Name }
 	}
 
 	@objc public func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 		guard let type = settings["type"] as? String else { return nil }
-		guard let f = QRCodeFillStyleFactory.registeredTypes.first(where: { $0.name == type }) else {
+		guard let f = QRCodeFillStyleFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
 		return f.Create(settings: settings)

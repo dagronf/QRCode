@@ -26,7 +26,7 @@ import Foundation
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeRoundedPath) class RoundedPath: NSObject, QRCodeDataShapeHandler {
 
-		static public var name: String = "RoundedPath"
+		static public var Name: String = "RoundedPath"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			return QRCode.DataShape.RoundedPath()
 		}
@@ -96,18 +96,18 @@ public extension QRCode.DataShape {
 								  bottomLeftRadius: RoundedPath.DefaultRadius)
 		}()
 
-		public func onPath(size: CGSize, data: QRCode) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: true)
+		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
 		}
 
-		public func offPath(size: CGSize, data: QRCode) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: false)
+		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
 		}
 	}
 }
 
 extension QRCode.DataShape.RoundedPath {
-	private func generatePath(size: CGSize, data: QRCode, isOn: Bool) -> CGPath {
+	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
 
 		let dx = size.width / CGFloat(data.pixelSize)
 		let dy = size.height / CGFloat(data.pixelSize)
@@ -122,20 +122,19 @@ extension QRCode.DataShape.RoundedPath {
 
 		let path = CGMutablePath()
 
-		for row in 1 ..< data.pixelSize - 1 {
-			for col in 1 ..< data.pixelSize - 1 {
-
+		for row in 0 ..< data.pixelSize {
+			for col in 0 ..< data.pixelSize {
+				let isEye = data.isEyePixel(row, col) == true && isTemplate == false
 				guard
-					data.current[row, col] == isOn,
-					data.isEyePixel(row, col) == false
+					data.current[row, col] == isOn, isEye == false
 				else {
 					continue
 				}
 
-				let hasLeft   = data.current[row, col - 1]
-				let hasRight  = data.current[row, col + 1]
-				let hasTop    = data.current[row - 1, col]
-				let hasBottom = data.current[row + 1, col]
+				let hasLeft   = (col - 1) >= 0 ? data.current[row, col - 1] : false
+				let hasRight  = (col + 1) < data.pixelSize ? data.current[row, col + 1] : false
+				let hasTop    = (row - 1) >= 0 ? data.current[row - 1, col] : false
+				let hasBottom = (row + 1) < data.pixelSize ? data.current[row + 1, col] : false
 
 				let translate = CGAffineTransform(translationX: CGFloat(col)*dm + xoff, y: CGFloat(row)*dm + yoff)
 
