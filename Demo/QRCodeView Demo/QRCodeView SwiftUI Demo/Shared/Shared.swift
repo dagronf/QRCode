@@ -16,6 +16,7 @@ enum DataShapeType {
 	case horizontal
 	case vertical
 	case roundedpath
+	case pointy
 }
 
 enum EyeShapeType {
@@ -44,6 +45,8 @@ func dataShapeHandler(_ dataShape: DataShapeType, inset: Double = 0, cornerRadiu
 		return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .roundedpath:
 		return QRCode.DataShape.RoundedPath()
+	case .pointy:
+		return QRCode.DataShape.Pointy()
 	}
 }
 

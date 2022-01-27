@@ -57,6 +57,7 @@ struct ContentView: View {
 					Text("Horizontal").tag(DataShapeType.horizontal)
 					Text("Vertical").tag(DataShapeType.vertical)
 					Text("Rounded Path").tag(DataShapeType.roundedpath)
+					Text("Pointy").tag(DataShapeType.pointy)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
 				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })

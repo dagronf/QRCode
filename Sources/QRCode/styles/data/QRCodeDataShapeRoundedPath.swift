@@ -162,7 +162,6 @@ extension QRCode.DataShape.RoundedPath {
 					)
 				}
 
-
 				else if hasLeft, hasTop, !hasRight, !hasBottom {
 					path.addPath(
 						QRCode.DataShape.RoundedPath.templateBottomRight,
