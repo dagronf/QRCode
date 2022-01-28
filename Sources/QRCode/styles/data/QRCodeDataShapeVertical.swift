@@ -75,7 +75,7 @@ public extension QRCode.DataShape {
 						if let r = activeRect {
 							// Close the rect
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)
-							let cr = (ri.height / 2.0) * self.cornerRadiusFraction
+							let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 							path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 						}
 						activeRect = nil
@@ -94,7 +94,7 @@ public extension QRCode.DataShape {
 				if let r = activeRect {
 					// Close the rect
 					let ri = r.insetBy(dx: self.inset, dy: self.inset)
-					let cr = (ri.height / 2.0) * self.cornerRadiusFraction
+					let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 					path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 				}
 			}
@@ -121,7 +121,7 @@ public extension QRCode.DataShape {
 						if let r = activeRect {
 							// Close the rect
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)
-							let cr = (ri.height / 2.0) * self.cornerRadiusFraction
+							let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 							path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 						}
 						activeRect = nil
@@ -140,7 +140,7 @@ public extension QRCode.DataShape {
 				if let r = activeRect {
 					// Close the rect
 					let ri = r.insetBy(dx: self.inset, dy: self.inset)
-					let cr = (ri.height / 2.0) * self.cornerRadiusFraction
+					let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 					path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 				}
 			}

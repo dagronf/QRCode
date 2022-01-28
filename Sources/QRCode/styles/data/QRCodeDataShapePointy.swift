@@ -25,16 +25,16 @@ import Foundation
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeHandler {
 		public static var Name: String = "pointy"
-		public static func Create(_ settings: [String : Any]) -> QRCodeDataShapeHandler {
+		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			Pointy()
 		}
 
-		public func settings() -> [String : Any] {
+		public func settings() -> [String: Any] {
 			return [:]
 		}
 
-		static let DefaultSize   = CGSize(width: 10, height: 10)
-		static let DefaultRect   = CGRect(origin: .zero, size: DefaultSize)
+		static let DefaultSize = CGSize(width: 10, height: 10)
+		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 		static let templateSquare: CGPath = {
 			CGPath(rect: RoundedPath.DefaultRect, transform: nil)
 		}()
@@ -91,7 +91,6 @@ public extension QRCode.DataShape {
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -107,31 +106,26 @@ public extension QRCode.DataShape {
 
 			for row in 1 ..< data.pixelSize - 1 {
 				for col in 1 ..< data.pixelSize - 1 {
+					let isEye = data.isEyePixel(row, col) && isTemplate == false
 
-					guard data.isEyePixel(row, col) == false else {
+					if isEye || data.current[row, col] == false {
 						continue
 					}
 
-					guard data.current[row, col] == true else {
-						continue
-					}
-
-
-					let hasLeft   = data.current[row, col - 1]
-					let hasRight  = data.current[row, col + 1]
-					let hasTop    = data.current[row - 1, col]
+					let hasLeft = data.current[row, col - 1]
+					let hasRight = data.current[row, col + 1]
+					let hasTop = data.current[row - 1, col]
 					let hasBottom = data.current[row + 1, col]
 
-					let translate = CGAffineTransform(translationX: CGFloat(col)*dm + xoff, y: CGFloat(row)*dm + yoff)
+					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 
 					if !hasLeft, !hasRight, !hasTop, !hasBottom {
 						// isolated block
 						path.addPath(Pointy.templateSquare,
-							transform: scaleTransform.concatenating(translate)
-						)
+										 transform: scaleTransform.concatenating(translate))
 					}
 					else if !hasLeft, !hasRight, !hasTop, hasBottom {
-						// pointing down block
+						// pointing up block
 						path.addPath(
 							Pointy.templatePointingUp,
 							transform: scaleTransform.concatenating(translate)
@@ -159,9 +153,10 @@ public extension QRCode.DataShape {
 						)
 					}
 					else {
-						path.addPath(Pointy.templateSquare,
+						path.addPath(
+							Pointy.templateSquare,
 							transform: scaleTransform.concatenating(translate)
-										 )
+						)
 					}
 				}
 			}
@@ -171,7 +166,5 @@ public extension QRCode.DataShape {
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
 			return CGMutablePath()
 		}
-
-		
 	}
 }
