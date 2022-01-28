@@ -42,7 +42,7 @@ public extension QRCode.DataShape {
 
 		public func settings() -> [String : Any] {
 			return [
-				"type": self.pixelType.rawValue,
+				"pixelType": self.pixelType.rawValue,
 				"inset": self.inset,
 				"cornerRadiusFraction": self.cornerRadiusFraction
 			]

@@ -43,10 +43,11 @@ public class QRCodeDataShapeFactory {
 
 	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeHandler? {
 		guard let type = settings["type"] as? String else { return nil }
+		guard let set = settings["settings"] as? [String: Any] else { return nil }
 		guard let f = QRCodeDataShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
-		return f.Create(settings)
+		return f.Create(set)
 	}
 }
 

@@ -24,8 +24,7 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeHandler {
-		public static var name: String = "pointy"
-
+		public static var Name: String = "pointy"
 		public static func Create(_ settings: [String : Any]) -> QRCodeDataShapeHandler {
 			Pointy()
 		}
@@ -91,7 +90,7 @@ public extension QRCode.DataShape {
 			return Pointy()
 		}
 
-		public func onPath(size: CGSize, data: QRCode) -> CGPath {
+		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
 
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
@@ -169,7 +168,7 @@ public extension QRCode.DataShape {
 			return path
 		}
 
-		public func offPath(size: CGSize, data: QRCode) -> CGPath {
+		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
 			return CGMutablePath()
 		}
 

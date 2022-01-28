@@ -59,30 +59,48 @@ public extension QRCode {
 public extension QRCode.Shape {
 
 	@objc func settings() -> [String: Any] {
-		var result = [
-			"data": data.settings(),
-			"eye": eye.settings()
+		var result: [String: Any] = [:]
+
+		result["data"] = [
+			"type": data.name,
+			"settings": data.settings()
 		]
+
+		result["eye"] = [
+			"type": eye.name,
+			"settings": eye.settings()
+		]
+
 		if let d = dataInverted {
-			result["dataInverted"] = d.settings()
+			result["dataInverted"] = [
+				"type": d.name,
+				"settings": d.settings()
+			]
 		}
 		return result
 	}
 
 	@objc static func Create(settings: [String: Any]) -> QRCode.Shape? {
 		let result = QRCode.Shape()
+
 		if let data = settings["data"] as? [String: Any],
-			let shape = DataShapeFactory.create(settings: data) {
+			let shape = DataShapeFactory.create(settings: data)
+		{
 			result.data = shape
 		}
-		if let dataInverted = settings["dataInverted"] as? [String: Any],
-			let shape = DataShapeFactory.create(settings: dataInverted) {
-			result.dataInverted = shape
-		}
+
 		if let eye = settings["eye"] as? [String: Any],
-			let shape = EyeShapeFactory.Create(settings: eye) {
+			let shape = EyeShapeFactory.Create(settings: eye)
+		{
 			result.eye = shape
 		}
+
+		if let data = settings["dataInverted"] as? [String: Any],
+			let shape = DataShapeFactory.create(settings: data)
+		{
+			result.dataInverted = shape
+		}
+
 		return result
 	}
 
