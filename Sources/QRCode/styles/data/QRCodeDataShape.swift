@@ -60,12 +60,18 @@ public extension QRCode {
 	func settings() -> [String: Any]
 }
 
-public extension QRCodeDataShapeGenerator {
-	var name: String { return Self.Name }
-}
-
 private let DataShapeTypeName = "type"
 private let DataShapeSettingsName = "settings"
+
+public extension QRCodeDataShapeGenerator {
+	var name: String { return Self.Name }
+
+	internal func coreSettings() -> [String: Any] {
+		var core: [String: Any] = [DataShapeTypeName: self.name]
+		core[DataShapeSettingsName] = self.settings()
+		return core
+	}
+}
 
 public class QRCodeDataShapeFactory {
 	public static var registeredTypes: [QRCodeDataShapeGenerator.Type] = [

@@ -63,21 +63,11 @@ public extension QRCode.Shape {
 	@objc func settings() -> [String: Any] {
 		var result: [String: Any] = [:]
 
-		result["data"] = [
-			"type": data.name,
-			"settings": data.settings()
-		]
+		result["data"] = data.coreSettings()
+		result["eye"] = eye.coreSettings()
 
-		result["eye"] = [
-			"type": eye.name,
-			"settings": eye.settings()
-		]
-
-		if let d = dataInverted {
-			result["dataInverted"] = [
-				"type": d.name,
-				"settings": d.settings()
-			]
+		if let dataInverted = dataInverted {
+			result["dataInverted"] = dataInverted.coreSettings()
 		}
 		return result
 	}

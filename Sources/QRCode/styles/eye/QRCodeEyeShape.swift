@@ -40,8 +40,17 @@ public extension QRCode {
 	@objc func pupilPath() -> CGPath
 }
 
+private let EyeShapeTypeName = "type"
+private let EyeShapeSettingsName = "settings"
+
 public extension QRCodeEyeShapeGenerator {
 	var name: String { return Self.Name }
+	
+	internal func coreSettings() -> [String: Any] {
+		var core: [String: Any] = [EyeShapeTypeName: self.name]
+		core[EyeShapeSettingsName] = self.settings()
+		return core
+	}
 }
 
 public class QRCodeEyeShapeFactory {
@@ -60,19 +69,13 @@ public class QRCodeEyeShapeFactory {
 	}
 	
 	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeGenerator? {
-		guard let type = settings["type"] as? String else { return nil }
+		guard let type = settings[EyeShapeTypeName] as? String else { return nil }
+		let settings = settings[EyeShapeSettingsName] as? [String: Any] ?? [:]
 		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
 		return f.Create(settings)
 	}
-	
-	//	@objc public func Create(named name: String) -> QRCodeEyeShapeHandler? {
-	//		if let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == name }) {
-	//			return f.Create(nil)
-	//		}
-	//		return nil
-	//	}
 }
 
 public let EyeShapeFactory = QRCodeEyeShapeFactory()
