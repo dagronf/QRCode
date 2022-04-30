@@ -1,5 +1,5 @@
 //
-//  QRCodeEyeStyleCircle.swift
+//  QRCodeEyeShape.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2021 Darren Ford. All rights reserved.
@@ -31,21 +31,21 @@ public extension QRCode {
 }
 
 /// A protocol for wrapping generating the eye shapes for a path
-@objc public protocol QRCodeEyeShapeHandler {
+@objc public protocol QRCodeEyeShapeGenerator {
 	@objc static var Name: String { get }
-	@objc static func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler
+	@objc static func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator
 	@objc func settings() -> [String: Any]
-	@objc func copyShape() -> QRCodeEyeShapeHandler
+	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
 	@objc func pupilPath() -> CGPath
 }
 
-public extension QRCodeEyeShapeHandler {
+public extension QRCodeEyeShapeGenerator {
 	var name: String { return Self.Name }
 }
 
 public class QRCodeEyeShapeFactory {
-	public static var registeredTypes: [QRCodeEyeShapeHandler.Type] = [
+	public static var registeredTypes: [QRCodeEyeShapeGenerator.Type] = [
 		QRCode.EyeShape.Circle.self,
 		QRCode.EyeShape.RoundedRect.self,
 		QRCode.EyeShape.RoundedPointingIn.self,
@@ -59,7 +59,7 @@ public class QRCodeEyeShapeFactory {
 		QRCodeEyeShapeFactory.registeredTypes.map { $0.Name }
 	}
 	
-	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeHandler? {
+	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeGenerator? {
 		guard let type = settings["type"] as? String else { return nil }
 		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
@@ -78,7 +78,7 @@ public class QRCodeEyeShapeFactory {
 public let EyeShapeFactory = QRCodeEyeShapeFactory()
 
 public extension QRCodeEyeShapeFactory {
-	func image(eye: QRCodeEyeShapeHandler, dimension: CGFloat, foregroundColor: CGColor) -> CGImage? {
+	func image(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: CGColor) -> CGImage? {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -125,7 +125,7 @@ import UIKit
 
 public extension QRCodeEyeShapeFactory {
 #if os(macOS)
-	func nsImage(eye: QRCodeEyeShapeHandler, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
+	func nsImage(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
 		if let cgi = image(eye: eye, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
 			return NSImage(cgImage: cgi, size: .zero)
 		}

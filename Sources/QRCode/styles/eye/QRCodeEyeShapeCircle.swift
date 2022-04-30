@@ -24,15 +24,15 @@ import Foundation
 import CoreGraphics
 
 public extension QRCode.EyeShape {
-	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeHandler {
+	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "circle"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
+		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Circle()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }
 		
-		public func copyShape() -> QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeGenerator {
 			return Circle()
 		}
 

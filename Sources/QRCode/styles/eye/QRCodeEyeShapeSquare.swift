@@ -25,15 +25,15 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'rounded rect with a pointy bit facing inwards' style eye design
-	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeHandler {
+	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "square"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
+		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Square()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }
 		
-		public func copyShape() -> QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeGenerator {
 			return Square()
 		}
 		

@@ -22,14 +22,13 @@
 
 import CoreGraphics
 import Foundation
-import AppKit
 
 public extension QRCode.DataShape {
 	/// A data shape generator where every pixel in the qr code becomes a discrete shape
-	@objc(QRCodeDataShapePixel) class Pixel: NSObject, QRCodeDataShapeHandler {
+	@objc(QRCodeDataShapePixel) class Pixel: NSObject, QRCodeDataShapeGenerator {
 
 		static public let Name: String = "pixel"
-		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
 			let pixelType: PixelType = {
 				if let t = settings["pixelType"] as? String,
 					let ty = PixelType.type(for: t) {
@@ -82,7 +81,7 @@ public extension QRCode.DataShape {
 			public static var availableTypes: [String] = [ "square", "circle", "roundedRect", "squircle" ]
 		}
 
-		public func copyShape() -> QRCodeDataShapeHandler {
+		public func copyShape() -> QRCodeDataShapeGenerator {
 			return Pixel(
 				pixelType: self.pixelType,
 				inset: self.inset,
@@ -177,7 +176,7 @@ public extension QRCode.DataShape {
 			super.init(pixelType: .square, inset: inset)
 		}
 
-		override public func copyShape() -> QRCodeDataShapeHandler {
+		override public func copyShape() -> QRCodeDataShapeGenerator {
 			return Square(inset: self.inset)
 		}
 	}
@@ -191,7 +190,7 @@ public extension QRCode.DataShape {
 			super.init(pixelType: .circle, inset: inset)
 		}
 
-		override public func copyShape() -> QRCodeDataShapeHandler {
+		override public func copyShape() -> QRCodeDataShapeGenerator {
 			return Circle(inset: self.inset)
 		}
 	}
@@ -206,7 +205,7 @@ public extension QRCode.DataShape {
 			super.init(pixelType: .roundedRect, inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 		}
 
-		override public func copyShape() -> QRCodeDataShapeHandler {
+		override public func copyShape() -> QRCodeDataShapeGenerator {
 			return RoundedRect(inset: self.inset, cornerRadiusFraction: self.cornerRadiusFraction)
 		}
 	}
@@ -220,7 +219,7 @@ public extension QRCode.DataShape {
 			super.init(pixelType: .squircle, inset: inset)
 		}
 
-		override public func copyShape() -> QRCodeDataShapeHandler {
+		override public func copyShape() -> QRCodeDataShapeGenerator {
 			return Squircle(inset: self.inset)
 		}
 

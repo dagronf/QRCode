@@ -24,15 +24,15 @@ import Foundation
 import CoreGraphics
 
 public extension QRCode.EyeShape {
-	@objc(QRCodeEyeShapeSquircle) class Squircle : NSObject, QRCodeEyeShapeHandler {
+	@objc(QRCodeEyeShapeSquircle) class Squircle : NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "squircle"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
+		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Squircle()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }
 		
-		public func copyShape() -> QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeGenerator {
 			return Squircle()
 		}
 

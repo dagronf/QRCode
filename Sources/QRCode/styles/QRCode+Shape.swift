@@ -35,15 +35,15 @@ public extension QRCode {
 		/// The shape of the pixels.
 		///
 		/// Defaults to simple square 'pixels'
-		@objc public var data: QRCodeDataShapeHandler = QRCode.DataShape.Square()
+		@objc public var data: QRCodeDataShapeGenerator = QRCode.DataShape.Square()
 
 		/// The shape for drawing the non-drawn sections of the qr code.
-		@objc public var dataInverted: QRCodeDataShapeHandler?
+		@objc public var dataInverted: QRCodeDataShapeGenerator?
 
 		/// The style of eyes to display
 		///
 		/// Defaults to a simple square eye
-		@objc public var eye: QRCodeEyeShapeHandler = QRCode.EyeShape.Square()
+		@objc public var eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square()
 
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {

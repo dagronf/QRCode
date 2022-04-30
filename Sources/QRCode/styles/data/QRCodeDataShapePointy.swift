@@ -21,11 +21,12 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public extension QRCode.DataShape {
-	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeHandler {
+	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeGenerator {
 		public static var Name: String = "pointy"
-		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
 			Pointy()
 		}
 
@@ -86,7 +87,7 @@ public extension QRCode.DataShape {
 			return p
 		}()
 
-		public func copyShape() -> QRCodeDataShapeHandler {
+		public func copyShape() -> QRCodeDataShapeGenerator {
 			return Pointy()
 		}
 

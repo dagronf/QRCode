@@ -1,8 +1,23 @@
 //
-//  File.swift
+//  QRCodeDataShape.swift
 //
+//  Created by Darren Ford on 17/11/21.
+//  Copyright © 2021 Darren Ford. All rights reserved.
 //
-//  Created by Darren Ford on 19/11/21.
+//  MIT license
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial
+//  portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+//  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+//  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 import CoreGraphics
@@ -16,12 +31,12 @@ public extension QRCode {
 }
 
 /// A protocol for wrapping generating the data shape for a path
-@objc public protocol QRCodeDataShapeHandler {
+@objc public protocol QRCodeDataShapeGenerator {
 	static var Name: String { get }
-	static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler
+	static func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator
 
 	/// Make a copy of the shape object
-	func copyShape() -> QRCodeDataShapeHandler
+	func copyShape() -> QRCodeDataShapeGenerator
 
 	/// Generate a path (within 'size')
 
@@ -45,7 +60,7 @@ public extension QRCode {
 	func settings() -> [String: Any]
 }
 
-public extension QRCodeDataShapeHandler {
+public extension QRCodeDataShapeGenerator {
 	var name: String { return Self.Name }
 }
 
@@ -53,7 +68,7 @@ private let DataShapeTypeName = "type"
 private let DataShapeSettingsName = "settings"
 
 public class QRCodeDataShapeFactory {
-	public static var registeredTypes: [QRCodeDataShapeHandler.Type] = [
+	public static var registeredTypes: [QRCodeDataShapeGenerator.Type] = [
 		QRCode.DataShape.Vertical.self,
 		QRCode.DataShape.Horizontal.self,
 		QRCode.DataShape.Pixel.self,
@@ -61,7 +76,7 @@ public class QRCodeDataShapeFactory {
 		QRCode.DataShape.Pointy.self,
 	]
 
-	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeHandler? {
+	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeGenerator? {
 		guard let type = settings[DataShapeTypeName] as? String else { return nil }
 		guard let set = settings[DataShapeSettingsName] as? [String: Any] else { return nil }
 		guard let f = QRCodeDataShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
@@ -75,7 +90,7 @@ public let DataShapeFactory = QRCodeDataShapeFactory()
 
 public extension QRCodeDataShapeFactory {
 	func image(
-		dataShape: QRCodeDataShapeHandler,
+		dataShape: QRCodeDataShapeGenerator,
 		isOn: Bool = true,
 		dimension: CGFloat,
 		foregroundColor: CGColor

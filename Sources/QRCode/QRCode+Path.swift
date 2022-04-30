@@ -163,7 +163,7 @@ public extension QRCode {
 
 public extension QRCode {
 
-	func pathForSample(size: CGSize, dataShape: QRCodeDataShapeHandler) -> CGPath {
+	func pathForSample(size: CGSize, dataShape: QRCodeDataShapeGenerator) -> CGPath {
 		let DummyData = BoolMatrix(dimension: 5, flattened: [
 			false, false, true, true, false,
 			false, false, false, true, false,
@@ -174,7 +174,7 @@ public extension QRCode {
 		return pathForSample(DummyData, size: size, dataShape: dataShape)
 	}
 
-	func pathForSample(_ matrix: BoolMatrix, size: CGSize, dataShape: QRCodeDataShapeHandler) -> CGPath {
+	func pathForSample(_ matrix: BoolMatrix, size: CGSize, dataShape: QRCodeDataShapeGenerator) -> CGPath {
 		let qr = QRCode(generator: self.generator)
 		qr.current = matrix
 		let sh = QRCode.Shape()

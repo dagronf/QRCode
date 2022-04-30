@@ -25,15 +25,15 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
-	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeHandler {
+	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "leaf"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeHandler {
+		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Leaf()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }
 
-		public func copyShape() -> QRCodeEyeShapeHandler {
+		public func copyShape() -> QRCodeEyeShapeGenerator {
 			return Leaf()
 		}
 
