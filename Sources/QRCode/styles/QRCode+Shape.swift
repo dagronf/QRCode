@@ -56,6 +56,8 @@ public extension QRCode {
 	}
 }
 
+// MARK: - Load/Save
+
 public extension QRCode.Shape {
 
 	@objc func settings() -> [String: Any] {

@@ -36,11 +36,20 @@ import Foundation
 			initialValue: false)
 	}
 
-	init(dimension: Int, flattened: [Bool]) {
+	@objc public init(dimension: Int, flattened: [Bool]) {
 		self.content = Array2D(
 			rows: dimension,
 			columns: dimension,
 			flattened: flattened)
+	}
+
+	// A simple initializer to use [0, 1, 1, 0, 1, 0, 0, 0, 0, 1] as the bool initializer
+	@objc public init(dimension: Int, rawFlattenedInt: [Int]) {
+		let settings = rawFlattenedInt.map { $0 != 0 }
+		self.content = Array2D(
+			rows: dimension,
+			columns: dimension,
+			flattened: settings)
 	}
 
 	@objc public var dimension: Int {

@@ -34,21 +34,39 @@ public extension QRCode {
 
 /// A protocol for wrapping fill styles for image generation
 @objc public protocol QRCodeFillStyleGenerator {
+	/// Get the fill style generator name
 	@objc static var Name: String { get }
-	@objc static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator?
+	/// Create a fill style generator using the specified settings
+	static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator?
 
-	func copyStyle() -> QRCodeFillStyleGenerator
-	func settings() -> [String: Any]
+	/// Make a copy of the style
+	@objc func copyStyle() -> QRCodeFillStyleGenerator
+
+	/// Returns the current settings for the style generator
+	@objc func settings() -> [String: Any]
+
+	/// Fill the specified rect with the current style settings
 	func fill(ctx: CGContext, rect: CGRect)
+
+	/// Fill the specified path with the current style settings
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }
+
+private let FillStyleTypeName = "type"
+private let FillStyleSettingsName = "settings"
+
 public extension QRCodeFillStyleGenerator {
 	var name: String { return Self.Name }
+
+	internal func coreSettings() -> [String: Any] {
+		var core: [String: Any] = [FillStyleTypeName: self.name]
+		core[FillStyleSettingsName] = self.settings()
+		return core
+	}
 }
 
 public class QRCodeFillStyleFactory {
-
-	static public var registeredTypes: [QRCodeFillStyleGenerator.Type] = [
+	public static var registeredTypes: [QRCodeFillStyleGenerator.Type] = [
 		QRCode.FillStyle.Solid.self,
 		QRCode.FillStyle.LinearGradient.self,
 		QRCode.FillStyle.RadialGradient.self,
@@ -59,11 +77,13 @@ public class QRCodeFillStyleFactory {
 	}
 
 	@objc public func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
-		guard let type = settings["type"] as? String else { return nil }
+		guard let type = settings[FillStyleTypeName] as? String else { return nil }
+
+		let sets = settings[FillStyleSettingsName] as? [String: Any] ?? [:]
 		guard let f = QRCodeFillStyleFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
-		return f.Create(settings: settings)
+		return f.Create(settings: sets)
 	}
 }
 

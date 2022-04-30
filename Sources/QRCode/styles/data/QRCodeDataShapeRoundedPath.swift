@@ -25,81 +25,79 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeRoundedPath) class RoundedPath: NSObject, QRCodeDataShapeHandler {
-
-		static public var Name: String = "RoundedPath"
-		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
+		public static var Name = "RoundedPath"
+		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
 			return QRCode.DataShape.RoundedPath()
 		}
-
-		public func settings() -> [String : Any] {
+		
+		public func settings() -> [String: Any] {
 			return [:]
 		}
-
-		static let DefaultSize   = CGSize(width: 10, height: 10)
-		static let DefaultRect   = CGRect(origin: .zero, size: DefaultSize)
+		
+		static let DefaultSize = CGSize(width: 10, height: 10)
+		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 		static let DefaultRadius = CGSize(width: 3, height: 3)
-
+		
 		public func copyShape() -> QRCodeDataShapeHandler {
 			RoundedPath()
 		}
-
-		static let templateCircle: CGPath = {
-			CGPath(
-				roundedRect: RoundedPath.DefaultRect,
-				cornerWidth: DefaultRadius.width, cornerHeight: DefaultRadius.height,
-				transform: nil)
-		}()
-
-		static let templateSquare: CGPath = {
-			CGPath(rect: RoundedPath.DefaultRect, transform: nil)
-		}()
-
-		static let templateRoundTop: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  topLeftRadius: RoundedPath.DefaultRadius,
-								  topRightRadius: RoundedPath.DefaultRadius)
-		}()
-		static let templateRoundRight: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  topRightRadius: RoundedPath.DefaultRadius,
-								  bottomRightRadius: RoundedPath.DefaultRadius)
-		}()
-		static let templateRoundBottom: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  bottomLeftRadius: RoundedPath.DefaultRadius,
-								  bottomRightRadius: RoundedPath.DefaultRadius)
-		}()
-
-		static let templateRoundLeft: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  topLeftRadius: RoundedPath.DefaultRadius,
-								  bottomLeftRadius: RoundedPath.DefaultRadius)
-		}()
-
-		static let templateBottomRight: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  bottomRightRadius: RoundedPath.DefaultRadius)
-		}()
-
-		static let templateTopRight: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  topRightRadius: RoundedPath.DefaultRadius)
-		}()
-
-		static let templateTopLeft: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  topLeftRadius: RoundedPath.DefaultRadius)
-		}()
-
-		static let templateBottomLeft: CGPath = {
-			CGPath.RoundedRect(rect: RoundedPath.DefaultRect,
-								  bottomLeftRadius: RoundedPath.DefaultRadius)
-		}()
-
+		
+		static let templateCircle = CGPath(
+			roundedRect: RoundedPath.DefaultRect,
+			cornerWidth: DefaultRadius.width, cornerHeight: DefaultRadius.height,
+			transform: nil
+		)
+		
+		static let templateSquare = CGPath(rect: RoundedPath.DefaultRect, transform: nil)
+		
+		static let templateRoundTop = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			topLeftRadius: RoundedPath.DefaultRadius,
+			topRightRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateRoundRight = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			topRightRadius: RoundedPath.DefaultRadius,
+			bottomRightRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateRoundBottom = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			bottomLeftRadius: RoundedPath.DefaultRadius,
+			bottomRightRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateRoundLeft = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			topLeftRadius: RoundedPath.DefaultRadius,
+			bottomLeftRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateBottomRight = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			bottomRightRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateTopRight = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			topRightRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateTopLeft = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			topLeftRadius: RoundedPath.DefaultRadius
+		)
+		
+		static let templateBottomLeft = CGPath.RoundedRect(
+			rect: RoundedPath.DefaultRect,
+			bottomLeftRadius: RoundedPath.DefaultRadius
+		)
+		
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
 		}
-
+		
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
 		}
@@ -108,20 +106,19 @@ public extension QRCode.DataShape {
 
 extension QRCode.DataShape.RoundedPath {
 	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
-
 		let dx = size.width / CGFloat(data.pixelSize)
 		let dy = size.height / CGFloat(data.pixelSize)
 		let dm = min(dx, dy)
-
+		
 		// The scale required to convert our template paths to output path size
 		let w = QRCode.DataShape.RoundedPath.DefaultSize.width
 		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
-
+		
 		let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
 		let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
-
+		
 		let path = CGMutablePath()
-
+		
 		for row in 0 ..< data.pixelSize {
 			for col in 0 ..< data.pixelSize {
 				let isEye = data.isEyePixel(row, col) == true && isTemplate == false
@@ -130,14 +127,14 @@ extension QRCode.DataShape.RoundedPath {
 				else {
 					continue
 				}
-
-				let hasLeft   = (col - 1) >= 0 ? data.current[row, col - 1] : false
-				let hasRight  = (col + 1) < data.pixelSize ? data.current[row, col + 1] : false
-				let hasTop    = (row - 1) >= 0 ? data.current[row - 1, col] : false
+				
+				let hasLeft = (col - 1) >= 0 ? data.current[row, col - 1] : false
+				let hasRight = (col + 1) < data.pixelSize ? data.current[row, col + 1] : false
+				let hasTop = (row - 1) >= 0 ? data.current[row - 1, col] : false
 				let hasBottom = (row + 1) < data.pixelSize ? data.current[row + 1, col] : false
-
-				let translate = CGAffineTransform(translationX: CGFloat(col)*dm + xoff, y: CGFloat(row)*dm + yoff)
-
+				
+				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
+				
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
 					path.addPath(
 						QRCode.DataShape.RoundedPath.templateCircle,
@@ -168,7 +165,7 @@ extension QRCode.DataShape.RoundedPath {
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-
+				
 				else if hasLeft, hasTop, !hasRight, !hasBottom {
 					path.addPath(
 						QRCode.DataShape.RoundedPath.templateBottomRight,
@@ -193,7 +190,7 @@ extension QRCode.DataShape.RoundedPath {
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-
+				
 				else {
 					path.addPath(
 						QRCode.DataShape.RoundedPath.templateSquare,
@@ -204,5 +201,4 @@ extension QRCode.DataShape.RoundedPath {
 		}
 		return path
 	}
-
 }

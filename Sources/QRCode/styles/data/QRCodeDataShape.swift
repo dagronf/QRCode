@@ -1,12 +1,12 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Darren Ford on 19/11/21.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 // MARK: - Data shape
 
@@ -20,30 +20,50 @@ public extension QRCode {
 	static var Name: String { get }
 	static func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler
 
+	/// Make a copy of the shape object
 	func copyShape() -> QRCodeDataShapeHandler
+
+	/// Generate a path (within 'size')
+
+	/// Generate a path representing the 'on' _data_ pixels within the specified QRCode data (ie. no eyes etc)
+	/// - Parameters:
+	///   - size: The bounds of the path to generate
+	///   - data: The data to represent
+	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
+	/// - Returns: A path representing the specified QRCode data
 	func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath
+
+	/// Generate a path representing the 'off' _data_ pixels within the specified QRCode data (ie. no eyes etc)
+	/// - Parameters:
+	///   - size: The bounds of the path to generate
+	///   - data: The data to represent
+	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
+	/// - Returns: A path representing the specified QRCode data
 	func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath
 
+	/// Returns a storable representation of the shape handler
 	func settings() -> [String: Any]
 }
+
 public extension QRCodeDataShapeHandler {
 	var name: String { return Self.Name }
 }
 
+private let DataShapeTypeName = "type"
+private let DataShapeSettingsName = "settings"
 
 public class QRCodeDataShapeFactory {
-
-	static public var registeredTypes: [QRCodeDataShapeHandler.Type] = [
+	public static var registeredTypes: [QRCodeDataShapeHandler.Type] = [
 		QRCode.DataShape.Vertical.self,
 		QRCode.DataShape.Horizontal.self,
 		QRCode.DataShape.Pixel.self,
 		QRCode.DataShape.RoundedPath.self,
-		QRCode.DataShape.Pointy.self
+		QRCode.DataShape.Pointy.self,
 	]
 
 	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeHandler? {
-		guard let type = settings["type"] as? String else { return nil }
-		guard let set = settings["settings"] as? [String: Any] else { return nil }
+		guard let type = settings[DataShapeTypeName] as? String else { return nil }
+		guard let set = settings[DataShapeSettingsName] as? [String: Any] else { return nil }
 		guard let f = QRCodeDataShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
 			return nil
 		}
@@ -53,8 +73,8 @@ public class QRCodeDataShapeFactory {
 
 public let DataShapeFactory = QRCodeDataShapeFactory()
 
-extension QRCodeDataShapeFactory {
-	public func image(
+public extension QRCodeDataShapeFactory {
+	func image(
 		dataShape: QRCodeDataShapeHandler,
 		isOn: Bool = true,
 		dimension: CGFloat,
@@ -72,7 +92,8 @@ extension QRCodeDataShapeFactory {
 			bytesPerRow: 0,
 			space: colorSpace,
 			bitmapInfo: bitmapInfo.rawValue
-		) else {
+		)
+		else {
 			return nil
 		}
 
@@ -86,14 +107,13 @@ extension QRCodeDataShapeFactory {
 		// Draw the qr with the required styles
 
 		let qr = QRCode()
-		qr.current = BoolMatrix(dimension: 5, flattened: [
-			false, false, true, true, false,
-			false, false, false, true, false,
-			true, false, true, true, true,
-			true, true, true, true, false,
-			false, false, true, false, true,
+		qr.current = BoolMatrix(dimension: 5, rawFlattenedInt: [
+			0, 0, 1, 1, 0,
+			0, 0, 0, 1, 0,
+			1, 0, 1, 1, 1,
+			1, 1, 1, 1, 0,
+			0, 0, 1, 0, 1,
 		])
-
 
 		let path = CGMutablePath()
 		let p2: CGPath = {
@@ -104,7 +124,7 @@ extension QRCodeDataShapeFactory {
 				return dataShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
 			}
 		}()
-		path.addPath(p2) //, transform: scaleTransform)
+		path.addPath(p2) // , transform: scaleTransform)
 		context.addPath(path)
 		context.setFillColor(foregroundColor)
 		context.fillPath()

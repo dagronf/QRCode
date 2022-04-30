@@ -30,8 +30,14 @@ public extension QRCode.DataShape {
 
 		static public let Name: String = "pixel"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeHandler {
-			let type = settings["pixelType", default: 0] as? Int32 ?? 0
-			let pixelType = QRCode.DataShape.Pixel.PixelType(rawValue: type) ?? .square
+			let pixelType: PixelType = {
+				if let t = settings["pixelType"] as? String,
+					let ty = PixelType.type(for: t) {
+					return ty
+				}
+				return .square
+			}()
+
 			let inset = settings["inset", default: 0] as? Double ?? 0
 			let radius = settings["cornerRadiusFraction", default: 0] as? Double ?? 0
 			return QRCode.DataShape.Pixel(
@@ -42,7 +48,7 @@ public extension QRCode.DataShape {
 
 		public func settings() -> [String : Any] {
 			return [
-				"pixelType": self.pixelType.rawValue,
+				"pixelType": self.pixelType.name,
 				"inset": self.inset,
 				"cornerRadiusFraction": self.cornerRadiusFraction
 			]
@@ -53,6 +59,27 @@ public extension QRCode.DataShape {
 			case circle = 1
 			case roundedRect = 2
 			case squircle = 3
+			static func type(for text: String) -> PixelType? {
+				switch text {
+				case "square": return .square
+				case "circle": return .circle
+				case "roundedRect": return .roundedRect
+				case "squircle": return .squircle
+				default:
+					Swift.print("Invalid pixel type \(text). Expecting one of '\(PixelType.availableTypes)'")
+					return nil
+				}
+			}
+			var name: String {
+				switch self {
+				case .square: return "square"
+				case .circle: return "circle"
+				case .roundedRect: return "roundedRect"
+				case .squircle: return "squircle"
+				default: fatalError("unexpected PixelType \(self)?")
+				}
+			}
+			public static var availableTypes: [String] = [ "square", "circle", "roundedRect", "squircle" ]
 		}
 
 		public func copyShape() -> QRCodeDataShapeHandler {

@@ -46,14 +46,14 @@ final class QRCodeTests: XCTestCase {
 	}
 
 
-	func testBasicEncodeDecode() {
+	func testBasicEncodeDecode() throws {
 
 		do {
 			let doc1 = QRCode.Document()
 			doc1.data = "this is a test".data(using: .utf8)!
 
 			let s = doc1.settings()
-			let doc11 = XCTAssertNoThrow(try QRCode.Document.Create(settings: s))
+			let doc11 = try QRCode.Document.Create(settings: s)
 			XCTAssertNotNil(doc11)
 
 			let data = try XCTUnwrap(doc1.jsonData())
@@ -68,24 +68,4 @@ final class QRCodeTests: XCTestCase {
 			fatalError("Caught exception")
 		}
 	}
-
-	func testBasicPixelEncodeDecode() {
-		performTest {
-			let doc1 = QRCode.Document()
-			doc1.data = "this is a test".data(using: .utf8)!
-			doc1.design.shape.data = QRCode.DataShape.Pixel(pixelType: .circle)
-			doc1.design.shape.eye = QRCode.EyeShape.Leaf()
-
-			let data = try XCTUnwrap(doc1.jsonData())
-
-			let doc2 = try QRCode.Document.Create(jsonData: data)
-			let shape = doc2.design.shape.data
-			guard let s = shape as? QRCode.DataShape.Pixel else { fatalError() }
-			XCTAssertEqual(QRCode.DataShape.Pixel.Name, doc2.design.shape.data.name)
-			XCTAssertEqual(s.pixelType, .circle)
-
-			XCTAssertEqual(doc2.design.shape.eye.name, QRCode.EyeShape.Leaf.Name)
-		}
-	}
-
 }

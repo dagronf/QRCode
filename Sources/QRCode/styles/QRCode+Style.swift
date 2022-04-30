@@ -58,17 +58,17 @@ public extension QRCode {
 
 public extension QRCode.Style {
 	@objc func settings() -> [String: Any] {
-		var result = [ "data": data.settings() ]
-		if let e = eye?.settings() {
+		var result = [ "data": data.coreSettings() ]
+		if let e = eye?.coreSettings() {
 			result["eye"] = e
 		}
-		if let p = pupil?.settings() {
+		if let p = pupil?.coreSettings() {
 			result["pupil"] = p
 		}
-		if let b = background?.settings() {
+		if let b = background?.coreSettings() {
 			result["background"] = b
 		}
-		if let di = dataInverted?.settings() {
+		if let di = dataInverted?.coreSettings() {
 			result["dataInverted"] = di
 		}
 		return result
@@ -76,6 +76,11 @@ public extension QRCode.Style {
 
 	@objc static func Create(settings: [String: Any]) -> QRCode.Style? {
 		let style = QRCode.Style()
+
+		if let d = settings["data"] as? [String: Any],
+			let dataShape = FillStyleFactory.Create(settings: d) {
+			style.data = dataShape
+		}
 
 		if let e = settings["eye"] as? [String: Any],
 			let eye = FillStyleFactory.Create(settings: e) {
