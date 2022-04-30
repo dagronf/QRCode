@@ -44,8 +44,8 @@ public extension QRCode.FillStyle {
 		}
 
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
-			if let cX = settings["centerX"] as? Double,
-				let cY = settings["centerY"] as? Double,
+			if let cX = DoubleValue(settings["centerX"]),
+				let cY = DoubleValue(settings["centerY"]),
 				let gs = settings["gradient"] as? String,
 				let grad = DSFGradient.FromRGBAGradientString(gs)
 			{

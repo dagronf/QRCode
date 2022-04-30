@@ -31,6 +31,7 @@ struct ContentView: View {
 				.fill(pupilColor)
 			fixedCode
 				.components(.onPixels)
+				.dataShape(QRCode.DataShape.RoundedPath())
 				.fill(dataColor)
 		}
 		.padding()

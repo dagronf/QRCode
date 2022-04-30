@@ -37,8 +37,8 @@ public extension QRCode.DataShape {
 				return .square
 			}()
 
-			let inset = settings["inset", default: 0] as? Double ?? 0
-			let radius = settings["cornerRadiusFraction", default: 0] as? Double ?? 0
+			let inset = DoubleValue(settings["inset", default: 0]) ?? 0
+			let radius = settings["cornerRadiusFraction", default: 0] as? CGFloat ?? 0
 			return QRCode.DataShape.Pixel(
 				pixelType: pixelType,
 				inset: inset,

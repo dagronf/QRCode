@@ -29,8 +29,8 @@ public extension QRCode.DataShape {
 		static public let Name: String = "horizontal"
 		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
 			return QRCode.DataShape.Horizontal(
-				inset: settings["inset", default: 0] as? Double ?? 0,
-				cornerRadiusFraction: settings["cornerRadiusFraction", default: 0] as? Double ?? 0)
+				inset: settings["inset", default: 0] as? CGFloat ?? 0,
+				cornerRadiusFraction: settings["cornerRadiusFraction", default: 0] as? CGFloat ?? 0)
 		}
 
 		public func settings() -> [String : Any] {

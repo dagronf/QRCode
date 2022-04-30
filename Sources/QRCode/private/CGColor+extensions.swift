@@ -26,9 +26,27 @@ import Foundation
 // Default colorspace for RGBA archiving/unarchiving
 private let ArchiveRGBAColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 
+@objc public class RGBAComponents: NSObject {
+	@objc public let r: CGFloat
+	@objc public let g: CGFloat
+	@objc public let b: CGFloat
+	@objc public let a: CGFloat
+	@objc public init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
+		self.r = r
+		self.g = g
+		self.b = b
+		self.a = a
+	}
+
+	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
+	@objc public var stringValue: String {
+		"\(r),\(g),\(b),\(a)"
+	}
+}
+
 public extension CGColor {
 
-	func sRGBAComponents() -> (CGFloat, CGFloat, CGFloat, CGFloat)? {
+	func sRGBAComponents() -> RGBAComponents? {
 		guard
 			let c = self.converted(
 				to: ArchiveRGBAColorSpace,
@@ -39,15 +57,12 @@ public extension CGColor {
 		else {
 			return nil
 		}
-		return (comps[0], comps[1], comps[2], comps[3])
+		return RGBAComponents(r: comps[0], g: comps[1], b: comps[2], a: comps[3])
 	}
 
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
 	func archiveSRGBA() -> String? {
-		guard let comps = sRGBAComponents() else {
-			return nil
-		}
-		return "\(comps.0),\(comps.1),\(comps.2),\(comps.3)"
+		return sRGBAComponents()?.stringValue
 	}
 
 	/// Create a CGColor from an archive string for the format "r,g,b,a" (eg. "1.0,0.0,0.0,0.5")
@@ -63,3 +78,10 @@ public extension CGColor {
 		return CGColor(colorSpace: ArchiveRGBAColorSpace, components: comps)
 	}
 }
+
+#if !os(macOS)
+extension CGColor {
+	static let white = CGColor(gray: 1, alpha: 1)
+	static let black = CGColor(gray: 0, alpha: 1)
+}
+#endif

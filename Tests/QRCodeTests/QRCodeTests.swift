@@ -23,6 +23,17 @@ final class QRCodeTests: XCTestCase {
 //											  subject: "This is a test!",
 //											  body: "Groovy and wonderful bits")
 
+		 let doc = QRCode.Document()
+		 doc.errorCorrection = .low
+		 doc.data = "testing".data(using: .utf8)!
+		 let ascii = doc.asciiRepresentation
+		 Swift.print(ascii)
+
+		 let doc2 = QRCode.Document()
+		 doc2.errorCorrection = .low
+		 doc2.data = "testing".data(using: .utf8)!
+		 let ascii2 = doc2.smallAsciiRepresentation
+		 Swift.print(ascii2)
     }
 
 	func testDSFGradient() {

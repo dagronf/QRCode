@@ -179,7 +179,7 @@ extension QRCodeView {
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
-		self.document.draw(ctx: ctx, rect: self.bounds, design: self.design)
+		self.document.draw(ctx: ctx, rect: self.bounds)
 	}
 
 	// Build up the qr representation

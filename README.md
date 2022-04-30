@@ -203,6 +203,12 @@ Returns an small ASCII representation of the QR code (about 1/2 the regular size
 
 Only makes sense if presented using a fixed-width font.
 
+## QRCode.Document
+
+The `QRCode.Document` class wraps a `QRCode` object and the style settings for a qrcode.
+
+
+
 ## Design
 
 `QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
@@ -339,6 +345,24 @@ CGImageRef image = [code image: CGSizeMake(400, 400) scale: 1.0 style: style];
 NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
 ```
 </details>
+
+## Load/Save
+
+The `QRCode.Document` class has methods for loading/saving QRCode definitions to a JSON format
+
+```swift
+let qrCode = QRCode.Document()
+qrCode.data = "this is a test".data(using: .utf8)!
+qrCode.design.shape.data = QRCode.DataShape.Pixel(pixelType: .circle)
+qrCode.design.shape.eye = QRCode.EyeShape.Leaf()
+
+let jsonData = try qrCode.jsonData()
+
+...
+
+let loadedQRCode = try QRCode.Document.Create(jsonData: jsonData)
+
+``` 
 
 ## Demo
 

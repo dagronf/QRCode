@@ -47,10 +47,10 @@ public extension QRCode.FillStyle {
 		}
 
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
-			if let sX = settings["startX"] as? Double,
-				let sY = settings["startY"] as? Double,
-				let eX = settings["endX"] as? Double,
-				let eY = settings["endY"] as? Double,
+			if let sX = DoubleValue(settings["startX"]),
+				let sY = DoubleValue(settings["startY"]),
+				let eX = DoubleValue(settings["endX"]),
+				let eY = DoubleValue(settings["endY"]),
 				let gs = settings["gradient"] as? String,
 				let grad = DSFGradient.FromRGBAGradientString(gs)
 			{

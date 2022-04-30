@@ -75,13 +75,42 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let data = try XCTUnwrap(doc1.jsonData())
 
 		let doc2 = try QRCode.Document.Create(jsonData: data)
-		let msg2 = try XCTUnwrap(String(data: doc2.data, encoding: .utf8))
-		XCTAssertEqual(msg2, "simple colors")
+		XCTAssertEqual(doc1.data, doc2.data)
+		XCTAssertEqual(doc1.errorCorrection, doc2.errorCorrection)
+	}
 
+	func testSolidFillLoadSave() throws {
+		let c = QRCode.FillStyle.Solid(CGColor(red: 0.5, green: 0.5, blue: 1, alpha: 0.8))
+		let ctc = try XCTUnwrap(c.color.sRGBAComponents())
+		let core = c.coreSettings()
 
-//		let msg = try XCTUnwrap(String(data: doc.data, encoding: .utf8))
-//		XCTAssertEqual("this is a test", msg)
-//		XCTAssertEqual(doc.errorCorrection, .high)
-//		XCTAssertNotEqual(doc.errorCorrection, .low)
+		let st: QRCode.FillStyle.Solid = try XCTUnwrap(FillStyleFactory.Create(settings: core) as? QRCode.FillStyle.Solid)
+		XCTAssertEqual(st.color.alpha, c.color.alpha)
+		let stc = try XCTUnwrap(st.color.sRGBAComponents())
+
+		// Make sure we loaded the color back correctly
+		XCTAssertEqual(ctc.r, stc.r)
+		XCTAssertEqual(ctc.g, stc.g)
+		XCTAssertEqual(ctc.b, stc.b)
+		XCTAssertEqual(ctc.a, stc.a)
+	}
+
+	func testRadialGradientLoadSave() throws {
+		let c = QRCode.FillStyle.RadialGradient(
+			DSFGradient(pins: [
+				DSFGradient.Pin(CGColor.black, 0),
+				DSFGradient.Pin(CGColor(gray: 0.5, alpha: 0.5), 0.5),
+				DSFGradient.Pin(CGColor.white, 1)
+				]
+			)!,
+			centerPoint: CGPoint(x: 0.2, y: 0.8))
+
+		let core = c.coreSettings()
+
+		let st: QRCode.FillStyle.RadialGradient = try XCTUnwrap(FillStyleFactory.Create(settings: core) as? QRCode.FillStyle.RadialGradient)
+		XCTAssertEqual(0.2, st.centerPoint.x, accuracy: 0.0001)
+		XCTAssertEqual(0.8, st.centerPoint.y, accuracy: 0.0001)
+		XCTAssertEqual(c.gradient.pins.count, st.gradient.pins.count)
+		XCTAssertEqual(c.gradient.pins.map { $0.position }, st.gradient.pins.map { $0.position })
 	}
 }

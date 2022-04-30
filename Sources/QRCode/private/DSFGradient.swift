@@ -85,6 +85,13 @@ import Foundation
 		}
 		self.cgGradient = gr
 	}
+
+	private lazy var numberFormatter: NumberFormatter = {
+		let formatter = NumberFormatter()
+		formatter.maximumFractionDigits = 4
+		formatter.minimumFractionDigits = 0
+		return formatter
+	}()
 }
 
 public extension DSFGradient {
@@ -108,9 +115,13 @@ public extension DSFGradient {
 			else {
 				return nil
 			}
-			result += "\(pin.position):\(comps[0]),\(comps[1]),\(comps[2]),\(comps[3])"
+			result += "\(pin.position):\(_D(comps[0])),\(_D(comps[1])),\(_D(comps[2])),\(_D(comps[3]))"
 		}
 		return result
+	}
+
+	private func _D(_ value: Double) -> String {
+		return numberFormatter.string(for: value) ?? "0"
 	}
 
 	/// Create a DSFGradient from a DSFGradient archive format
