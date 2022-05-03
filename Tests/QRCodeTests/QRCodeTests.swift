@@ -13,29 +13,19 @@ final class QRCodeTests: XCTestCase {
 		}
 	}
 
+	func testAsciiGenerationWorks() throws {
+		let doc = QRCode.Document()
+		doc.errorCorrection = .low
+		doc.data = "testing".data(using: .utf8)!
+		let ascii = doc.asciiRepresentation
+		Swift.print(ascii)
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        //XCTAssertEqual(QRCodeView().text, "Hello, World!")
-
-//		 let q = QRCode.Message.Mail(mailTo: "poodlebox@pobox.eu",
-//											  subject: "This is a test!",
-//											  body: "Groovy and wonderful bits")
-
-		 let doc = QRCode.Document()
-		 doc.errorCorrection = .low
-		 doc.data = "testing".data(using: .utf8)!
-		 let ascii = doc.asciiRepresentation
-		 Swift.print(ascii)
-
-		 let doc2 = QRCode.Document()
-		 doc2.errorCorrection = .low
-		 doc2.data = "testing".data(using: .utf8)!
-		 let ascii2 = doc2.smallAsciiRepresentation
-		 Swift.print(ascii2)
-    }
+		let doc2 = QRCode.Document()
+		doc2.errorCorrection = .low
+		doc2.data = "testing".data(using: .utf8)!
+		let ascii2 = doc2.smallAsciiRepresentation
+		Swift.print(ascii2)
+	}
 
 	func testDSFGradient() {
 		let gps1 = [
@@ -56,7 +46,6 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(g11c.pins[1].position, 0.2)
 		XCTAssertEqual(g11c.pins[2].position, 1.0)
 	}
-
 
 	func testBasicEncodeDecode() throws {
 		do {
