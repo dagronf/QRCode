@@ -31,7 +31,7 @@ public extension QRCode {
 	/// - Parameter image: The image in which to detect QRCodes
 	/// - Returns: An array of detected QR Codes
 	///
-	/// Note: If the QR code contains raw data
+	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
 	@objc static func Detect(_ image: CGImage) -> [CIQRCodeFeature] {
 		var options: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh]
 		let context = CIContext()
