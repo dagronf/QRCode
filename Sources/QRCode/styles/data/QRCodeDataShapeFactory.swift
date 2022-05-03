@@ -33,7 +33,7 @@ import Foundation
 		self.registeredTypes = [
 			QRCode.DataShape.Square.self,
 			QRCode.DataShape.Circle.self,
-			QRCode.DataShape.RoundedPath.self,
+			QRCode.DataShape.RoundedRect.self,
 			QRCode.DataShape.Squircle.self,
 			QRCode.DataShape.Vertical.self,
 			QRCode.DataShape.Horizontal.self,

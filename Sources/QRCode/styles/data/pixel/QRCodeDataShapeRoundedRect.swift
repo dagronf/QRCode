@@ -56,6 +56,9 @@ public extension QRCode.DataShape {
 			common.offPath(size: size, data: data, isTemplate: isTemplate)
 		}
 
+		@objc public var cornerRadiusFraction: CGFloat { common.cornerRadiusFraction }
+		@objc public var inset: CGFloat { common.inset }
+
 		public func settings() -> [String : Any] {
 			return [
 				"inset": self.common.inset,
