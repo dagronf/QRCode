@@ -20,20 +20,20 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCode.EyeShape {
-	@objc(QRCodeEyeShapeSquircle) class Squircle : NSObject, QRCodeEyeShapeGenerator {
-
-		@objc public static let Name: String = "squircle"
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeSquircle) class Squircle: NSObject, QRCodeEyeShapeGenerator {
+		@objc public static let Name = "squircle"
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Squircle()
 		}
-		@objc public func settings() -> [String : Any] { return [:] }
-		
+
+		@objc public func settings() -> [String: Any] { return [:] }
+
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return Squircle()
+			return Self.Create(self.settings())
 		}
 
 		public func eyePath() -> CGPath {

@@ -30,10 +30,12 @@ public extension QRCode.EyeShape {
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Circle()
 		}
+
+		// Has no configurable settings
 		@objc public func settings() -> [String : Any] { return [:] }
 		
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return Circle()
+			return Self.Create(self.settings())
 		}
 
 		public func eyePath() -> CGPath {

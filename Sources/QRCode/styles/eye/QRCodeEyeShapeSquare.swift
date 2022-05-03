@@ -26,17 +26,17 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'rounded rect with a pointy bit facing inwards' style eye design
 	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeGenerator {
-
-		@objc public static let Name: String = "square"
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static let Name = "square"
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Square()
 		}
-		@objc public func settings() -> [String : Any] { return [:] }
-		
+
+		@objc public func settings() -> [String: Any] { return [:] }
+
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return Square()
+			return Self.Create(self.settings())
 		}
-		
+
 		public func eyePath() -> CGPath {
 			let squareEyePath = CGMutablePath()
 			squareEyePath.move(to: CGPoint(x: 70, y: 70))
@@ -54,7 +54,7 @@ public extension QRCode.EyeShape {
 			squareEyePath.close()
 			return squareEyePath
 		}
-		
+
 		public func pupilPath() -> CGPath {
 			return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
 		}

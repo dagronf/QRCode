@@ -113,12 +113,12 @@ import UIKit
 #endif
 
 public extension QRCodeEyeShapeFactory {
-#if os(macOS)
+	#if os(macOS)
 	func nsImage(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
 		if let cgi = image(eye: eye, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
 			return NSImage(cgImage: cgi, size: .zero)
 		}
 		return nil
 	}
-#endif
+	#endif
 }

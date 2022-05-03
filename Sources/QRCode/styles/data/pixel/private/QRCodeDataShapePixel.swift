@@ -26,15 +26,12 @@ import Foundation
 internal extension QRCode.DataShape {
 	// A data shape generator where every pixel in the qr code becomes a discrete shape
 	class CommonPixelGenerator {
-
 		enum PixelType: String, CaseIterable {
-			case square = "square"
-			case circle = "circle"
-			case roundedRect = "roundedRect"
-			case squircle = "squircle"
-			static var availableTypes: [String] = {
-				return Self.allCases.map { $0.rawValue }
-			}()
+			case square
+			case circle
+			case roundedRect
+			case squircle
+			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
 		let inset: CGFloat
@@ -68,7 +65,7 @@ internal extension QRCode.DataShape {
 						continue
 					}
 
-					if data.isEyePixel(row, col) && !isTemplate {
+					if data.isEyePixel(row, col), !isTemplate {
 						// skip it
 						continue
 					}
@@ -85,10 +82,11 @@ internal extension QRCode.DataShape {
 					}
 					else if self.pixelType == .squircle {
 						let i = (self.inset / 2)
-						let transform = CGAffineTransform(scaleX: (ri.width / 10), y: (ri.width / 10))
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
 							.concatenating(CGAffineTransform(
 								translationX: xoff + (CGFloat(col) * dm) + i,
-								y: yoff + (CGFloat(row) * dm) + i))
+								y: yoff + (CGFloat(row) * dm) + i
+							))
 
 						let sq = Squircle.squircle10x10()
 						path.addPath(sq, transform: transform)

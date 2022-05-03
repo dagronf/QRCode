@@ -26,15 +26,16 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'rounded rect with a pointy bit facing inwards' style eye design
 	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
-
-		@objc public static let Name: String = "roundedrect"
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static let Name = "roundedRect"
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedRect()
 		}
-		@objc public func settings() -> [String : Any] { return [:] }
-		
+
+		// Has no configurable settings
+		@objc public func settings() -> [String: Any] { return [:] }
+
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return RoundedRect()
+			return Self.Create(self.settings())
 		}
 
 		public func eyePath() -> CGPath {

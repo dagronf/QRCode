@@ -45,7 +45,7 @@ public extension QRCode {
 
 public extension QRCodeEyeShapeGenerator {
 	var name: String { return Self.Name }
-	
+
 	internal func coreSettings() -> [String: Any] {
 		var core: [String: Any] = [EyeShapeTypeName_: self.name]
 		core[EyeShapeSettingsName_] = self.settings()

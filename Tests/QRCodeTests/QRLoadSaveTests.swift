@@ -47,6 +47,16 @@ final class QRCodeLoadSaveTests: XCTestCase {
 			XCTAssertEqual(shape.inset, 1.1, accuracy: 0.0001)
 			XCTAssertEqual(shape.cornerRadiusFraction, 0.8, accuracy: 0.0001)
 		}
+
+		do {
+			let doc = QRCode.Document()
+			doc.data = "this is a test and fishes like squircles".data(using: .utf8)!
+			doc.design.shape.data = QRCode.DataShape.Squircle(inset: 2.3)
+			let data = try XCTUnwrap(doc.jsonData())
+			let doc2 = try QRCode.Document.Create(jsonData: data)
+			let shape = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Squircle)
+			XCTAssertEqual(shape.inset, 2.3, accuracy: 0.0001)
+		}
 	}
 
 	func testBasicJSON() throws {

@@ -26,15 +26,15 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeStyleRoundedOuter) class RoundedOuter: NSObject, QRCodeEyeShapeGenerator {
-
-		@objc public static let Name: String = "roundedouter"
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static let Name = "roundedouter"
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedOuter()
 		}
-		@objc public func settings() -> [String : Any] { return [:] }
+		
+		@objc public func settings() -> [String: Any] { return [:] }
 		
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return RoundedOuter()
+			return Self.Create(self.settings())
 		}
 		
 		public func eyePath() -> CGPath {

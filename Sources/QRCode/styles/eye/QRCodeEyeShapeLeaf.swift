@@ -26,17 +26,17 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeGenerator {
-
-		@objc public static let Name: String = "leaf"
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static let Name = "leaf"
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Leaf()
 		}
-		@objc public func settings() -> [String : Any] { return [:] }
-
+		
+		@objc public func settings() -> [String: Any] { return [:] }
+		
 		public func copyShape() -> QRCodeEyeShapeGenerator {
-			return Leaf()
+			return Self.Create(self.settings())
 		}
-
+		
 		public func eyePath() -> CGPath {
 			let eyePath = CGMutablePath()
 			eyePath.move(to: CGPoint(x: 20, y: 20))
@@ -58,7 +58,7 @@ public extension QRCode.EyeShape {
 			eyePath.close()
 			return eyePath
 		}
-
+		
 		public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),

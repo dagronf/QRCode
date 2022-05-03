@@ -20,13 +20,13 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCode.DataShape {
 	/// A rounded rect pixel shape
 	@objc(QRCodeDataShapeRoundedRect) class RoundedRect: NSObject, QRCodeDataShapeGenerator {
-		static public var Name: String { "roundedrect" }
+		public static var Name: String { "roundedRect" }
 		private let common: CommonPixelGenerator
 
 		/// Create
@@ -38,7 +38,7 @@ public extension QRCode.DataShape {
 			super.init()
 		}
 
-		public static func Create(_ settings: [String : Any]?) -> QRCodeDataShapeGenerator {
+		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
 			let radius = settings?["cornerRadiusFraction", default: 0] as? CGFloat ?? 0
 			return RoundedRect(inset: inset, cornerRadiusFraction: radius)
@@ -49,20 +49,20 @@ public extension QRCode.DataShape {
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.onPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.onPath(size: size, data: data, isTemplate: isTemplate)
 		}
 
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.offPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.offPath(size: size, data: data, isTemplate: isTemplate)
 		}
 
-		@objc public var cornerRadiusFraction: CGFloat { common.cornerRadiusFraction }
-		@objc public var inset: CGFloat { common.inset }
+		@objc public var cornerRadiusFraction: CGFloat { self.common.cornerRadiusFraction }
+		@objc public var inset: CGFloat { self.common.inset }
 
-		public func settings() -> [String : Any] {
+		public func settings() -> [String: Any] {
 			return [
 				"inset": self.common.inset,
-				"cornerRadiusFraction": self.common.cornerRadiusFraction
+				"cornerRadiusFraction": self.common.cornerRadiusFraction,
 			]
 		}
 	}
