@@ -176,6 +176,11 @@ public extension QRCode {
 		}
 		return result
 	}
+
+	/// Returns a boolean matrix representation of the current QR code data
+	@objc var boolMatrix: BoolMatrix {
+		self.current
+	}
 }
 
 // MARK: - Eye positioning/paths

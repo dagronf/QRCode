@@ -91,6 +91,7 @@ public extension QRCode.Document {
 	///   - encoding: The encoding to use
 	///   - allowLossyConversion: Allow losing characters during conversion
 	/// - Returns: true if the conversion succeeded and the data was set, false otherwise
+	@discardableResult
 	func setString(
 		_ string: String,
 		encoding: String.Encoding = .utf8,
@@ -345,6 +346,13 @@ public extension QRCode.Document {
 	}
 #endif
 
+}
+
+// MARK: - Raw data
+
+public extension QRCode.Document {
+	/// Returns a boolean matrix representation of the current QR code data
+	@objc var boolMatrix: BoolMatrix { self.qrcode.boolMatrix }
 }
 
 // MARK: - ASCII representation

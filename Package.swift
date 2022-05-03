@@ -74,7 +74,7 @@ let package = Package(
 			 ]),
 		.testTarget(
 			name: "QRCodeTests",
-			dependencies: ["QRCode"]
+			dependencies: ["QRCode", "QRCode3rdPartyGenerator"]
 		),
 	]
 )

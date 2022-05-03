@@ -23,10 +23,10 @@
 import CoreGraphics
 import Foundation
 
-private let DataShapeTypeName = "type"
-private let DataShapeSettingsName = "settings"
-
 // MARK: - Data shape
+
+internal let DataShapeTypeName_ = "type"
+internal let DataShapeSettingsName_ = "settings"
 
 public extension QRCode {
 	/// The shape of the data within the qr code.
@@ -41,11 +41,9 @@ public extension QRCode {
 	/// Make a copy of the shape object
 	func copyShape() -> QRCodeDataShapeGenerator
 
-	/// Generate a path (within 'size')
-
 	/// Generate a path representing the 'on' _data_ pixels within the specified QRCode data (ie. no eyes etc)
 	/// - Parameters:
-	///   - size: The bounds of the path to generate
+	///   - size: The dimensions of the path to generate
 	///   - data: The data to represent
 	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
 	/// - Returns: A path representing the specified QRCode data
@@ -53,7 +51,7 @@ public extension QRCode {
 
 	/// Generate a path representing the 'off' _data_ pixels within the specified QRCode data (ie. no eyes etc)
 	/// - Parameters:
-	///   - size: The bounds of the path to generate
+	///   - size: The dimensions of the path to generate
 	///   - data: The data to represent
 	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
 	/// - Returns: A path representing the specified QRCode data
@@ -67,112 +65,8 @@ public extension QRCodeDataShapeGenerator {
 	var name: String { return Self.Name }
 
 	internal func coreSettings() -> [String: Any] {
-		var core: [String: Any] = [DataShapeTypeName: self.name]
-		core[DataShapeSettingsName] = self.settings()
+		var core: [String: Any] = [DataShapeTypeName_: self.name]
+		core[DataShapeSettingsName_] = self.settings()
 		return core
-	}
-}
-
-/// A factory instance
-@objc public class QRCodeDataShapeFactory: NSObject {
-
-	/// Shared data shape factory
-	@objc public static let shared = QRCodeDataShapeFactory()
-
-	internal var registeredTypes: [QRCodeDataShapeGenerator.Type]
-
-	@objc public override init() {
-		self.registeredTypes = [
-			QRCode.DataShape.Square.self,
-			QRCode.DataShape.Circle.self,
-			QRCode.DataShape.RoundedPath.self,
-			QRCode.DataShape.Squircle.self,
-			QRCode.DataShape.Vertical.self,
-			QRCode.DataShape.Horizontal.self,
-			QRCode.DataShape.RoundedPath.self,
-			QRCode.DataShape.Pointy.self
-		]
-		super.init()
-	}
-
-	@objc public var availableGeneratorNames: [String] {
-		self.registeredTypes.map { $0.Name }
-	}
-
-	/// Return a new instance of the data shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodeDataShapeGenerator? {
-		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
-			return nil
-		}
-		return f.Create(settings)
-	}
-
-	/// Create a data shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeGenerator? {
-		guard let type = settings[DataShapeTypeName] as? String else { return nil }
-		let settings = settings[DataShapeSettingsName] as? [String: Any]
-		return self.named(type, settings: settings)
-	}
-}
-
-public extension QRCodeDataShapeFactory {
-	/// Return an image representing the shape generator as a 5x5 pixel grouping
-	@objc func image(
-		dataShape: QRCodeDataShapeGenerator,
-		isOn: Bool = true,
-		dimension: CGFloat,
-		foregroundColor: CGColor
-	) -> CGImage? {
-		let width = Int(dimension)
-		let height = Int(dimension)
-		let colorSpace = CGColorSpaceCreateDeviceRGB()
-		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-		guard let context = CGContext(
-			data: nil,
-			width: width,
-			height: height,
-			bitsPerComponent: 8,
-			bytesPerRow: 0,
-			space: colorSpace,
-			bitmapInfo: bitmapInfo.rawValue
-		)
-		else {
-			return nil
-		}
-
-		context.scaleBy(x: 1, y: -1)
-		context.translateBy(x: 0, y: -dimension)
-
-		let fitScale = dimension / 90
-		var scaleTransform = CGAffineTransform.identity
-		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
-
-		// Draw the qr with the required styles
-
-		let qr = QRCode()
-		qr.current = BoolMatrix(dimension: 5, rawFlattenedInt: [
-			0, 0, 1, 1, 0,
-			0, 0, 0, 1, 0,
-			1, 0, 1, 1, 1,
-			1, 1, 1, 1, 0,
-			0, 0, 1, 0, 1,
-		])
-
-		let path = CGMutablePath()
-		let p2: CGPath = {
-			if isOn {
-				return dataShape.onPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
-			}
-			else {
-				return dataShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
-			}
-		}()
-		path.addPath(p2) // , transform: scaleTransform)
-		context.addPath(path)
-		context.setFillColor(foregroundColor)
-		context.fillPath()
-
-		let im = context.makeImage()
-		return im
 	}
 }

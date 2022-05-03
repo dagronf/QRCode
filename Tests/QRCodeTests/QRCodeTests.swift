@@ -1,5 +1,6 @@
 import XCTest
 @testable import QRCode
+@testable import QRCode3rdPartyGenerator
 
 final class QRCodeTests: XCTestCase {
 
@@ -58,7 +59,6 @@ final class QRCodeTests: XCTestCase {
 
 
 	func testBasicEncodeDecode() throws {
-
 		do {
 			let doc1 = QRCode.Document()
 			doc1.data = "this is a test".data(using: .utf8)!

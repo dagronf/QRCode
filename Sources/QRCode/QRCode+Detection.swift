@@ -1,8 +1,8 @@
 //
-//  QRCodeEyeShape.swift
+//  QRCode+Detector.swift
 //
-//  Created by Darren Ford on 17/11/21.
-//  Copyright © 2021 Darren Ford. All rights reserved.
+//  Created by Darren Ford on 3/5/2022.
+//  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -20,35 +20,35 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if !os(watchOS)
+
 import CoreGraphics
+import CoreImage
 import Foundation
 
-// MARK: - Eye shape
-
-internal let EyeShapeTypeName_ = "type"
-internal let EyeShapeSettingsName_ = "settings"
-
 public extension QRCode {
-	/// The shape of an 'eye' within the qr code
-	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
-}
-
-/// A protocol for wrapping generating the eye shapes for a path
-@objc public protocol QRCodeEyeShapeGenerator {
-	@objc static var Name: String { get }
-	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
-	@objc func settings() -> [String: Any]
-	@objc func copyShape() -> QRCodeEyeShapeGenerator
-	@objc func eyePath() -> CGPath
-	@objc func pupilPath() -> CGPath
-}
-
-public extension QRCodeEyeShapeGenerator {
-	var name: String { return Self.Name }
-	
-	internal func coreSettings() -> [String: Any] {
-		var core: [String: Any] = [EyeShapeTypeName_: self.name]
-		core[EyeShapeSettingsName_] = self.settings()
-		return core
+	/// Detect QR code(s) in the specified image using CoreImage
+	/// - Parameter image: The image in which to detect QRCodes
+	/// - Returns: An array of detected QR Codes
+	///
+	/// Note: If the QR code contains raw data
+	@objc static func Detect(_ image: CGImage) -> [CIQRCodeFeature] {
+		var options: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh]
+		let context = CIContext()
+		let ciImage = CIImage(cgImage: image)
+		guard let qrDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: context, options: options) else {
+			return []
+		}
+		if ciImage.properties.keys.contains(kCGImagePropertyOrientation as String) {
+			options = [CIDetectorImageOrientation: ciImage.properties[kCGImagePropertyOrientation as String] ?? 1]
+		}
+		else {
+			options = [CIDetectorImageOrientation: 1]
+		}
+		return qrDetector
+			.features(in: ciImage, options: options)
+			.compactMap { $0 as? CIQRCodeFeature }
 	}
 }
+
+#endif

@@ -43,7 +43,7 @@ import Foundation
 			flattened: flattened)
 	}
 
-	// A simple initializer to use [0, 1, 1, 0, 1, 0, 0, 0, 0, 1] as the bool initializer
+	/// A simple initializer to use [0, 1, 1, 0, 1, 0, 0, 0, 0, 1] as the bool initializer
 	@objc public init(dimension: Int, rawFlattenedInt: [Int]) {
 		let settings = rawFlattenedInt.map { $0 != 0 }
 		self.content = Array2D(
@@ -52,10 +52,12 @@ import Foundation
 			flattened: settings)
 	}
 
+	/// The dimension of the QR code
 	@objc public var dimension: Int {
 		return content.rows
 	}
 
+	/// get/set the value at the row/column position. Does not check for out of bounds (that's your responsibility!)
 	@objc public subscript(row: Int, column: Int) -> Bool {
 		get {
 			return content[row, column]
