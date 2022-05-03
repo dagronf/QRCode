@@ -69,8 +69,10 @@ public extension QRCode.FillStyle {
 			let grRadius = rect.width / 1.75
 			ctx.drawRadialGradient(
 				self.gradient.cgGradient,
-				startCenter: self.gradientCenterPt(forSize: rect.width), startRadius: 0,
-				endCenter: grCentre, endRadius: grRadius,
+				startCenter: self.gradientCenterPt(forSize: rect.width),
+				startRadius: 0,
+				endCenter: grCentre,
+				endRadius: grRadius,
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 

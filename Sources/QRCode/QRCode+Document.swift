@@ -23,6 +23,10 @@
 import CoreGraphics
 import Foundation
 
+#if canImport(SwiftUI)
+import SwiftUI
+#endif
+
 public extension QRCode {
 	/// A QR Code document
 	@objc(QRCodeDocument) class Document: NSObject {
@@ -40,97 +44,94 @@ public extension QRCode {
 			}
 		}
 
-		/// Create a QRCode document with the default settings
-		@objc public override init() {
-			super.init()
-		}
-
-		/// Create a QRCode document using the QRCode settings defined in `jsonData`
-		@objc public init(jsonData: Data) throws {
-			super.init()
-			try self.load(jsonData: jsonData)
-		}
-
-		/// Create a QRCode document using the QRCode settings defined in `dictionary`
-		@objc public init(dictionary: [String: Any]) throws {
-			super.init()
-			try self.load(settings: dictionary)
+		/// The generator to use when generating the QR Code. If nil, uses the default generator
+		///
+		/// For watchOS, you'll need to use `QRCodeGenerator_3rdParty()` as the generator
+		@objc public var generator: QRCodeEngine? {
+			didSet {
+				if let generator = generator {
+					self.qrcode = QRCode(generator: generator)
+				}
+				else {
+					self.qrcode = QRCode()
+				}
+				self.regenerate()
+			}
 		}
 
 		/// The style to use when drawing the qr code
-		@objc public var design = QRCode.Design()
+		@objc public var design = QRCode.Design() {
+			didSet { self.regenerate() }
+		}
+
+		/// Create a QRCode document with the default settings
+		@objc override public init() {
+			self.qrcode = QRCode()
+			super.init()
+		}
+
+		/// Create a QRCode document with the default settings using the specified generator
+		@objc public init(generator: QRCodeEngine) {
+			self.qrcode = QRCode(generator: generator)
+			super.init()
+		}
 
 		/// This is the pixel dimension for the current QR Code.
-		@objc public var pixelSize: Int { return self.qrcode.pixelSize }
-
-		/// A simple ASCII representation of the core QRCode data.
-		///
-		/// Example output (data is "testing")
-		///```
-		///  ██████████████    ██  ████  ██████████████
-		///  ██          ██  ████  ██    ██          ██
-		///  ██  ██████  ██  ████    ██  ██  ██████  ██
-		///  ██  ██████  ██    ██  ██    ██  ██████  ██
-		///  ██  ██████  ██  ██      ██  ██  ██████  ██
-		///  ██          ██  ██    ████  ██          ██
-		///  ██████████████  ██  ██  ██  ██████████████
-		///  ██████████
-		///  ████  ██    ████  ████      ██████  ████
-		///  ██  ████████      ██        ████      ████
-		///  ████████    ████    ██  ████      ████  ██
-		///  ████  ████    ██  ██  ██        ████  ████
-		///  ████  ████  ██      ██  ██  ████████  ████
-		///  ████  ██      ██  ██  ████
-		///  ██████████████  ████      ██  ████    ██
-		///  ██          ██      ████████  ████      ██
-		///  ██  ██████  ██        ██    ████████    ██
-		///  ██  ██████  ██  ██  ████      ██████  ████
-		///  ██  ██████  ██      ██  ██    ████  ██  ██
-		///  ██          ██  ██  ██    ████  ██
-		///  ██████████████  ██  ██████        ██  ██
-		///
-		///```
-		@objc public var asciiRepresentation: String { return self.qrcode.asciiRepresentation() }
-
-		/// A simple smaller ASCII representation of the core QRCode data
-		///
-		/// Example output (data is "testing")
-		/// ```
-		///  ▄▄▄▄▄▄▄  ▄ ▄▄ ▄▄▄▄▄▄▄
-		///  █ ▄▄▄ █ ██ ▀▄ █ ▄▄▄ █
-		///  █ ███ █ ▄▀ ▀▄ █ ███ █
-		///  █▄▄▄▄▄█ █ ▄▀█ █▄▄▄▄▄█
-		///  ▄▄ ▄  ▄▄▀██▀▀ ▄▄▄ ▄▄
-		///  █▄██▀▀▄▄ ▀▄ ▄▄▀▀ ▄▄▀█
-		///  ██ ██ ▄▀ ▀▄▀▄ ▄▄██ ██
-		///  ▄▄▄▄▄▄▄ ██ ▀ ▄ █▄▀ █▀
-		///  █ ▄▄▄ █   ▀█▀▀▄██▄  █
-		///  █ ███ █ ▀ █▀▄  ██▀▄▀█
-		///  █▄▄▄▄▄█ █ █▄▄▀▀ ▀▄ ▄
-		///
-		/// ```
-		@objc public var smallAsciiRepresentation: String { return self.qrcode.smallAsciiRepresentation() }
+		@objc public var pixelSize: Int { self.qrcode.pixelSize }
 
 		// The qrcode content generator
-		private let qrcode = QRCode()
-
-		// Build up the qr representation
-		private func regenerate() {
-			self.qrcode.update(self.data, errorCorrection: self.errorCorrection)
-		}
+		@objc public private(set) var qrcode: QRCode
 	}
 }
 
-// MARK: - Save/Load
+public extension QRCode.Document {
+	/// Convenience for setting a string
+	/// - Parameters:
+	///   - string: The string to store in the qr code
+	///   - encoding: The encoding to use
+	///   - allowLossyConversion: Allow losing characters during conversion
+	/// - Returns: true if the conversion succeeded and the data was set, false otherwise
+	func setString(
+		_ string: String,
+		encoding: String.Encoding = .utf8,
+		allowLossyConversion: Bool = false) -> Bool
+	{
+		if let d = string.data(
+			using: encoding,
+			allowLossyConversion: allowLossyConversion
+		) {
+			self.data = d
+			return true
+		}
+		return false
+	}
+
+	/// Set the QR code data using a message formatter
+	@objc func setMessage(_ message: QRCodeMessageFormatter) {
+		self.data = message.data
+	}
+}
+
+private extension QRCode.Document {
+	// Build up the qr representation
+	private func regenerate() {
+		self.qrcode.update(self.data, errorCorrection: self.errorCorrection)
+	}
+}
+
+// MARK: - Load
 
 public extension QRCode.Document {
-	/// The current settings for the data, shape and design for the QRCode
-	@objc func settings() -> [String: Any] {
-		return [
-			"correction": errorCorrection.ECLevel,
-			"data": data.base64EncodedString(),
-			"design": self.design.settings(),
-		]
+	/// Create a QRCode document using the QRCode settings defined in `jsonData`
+	@objc convenience init(jsonData: Data) throws {
+		self.init()
+		try self.load(jsonData: jsonData)
+	}
+
+	/// Create a QRCode document using the QRCode settings defined in `dictionary`
+	@objc convenience init(dictionary: [String: Any]) throws {
+		self.init()
+		try self.load(settings: dictionary)
 	}
 
 	/// Load the QRCode content from the specified JSON data
@@ -176,14 +177,38 @@ public extension QRCode.Document {
 		self.regenerate()
 	}
 
+	/// Create a QRCode.Document object from the specified settings
 	@objc static func Create(settings: [String: Any]) throws -> QRCode.Document {
 		let doc = QRCode.Document()
 		try doc.load(settings: settings)
 		return doc
 	}
+
+	/// Create a QRCode document from the provided json formatted data
+	@objc static func Create(jsonData: Data) throws -> QRCode.Document {
+		let s = try JSONSerialization.jsonObject(with: jsonData, options: [])
+
+		guard let settings = s as? [String: Any] else {
+			throw NSError(domain: "QRCodeDocument", code: -1, userInfo: [
+				NSLocalizedDescriptionKey: "Unable to decode object",
+			])
+		}
+		return try QRCode.Document.Create(settings: settings)
+	}
 }
 
+// MARK: - Save
+
 public extension QRCode.Document {
+	/// The current settings for the data, shape and design for the QRCode
+	@objc func settings() -> [String: Any] {
+		return [
+			"correction": errorCorrection.ECLevel,
+			"data": data.base64EncodedString(),
+			"design": self.design.settings(),
+		]
+	}
+
 	/// Generate a JSON string representation of the document.
 	@objc func jsonData() throws -> Data {
 		let dict = self.settings()
@@ -204,18 +229,6 @@ public extension QRCode.Document {
 			}
 		}
 		return nil
-	}
-
-	/// Create a QRCode document from the provided json formatted data
-	@objc static func Create(jsonData: Data) throws -> QRCode.Document {
-		let s = try JSONSerialization.jsonObject(with: jsonData, options: [])
-
-		guard let settings = s as? [String: Any] else {
-			throw NSError(domain: "QRCodeDocument", code: -1, userInfo: [
-				NSLocalizedDescriptionKey: "Unable to decode object",
-			])
-		}
-		return try QRCode.Document.Create(settings: settings)
 	}
 }
 
@@ -247,22 +260,36 @@ public extension QRCode.Document {
 	}
 }
 
+// MARK: - Path
+
+public extension QRCode.Document {
+	/// Generate a path containing the QR Code components for the current QRCode shape
+	/// - Parameters:
+	///   - size: The dimensions of the generated path
+	///   - components: The components of the QR code to include in the path
+	/// - Returns: A path containing the components
+	@objc func path(
+		_ size: CGSize,
+		components: QRCode.Components = .all
+	) -> CGPath {
+		return self.qrcode.path(size, components: components, shape: self.design.shape)
+	}
+}
+
 // MARK: Imaging
 
 public extension QRCode.Document {
 	/// Returns a CGImage representation of the qr code
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale
 	/// - Returns: The image, or nil if an error occurred
 	@objc func cgImage(
-		_ size: CGSize,
-		scale: CGFloat = 1
+		_ size: CGSize
 	) -> CGImage? {
-		self.qrcode.cgImage(size, scale: scale, design: design)
+		self.qrcode.cgImage(size, design: self.design)
 	}
 
-	/// Returns a pdf representation of the qr code
+	/// Returns a pdf representation of the qr code document
 	/// - Parameters:
 	///   - size: The page size of the generated PDF
 	///   - pdfResolution: The resolution of the pdf output
@@ -270,4 +297,104 @@ public extension QRCode.Document {
 	@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat = 72.0) -> Data? {
 		self.qrcode.pdfData(size, pdfResolution: pdfResolution, design: self.design)
 	}
+
+#if os(macOS)
+	/// Returns an NSImage representation of the qr code document
+	/// - Parameters:
+	///   - size: The pixel size of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func nsImage(
+		_ size: CGSize,
+		scale: CGFloat = 1) -> NSImage?
+	{
+		return self.qrcode.nsImage(size, scale: scale, design: self.design)
+	}
+#endif
+
+#if os(iOS) || os(tvOS) || os(watchOS)
+	/// Returns a UIImage representation of the qr code document
+	/// - Parameters:
+	///   - size: The pixel size of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func uiImage(
+		_ size: CGSize,
+		scale: CGFloat = 1
+	) -> UIImage? {
+		let coreSize = size * scale
+		guard let qrImage = self.qrcode.cgImage(coreSize, design: self.design) else { return nil }
+		return UIImage(cgImage: qrImage, scale: scale, orientation: .up)
+	}
+#endif
+
+#if canImport(SwiftUI)
+	/// Create a SwiftUI Image object for the QR code
+	/// - Parameters:
+	///   - size: The pixel size of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - label: The label associated with the image. SwiftUI uses the label for accessibility.
+	/// - Returns: An image, or nil if an error occurred
+	@available(macOS 11, iOS 13, tvOS 13, *)
+	func imageUI(
+		_ size: CGSize,
+		scale: CGFloat = 1,
+		label: Text) -> SwiftUI.Image?
+	{
+		return self.qrcode.imageUI(size, scale: scale, design: self.design, label: label)
+	}
+#endif
+
+}
+
+// MARK: - ASCII representation
+
+public extension QRCode.Document {
+	/// A simple ASCII representation of the core QRCode data.
+	///
+	/// Example output (data is "testing")
+	/// ```
+	///  ██████████████    ██  ████  ██████████████
+	///  ██          ██  ████  ██    ██          ██
+	///  ██  ██████  ██  ████    ██  ██  ██████  ██
+	///  ██  ██████  ██    ██  ██    ██  ██████  ██
+	///  ██  ██████  ██  ██      ██  ██  ██████  ██
+	///  ██          ██  ██    ████  ██          ██
+	///  ██████████████  ██  ██  ██  ██████████████
+	///                  ██████████
+	///  ████  ██    ████  ████      ██████  ████
+	///  ██  ████████      ██        ████      ████
+	///  ████████    ████    ██  ████      ████  ██
+	///  ████  ████    ██  ██  ██        ████  ████
+	///  ████  ████  ██      ██  ██  ████████  ████
+	///                  ████  ██      ██  ██  ████
+	///  ██████████████  ████      ██  ████    ██
+	///  ██          ██      ████████  ████      ██
+	///  ██  ██████  ██        ██    ████████    ██
+	///  ██  ██████  ██  ██  ████      ██████  ████
+	///  ██  ██████  ██      ██  ██    ████  ██  ██
+	///  ██          ██  ██  ██    ████  ██
+	///  ██████████████  ██  ██████        ██  ██
+	///
+	/// ```
+	@objc var asciiRepresentation: String { return self.qrcode.asciiRepresentation() }
+
+	/// A simple smaller ASCII representation of the core QRCode data
+	///
+	/// Example output (data is "testing")
+	/// ```
+	///  ▄▄▄▄▄▄▄  ▄ ▄▄ ▄▄▄▄▄▄▄
+	///  █ ▄▄▄ █ ██ ▀▄ █ ▄▄▄ █
+	///  █ ███ █ ▄▀ ▀▄ █ ███ █
+	///  █▄▄▄▄▄█ █ ▄▀█ █▄▄▄▄▄█
+	///  ▄▄ ▄  ▄▄▀██▀▀ ▄▄▄ ▄▄
+	///  █▄██▀▀▄▄ ▀▄ ▄▄▀▀ ▄▄▀█
+	///  ██ ██ ▄▀ ▀▄▀▄ ▄▄██ ██
+	///  ▄▄▄▄▄▄▄ ██ ▀ ▄ █▄▀ █▀
+	///  █ ▄▄▄ █   ▀█▀▀▄██▄  █
+	///  █ ███ █ ▀ █▀▄  ██▀▄▀█
+	///  █▄▄▄▄▄█ █ █▄▄▀▀ ▀▄ ▄
+	///
+	/// ```
+	@objc var smallAsciiRepresentation: String { return self.qrcode.smallAsciiRepresentation() }
 }

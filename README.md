@@ -49,30 +49,28 @@ This also contains a command-line application for generating a qrcode from the c
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 
-## QRCode
+## QRCode.Document
 
-The QRCode class is the core generator class. It is not tied to any presentation medium.
+The `QRCode.Document` class is the core class you will interact with. It is not tied to any presentation medium and is cross-platform across Apple OS.
 
-You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using
-Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
+You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
 
 <details>
 <summary>tl;dr Simple Example</summary>
  
 ```swift
-let qrCode = QRCode()
-
-// Create a qr code containing "Example Text" and set the error correction to high ('H') 
-qrCode.update(text: "Example text", errorCorrection: .high)
+let doc = QRCode.Document()
+doc.data = "This is a test".data(using: .utf8)!
+doc.errorCorrection = .high
 
 // Generate a CGPath object containing the QR code
-let path = qrCode.path(CGSize(width: 400, height: 400))
+let path = doc.path(CGSize(width: 400, height: 400))
 
-// Generate an image using the default styling (square, black foreground, white background)
-let image = qrCode.image(CGSize(width: 400, height: 400))
+// Generate an image using the default styling (square, black foreground, white background) with 3x resolution
+let image = doc.uiImage(CGSize(width: 400, height: 400), scale: 3)
 
 // Generate pdf data containing the qr code
-let pdfdata = qrCode.pdfData(CGSize(width: 400, height: 400))
+let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
 ```
 
 </details>
@@ -98,116 +96,60 @@ generator (`QRCodeGenerator_3rdParty`) on all platforms.
 import QRCode
 import QRCode3rdPartyGenerator
 
-let qrCode = QRCode(generator: QRCodeGenerator_3rdParty())
+let qrCode = QRCode.Document(generator: QRCodeGenerator_3rdParty())
 
 // Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
-qrCode.update(text: "Example text", errorCorrection: .high)
+qrCode.data = "Example text".data(using: .utf8)!
+qrCode.errorCorrection = .high
 
 // And generate a UIImage from the pdf data
 let generatedImage = qrCode.uiImage(CGSize(width: 400, height: 400))!
+qrCode.uiImage(CGSize(width: 400, height: 400))!
 ```
 
 </details>
 
-### Set/Update the QR content
+### Set the data content
 
 ```swift
-@objc public func update(_ data: Data, errorCorrection: ErrorCorrection)
-@objc public func update(text: String, errorCorrection: ErrorCorrection)
-@objc public func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection)
+/// Set raw data
+@objc public var data: Data
+
+/// Set a string
+public func setString(_ string: String, 
+                      encoding: String.Encoding = .utf8, 
+                      allowLossyConversion: Bool = false) -> Bool
+
+/// Set raw data using a qrcode message formatter
+@objc func setMessage(_ message: QRCodeMessageFormatter)
 ```
 
-Update the qrcode with the specified data and error correction.
-
-### Generate a path
+### Set the error correction
 
 ```swift
-@objc func path(_ size: CGSize, components: Components = .all, design: QRCode.Design = QRCode.Design()) -> CGPath
+@objc public var errorCorrection: QRCode.ErrorCorrection = .quantize
 ```
 
-Produces a CGPath representation of the QRCode
+The `QRCode.Document` has 4 different encoding levels
 
-* The size in pixels of the generated path
-* The components of the qr code to include in the path (defaults to the standard QR components)
-   * The eye 'outer' ring
-   * The eye pupil
-   * The pixels that are 'on' within the QR Code
-   * The pixels that are 'off' within the QR Code
-* The shape of the qr components
+| Error correction | Description    |
+|-----|:-----|
+| low | Lowest error correction (L - Recovers 7% of data) |
+| medium | Medium error correction (M - Recovers 15% of data) |
+| quantize | Quantize error correction (Q - Recovers 25% of data) |
+| high | High error correction (H - Recovers 30% of data) |
 
-The components allow the caller to generate individual paths for the QR code components which can then be individually 
-styled and recombined later on. 
+The higher the error correction level, the larger the QR code will be.
 
-For example, the SwiftUI implementation is a Shape object, and you can use a ZStack to overlay each 
-component using different a different fill style (for example).
+### QR code components
 
-```swift
-   let qrContent = QRCodeUI(myData)
-   ...
-   ZStack {
-      qrContent
-         .components(.eyeOuter)
-         .fill(.green)
-      qrContent
-         .components(.eyePupil)
-         .fill(.teal)
-      qrContent
-         .components(.onPixels)
-         .fill(.black)
-   }
-```
+The QRCode is made up of three distinct components
 
-### Generating a styled image
+* The 'on' data pixels
+* The eye
+* The 'off' data pixels (optional)
 
-```swift
-@objc func image(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> CGImage?
-```
-
-Generate an image from the QR Code, using an (optional) design object for styling the QR code
-
-```swift
-@objc func nsImage(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> NSImage?
-```
-
-*(macOS only)* Generate an NSImage from the QR Code, using an (optional) design object for styling the QR code
-
-```swift
-@objc func uiImage(_ size: CGSize, scale: CGFloat = 1, design: QRCode.Design = QRCode.Design()) -> UIImage?
-```
-
-*(iOS/tvOS/watchOS/macCatalyst only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
-
-### Generate a styled, scalable PDF representation of the QR Code
-
-```swift
-@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat, design: QRCode.Design = QRCode.Design()) -> Data?
-```
-
-Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution
-
-### Generate a text representation of the QR code
-
-```swift
-@objc func asciiRepresentation() -> String
-```
-
-Return an ASCII representation of the QR code using the extended ASCII code set
-
-Only makes sense if presented using a fixed-width font.
-	
-```swift
-@objc func smallAsciiRepresentation() -> String
-```
-
-Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
-
-Only makes sense if presented using a fixed-width font.
-
-## QRCode.Document
-
-The `QRCode.Document` class wraps a `QRCode` object and the style settings for a qrcode.
-
-
+### Setting the design
 
 ## Design
 
@@ -246,6 +188,134 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 * `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
 * `vertical`: The pixels are vertically joined to make continuous vertical bars
 * `roundedpath`: A smooth rounded-edge path
+
+
+The design comprises two components
+
+| Error correction | Description    |
+|-------|:--------------------------------------------------------------------------|
+| shape | The shape of each of the individual components within the QR code         |
+| style | The fill styles for each of the individual components within the QR code  |
+
+You can individually specify the shape and fill style for each of the components of the QR code
+
+#### Shape examples
+
+```swift
+let document = QRCode.Document()
+
+// Set the shape of the eye to a 'leaf'
+document.design.shape.eye = QRCode.EyeShape.Leaf()
+// Set the shape of the data to 'RoundedPath'
+document.design.shape.data = QRCode.DataShape.RoundedPath()
+```
+
+#### Style examples
+
+```swift
+// Set the background color to a solid white
+document.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
+
+// Set the fill color for the data to radial gradient
+let radial = QRCode.FillStyle.RadialGradient(
+   DSFGradient(pins: [
+      DSFGradient.Pin(CGColor(red: 0.8, green: 0, blue: 0, alpha: 1), 0),
+      DSFGradient.Pin(CGColor(red: 0.1, green: 0, blue: 0, alpha: 1), 1)
+   ])!,
+   centerPoint: CGPoint(x: 0.5, y: 0.5)
+)
+document.design.style.data = radial
+
+// Set the eye colors
+document.design.style.eye   = QRCode.FillStyle.Solid(CGColor.blue)
+document.design.style.pupil = QRCode.FillStyle.Solid(CGColor.lightblue)
+```
+
+## Generating output
+
+### Generate a path
+
+```swift
+@objc func path(_ size: CGSize, components: Components, design: QRCode.Design) -> CGPath
+```
+
+Produces a CGPath representation of the QRCode
+
+* The size in pixels of the generated path
+* The components of the qr code to include in the path (defaults to the standard QR components)
+   * The eye 'outer' ring
+   * The eye pupil
+   * The pixels that are 'on' within the QR Code
+   * The pixels that are 'off' within the QR Code
+* The shape of the qr components
+
+The components allow the caller to generate individual paths for the QR code components which can then be individually 
+styled and recombined later on. 
+
+For example, the SwiftUI implementation is a Shape object, and you can use a ZStack to overlay each 
+component using different a different fill style (for example).
+
+```swift
+   let qrContent = QRCodeUI(myData)
+   ...
+   ZStack {
+      qrContent
+         .components(.eyeOuter)
+         .fill(.green)
+      qrContent
+         .components(.eyePupil)
+         .fill(.teal)
+      qrContent
+         .components(.onPixels)
+         .fill(.black)
+   }
+```
+
+### Generating a styled image
+
+```swift
+@objc func image(_ size: CGSize, scale: CGFloat = 1) -> CGImage?
+```
+
+Generate an CGImage from the QR Code, using an (optional) design object for styling the QR code
+
+```swift
+@objc func nsImage(_ size: CGSize, scale: CGFloat = 1) -> NSImage?
+```
+
+*(macOS only)* Generate an NSImage from the QR Code, using an (optional) design object for styling the QR code
+
+```swift
+@objc func uiImage(_ size: CGSize, scale: CGFloat = 1) -> UIImage?
+```
+
+*(iOS/tvOS/watchOS/macCatalyst only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
+
+### Generate a styled, scalable PDF representation of the QR Code
+
+```swift
+@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat) -> Data?
+```
+
+Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution
+
+### Generate a text representation of the QR code
+
+```swift
+@objc func asciiRepresentation() -> String
+```
+
+Return an ASCII representation of the QR code using the extended ASCII code set
+
+Only makes sense if presented using a fixed-width font.
+	
+```swift
+@objc func smallAsciiRepresentation() -> String
+```
+
+Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
+
+Only makes sense if presented using a fixed-width font.
 
 ## Message Formatters
 
@@ -361,7 +431,6 @@ let jsonData = try qrCode.jsonData()
 ...
 
 let loadedQRCode = try QRCode.Document.Create(jsonData: jsonData)
-
 ``` 
 
 ## Demo

@@ -11,10 +11,11 @@ import QRCode3rdPartyGenerator
 
 class testing {
 	init() {
-		let qrCode = QRCode(generator: QRCodeGenerator_3rdParty())
-		qrCode.update("Generating a QR Code using watchOS".data(using: .utf8)!, errorCorrection: .quantize)
+		let document = QRCode.Document(generator: QRCodeGenerator_3rdParty())
+		document.errorCorrection = .quantize
+		document.data = "Generating a QR Code using watchOS".data(using: .utf8)!
 
-		let generatedImage = qrCode.uiImage(CGSize(width: 400, height: 400))!
+		let generatedImage = document.qrcode.uiImage(CGSize(width: 400, height: 400))!
 		Swift.print(generatedImage)
 	}
 }

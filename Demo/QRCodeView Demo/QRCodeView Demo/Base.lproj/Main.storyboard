@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -710,101 +711,102 @@
                         <rect key="frame" x="0.0" y="0.0" width="545" height="528"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <stackView distribution="fill" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Bx-N8-YAc">
-                                <rect key="frame" x="20" y="20" width="505" height="488"/>
-                                <subviews>
-                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vqd-ge-yad">
-                                        <rect key="frame" x="205" y="467" width="96" height="21"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="Uid-3D-ps3">
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <outlet property="delegate" destination="XfG-lQ-9wD" id="uFC-Q6-K1C"/>
-                                        </connections>
-                                    </textField>
-                                    <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kVg-Kg-Qas">
-                                        <rect key="frame" x="0.0" y="0.0" width="505" height="459"/>
-                                        <subviews>
-                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="GMF-gI-9Ka" customClass="QRCodeView" customModule="QRCode">
-                                                <rect key="frame" x="0.0" y="105" width="163" height="250"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="Q"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
-                                                        <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                                        <color key="value" red="0.85366278890000002" green="0.49959516529999998" blue="0.49142730239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </customView>
-                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCode">
-                                                <rect key="frame" x="171" y="115" width="163" height="230"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="L"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
-                                                        <color key="value" red="0.89056569340000002" green="0.70289796589999998" blue="0.81566268210000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                                        <color key="value" red="0.53686392309999997" green="0.40097856520000003" blue="0.67384272810000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </customView>
-                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eKM-kc-OYa" customClass="QRCodeView" customModule="QRCode">
-                                                <rect key="frame" x="342" y="115" width="163" height="230"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="M"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
-                                                        <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                                        <color key="value" red="0.4441777468" green="0.44415655729999998" blue="0.74806731940000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </customView>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
-                                </subviews>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vqd-ge-yad">
+                                <rect key="frame" x="20" y="487" width="505" height="21"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="Uid-3D-ps3">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="XfG-lQ-9wD" id="uFC-Q6-K1C"/>
+                                </connections>
+                            </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="GMF-gI-9Ka" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="20" y="26" width="243" height="213"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="Q"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                        <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
+                                        <color key="value" red="0.57874745130000005" green="0.32151988149999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="20" y="261" width="243" height="212"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="L"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                        <color key="value" red="0.89056569340000002" green="0.70289796589999998" blue="0.81566268210000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
+                                        <color key="value" red="0.53686392309999997" green="0.40097856520000003" blue="0.67384272810000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eKM-kc-OYa" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="283" y="261" width="242" height="212"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="M"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                        <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
+                                        <color key="value" red="0.4441777468" green="0.44415655729999998" blue="0.74806731940000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="4zG-cU-rqM" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="283" y="26" width="242" height="213"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="H"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                        <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
+                                        <color key="value" name="selectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="5Bx-N8-YAc" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="44L-vA-DRo"/>
-                            <constraint firstAttribute="trailing" secondItem="5Bx-N8-YAc" secondAttribute="trailing" constant="20" id="HTL-R8-ILd"/>
-                            <constraint firstItem="5Bx-N8-YAc" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="l0H-SH-nOV"/>
-                            <constraint firstAttribute="bottom" secondItem="5Bx-N8-YAc" secondAttribute="bottom" constant="20" id="myg-NK-xHO"/>
+                            <constraint firstItem="GMF-gI-9Ka" firstAttribute="top" secondItem="EGm-mh-5JA" secondAttribute="bottom" constant="22" id="5EZ-Tj-pIZ"/>
+                            <constraint firstAttribute="trailing" secondItem="eKM-kc-OYa" secondAttribute="trailing" constant="20" symbolic="YES" id="7Sf-mM-hFK"/>
+                            <constraint firstItem="eKM-kc-OYa" firstAttribute="leading" secondItem="EGm-mh-5JA" secondAttribute="trailing" constant="20" id="D9U-zI-6Cd"/>
+                            <constraint firstItem="EGm-mh-5JA" firstAttribute="top" secondItem="Vqd-ge-yad" secondAttribute="bottom" constant="14" id="EiT-3v-1fd"/>
+                            <constraint firstAttribute="bottom" secondItem="4zG-cU-rqM" secondAttribute="bottom" constant="26" id="Fad-3c-oO6"/>
+                            <constraint firstItem="4zG-cU-rqM" firstAttribute="leading" secondItem="GMF-gI-9Ka" secondAttribute="trailing" constant="20" id="GCX-OK-S4z"/>
+                            <constraint firstItem="GMF-gI-9Ka" firstAttribute="leading" secondItem="EGm-mh-5JA" secondAttribute="leading" id="R9U-1G-bbH"/>
+                            <constraint firstItem="EGm-mh-5JA" firstAttribute="height" secondItem="eKM-kc-OYa" secondAttribute="height" id="U9w-Fx-fJe"/>
+                            <constraint firstItem="4zG-cU-rqM" firstAttribute="top" secondItem="eKM-kc-OYa" secondAttribute="bottom" constant="22" id="Yoj-Wb-ewe"/>
+                            <constraint firstItem="Vqd-ge-yad" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="aQO-gE-Cgu"/>
+                            <constraint firstAttribute="bottom" secondItem="GMF-gI-9Ka" secondAttribute="bottom" constant="26" id="bId-6p-jAx"/>
+                            <constraint firstAttribute="trailing" secondItem="Vqd-ge-yad" secondAttribute="trailing" constant="20" symbolic="YES" id="byQ-UY-3k8"/>
+                            <constraint firstItem="Vqd-ge-yad" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" symbolic="YES" id="l2w-4J-60r"/>
+                            <constraint firstItem="GMF-gI-9Ka" firstAttribute="width" secondItem="EGm-mh-5JA" secondAttribute="width" id="ncZ-jY-Usd"/>
+                            <constraint firstAttribute="trailing" secondItem="4zG-cU-rqM" secondAttribute="trailing" constant="20" symbolic="YES" id="ogi-yv-xT9"/>
+                            <constraint firstItem="EGm-mh-5JA" firstAttribute="width" secondItem="eKM-kc-OYa" secondAttribute="width" id="soh-C6-pbV"/>
+                            <constraint firstItem="EGm-mh-5JA" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="xkx-R0-xct"/>
+                            <constraint firstItem="GMF-gI-9Ka" firstAttribute="height" secondItem="EGm-mh-5JA" secondAttribute="height" id="y2L-y9-7Gh"/>
+                            <constraint firstItem="eKM-kc-OYa" firstAttribute="top" secondItem="Vqd-ge-yad" secondAttribute="bottom" constant="14" id="zMY-hQ-kjC"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="q1" destination="GMF-gI-9Ka" id="QFS-X1-Vpm"/>
                         <outlet property="q2" destination="EGm-mh-5JA" id="xLK-qw-w3N"/>
                         <outlet property="q3" destination="eKM-kc-OYa" id="cd3-YD-aHx"/>
+                        <outlet property="q4" destination="4zG-cU-rqM" id="Ofc-eQ-dza"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="754"/>
+            <point key="canvasLocation" x="74.5" y="754"/>
         </scene>
     </scenes>
 </document>

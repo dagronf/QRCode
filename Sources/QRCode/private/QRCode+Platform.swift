@@ -34,13 +34,6 @@ import UIKit
 import SwiftUI
 #endif
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-extension CGColor {
-	/// Convenience for a 'clear' color
-	static let clear = CGColor(gray: 0, alpha: 0)
-}
-#endif
-
 #if os(macOS)
 public extension QRCode {
 	/// Returns an NSImage representation of the qr code using the specified style
@@ -54,8 +47,10 @@ public extension QRCode {
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()) -> NSImage?
 	{
-		guard let qrImage = self.cgImage(size, design: design) else { return nil }
-		return NSImage(cgImage: qrImage, size: .zero)
+		let coreSize = size * scale
+		guard let qrImage = self.cgImage(coreSize, design: design) else { return nil }
+		let image = NSImage(cgImage: qrImage, size: size)
+		return image
 	}
 }
 #endif
@@ -73,8 +68,10 @@ public extension QRCode {
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()) -> UIImage?
 	{
-		guard let qrImage = self.cgImage(size, design: design) else { return nil }
-		return UIImage(cgImage: qrImage)
+		let coreSize = size * scale
+		guard let qrImage = self.cgImage(coreSize, design: design) else { return nil }
+		let im = UIImage(cgImage: qrImage, scale: scale, orientation: .up)
+		return im
 	}
 }
 #endif
@@ -85,7 +82,7 @@ public extension QRCode {
 	/// Create a SwiftUI Image object for the QR code
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	///   - design: The design for the qr code
 	///   - label: The label associated with the image. SwiftUI uses the label for accessibility.
 	/// - Returns: An image, or nil if an error occurred
@@ -96,7 +93,7 @@ public extension QRCode {
 		label: Text) -> SwiftUI.Image?
 	{
 		guard let qrImage = self.cgImage(size, design: design) else { return nil }
-		return SwiftUI.Image(qrImage, scale: 1, label: label)
+		return SwiftUI.Image(qrImage, scale: scale, label: label)
 	}
 }
 #endif

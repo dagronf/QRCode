@@ -83,5 +83,6 @@ public extension CGColor {
 extension CGColor {
 	static let white = CGColor(gray: 1, alpha: 1)
 	static let black = CGColor(gray: 0, alpha: 1)
+	static let clear = CGColor(gray: 0, alpha: 0)
 }
 #endif

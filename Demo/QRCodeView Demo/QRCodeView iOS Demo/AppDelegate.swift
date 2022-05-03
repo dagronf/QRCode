@@ -33,10 +33,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
 	func generateQRCodeImage() {
-		let qrCode = QRCode()
-		qrCode.update("This is a test".data(using: .utf8)!, errorCorrection: .high)
 
-		let iii = qrCode.uiImage(CGSize(width: 400, height: 400))!
-		Swift.print(iii)
+		let doc = QRCode.Document()
+		doc.data = "This is a test".data(using: .utf8)!
+		doc.errorCorrection = .high
+
+		// Generate a CGPath object containing the QR code
+		let path = doc.path(CGSize(width: 400, height: 400))
+
+		// Generate an image using the default styling (square, black foreground, white background) with 3x resolution
+		let image = doc.uiImage(CGSize(width: 400, height: 400), scale: 3)
+
+		// Generate pdf data containing the qr code
+		let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
 	}
 }

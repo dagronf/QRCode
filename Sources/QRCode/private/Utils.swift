@@ -20,8 +20,13 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import CoreGraphics
 import Foundation
 
 @inlinable @inline(__always) func DoubleValue(_ opaque: Any?) -> Double? {
 	return (opaque as? NSNumber)?.doubleValue
+}
+
+func *(_ size: CGSize, factor: CGFloat) -> CGSize {
+	return CGSize(width: size.width * factor, height: size.height * factor)
 }

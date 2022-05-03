@@ -35,32 +35,31 @@ import UIKit
 
 /// A simple NSView/UIView that displays a QR Code
 @objc @IBDesignable public class QRCodeView: DSFView {
-
 	/// The qrcode document to render
-	@objc public var document = QRCode.Document()
+	@objc public var document = QRCode.Document() {
+		didSet { self.setNeedsDisplay() }
+	}
 
 	/// The correction level to use when generating the QR code
 	@objc public var errorCorrection: QRCode.ErrorCorrection {
-		get { return document.errorCorrection }
-		set { document.errorCorrection = newValue; setNeedsDisplay() }
+		get { return self.document.errorCorrection }
+		set { self.document.errorCorrection = newValue; setNeedsDisplay() }
 	}
 
 	/// Binary data to display in the QR code
 	@objc public var data: Data {
-		get { return document.data }
-		set { document.data = newValue; setNeedsDisplay() }
+		get { return self.document.data }
+		set { self.document.data = newValue; setNeedsDisplay() }
 	}
 
 	/// The style to use when drawing the qr code
 	@objc public var design: QRCode.Design {
-		get { return document.design }
-		set { document.design = newValue; setNeedsDisplay() }
+		get { return self.document.design }
+		set { self.document.design = newValue; setNeedsDisplay() }
 	}
 
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
-	@objc public var pixelSize: Int {
-		get { document.pixelSize }
-	}
+	@objc public var pixelSize: Int { self.document.pixelSize }
 
 	@objc public convenience init() {
 		self.init(frame: .zero)
@@ -142,7 +141,6 @@ public extension QRCodeView {
 		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
-
 
 #endif
 

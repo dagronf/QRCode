@@ -29,12 +29,10 @@ public extension QRCode {
 	/// Returns a CGImage representation of the qr code using the specified style
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale
 	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred
 	@objc func cgImage(
 		_ size: CGSize,
-		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design()
 	) -> CGImage? {
 		let width = Int(size.width)

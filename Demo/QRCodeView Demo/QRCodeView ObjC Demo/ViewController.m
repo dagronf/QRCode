@@ -17,26 +17,20 @@
 
 	// Do any additional setup after loading the view.
 
-	QRCode* code = [[QRCode alloc] init];
-	[code updateWithText: @"This message"
-		  errorCorrection: QRCodeErrorCorrectionHigh];
-
-	QRCodeDesign* design = [QRCodeDesign create];
+	QRCodeDocument* document = [[QRCodeDocument alloc] init];
+	[document setData:[@"This message" dataUsingEncoding: NSUTF8StringEncoding]];
+	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 
 	// Set the foreground color to a solid red
-	
-	design.style.data = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
-	design.style.eye = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
+	document.design.style.data = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+	document.design.style.eye = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
 
 	// Use the leaf style
-	design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
+	document.design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
 
-	// Generate the image
-	CGImageRef image = [code cgImage: CGSizeMake(400, 400)
-										scale: 1.0
-									  design: design];
-
-	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
+	// Generate the image (with a 216dpi resolution)
+	CGImageRef image = [document cgImage: CGSizeMake(900, 900)];
+	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeMake(300, 300)];
 	NSLog(@"Image -> %@", nsImage);
 }
 

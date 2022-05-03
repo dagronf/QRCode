@@ -12,13 +12,28 @@ class ViewController: NSViewController {
 	@IBOutlet weak var q1: QRCodeView!
 	@IBOutlet weak var q2: QRCodeView!
 	@IBOutlet weak var q3: QRCodeView!
+	@IBOutlet weak var q4: QRCodeView!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		q1.design.shape.data = QRCode.DataShape.RoundedPath()
-		q2.design.shape.data = QRCode.DataShape.RoundedPath()
+		//q1.design.shape.data = QRCode.DataShape.RoundedPath()
+		q2.design.shape.data = QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
+		q2.design.shape.eye  = QRCode.EyeShape.Leaf()
 		q3.design.shape.data = QRCode.DataShape.RoundedPath()
+		q3.design.shape.eye  = QRCode.EyeShape.RoundedPointingIn()
+
+
+		let gr = QRCode.FillStyle.RadialGradient(
+			DSFGradient(pins: [
+				DSFGradient.Pin(CGColor(red: 0.8, green: 0, blue: 0, alpha: 1), 0),
+				DSFGradient.Pin(CGColor(red: 0.1, green: 0, blue: 0, alpha: 1), 1)
+			])!,
+			centerPoint: CGPoint(x: 0.5, y: 0.5))
+
+		q4.design.style.background = gr
+		q4.design.shape.data = QRCode.DataShape.Squircle()
+		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
 		// Do any additional setup after loading the view.
 
@@ -60,5 +75,6 @@ extension ViewController: NSControlTextEditingDelegate {
 		_ = q1.setString(msg)
 		_ = q2.setString(msg)
 		_ = q3.setString(msg)
+		_ = q4.setString(msg)
 	}
 }
