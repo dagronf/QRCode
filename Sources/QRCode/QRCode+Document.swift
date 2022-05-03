@@ -44,43 +44,80 @@ public extension QRCode {
 			}
 		}
 
-		/// The generator to use when generating the QR Code. If nil, uses the default generator
-		///
-		/// For watchOS, you'll need to use `QRCodeGenerator_3rdParty()` as the generator
-		@objc public var generator: QRCodeEngine? {
-			didSet {
-				if let generator = generator {
-					self.qrcode = QRCode(generator: generator)
-				}
-				else {
-					self.qrcode = QRCode()
-				}
-				self.regenerate()
-			}
-		}
-
 		/// The style to use when drawing the qr code
 		@objc public var design = QRCode.Design() {
 			didSet { self.regenerate() }
 		}
 
-		/// Create a QRCode document with the default settings
-		@objc override public init() {
+		/// Create a QRCode document with default settings
+		@objc public override init() {
 			self.qrcode = QRCode()
 			super.init()
 		}
 
+		/// Create a QRCode document
+		/// - Parameter errorCorrection: The error correction to use
+		@objc public init(errorCorrection: QRCode.ErrorCorrection) {
+			self.qrcode = QRCode()
+			self.errorCorrection = errorCorrection
+			super.init()
+		}
+
+		/// Create a QRCode document
+		/// - Parameters:
+		///   - data: The data to encode
+		///   - errorCorrection: The error correction level
+		@objc public init(data: Data, errorCorrection: QRCode.ErrorCorrection = .default) {
+			self.qrcode = QRCode()
+			super.init()
+			self.data = data
+			self.errorCorrection = errorCorrection
+			self.regenerate()
+		}
+
+		/// Create a QRCode document containing `utf8String`
+		/// - Parameters:
+		///   - utf8String: The UTF8 string to encode
+		///   - errorCorrection: The error correction level
+		@objc public init(utf8String: String, errorCorrection: QRCode.ErrorCorrection = .default) {
+			self.qrcode = QRCode()
+			super.init()
+			self.setString(utf8String)
+			self.errorCorrection = errorCorrection
+			self.regenerate()
+		}
+
 		/// Create a QRCode document with the default settings using the specified generator
-		@objc public init(generator: QRCodeEngine) {
+		/// - Parameters:
+		///   - generator: The generator to use when creating the QR code
+		///   - data: The data to encode
+		///   - errorCorrection: The error correction to use
+		@objc public init(generator: QRCodeEngine, data: Data? = nil, errorCorrection: QRCode.ErrorCorrection = .default) {
 			self.qrcode = QRCode(generator: generator)
 			super.init()
+			if let d = data { self.data = d }
+			self.errorCorrection = errorCorrection
+			self.regenerate()
+		}
+
+		/// Create a QRCode document with the default settings using the specified generator
+		/// - Parameters:
+		///   - generator: The generator to use when creating the QR code
+		///   - utf8String: The UTF8 string to encode
+		///   - errorCorrection: The error correction to use
+		@objc public init(generator: QRCodeEngine, utf8String: String, errorCorrection: QRCode.ErrorCorrection = .default) {
+			self.qrcode = QRCode(generator: generator)
+			super.init()
+			self.setString(utf8String)
+			self.errorCorrection = errorCorrection
+			self.regenerate()
 		}
 
 		/// This is the pixel dimension for the current QR Code.
 		@objc public var pixelSize: Int { self.qrcode.pixelSize }
 
 		// The qrcode content generator
-		@objc public private(set) var qrcode: QRCode
+		private let qrcode: QRCode
 	}
 }
 
@@ -95,8 +132,8 @@ public extension QRCode.Document {
 	func setString(
 		_ string: String,
 		encoding: String.Encoding = .utf8,
-		allowLossyConversion: Bool = false) -> Bool
-	{
+		allowLossyConversion: Bool = false
+	) -> Bool {
 		if let d = string.data(
 			using: encoding,
 			allowLossyConversion: allowLossyConversion
@@ -256,6 +293,9 @@ public extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// Draw the current qrcode document into the specified context and rect
+	/// - Parameters:
+	///   - ctx: The drawing context to draw into
+	///   - rect: The bounds within the context to draw into
 	@objc func draw(ctx: CGContext, rect: CGRect) {
 		self.qrcode.draw(ctx: ctx, rect: rect, design: self.design)
 	}
@@ -307,13 +347,11 @@ public extension QRCode.Document {
 	/// - Returns: The image, or nil if an error occurred
 	@objc func nsImage(
 		_ size: CGSize,
-		scale: CGFloat = 1) -> NSImage?
-	{
+		scale: CGFloat = 1
+	) -> NSImage? {
 		return self.qrcode.nsImage(size, scale: scale, design: self.design)
 	}
-#endif
-
-#if os(iOS) || os(tvOS) || os(watchOS)
+#elseif os(iOS) || os(tvOS) || os(watchOS)
 	/// Returns a UIImage representation of the qr code document
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
@@ -340,12 +378,11 @@ public extension QRCode.Document {
 	func imageUI(
 		_ size: CGSize,
 		scale: CGFloat = 1,
-		label: Text) -> SwiftUI.Image?
-	{
+		label: Text
+	) -> SwiftUI.Image? {
 		return self.qrcode.imageUI(size, scale: scale, design: self.design, label: label)
 	}
 #endif
-
 }
 
 // MARK: - Raw data

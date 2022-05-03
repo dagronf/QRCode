@@ -43,17 +43,34 @@ This also contains a command-line application for generating a qrcode from the c
 * Supports Swift and Objective-C.
 * Generate a QR code without access to a UI.
 * Supports all error correction levels.
+* Load/Save support
 * Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS).
-* Generate images, scalable PDFs and `CGPath`.
+* Generate images, scalable PDFs and `CGPath` paths.
 * Configurable designs.
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 
-## QRCode.Document
+## Generating a QR Code
 
-The `QRCode.Document` class is the core class you will interact with. It is not tied to any presentation medium and is cross-platform across Apple OS.
+The `QRCode.Document` class is the core class you will interact with. It is not tied to any presentation medium and is cross-platform across Apple OSes.
 
 You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
+
+Previous versions of this library used `QRCode` for generating qr codes. The `QRCode.Document` object wraps both the `QRCode` and the design object for the
+QR code into a single class to allow loading and saving. Existing code that uses `QRCode` directly will not be affected.
+
+You can create a basic black-and-white QR code image very easily.
+
+```swift
+let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high)
+let generated = doc.cgImage(CGSize(width: 800, height: 800))
+```
+
+Generates
+
+<img src="./Art/simple-generated-qrcode.png" width="80"/>
+
+You can further style the qr code (see below) 
 
 <details>
 <summary>tl;dr Simple Example</summary>
@@ -63,6 +80,12 @@ let doc = QRCode.Document()
 doc.data = "This is a test".data(using: .utf8)!
 doc.errorCorrection = .high
 
+// Set the background color to clear
+doc.design.backgroundColor(CGColor.clear)
+
+// Set the foreground color to blue
+doc.design.foregroundColor(CGColor.blue)
+
 // Generate a CGPath object containing the QR code
 let path = doc.path(CGSize(width: 400, height: 400))
 
@@ -71,6 +94,12 @@ let image = doc.uiImage(CGSize(width: 400, height: 400), scale: 3)
 
 // Generate pdf data containing the qr code
 let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
+
+// Save a JSON representation of the qrcode document
+let jsonData = try doc.jsonData()
+
+// Load a qr code from json
+let loadedDoc = try QRCode.Document(jsonData: jsonData)
 ```
 
 </details>
@@ -96,18 +125,19 @@ generator (`QRCodeGenerator_3rdParty`) on all platforms.
 import QRCode
 import QRCode3rdPartyGenerator
 
-let qrCode = QRCode.Document(generator: QRCodeGenerator_3rdParty())
+let doc = QRCode.Document(generator: QRCodeGenerator_3rdParty())
 
 // Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
-qrCode.data = "Example text".data(using: .utf8)!
-qrCode.errorCorrection = .high
+doc.data = "Example text".data(using: .utf8)!
+doc.errorCorrection = .high
 
 // And generate a UIImage from the pdf data
-let generatedImage = qrCode.uiImage(CGSize(width: 400, height: 400))!
-qrCode.uiImage(CGSize(width: 400, height: 400))!
+let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
 ```
 
 </details>
+
+## Settings
 
 ### Set the data content
 
@@ -141,6 +171,10 @@ The `QRCode.Document` has 4 different encoding levels
 
 The higher the error correction level, the larger the QR code will be.
 
+## Design
+
+`QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
+
 ### QR code components
 
 The QRCode is made up of three distinct components
@@ -149,32 +183,18 @@ The QRCode is made up of three distinct components
 * The eye
 * The 'off' data pixels (optional)
 
-### Setting the design
-
-## Design
-
-`QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
-
-### Fill styles
-
-You can provide a custom fill for any of the individual components (eyes, pupils, data) of the qr code. This library supports the current fill types.
-
-* solid fill
-* linear gradient
-* radial gradient
-
 ### Eye shape
 
 You can provide an `EyeShape` object to style just the eyes of the generated qr code. There are built-in generators for
 square, circle, rounded rectangle, and more.
 
-* `square`: Simple square (default)
-* `circle`: Simple circle
-* `roundedrect`: Simple rounded rect
-* `roundedouter`: A square with the outer corner rounded.
-* `roundedpointingin`: A rounded rect with the 'inner' corner as a point
-* `leaf`: An eye that look like a leaf
-* `squircle`: A superellipse (somewhere between a square and a circle)
+* `QRCode.EyeShape.Square`: Simple square (default)
+* `QRCode.EyeShape.Circle`: Simple circle
+* `QRCode.EyeShape.RoundedRect`: Simple rounded rect
+* `QRCode.EyeShape.RoundedOuter`: A square with the outer corner rounded.
+* `QRCode.EyeShape.RoundedPointingIn`: A rounded rect with the 'inner' corner as a point
+* `QRCode.EyeShape.Leaf`: An eye that look like a leaf
+* `QRCode.EyeShape.Squircle`: A superellipse (somewhere between a square and a circle)
 
 ### Data shape
 
@@ -188,7 +208,6 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 * `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
 * `vertical`: The pixels are vertically joined to make continuous vertical bars
 * `roundedpath`: A smooth rounded-edge path
-
 
 The design comprises two components
 
@@ -209,6 +228,14 @@ document.design.shape.eye = QRCode.EyeShape.Leaf()
 // Set the shape of the data to 'RoundedPath'
 document.design.shape.data = QRCode.DataShape.RoundedPath()
 ```
+
+### Fill styles
+
+You can provide a custom fill for any of the individual components (eyes, pupils, data) of the qr code. This library supports the current fill types.
+
+* solid fill (`QRCode.FillStyle.Solid`)
+* linear gradient (`QRCode.FillStyle.LinearGradient`)
+* radial gradient (`QRCode.FillStyle.RadialGradient`)
 
 #### Style examples
 
@@ -437,7 +464,7 @@ let loadedQRCode = try QRCode.Document.Create(jsonData: jsonData)
 
 There are a number of demo apps which you can find in the `Demo` subfolder.  There are simple demo applications for
 
-* SwiftUI (macOS, iOS, macCatalyst)
+* SwiftUI (macOS, iOS, macCatalyst, watchOS)
 * iOS (Swift, including macCatalyst)
 * macOS (Swift and Objective-C)
 
@@ -523,7 +550,7 @@ MIT. Use it for anything you want, just attribute my work if you do. Let me know
 ```
 MIT License
 
-Copyright (c) 2021 Darren Ford
+Copyright (c) 2022 Darren Ford
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

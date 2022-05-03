@@ -13,6 +13,7 @@ final class QRCodeTests: XCTestCase {
 		}
 	}
 
+#if !os(watchOS)
 	func testBasicQRCode() throws {
 		let doc = QRCode()
 		let url = URL(string: "https://www.apple.com.au/")!
@@ -40,7 +41,8 @@ final class QRCodeTests: XCTestCase {
 			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
 		}
 	}
-
+#endif
+	
 	func testAsciiGenerationWorks() throws {
 		let doc = QRCode.Document()
 		doc.errorCorrection = .low
@@ -94,6 +96,16 @@ final class QRCodeTests: XCTestCase {
 		}
 		catch {
 			fatalError("Caught exception")
+		}
+	}
+
+	func testBasicCreate() throws {
+		do {
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high)
+			doc.design.backgroundColor(CGColor.clear)
+			doc.design.foregroundColor(CGColor.white)
+			let image = doc.cgImage(CGSize(width: 800, height: 800))
+			let _ = try XCTUnwrap(image)
 		}
 	}
 }
