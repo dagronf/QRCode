@@ -27,10 +27,10 @@ public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeVertical) class Vertical: NSObject, QRCodeDataShapeGenerator {
 
 		static public let Name: String = "vertical"
-		static public func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
+		static public func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
 			return QRCode.DataShape.Vertical(
-				inset: DoubleValue(settings["inset"]) ?? 0,
-				cornerRadiusFraction: DoubleValue(settings["cornerRadiusFraction"]) ?? 0
+				inset: DoubleValue(settings?["inset"]) ?? 0,
+				cornerRadiusFraction: DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
 			)
 		}
 

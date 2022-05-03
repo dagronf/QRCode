@@ -23,6 +23,9 @@
 import CoreGraphics
 import Foundation
 
+private let DataShapeTypeName = "type"
+private let DataShapeSettingsName = "settings"
+
 // MARK: - Data shape
 
 public extension QRCode {
@@ -33,7 +36,7 @@ public extension QRCode {
 /// A protocol for wrapping generating the data shape for a path
 @objc public protocol QRCodeDataShapeGenerator {
 	static var Name: String { get }
-	static func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator
+	static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator
 
 	/// Make a copy of the shape object
 	func copyShape() -> QRCodeDataShapeGenerator
@@ -60,9 +63,6 @@ public extension QRCode {
 	func settings() -> [String: Any]
 }
 
-private let DataShapeTypeName = "type"
-private let DataShapeSettingsName = "settings"
-
 public extension QRCodeDataShapeGenerator {
 	var name: String { return Self.Name }
 
@@ -73,29 +73,51 @@ public extension QRCodeDataShapeGenerator {
 	}
 }
 
-public class QRCodeDataShapeFactory {
-	public static var registeredTypes: [QRCodeDataShapeGenerator.Type] = [
-		QRCode.DataShape.Vertical.self,
-		QRCode.DataShape.Horizontal.self,
-		QRCode.DataShape.Pixel.self,
-		QRCode.DataShape.RoundedPath.self,
-		QRCode.DataShape.Pointy.self,
-	]
+/// A factory instance
+@objc public class QRCodeDataShapeFactory: NSObject {
 
-	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeGenerator? {
-		guard let type = settings[DataShapeTypeName] as? String else { return nil }
-		guard let set = settings[DataShapeSettingsName] as? [String: Any] else { return nil }
-		guard let f = QRCodeDataShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
+	/// Shared data shape factory
+	@objc public static let shared = QRCodeDataShapeFactory()
+
+	internal var registeredTypes: [QRCodeDataShapeGenerator.Type]
+
+	@objc public override init() {
+		self.registeredTypes = [
+			QRCode.DataShape.Square.self,
+			QRCode.DataShape.Circle.self,
+			QRCode.DataShape.RoundedPath.self,
+			QRCode.DataShape.Squircle.self,
+			QRCode.DataShape.Vertical.self,
+			QRCode.DataShape.Horizontal.self,
+			QRCode.DataShape.RoundedPath.self,
+			QRCode.DataShape.Pointy.self
+		]
+		super.init()
+	}
+
+	@objc public var availableGeneratorNames: [String] {
+		self.registeredTypes.map { $0.Name }
+	}
+
+	/// Return a new instance of the data shape generator with the specified name and optional settings
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodeDataShapeGenerator? {
+		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
-		return f.Create(set)
+		return f.Create(settings)
+	}
+
+	/// Create a data shape generator from the specified shape settings
+	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeGenerator? {
+		guard let type = settings[DataShapeTypeName] as? String else { return nil }
+		let settings = settings[DataShapeSettingsName] as? [String: Any]
+		return self.named(type, settings: settings)
 	}
 }
 
-public let DataShapeFactory = QRCodeDataShapeFactory()
-
 public extension QRCodeDataShapeFactory {
-	func image(
+	/// Return an image representing the shape generator as a 5x5 pixel grouping
+	@objc func image(
 		dataShape: QRCodeDataShapeGenerator,
 		isOn: Bool = true,
 		dimension: CGFloat,

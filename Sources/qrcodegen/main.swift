@@ -77,10 +77,10 @@ struct QRCodeGen: ParsableCommand {
 	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H" (max)"#)
 	var errorCorrection: String?
 
-	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(EyeShapeFactory.knownTypes.joined(separator: ", "))")
+	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", "))")
 	var eyeShape: String?
 
-	@Option(name: [.customShort("d"), .long], help: "The data shape to use. Available shapes are \(DataShapeFactory.knownTypes.joined(separator: ", "))")
+	@Option(name: [.customShort("d"), .long], help: "The data shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", "))")
 	var dataShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this
@@ -152,9 +152,9 @@ struct QRCodeGen: ParsableCommand {
 		// The eye shape
 
 		if let name = eyeShape {
-			guard let shape = EyeShapeFactory.named(name) else {
+			guard let shape = QRCodeEyeShapeFactory.shared.named(name) else {
 				Swift.print("Unknown eye style '\(name)'.")
-				let known = EyeShapeFactory.knownTypes.joined(separator: ",")
+				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 				Swift.print("Available eye styles are \(known)")
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
@@ -164,9 +164,14 @@ struct QRCodeGen: ParsableCommand {
 		// The data shape
 
 		let dataShapeName = self.dataShape ?? "square"
-		guard let shape = DataShapeFactory.named(dataShapeName, inset: inset ?? 0, cornerRadiusFraction: dataShapeCornerRadius ?? 0) else {
+		let settings: [String: Any] = [
+			"inset": inset ?? 0,
+			"cornerRadiusFraction": dataShapeCornerRadius ?? 0
+		]
+
+		guard let shape = QRCodeDataShapeFactory.shared.named(dataShapeName, settings: settings) else {
 			Swift.print("Unknown data style '\(dataShapeName)'.")
-			let known = DataShapeFactory.knownTypes.joined(separator: ",")
+			let known = QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 			Swift.print("Available data styles are \(known) ")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}

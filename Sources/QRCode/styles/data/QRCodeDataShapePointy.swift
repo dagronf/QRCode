@@ -26,8 +26,8 @@ import CoreGraphics
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeGenerator {
 		public static var Name: String = "pointy"
-		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
-			Pointy()
+		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
+			QRCode.DataShape.Pointy()
 		}
 
 		public func settings() -> [String: Any] {

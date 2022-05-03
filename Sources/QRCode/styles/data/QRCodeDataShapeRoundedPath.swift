@@ -25,8 +25,8 @@ import Foundation
 
 public extension QRCode.DataShape {
 	@objc(QRCodeDataShapeRoundedPath) class RoundedPath: NSObject, QRCodeDataShapeGenerator {
-		public static var Name = "RoundedPath"
-		public static func Create(_ settings: [String: Any]) -> QRCodeDataShapeGenerator {
+		public static var Name = "roundedPath"
+		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
 			return QRCode.DataShape.RoundedPath()
 		}
 

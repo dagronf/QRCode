@@ -33,7 +33,7 @@ public extension QRCode {
 /// A protocol for wrapping generating the eye shapes for a path
 @objc public protocol QRCodeEyeShapeGenerator {
 	@objc static var Name: String { get }
-	@objc static func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator
+	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
 	@objc func settings() -> [String: Any]
 	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
@@ -53,32 +53,45 @@ public extension QRCodeEyeShapeGenerator {
 	}
 }
 
-public class QRCodeEyeShapeFactory {
-	public static var registeredTypes: [QRCodeEyeShapeGenerator.Type] = [
-		QRCode.EyeShape.Circle.self,
-		QRCode.EyeShape.RoundedRect.self,
-		QRCode.EyeShape.RoundedPointingIn.self,
-		QRCode.EyeShape.Squircle.self,
-		QRCode.EyeShape.RoundedOuter.self,
-		QRCode.EyeShape.Square.self,
-		QRCode.EyeShape.Leaf.self,
-	]
-	
-	@objc public var knownTypes: [String] {
-		QRCodeEyeShapeFactory.registeredTypes.map { $0.Name }
+@objc public class QRCodeEyeShapeFactory: NSObject {
+
+	/// A shared eye shape factory
+	@objc public static let shared = QRCodeEyeShapeFactory()
+
+	internal var registeredTypes: [QRCodeEyeShapeGenerator.Type]
+
+	@objc public override init() {
+		self.registeredTypes = [
+			QRCode.EyeShape.Circle.self,
+			QRCode.EyeShape.RoundedRect.self,
+			QRCode.EyeShape.RoundedPointingIn.self,
+			QRCode.EyeShape.Squircle.self,
+			QRCode.EyeShape.RoundedOuter.self,
+			QRCode.EyeShape.Square.self,
+			QRCode.EyeShape.Leaf.self,
+		]
+		super.init()
 	}
-	
-	@objc public func Create(settings: [String: Any]) -> QRCodeEyeShapeGenerator? {
-		guard let type = settings[EyeShapeTypeName] as? String else { return nil }
-		let settings = settings[EyeShapeSettingsName] as? [String: Any] ?? [:]
-		guard let f = QRCodeEyeShapeFactory.registeredTypes.first(where: { $0.Name == type }) else {
+
+	@objc public var availableGeneratorNames: [String] {
+		self.registeredTypes.map { $0.Name }
+	}
+
+	/// Return a new instance of an eye shape generator with the specified name and optional settings
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodeEyeShapeGenerator? {
+		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
 		return f.Create(settings)
 	}
-}
 
-public let EyeShapeFactory = QRCodeEyeShapeFactory()
+	/// Create an eye shape generator from the specified shape settings
+	@objc public func create(settings: [String: Any]) -> QRCodeEyeShapeGenerator? {
+		guard let type = settings[EyeShapeTypeName] as? String else { return nil }
+		let settings = settings[EyeShapeSettingsName] as? [String: Any] ?? [:]
+		return self.named(type, settings: settings)
+	}
+}
 
 public extension QRCodeEyeShapeFactory {
 	func image(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: CGColor) -> CGImage? {

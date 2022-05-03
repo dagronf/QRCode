@@ -38,18 +38,18 @@ class ViewController: NSViewController {
 		// Do any additional setup after loading the view.
 
 		let lf = QRCode.EyeShape.Leaf()
-		let im = EyeShapeFactory.image(eye: lf, dimension: 200, foregroundColor: NSColor.systemGreen.cgColor)!
+		let im = QRCodeEyeShapeFactory.shared.image(eye: lf, dimension: 200, foregroundColor: NSColor.systemGreen.cgColor)!
 		let imn = NSImage(cgImage: im, size: .zero)
 		Swift.print(imn)
 
 		///
 
 		let lf3 = QRCode.DataShape.RoundedRect(inset: 4, cornerRadiusFraction: 0.5)
-		let im3 = DataShapeFactory.image(dataShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
+		let im3 = QRCodeDataShapeFactory.shared.image(dataShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
 		let imn3 = NSImage(cgImage: im3, size: .zero)
 
 		let lf2 = QRCode.DataShape.RoundedPath()
-		let im2 = DataShapeFactory.image(dataShape: lf2, dimension: 200, foregroundColor: NSColor.systemRed.cgColor)!
+		let im2 = QRCodeDataShapeFactory.shared.image(dataShape: lf2, dimension: 200, foregroundColor: NSColor.systemRed.cgColor)!
 		let imn2 = NSImage(cgImage: im2, size: .zero)
 		imn2.isTemplate = true
 		Swift.print(imn2)

@@ -28,7 +28,7 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "roundedrect"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
+		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedRect()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }

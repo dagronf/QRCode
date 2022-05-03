@@ -28,7 +28,7 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "leaf"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
+		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Leaf()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }

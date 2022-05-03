@@ -2,7 +2,7 @@
 //  QRCodeView.swift
 //
 //  Created by Darren Ford on 9/11/21.
-//  Copyright © 2021 Darren Ford. All rights reserved.
+//  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -43,19 +43,19 @@ import UIKit
 	/// The correction level to use when generating the QR code
 	@objc public var errorCorrection: QRCode.ErrorCorrection {
 		get { return self.document.errorCorrection }
-		set { self.document.errorCorrection = newValue; setNeedsDisplay() }
+		set { self.document.errorCorrection = newValue; self.setNeedsDisplay() }
 	}
 
 	/// Binary data to display in the QR code
 	@objc public var data: Data {
 		get { return self.document.data }
-		set { self.document.data = newValue; setNeedsDisplay() }
+		set { self.document.data = newValue; self.setNeedsDisplay() }
 	}
 
 	/// The style to use when drawing the qr code
 	@objc public var design: QRCode.Design {
 		get { return self.document.design }
-		set { self.document.design = newValue; setNeedsDisplay() }
+		set { self.document.design = newValue; self.setNeedsDisplay() }
 	}
 
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
@@ -91,58 +91,68 @@ import UIKit
 // MARK: - Interface Builder conveniences
 
 public extension QRCodeView {
+	/// Interface builder correction level
 	@IBInspectable var ibCorrectionLevel: String {
 		get { return self.errorCorrection.ECLevel }
 		set { self.errorCorrection = QRCode.ErrorCorrection.Create(newValue.first ?? "q") ?? .quantize }
 	}
 
+	/// Interface builder text content
 	@IBInspectable var ibTextContent: String {
 		get { String(data: self.data, encoding: .utf8) ?? "" }
 		set { self.data = newValue.data(using: .utf8) ?? Data() }
 	}
 
-#if os(macOS)
+	#if os(macOS)
+	/// Interface builder data color
 	@IBInspectable var ibDataColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder eye color
 	@IBInspectable var ibEyeColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder pupil color
 	@IBInspectable var ibPupilColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder background color
 	@IBInspectable var ibBackgroundColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
-#else
+	#else
+	/// Interface builder data color
 	@IBInspectable var ibDataColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder eye color
 	@IBInspectable var ibEyeColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder pupil color
 	@IBInspectable var ibPupilColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
+	/// Interface builder background color
 	@IBInspectable var ibBackgroundColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
-#endif
+	#endif
 
 	override func prepareForInterfaceBuilder() {
 		super.prepareForInterfaceBuilder()
@@ -153,27 +163,27 @@ public extension QRCodeView {
 // MARK: - Drawing
 
 extension QRCodeView {
-#if os(macOS)
+	#if os(macOS)
 	override public var isFlipped: Bool { true }
-#endif
+	#endif
 
 	private func setup() {
 		self.regenerate()
 	}
 
-#if os(macOS)
+	#if os(macOS)
 	override public func draw(_ dirtyRect: NSRect) {
 		if let ctx = NSGraphicsContext.current?.cgContext {
 			self.draw(ctx)
 		}
 	}
-#else
+	#else
 	override public func draw(_ rect: CGRect) {
 		if let ctx = UIGraphicsGetCurrentContext() {
 			self.draw(ctx)
 		}
 	}
-#endif
+	#endif
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {

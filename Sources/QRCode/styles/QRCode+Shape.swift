@@ -76,19 +76,19 @@ public extension QRCode.Shape {
 		let result = QRCode.Shape()
 
 		if let data = settings["data"] as? [String: Any],
-			let shape = DataShapeFactory.create(settings: data)
+			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
 		{
 			result.data = shape
 		}
 
 		if let eye = settings["eye"] as? [String: Any],
-			let shape = EyeShapeFactory.Create(settings: eye)
+			let shape = QRCodeEyeShapeFactory.shared.create(settings: eye)
 		{
 			result.eye = shape
 		}
 
 		if let data = settings["dataInverted"] as? [String: Any],
-			let shape = DataShapeFactory.create(settings: data)
+			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
 		{
 			result.dataInverted = shape
 		}

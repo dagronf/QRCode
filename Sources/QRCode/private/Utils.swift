@@ -27,6 +27,8 @@ import Foundation
 	return (opaque as? NSNumber)?.doubleValue
 }
 
+// Scale a CGSize by a factor amount
+@inlinable @inline(__always)
 func *(_ size: CGSize, factor: CGFloat) -> CGSize {
 	return CGSize(width: size.width * factor, height: size.height * factor)
 }

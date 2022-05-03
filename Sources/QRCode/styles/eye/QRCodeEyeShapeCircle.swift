@@ -27,7 +27,7 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "circle"
-		@objc static public func Create(_ settings: [String: Any]) -> QRCodeEyeShapeGenerator {
+		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Circle()
 		}
 		@objc public func settings() -> [String : Any] { return [:] }

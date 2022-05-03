@@ -14,24 +14,21 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		XCTAssertEqual(doc2.data, doc1.data)
 
 		// Should default to square pixels
-		let shape = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Pixel)
-		XCTAssertEqual(shape.pixelType, .square)
+		_ = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Square)
 	}
 
 	func testBasicPixelEncodeDecode() throws {
 		let doc1 = QRCode.Document()
 		doc1.data = "this is a test".data(using: .utf8)!
-		doc1.design.shape.data = QRCode.DataShape.Pixel(pixelType: .circle)
+		doc1.design.shape.data = QRCode.DataShape.Circle()
 		doc1.design.shape.eye = QRCode.EyeShape.Leaf()
 
 		let data = try XCTUnwrap(doc1.jsonData())
 
 		let doc2 = try QRCode.Document.Create(jsonData: data)
 
-		let shape = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Pixel)
-		XCTAssertEqual(QRCode.DataShape.Pixel.Name, doc2.design.shape.data.name)
-		let _ = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Pixel)
-		XCTAssertEqual(shape.pixelType, .circle)
+		let shape = try XCTUnwrap(doc2.design.shape.data as? QRCode.DataShape.Circle)
+		XCTAssertEqual(QRCode.DataShape.Circle.Name, shape.name)
 
 		XCTAssertEqual(doc2.design.shape.eye.name, QRCode.EyeShape.Leaf.Name)
 		let _ = try XCTUnwrap(doc2.design.shape.eye as? QRCode.EyeShape.Leaf)
