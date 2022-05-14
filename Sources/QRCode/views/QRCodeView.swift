@@ -58,20 +58,6 @@ import UIKit
 		set { self.document.design = newValue; self.setNeedsDisplay() }
 	}
 
-	private var _eyeShape: String = ""
-	/// The name of the shape generator for the eye
-	@IBInspectable var ibEyeShape: String {
-		get { _eyeShape }
-		set { _eyeShape = newValue; self.regenerate() }
-	}
-
-	private var _dataShape: String = ""
-	/// The name of the shape generator for the data
-	@IBInspectable var ibDataShape: String {
-		get { _dataShape }
-		set { _dataShape = newValue; self.regenerate() }
-	}
-
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
 	@objc public var pixelSize: Int { self.document.pixelSize }
 
@@ -100,11 +86,27 @@ import UIKit
 	@objc @inlinable func setMessage(_ msgType: QRCodeMessageFormatter) {
 		self.data = msgType.data
 	}
+
+	private var _eyeShape: String = ""
+	private var _dataShape: String = ""
 }
 
 // MARK: - Interface Builder conveniences
 
 public extension QRCodeView {
+
+	/// The name of the shape generator for the eye
+	@IBInspectable var ibEyeShape: String {
+		get { _eyeShape }
+		set { _eyeShape = newValue; self.regenerate() }
+	}
+
+	/// The name of the shape generator for the data
+	@IBInspectable var ibDataShape: String {
+		get { _dataShape }
+		set { _dataShape = newValue; self.regenerate() }
+	}
+
 	/// Interface builder correction level
 	@IBInspectable var ibCorrectionLevel: String {
 		get { return self.errorCorrection.ECLevel }
