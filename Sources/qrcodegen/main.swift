@@ -77,10 +77,10 @@ struct QRCodeGen: ParsableCommand {
 	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H" (max)"#)
 	var errorCorrection: String?
 
-	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", "))")
+	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var eyeShape: String?
 
-	@Option(name: [.customShort("d"), .long], help: "The data shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", "))")
+	@Option(name: [.customShort("d"), .long], help: "The data shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var dataShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this

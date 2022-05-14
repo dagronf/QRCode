@@ -44,7 +44,7 @@ import Foundation
 	}
 
 	@objc public var availableGeneratorNames: [String] {
-		self.registeredTypes.map { $0.Name }
+		self.registeredTypes.map { $0.Name }.sorted()
 	}
 
 	/// Return a new instance of the data shape generator with the specified name and optional settings

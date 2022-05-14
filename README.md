@@ -201,7 +201,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_square.png" width="60"/>           |"square"|`QRCode.EyeShape.Square`|Simple square (default)|
 |<img src="./Art/images/eye_circle.png" width="60"/>           |"circle"|`QRCode.EyeShape.Circle`|Simple circle|
 |<img src="./Art/images/eye_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
-|<img src="./Art/images/eye_roundedOuter.png" width="60"/>     |"roundedOuter"|`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/eye_roundedouter.png" width="60"/>     |"roundedOuter"|`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
 |<img src="./Art/images/eye_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
 |<img src="./Art/images/eye_leaf.png" width="60"/>             |"leaf"|`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/eye_squircle.png" width="60"/>         |"squircle"|`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
@@ -218,7 +218,7 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 |<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.DataShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
 |<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.DataShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.DataShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
-|<img src="./Art/images/data_roundedpath.png" width="60"/> |"roundedPath"|`QRCode.DataShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_roundedPath.png" width="60"/> |"roundedPath"|`QRCode.DataShape.RoundedPath`|A smooth rounded-edge path|
 |<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.DataShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.DataShape.Pointy`|A 'pointy' style|
 
@@ -563,11 +563,11 @@ OPTIONS:
                           The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H"
                           (max) 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are circle, leaf, roundedouter, roundedpointingin,
-                          roundedrect, squircle, square 
+                          The eye shape to use. Available shapes are circle, leaf, roundedOuter, roundedPointingIn,
+                          roundedRect, square, squircle. 
   -d, --data-shape <data-shape>
-                          The data shape to use. Available shapes are circle, horizontal, roundedpath, roundedrect,
-                          square, squircle, vertical 
+                          The data shape to use. Available shapes are circle, horizontal, pointy, roundedPath,
+                          roundedRect, square, squircle, vertical. 
   -n, --inset <inset>     The spacing around each individual pixel in the data section 
   -r, --data-shape-corner-radius <data-shape-corner-radius>
                           The data shape corner radius fractional value (0.0 -> 1.0) 
