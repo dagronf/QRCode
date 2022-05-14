@@ -58,6 +58,20 @@ import UIKit
 		set { self.document.design = newValue; self.setNeedsDisplay() }
 	}
 
+	private var _eyeShape: String = ""
+	/// The name of the shape generator for the eye
+	@IBInspectable var ibEyeShape: String {
+		get { _eyeShape }
+		set { _eyeShape = newValue; self.regenerate() }
+	}
+
+	private var _dataShape: String = ""
+	/// The name of the shape generator for the data
+	@IBInspectable var ibDataShape: String {
+		get { _dataShape }
+		set { _dataShape = newValue; self.regenerate() }
+	}
+
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
 	@objc public var pixelSize: Int { self.document.pixelSize }
 
@@ -193,6 +207,8 @@ extension QRCodeView {
 	// Build up the qr representation
 	private func regenerate() {
 		self.document.update(self.data, errorCorrection: self.errorCorrection)
+		self.document.design.shape.data = QRCodeDataShapeFactory.shared.named(_dataShape) ?? QRCode.DataShape.Square()
+		self.document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
 		self.setNeedsDisplay()
 	}
 }

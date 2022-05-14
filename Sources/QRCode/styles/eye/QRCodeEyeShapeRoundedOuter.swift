@@ -26,7 +26,7 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeStyleRoundedOuter) class RoundedOuter: NSObject, QRCodeEyeShapeGenerator {
-		@objc public static let Name = "roundedouter"
+		@objc public static let Name = "roundedOuter"
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedOuter()
 		}

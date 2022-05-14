@@ -56,9 +56,6 @@ The `QRCode.Document` class is the core class you will interact with. It is not 
 
 You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
 
-Previous versions of this library used `QRCode` for generating qr codes. The `QRCode.Document` object wraps both the `QRCode` and the design object for the
-QR code into a single class to allow loading and saving. Existing code that uses `QRCode` directly will not be affected.
-
 You can create a basic black-and-white QR code image very easily.
 
 ```swift
@@ -103,6 +100,8 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 ```
 
 </details>
+
+If you have used earlier version of this library, you would have used `QRCode` for generating qr codes. The `QRCode.Document` object wraps both the `QRCode` and the design object for the QR code into a single class to allow loading and saving. Existing code that uses `QRCode` directly will not be affected.
 
 ### Special requirements for watchOS
 
@@ -175,6 +174,15 @@ The higher the error correction level, the larger the QR code will be.
 
 `QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
 
+The design comprises two components
+
+|    | Description    |
+|-------|:--------------------------------------------------------------------------|
+| shape | The shape of each of the individual components within the QR code         |
+| style | The fill styles for each of the individual components within the QR code  |
+
+You can individually specify the shape and fill style for each of the components of the QR code.
+
 ### QR code components
 
 The QRCode is made up of three distinct components
@@ -188,50 +196,93 @@ The QRCode is made up of three distinct components
 You can provide an `EyeShape` object to style just the eyes of the generated qr code. There are built-in generators for
 square, circle, rounded rectangle, and more.
 
-* `QRCode.EyeShape.Square`: Simple square (default)
-* `QRCode.EyeShape.Circle`: Simple circle
-* `QRCode.EyeShape.RoundedRect`: Simple rounded rect
-* `QRCode.EyeShape.RoundedOuter`: A square with the outer corner rounded.
-* `QRCode.EyeShape.RoundedPointingIn`: A rounded rect with the 'inner' corner as a point
-* `QRCode.EyeShape.Leaf`: An eye that look like a leaf
-* `QRCode.EyeShape.Squircle`: A superellipse (somewhere between a square and a circle)
+| Preview | Name | Class | Description |
+|---|---|---|---|
+|<img src="./Art/images/eye_square.png" width="60"/>           |"square"|`QRCode.EyeShape.Square`|Simple square (default)|
+|<img src="./Art/images/eye_circle.png" width="60"/>           |"circle"|`QRCode.EyeShape.Circle`|Simple circle|
+|<img src="./Art/images/eye_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
+|<img src="./Art/images/eye_roundedOuter.png" width="60"/>     |"roundedOuter"|`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/eye_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/eye_leaf.png" width="60"/>             |"leaf"|`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/eye_squircle.png" width="60"/>         |"squircle"|`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 
 ### Data shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
 however you can supply a `DataShape` object to custom-draw the data.  There are built-in generators for
 
-* `square`: A basic square pixel
-* `circle`: A basic circle pixel
-* `squircle`: A superellipse (somewhere between a square and a circle)
-* `roundedrect`: A basic rounded rectangle pixel with configurable radius
-* `horizontal`: The pixels are horizonally joined to make continuous horizontal bars
-* `vertical`: The pixels are vertically joined to make continuous vertical bars
-* `roundedpath`: A smooth rounded-edge path
+| Preview | Name | Class | Description |
+|---|---|---|---|
+|<img src="./Art/images/data_square.png" width="60"/>      |"square"|`QRCode.DataShape.Square`|A basic square pixel (default)|
+|<img src="./Art/images/data_circle.png" width="60"/>      |"circle"|`QRCode.DataShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.DataShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
+|<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.DataShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
+|<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.DataShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+|<img src="./Art/images/data_roundedpath.png" width="60"/> |"roundedPath"|`QRCode.DataShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.DataShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.DataShape.Pointy`|A 'pointy' style|
 
-The design comprises two components
+#### 'dataInverted' shape (optional)
 
-| Error correction | Description    |
-|-------|:--------------------------------------------------------------------------|
-| shape | The shape of each of the individual components within the QR code         |
-| style | The fill styles for each of the individual components within the QR code  |
+You can specify a shape to be drawn when a data 'pixel' is _off_. This can be used to make your qr code prettier.
+Just remember that the more embellishment you add to a QR code the more difficult it will be to read.
 
-You can individually specify the shape and fill style for each of the components of the QR code
+It's really important to make sure that there is a high color contrast between the 'dataInverted' shape and the 'data' shape to aid readers.
 
-#### Shape examples
+<img src="./Art/images/dataInverted.png" width="150"/>
+
+<details>
+<summary>QRCode source</summary>
 
 ```swift
-let document = QRCode.Document()
+let doc1 = QRCode.Document(utf8String: "Hi there noodle")
+doc1.design.backgroundColor(NSColor.white.cgColor)
+doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+doc1.design.shape.data = QRCode.DataShape.Circle()
+doc1.design.style.data = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
+doc1.design.shape.dataInverted = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
+doc1.design.style.dataInverted = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
-// Set the shape of the eye to a 'leaf'
-document.design.shape.eye = QRCode.EyeShape.Leaf()
-// Set the shape of the data to 'RoundedPath'
-document.design.shape.data = QRCode.DataShape.RoundedPath()
+// Generate a image for the QRCode
+let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
 ```
+
+</details>
 
 ### Fill styles
 
-You can provide a custom fill for any of the individual components (eyes, pupils, data) of the qr code. This library supports the current fill types.
+You can provide a custom fill for any of the individual components of the qr code.
+
+* The data
+* The eye (outer)
+* The pupil (inner)
+* The dataInverted
+
+<img src="./Art/images/eye_colorstyles.png" width="150"/>
+
+<details>
+<summary>QRCode source</summary>
+
+```swift
+let doc2 = QRCode.Document(utf8String: "Github example for colors")
+doc2.design.backgroundColor(NSColor.white.cgColor)
+doc2.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+doc2.design.shape.data = QRCode.DataShape.RoundedPath()
+
+// Eye color
+doc2.design.style.eye = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
+// Pupil color
+doc2.design.style.pupil = QRCode.FillStyle.Solid(NSColor.systemBlue.cgColor)
+// Data color
+doc2.design.style.data = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
+
+// Generate a image for the QRCode
+let cgImage = doc2.cgImage(CGSize(width: 300, height: 300))
+```
+
+</details>
+
+This library supports the current fill types.
 
 * solid fill (`QRCode.FillStyle.Solid`)
 * linear gradient (`QRCode.FillStyle.LinearGradient`)
@@ -239,9 +290,16 @@ You can provide a custom fill for any of the individual components (eyes, pupils
 
 #### Style examples
 
+A simple QRCode with a red radial fill.
+
+<img src="./Art/images/fillstyles.png" width="150"/>
+
+<details>
+<summary>QRCode source</summary>
+
 ```swift
-// Set the background color to a solid white
-document.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
+let doc3 = QRCode.Document(utf8String: "Github example for colors")
+doc3.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
 
 // Set the fill color for the data to radial gradient
 let radial = QRCode.FillStyle.RadialGradient(
@@ -251,12 +309,13 @@ let radial = QRCode.FillStyle.RadialGradient(
    ])!,
    centerPoint: CGPoint(x: 0.5, y: 0.5)
 )
-document.design.style.data = radial
+doc3.design.style.data = radial
 
-// Set the eye colors
-document.design.style.eye   = QRCode.FillStyle.Solid(CGColor.blue)
-document.design.style.pupil = QRCode.FillStyle.Solid(CGColor.lightblue)
+// Generate a image for the QRCode
+let cgImage = doc3.cgImage(CGSize(width: 300, height: 300))
 ```
+
+</details>
 
 ## Generating output
 

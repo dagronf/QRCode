@@ -105,18 +105,18 @@ public extension QRCode.DataShape {
 
 			let path = CGMutablePath()
 
-			for row in 1 ..< data.pixelSize - 1 {
-				for col in 1 ..< data.pixelSize - 1 {
+			for row in 0 ..< data.pixelSize {
+				for col in 0 ..< data.pixelSize {
 					let isEye = data.isEyePixel(row, col) && isTemplate == false
 
 					if isEye || data.current[row, col] == false {
 						continue
 					}
 
-					let hasLeft = data.current[row, col - 1]
-					let hasRight = data.current[row, col + 1]
-					let hasTop = data.current[row - 1, col]
-					let hasBottom = data.current[row + 1, col]
+					let hasLeft = (col - 1) >= 0 ? data.current[row, col - 1] : false
+					let hasRight = (col + 1) < data.pixelSize ? data.current[row, col + 1] : false
+					let hasTop = (row - 1) >= 0 ? data.current[row - 1, col] : false
+					let hasBottom = (row + 1) < data.pixelSize ? data.current[row + 1, col] : false
 
 					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 

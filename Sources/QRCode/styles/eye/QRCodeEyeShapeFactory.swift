@@ -67,7 +67,14 @@ import Foundation
 }
 
 public extension QRCodeEyeShapeFactory {
-	func image(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: CGColor) -> CGImage? {
+	/// Generate an image of the eye represented by a specific eye generator
+	/// - Parameters:
+	///   - eye: The eye generator to use
+	///   - dimension: The dimension of the image to output
+	///   - foregroundColor: The foreground color
+	///   - backgroundColor: The background color (optional)
+	/// - Returns: A CGImage representation of the eye
+	func image(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: CGColor, backgroundColor: CGColor? = nil) -> CGImage? {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -83,6 +90,12 @@ public extension QRCodeEyeShapeFactory {
 		)
 		else {
 			return nil
+		}
+
+		// fill the background color
+		context.usingGState { ctx in
+			ctx.setFillColor(backgroundColor ?? .clear)
+			ctx.fill(CGRect(origin: .zero, size: CGSize(width: width, height: height)))
 		}
 
 		context.scaleBy(x: 1, y: -1)

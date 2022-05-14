@@ -28,10 +28,9 @@ public extension QRCode.DataShape {
 
 		static public let Name: String = "vertical"
 		static public func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
-			return QRCode.DataShape.Vertical(
-				inset: DoubleValue(settings?["inset"]) ?? 0,
-				cornerRadiusFraction: DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
-			)
+			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
+			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
+			return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: radius)
 		}
 
 		public func settings() -> [String : Any] {
@@ -65,11 +64,13 @@ public extension QRCode.DataShape {
 			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
 			
 			let path = CGMutablePath()
-			
-			for col in 1 ..< data.pixelSize - 1 {
+
+			let cc = isTemplate ? 0 : 1
+
+			for col in cc ..< data.pixelSize - cc {
 				var activeRect: CGRect?
 				
-				for row in 1 ..< data.pixelSize - 1 {
+				for row in cc ..< data.pixelSize - cc {
 					let isEye = data.isEyePixel(row, col) && isTemplate == false
 
 					if data.current[row, col] == false || isEye {

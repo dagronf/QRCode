@@ -65,6 +65,12 @@ internal extension QRCode.DataShape {
 						continue
 					}
 
+					if !isTemplate && !isOn {
+						if row == 0 || col == 0 || row == data.pixelSize - 1 || col == data.pixelSize - 1 {
+							continue
+						}
+					}
+
 					if data.isEyePixel(row, col), !isTemplate {
 						// skip it
 						continue

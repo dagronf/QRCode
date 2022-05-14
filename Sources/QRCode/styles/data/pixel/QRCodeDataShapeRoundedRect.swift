@@ -40,7 +40,7 @@ public extension QRCode.DataShape {
 
 		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
-			let radius = settings?["cornerRadiusFraction", default: 0] as? CGFloat ?? 0
+			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
 			return RoundedRect(inset: inset, cornerRadiusFraction: radius)
 		}
 

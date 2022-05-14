@@ -68,13 +68,15 @@ import Foundation
 }
 
 public extension QRCodeDataShapeFactory {
-	/// Return an image representing the shape generator as a 5x5 data pixel grouping
-	@objc func image(
-		dataShape: QRCodeDataShapeGenerator,
-		isOn: Bool = true,
-		dimension: CGFloat,
-		foregroundColor: CGColor
-	) -> CGImage? {
+	/// Generate an image of the data represented by a specific data generator for a fixed 5x5 data pixel representation
+	/// - Parameters:
+	///   - dataShape: The data generator to use
+	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	///   - dimension: The dimension of the image to output
+	///   - foregroundColor: The foreground color
+	///   - backgroundColor: The background color (optional)
+	/// - Returns: A CGImage representation of the data
+	@objc func image(dataShape: QRCodeDataShapeGenerator, isOn: Bool = true, dimension: CGFloat, foregroundColor: CGColor, backgroundColor: CGColor? = nil) -> CGImage? {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -92,6 +94,12 @@ public extension QRCodeDataShapeFactory {
 			return nil
 		}
 
+		// fill the background color
+		context.usingGState { ctx in
+			ctx.setFillColor(backgroundColor ?? .clear)
+			ctx.fill(CGRect(origin: .zero, size: CGSize(width: width, height: height)))
+		}
+
 		context.scaleBy(x: 1, y: -1)
 		context.translateBy(x: 0, y: -dimension)
 
@@ -102,12 +110,14 @@ public extension QRCodeDataShapeFactory {
 		// Draw the qr with the required styles
 
 		let qr = QRCode()
-		qr.current = BoolMatrix(dimension: 5, rawFlattenedInt: [
-			0, 0, 1, 1, 0,
-			0, 0, 0, 1, 0,
-			1, 0, 1, 1, 1,
-			1, 1, 1, 1, 0,
-			0, 0, 1, 0, 1,
+		qr.current = BoolMatrix(dimension: 7, rawFlattenedInt: [
+			0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 1, 1, 0, 0,
+			0, 0, 0, 0, 1, 0, 0,
+			0, 1, 0, 1, 1, 1, 0,
+			0, 1, 1, 1, 1, 0, 0,
+			0, 0, 0, 1, 0, 1, 0,
+			0, 0, 0, 0, 0, 0, 0,
 		])
 
 		let path = CGMutablePath()
@@ -119,7 +129,7 @@ public extension QRCodeDataShapeFactory {
 				return dataShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
 			}
 		}()
-		path.addPath(p2) // , transform: scaleTransform)
+		path.addPath(p2)
 		context.addPath(path)
 		context.setFillColor(foregroundColor)
 		context.fillPath()
