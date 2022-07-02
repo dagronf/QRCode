@@ -32,10 +32,10 @@ public extension QRCode {
 	/// - Returns: An array of detected QR Codes
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
-	@objc static func Detect(_ image: CGImage) -> [CIQRCodeFeature] {
+	@objc static func DetectQRCodes(_ cgImage: CGImage) -> [CIQRCodeFeature] {
 		var options: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh]
 		let context = CIContext()
-		let ciImage = CIImage(cgImage: image)
+		let ciImage = CIImage(cgImage: cgImage)
 		guard let qrDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: context, options: options) else {
 			return []
 		}
@@ -48,6 +48,42 @@ public extension QRCode {
 		return qrDetector
 			.features(in: ciImage, options: options)
 			.compactMap { $0 as? CIQRCodeFeature }
+	}
+}
+
+#endif
+
+#if os(macOS)
+
+import AppKit
+public extension QRCode {
+	/// Detect QR code(s) in the specified image
+	/// - Parameter image: The image in which to detect QRCodes
+	/// - Returns: An array of detected QR Codes
+	///
+	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
+	@objc static func DetectQRCodes(in image: NSImage) -> [CIQRCodeFeature]? {
+		guard let im = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+			return nil
+		}
+		return Self.DetectQRCodes(im)
+	}
+}
+
+#elseif os(iOS)
+
+import UIKit
+public extension QRCode {
+	/// Detect QR code(s) in the specified image
+	/// - Parameter image: The image in which to detect QRCodes
+	/// - Returns: An array of detected QR Codes
+	///
+	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
+	@objc static func DetectQRCodes(in image: UIImage) -> [CIQRCodeFeature]? {
+		guard let im = image.cgImage else {
+			return nil
+		}
+		return Self.DetectQRCodes(im)
 	}
 }
 

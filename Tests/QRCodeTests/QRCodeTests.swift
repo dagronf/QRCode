@@ -25,7 +25,7 @@ final class QRCodeTests: XCTestCase {
 		// Convert to image and detect qr codes
 		do {
 			let imaged = try XCTUnwrap(doc.cgImage(CGSize(width: 600, height: 600)))
-			let features = QRCode.Detect(imaged)
+			let features = QRCode.DetectQRCodes(imaged)
 			let first = features[0]
 			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
 		}
@@ -36,7 +36,7 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			let img = try XCTUnwrap(doc.cgImage(CGSize(width: 500, height: 500), design: design))
-			let features = QRCode.Detect(img)
+			let features = QRCode.DetectQRCodes(img)
 			let first = features[0]
 			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
 		}

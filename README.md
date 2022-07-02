@@ -1,6 +1,6 @@
 # QRCode
 
-A simple and quick macOS/iOS/tvOS/watchOS QR Code generator library for SwiftUI, Swift and Objective-C.
+A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
@@ -517,7 +517,22 @@ let jsonData = try qrCode.jsonData()
 ...
 
 let loadedQRCode = try QRCode.Document.Create(jsonData: jsonData)
-``` 
+```
+
+## Detecting QR Codes in an image
+
+The library also provides a mechanism for detecting QR codes in an image
+
+```swift
+// CGImage/NSImage/UIImage detection
+if let detected = QRCode.DetectQRCodes(in: /*some image*/),
+   detected.count > 0 {
+   // Do something with the detected qr codes
+   let qrCodeBounds = detected[0].bounds
+   let qrCodeMessage = detected[0].messageString
+   ...
+}
+```
 
 ## Demo
 

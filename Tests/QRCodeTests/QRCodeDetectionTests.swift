@@ -5,6 +5,12 @@ import XCTest
 @testable import QRCode
 @testable import QRCode3rdPartyGenerator
 
+#if os(macOS)
+typealias CommonImage = NSImage
+#else
+typealias CommonImage = UIImage
+#endif
+
 final class QRCodeDetectionTests: XCTestCase {
 	//let _msg = "DENSO WAVE serves as a leader in developing and manufacturing automatic data capture devices for barcodes, QR codes, and RFID, etc. and industrial robots (FA equipment), etc."
 
@@ -34,7 +40,7 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		// ... now attempt to detect the text from the generated image
 
-		let features = QRCode.Detect(imaged)
+		let features = QRCode.DetectQRCodes(imaged)
 		XCTAssertEqual(1, features.count)
 
 		let first = features[0]
@@ -65,11 +71,55 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		// ... now attempt to detect the text from the generated image
 
-		let features = QRCode.Detect(imaged)
+		let features = QRCode.DetectQRCodes(imaged)
 		XCTAssertEqual(1, features.count)
 
 		let first = features[0]
 		XCTAssertEqual(_msg, first.messageString)
+	}
+
+	func testDetectFromImage() throws {
+		do {
+			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "qrcodes-image", withExtension: "jpg"))
+			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
+
+			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			XCTAssertEqual(5, results.count)
+			for i in 0..<5 {
+				XCTAssertEqual("http://www.qrstuff.com", results[i].messageString)
+			}
+		}
+
+		do {
+			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "nsw-health", withExtension: "jpg"))
+			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
+
+			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			XCTAssertEqual(1, results.count)
+			let msg = try XCTUnwrap(results[0].messageString)
+			XCTAssertTrue(msg.starts(with: "https://www.service.nsw.gov.au/campaign"))
+
+			let br = results[0].bounds
+			XCTAssertEqual(329, br.origin.x, accuracy: 1)
+			XCTAssertEqual(121, br.origin.y, accuracy: 1)
+			XCTAssertEqual(195, br.size.width, accuracy: 1)
+			XCTAssertEqual(188, br.size.height, accuracy: 1)
+		}
+
+		do {
+			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "example-com", withExtension: "jpg"))
+			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
+
+			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			XCTAssertEqual(1, results.count)
+			XCTAssertEqual("www.example.com", results[0].messageString)
+
+			let br = results[0].bounds
+			XCTAssertEqual(256, br.origin.x, accuracy: 1)
+			XCTAssertEqual(195, br.origin.y, accuracy: 1)
+			XCTAssertEqual(63, br.size.width, accuracy: 1)
+			XCTAssertEqual(65, br.size.height, accuracy: 1)
+		}
 	}
 }
 

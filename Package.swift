@@ -72,9 +72,14 @@ let package = Package(
 				.product(name: "ArgumentParser", package: "swift-argument-parser"),
 				.byNameItem(name: "QRCode", condition: nil)
 			 ]),
+
+		// testing target
 		.testTarget(
 			name: "QRCodeTests",
-			dependencies: ["QRCode", "QRCode3rdPartyGenerator"]
+			dependencies: ["QRCode", "QRCode3rdPartyGenerator"],
+			resources: [
+				.process("resources"),
+			]
 		),
 	]
 )
