@@ -519,9 +519,11 @@ let jsonData = try qrCode.jsonData()
 let loadedQRCode = try QRCode.Document.Create(jsonData: jsonData)
 ```
 
-## Detecting QR Codes in an image
+## Detecting QR Codes
 
-The library also provides a mechanism for detecting QR codes in an image
+### From an image
+
+The library provides a mechanism for detecting QR codes in an image
 
 ```swift
 // CGImage/NSImage/UIImage detection
@@ -533,6 +535,15 @@ if let detected = QRCode.DetectQRCodes(in: /*some image*/),
    ...
 }
 ```
+
+### From a video stream
+
+There is a video detector class `QRCode.VideoDetector` which is a very basic qr code detector for video streams.
+
+There are two basic demos demonstrating the qr code detection in a video stream.
+
+* `macOS QRCode Detector`: Video qr code detector for macOS targets
+* `iOS QRCode Detector`: Video qr code detector for iOS targets (requires a real device)
 
 ## Demo
 
