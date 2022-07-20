@@ -27,11 +27,11 @@ import CoreImage
 import Foundation
 
 /// A QR Code generator that uses Core Image filters to generate a QR Code
-public class QRCodeGenerator_CoreImage: QRCodeEngine {
+internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 
-	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
 

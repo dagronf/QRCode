@@ -1,7 +1,6 @@
 //
-//  Utils.swift
+//  CGSize+extensions.swift
 //
-//  Created by Darren Ford on 27/11/19.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -20,8 +19,19 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import CoreGraphics
 import Foundation
 
-@inlinable @inline(__always) func DoubleValue(_ opaque: Any?) -> Double? {
-	return (opaque as? NSNumber)?.doubleValue
+// Scale a CGSize by a factor amount
+@inlinable @inline(__always)
+func *(_ size: CGSize, factor: CGFloat) -> CGSize {
+	return CGSize(width: size.width * factor, height: size.height * factor)
+}
+
+extension CGSize {
+	// Create a CGSize object with equal dimensions
+	@inlinable @inline(__always)
+	init(dimension: CGFloat) {
+		self.init(width: dimension, height: dimension)
+	}
 }

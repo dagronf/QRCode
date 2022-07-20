@@ -28,6 +28,15 @@ import Foundation
 public extension QRCode {
 	/// Returns a CGImage representation of the qr code using the specified style
 	/// - Parameters:
+	///   - dimension: The dimension of the image to generate
+	///   - design: The design for the qr code
+	/// - Returns: The image, or nil if an error occurred
+	@objc func cgImage(dimension: CGFloat, design: QRCode.Design = QRCode.Design()) -> CGImage? {
+		self.cgImage(CGSize(dimension: dimension), design: design)
+	}
+
+	/// Returns a CGImage representation of the qr code using the specified style
+	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred

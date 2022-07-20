@@ -38,6 +38,7 @@ public class QRCodeGenerator_3rdParty: QRCodeEngine {
 
 	/// Generate the QR code using the custom generator
 	public func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		// Call out to the third-party qr code generator
 		guard
 			let qrCode = _generate(data, errorCorrection: errorCorrection.ECLevel),
 			qrCode.count > 0,
@@ -48,7 +49,6 @@ public class QRCodeGenerator_3rdParty: QRCodeEngine {
 		let sz = qrCode[0].count
 
 		// Map the generic [[Bool]] result to our safer Array2d type
-
 		let result = BoolMatrix(dimension: sz)
 		for row in 0 ..< sz {
 			for col in 0 ..< sz {

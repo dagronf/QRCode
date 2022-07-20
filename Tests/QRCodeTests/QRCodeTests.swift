@@ -108,4 +108,29 @@ final class QRCodeTests: XCTestCase {
 			let _ = try XCTUnwrap(image)
 		}
 	}
+
+	func testMessageFormatter() throws {
+
+		do {
+			let url = try XCTUnwrap(QRCode.Message.Link(string: "https://www.apple.com/mac-studio/"))
+			let code = QRCode.Document(message: url)
+
+			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+
+			let qrr = QRCode.DetectQRCodes(outputImage)
+			XCTAssertEqual(1, qrr.count)
+			XCTAssertEqual("https://www.apple.com/mac-studio/", qrr[0].messageString)
+		}
+
+		do {
+			let url = try XCTUnwrap(QRCode.Message.Text("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के"))
+			let code = QRCode.Document(message: url)
+
+			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+
+			let qrr = QRCode.DetectQRCodes(outputImage)
+			XCTAssertEqual(1, qrr.count)
+			XCTAssertEqual("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के", qrr[0].messageString)
+		}
+	}
 }

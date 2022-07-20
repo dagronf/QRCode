@@ -239,6 +239,7 @@
 		2348FBA6273A310A004DB2BF /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		234DE7042745D72D00EC7FD2 /* QRCode */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QRCode; path = ../..; sourceTree = "<group>"; };
 		235F82742741F1B300E81D98 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		23638EAB2887D0F60057A190 /* QRCode Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "QRCode Playground.playground"; path = "../QRCode Playground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		236A0503286FE1960019C842 /* macOS QRCode Detector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS QRCode Detector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		236A0505286FE1960019C842 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		236A0507286FE1960019C842 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -380,6 +381,7 @@
 		2348FB5B273A2DDB004DB2BF = {
 			isa = PBXGroup;
 			children = (
+				23638EAB2887D0F60057A190 /* QRCode Playground.playground */,
 				234DE7042745D72D00EC7FD2 /* QRCode */,
 				2348FB66273A2DDB004DB2BF /* QRCodeView Demo */,
 				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,

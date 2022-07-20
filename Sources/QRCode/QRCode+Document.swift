@@ -87,6 +87,18 @@ public extension QRCode {
 			self.regenerate()
 		}
 
+		/// Create a QRCode document containing the contents of a message formatter
+		/// - Parameters:
+		///   - message: The message formatter
+		///   - errorCorrection: The error correction level
+		@objc public init(message: QRCodeMessageFormatter, errorCorrection: QRCode.ErrorCorrection = .default) {
+			self.qrcode = QRCode()
+			super.init()
+			self.data = message.data
+			self.errorCorrection = errorCorrection
+			self.regenerate()
+		}
+
 		/// Create a QRCode document with the default settings using the specified generator
 		/// - Parameters:
 		///   - generator: The generator to use when creating the QR code
@@ -322,12 +334,35 @@ public extension QRCode.Document {
 public extension QRCode.Document {
 	/// Returns a CGImage representation of the qr code
 	/// - Parameters:
+	///   - dimension: The dimension of the image to create
+	/// - Returns: The image, or nil if an error occurred
+	@objc func cgImage(
+		dimension: CGFloat
+	) -> CGImage? {
+		self.qrcode.cgImage(CGSize(dimension: dimension), design: self.design)
+	}
+
+	/// Returns a CGImage representation of the qr code
+	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	/// - Returns: The image, or nil if an error occurred
 	@objc func cgImage(
 		_ size: CGSize
 	) -> CGImage? {
 		self.qrcode.cgImage(size, design: self.design)
+	}
+}
+
+// MARK: PDF generation
+
+public extension QRCode.Document {
+	/// Returns a pdf representation of the qr code document
+	/// - Parameters:
+	///   - dimension: The dimension of the generated PDF
+	///   - pdfResolution: The resolution of the pdf output
+	/// - Returns: A data object containing the PDF representation of the QR code
+	@objc func pdfData(dimension: CGFloat, pdfResolution: CGFloat = 72.0) -> Data? {
+		self.pdfData(CGSize(dimension: dimension), pdfResolution: pdfResolution)
 	}
 
 	/// Returns a pdf representation of the qr code document
@@ -342,6 +377,18 @@ public extension QRCode.Document {
 #if os(macOS)
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:
+	///   - dimension: The pixel dimension of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func nsImage(
+		dimension: CGFloat,
+		scale: CGFloat = 1
+	) -> NSImage? {
+		return self.qrcode.nsImage(CGSize(dimension: dimension), scale: scale, design: self.design)
+	}
+
+	/// Returns an NSImage representation of the qr code document
+	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
@@ -352,6 +399,18 @@ public extension QRCode.Document {
 		return self.qrcode.nsImage(size, scale: scale, design: self.design)
 	}
 #elseif os(iOS) || os(tvOS) || os(watchOS)
+	/// Returns a UIImage representation of the qr code document
+	/// - Parameters:
+	///   - dimension: The pixel dimension of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func uiImage(
+		dimension: CGFloat,
+		scale: CGFloat = 1
+	) -> UIImage? {
+		self.uiImage(CGSize(dimension: dimension), scale: scale)
+	}
+
 	/// Returns a UIImage representation of the qr code document
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
