@@ -31,9 +31,24 @@ public extension QRCode {
 		@objc public static func create() -> Style { return Style() }
 
 		/// The style for the data component for the QR code. Defaults to black
-		@objc public var data: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+		@objc public var onPixels: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
+
+		/// Deprecated. Use `onPixels` instead
+		@available(*, deprecated, renamed: "onPixels")
+		@objc public var data: QRCodeFillStyleGenerator {
+			get { onPixels }
+			set { onPixels = newValue }
+		}
+		
 		/// The style for drawing the non-drawn sections for the qr code.
-		@objc public var dataInverted: QRCodeFillStyleGenerator?
+		@objc public var offPixels: QRCodeFillStyleGenerator?
+
+		/// Deprecated. Use `offPixels` instead
+		@available(*, deprecated, renamed: "offPixels")
+		@objc public var dataInverted: QRCodeFillStyleGenerator? {
+			get { offPixels }
+			set { offPixels = newValue }
+		}
 
 		/// The border around the eye. By default, this is the same color as the data
 		@objc public var eye: QRCodeFillStyleGenerator?
@@ -46,8 +61,8 @@ public extension QRCode {
 		/// Copy the style
 		public func copyStyle() -> Style {
 			let c = Style()
-			c.data = self.data.copyStyle()
-			c.dataInverted = self.dataInverted?.copyStyle()
+			c.onPixels = self.onPixels.copyStyle()
+			c.offPixels = self.offPixels?.copyStyle()
 			c.background = self.background?.copyStyle()
 			c.eye = self.eye?.copyStyle()
 			c.pupil = self.pupil?.copyStyle()
@@ -58,7 +73,7 @@ public extension QRCode {
 
 public extension QRCode.Style {
 	@objc func settings() -> [String: Any] {
-		var result = [ "data": data.coreSettings() ]
+		var result = [ "onPixels": onPixels.coreSettings() ]
 		if let e = eye?.coreSettings() {
 			result["eye"] = e
 		}
@@ -68,8 +83,8 @@ public extension QRCode.Style {
 		if let b = background?.coreSettings() {
 			result["background"] = b
 		}
-		if let di = dataInverted?.coreSettings() {
-			result["dataInverted"] = di
+		if let di = offPixels?.coreSettings() {
+			result["offPixels"] = di
 		}
 		return result
 	}
@@ -77,9 +92,9 @@ public extension QRCode.Style {
 	@objc static func Create(settings: [String: Any]) -> QRCode.Style? {
 		let style = QRCode.Style()
 
-		if let d = settings["data"] as? [String: Any],
+		if let d = settings["onPixels"] as? [String: Any],
 			let dataShape = FillStyleFactory.Create(settings: d) {
-			style.data = dataShape
+			style.onPixels = dataShape
 		}
 
 		if let e = settings["eye"] as? [String: Any],
@@ -97,9 +112,9 @@ public extension QRCode.Style {
 			style.background = background
 		}
 
-		if let e = settings["dataInverted"] as? [String: Any],
-			let dataInverted = FillStyleFactory.Create(settings: e) {
-			style.dataInverted = dataInverted
+		if let e = settings["offPixels"] as? [String: Any],
+			let offPixels = FillStyleFactory.Create(settings: e) {
+			style.offPixels = offPixels
 		}
 		return style
 	}

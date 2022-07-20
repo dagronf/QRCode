@@ -98,25 +98,25 @@ public extension QRCode {
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 		ctx.usingGState { context in
-			let outerStyle = style.eye ?? style.data
+			let outerStyle = style.eye ?? style.onPixels
 			outerStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
 		}
 
 		// Draw the eye 'pupil'
 		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
 		ctx.usingGState { context in
-			let pupilStyle = style.pupil ?? style.eye ?? style.data
+			let pupilStyle = style.pupil ?? style.eye ?? style.onPixels
 			pupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
 		}
 
 		// Now, the 'on' pixels
 		let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape)
 		ctx.usingGState { context in
-			style.data.fill(ctx: context, rect: rect, path: qrPath)
+			style.onPixels.fill(ctx: context, rect: rect, path: qrPath)
 		}
 
-		// The 'off' pixels ONLY IF the user specifies both a data inverted shape AND a data inverted style.
-		if let s = style.dataInverted, let _ = design.shape.dataInverted {
+		// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
+		if let s = style.offPixels, let _ = design.shape.offPixels {
 			let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape)
 			ctx.usingGState { context in
 				s.fill(ctx: context, rect: rect, path: qrPath)

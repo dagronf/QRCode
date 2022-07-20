@@ -185,11 +185,11 @@ You can individually specify the shape and fill style for each of the components
 
 ### QR code components
 
-The QRCode is made up of three distinct components
+The QRCode is made up of four distinct components
 
-* The 'on' data pixels
-* The eye
-* The 'off' data pixels (optional)
+* The 'on' data pixels (`onPixels`)
+* The eye, which is made up of an `eye` (the outer part of the eye) and a `pupil` (the inner part).
+* The 'off' data pixels (`offPixels`)
 
 ### Eye shape
 
@@ -222,12 +222,12 @@ however you can supply a `DataShape` object to custom-draw the data.  There are 
 |<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.DataShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.DataShape.Pointy`|A 'pointy' style|
 
-#### 'dataInverted' shape (optional)
+#### 'offPixels' shape (optional)
 
 You can specify a shape to be drawn when a data 'pixel' is _off_. This can be used to make your qr code prettier.
 Just remember that the more embellishment you add to a QR code the more difficult it will be to read.
 
-It's really important to make sure that there is a high color contrast between the 'dataInverted' shape and the 'data' shape to aid readers.
+It's really important to make sure that there is a high color contrast between the 'offPixels' shape and the 'onPixels' shape to aid readers.
 
 <img src="./Art/images/dataInverted.png" width="150"/>
 
@@ -238,10 +238,10 @@ It's really important to make sure that there is a high color contrast between t
 let doc1 = QRCode.Document(utf8String: "Hi there noodle")
 doc1.design.backgroundColor(NSColor.white.cgColor)
 doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-doc1.design.shape.data = QRCode.DataShape.Circle()
-doc1.design.style.data = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-doc1.design.shape.dataInverted = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
-doc1.design.style.dataInverted = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
+doc1.design.shape.onPixels = QRCode.DataShape.Circle()
+doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
+doc1.design.shape.offPixels = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
+doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 // Generate a image for the QRCode
 let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
@@ -253,10 +253,10 @@ let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
 
 You can provide a custom fill for any of the individual components of the qr code.
 
-* The data
+* The 'onPixels'
 * The eye (outer)
 * The pupil (inner)
-* The dataInverted
+* The 'offPixels'
 
 <img src="./Art/images/eye_colorstyles.png" width="150"/>
 
@@ -267,14 +267,14 @@ You can provide a custom fill for any of the individual components of the qr cod
 let doc2 = QRCode.Document(utf8String: "Github example for colors")
 doc2.design.backgroundColor(NSColor.white.cgColor)
 doc2.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-doc2.design.shape.data = QRCode.DataShape.RoundedPath()
+doc2.design.shape.onPixels = QRCode.DataShape.RoundedPath()
 
 // Eye color
 doc2.design.style.eye = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
 // Pupil color
 doc2.design.style.pupil = QRCode.FillStyle.Solid(NSColor.systemBlue.cgColor)
 // Data color
-doc2.design.style.data = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
+doc2.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
 
 // Generate a image for the QRCode
 let cgImage = doc2.cgImage(CGSize(width: 300, height: 300))
@@ -309,7 +309,7 @@ let radial = QRCode.FillStyle.RadialGradient(
    ])!,
    centerPoint: CGPoint(x: 0.5, y: 0.5)
 )
-doc3.design.style.data = radial
+doc3.design.style.onPixels = radial
 
 // Generate a image for the QRCode
 let cgImage = doc3.cgImage(CGSize(width: 300, height: 300))
@@ -335,8 +335,7 @@ Produces a CGPath representation of the QRCode
    * The pixels that are 'off' within the QR Code
 * The shape of the qr components
 
-The components allow the caller to generate individual paths for the QR code components which can then be individually 
-styled and recombined later on. 
+The components allow the caller to generate individual paths for the QR code components which can then be individually styled and recombined later on. 
 
 For example, the SwiftUI implementation is a Shape object, and you can use a ZStack to overlay each 
 component using different a different fill style (for example).
@@ -491,7 +490,7 @@ QRCode* code = [[QRCode alloc] init];
 QRCodeStyle* style = [[QRCodeStyle alloc] init];
 
 // Set the foreground color to a solid red
-style.data = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
 
 // Use the leaf style
 style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];
@@ -509,7 +508,7 @@ The `QRCode.Document` class has methods for loading/saving QRCode definitions to
 ```swift
 let qrCode = QRCode.Document()
 qrCode.data = "this is a test".data(using: .utf8)!
-qrCode.design.shape.data = QRCode.DataShape.Circle()
+qrCode.design.shape.onPixels = QRCode.DataShape.Circle()
 qrCode.design.shape.eye = QRCode.EyeShape.Leaf()
 
 let jsonData = try qrCode.jsonData()
@@ -565,6 +564,8 @@ The `qrcodegen` tool can be found in the `.build/release` folder.
 % .build/release/qrcodegen --help
 OVERVIEW: Create a qr code
 
+Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
@@ -591,15 +592,15 @@ OPTIONS:
   -e, --eye-shape <eye-shape>
                           The eye shape to use. Available shapes are circle, leaf, roundedOuter, roundedPointingIn,
                           roundedRect, square, squircle. 
-  -d, --data-shape <data-shape>
-                          The data shape to use. Available shapes are circle, horizontal, pointy, roundedPath,
+  -d, --on-pixel-shape <on-pixel-shape>
+                          The onPixels shape to use. Available shapes are circle, horizontal, pointy, roundedPath,
                           roundedRect, square, squircle, vertical. 
-  -n, --inset <inset>     The spacing around each individual pixel in the data section 
-  -r, --data-shape-corner-radius <data-shape-corner-radius>
-                          The data shape corner radius fractional value (0.0 -> 1.0) 
+  -n, --inset <inset>     The spacing around each individual pixel in the onPixels section 
+  -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>
+                          The onPixels shape corner radius fractional value (0.0 -> 1.0) 
   --bg-color <bg-color>   The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   --data-color <data-color>
-                          The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
+                          The onPixels color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   --eye-color <eye-color> The eye color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   --pupil-color <pupil-color>
                           The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 

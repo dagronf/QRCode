@@ -118,7 +118,7 @@ public extension QRCode.Design {
 	/// - Returns: This design object
 	@discardableResult
 	@objc func foregroundColor(_ color: CGColor) -> QRCode.Design {
-		self.style.data = QRCode.FillStyle.Solid(color)
+		self.style.onPixels = QRCode.FillStyle.Solid(color)
 		return self
 	}
 

@@ -18,9 +18,9 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 
 		//q1.design.shape.data = QRCode.DataShape.RoundedPath()
-		q2.design.shape.data = QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
+		q2.design.shape.onPixels = QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
 		q2.design.shape.eye  = QRCode.EyeShape.Leaf()
-		q3.design.shape.data = QRCode.DataShape.RoundedPath()
+		q3.design.shape.onPixels = QRCode.DataShape.RoundedPath()
 		q3.design.shape.eye  = QRCode.EyeShape.RoundedPointingIn()
 
 
@@ -32,7 +32,7 @@ class ViewController: NSViewController {
 			centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 		q4.design.style.background = gr
-		q4.design.shape.data = QRCode.DataShape.Squircle()
+		q4.design.shape.onPixels = QRCode.DataShape.Squircle()
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
 		// Do any additional setup after loading the view.

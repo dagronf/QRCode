@@ -122,8 +122,8 @@ public extension QRCodeView {
 	#if os(macOS)
 	/// Interface builder data color
 	@IBInspectable var ibDataColor: NSColor {
-		get { NSColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { NSColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
+		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	/// Interface builder eye color
@@ -146,8 +146,8 @@ public extension QRCodeView {
 	#else
 	/// Interface builder data color
 	@IBInspectable var ibDataColor: UIColor {
-		get { UIColor(cgColor: (self.design.style.data as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.design.style.data = QRCode.FillStyle.Solid(newValue.cgColor) }
+		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
 
 	/// Interface builder eye color
@@ -209,7 +209,7 @@ extension QRCodeView {
 	// Build up the qr representation
 	private func regenerate() {
 		self.document.update(self.data, errorCorrection: self.errorCorrection)
-		self.document.design.shape.data = QRCodeDataShapeFactory.shared.named(_dataShape) ?? QRCode.DataShape.Square()
+		self.document.design.shape.onPixels = QRCodeDataShapeFactory.shared.named(_dataShape) ?? QRCode.DataShape.Square()
 		self.document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
 		self.setNeedsDisplay()
 	}

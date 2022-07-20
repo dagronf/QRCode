@@ -19,6 +19,6 @@ class ViewController: UIViewController {
 		self.qrCodeView.design.shape.eye = eyeShape
 
 		let dataShape = QRCode.DataShape.Horizontal(inset: 0.1, cornerRadiusFraction: 1)
-		self.qrCodeView.design.shape.data = dataShape
+		self.qrCodeView.design.shape.onPixels = dataShape
 	}
 }

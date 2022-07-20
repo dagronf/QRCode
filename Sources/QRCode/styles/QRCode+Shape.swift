@@ -32,13 +32,25 @@ public extension QRCode {
 		/// Convenience initializer for objc
 		@objc public static func create() -> Shape { return Shape() }
 
-		/// The shape of the pixels.
-		///
-		/// Defaults to simple square 'pixels'
-		@objc public var data: QRCodeDataShapeGenerator = QRCode.DataShape.Square()
+		/// The shape of the 'on' pixels. Defaults to simple square 'pixels'
+		@objc public var onPixels: QRCodeDataShapeGenerator = QRCode.DataShape.Square()
+
+		/// Deprecated. Use `onPixels` instead.
+		@available(*, deprecated, renamed: "onPixels")
+		@objc public var data: QRCodeDataShapeGenerator {
+			get { onPixels }
+			set { onPixels = newValue }
+		}
 
 		/// The shape for drawing the non-drawn sections of the qr code.
-		@objc public var dataInverted: QRCodeDataShapeGenerator?
+		@objc public var offPixels: QRCodeDataShapeGenerator?
+
+		/// Deprecated. Use `offPixels` instead.
+		@available(*, deprecated, renamed: "offPixels")
+		@objc public var dataInverted: QRCodeDataShapeGenerator? {
+			get { offPixels }
+			set { offPixels = newValue }
+		}
 
 		/// The style of eyes to display
 		///
@@ -48,8 +60,8 @@ public extension QRCode {
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
 			let c = Shape()
-			c.data = self.data.copyShape()
-			c.dataInverted = self.dataInverted?.copyShape()
+			c.onPixels = self.onPixels.copyShape()
+			c.offPixels = self.offPixels?.copyShape()
 			c.eye = self.eye.copyShape()
 			return c
 		}
@@ -63,11 +75,11 @@ public extension QRCode.Shape {
 	@objc func settings() -> [String: Any] {
 		var result: [String: Any] = [:]
 
-		result["data"] = data.coreSettings()
+		result["onPixels"] = onPixels.coreSettings()
 		result["eye"] = eye.coreSettings()
 
-		if let dataInverted = dataInverted {
-			result["dataInverted"] = dataInverted.coreSettings()
+		if let offPixels = offPixels {
+			result["offPixels"] = offPixels.coreSettings()
 		}
 		return result
 	}
@@ -75,11 +87,21 @@ public extension QRCode.Shape {
 	@objc static func Create(settings: [String: Any]) -> QRCode.Shape? {
 		let result = QRCode.Shape()
 
+		// The on-pixels
+
+		// Backwards compatibility. Upgrade from old data type
 		if let data = settings["data"] as? [String: Any],
 			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
 		{
-			result.data = shape
+			result.onPixels = shape
 		}
+		else if let data = settings["onPixels"] as? [String: Any],
+				  let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+		{
+			result.onPixels = shape
+		}
+
+		// The eye
 
 		if let eye = settings["eye"] as? [String: Any],
 			let shape = QRCodeEyeShapeFactory.shared.create(settings: eye)
@@ -87,10 +109,18 @@ public extension QRCode.Shape {
 			result.eye = shape
 		}
 
+		// The off-pixels
+
+		// Load from the old version if it is available
 		if let data = settings["dataInverted"] as? [String: Any],
 			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
 		{
-			result.dataInverted = shape
+			result.offPixels = shape
+		}
+		else if let data = settings["offPixels"] as? [String: Any],
+				  let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+		{
+			result.offPixels = shape
 		}
 
 		return result

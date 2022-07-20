@@ -28,7 +28,7 @@ import Foundation
 
 public extension QRCode {
 	/// Detect QR code(s) in the specified image using CoreImage
-	/// - Parameter image: The image in which to detect QRCodes
+	/// - Parameter cgImage: The image in which to detect QRCodes
 	/// - Returns: An array of detected QR Codes
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
@@ -70,7 +70,7 @@ public extension QRCode {
 	}
 }
 
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
 
 import UIKit
 public extension QRCode {

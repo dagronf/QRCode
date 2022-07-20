@@ -86,16 +86,16 @@ class ViewController: NSViewController {
 			let doc1 = QRCode.Document(utf8String: "Hi there noodle")
 			doc1.design.backgroundColor(NSColor.white.cgColor)
 			doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-			doc1.design.shape.data = QRCode.DataShape.Circle()
-			doc1.design.style.data = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-			doc1.design.shape.dataInverted = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1) //inset: 4)
-			doc1.design.style.dataInverted = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
+			doc1.design.shape.onPixels = QRCode.DataShape.Circle()
+			doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
+			doc1.design.shape.offPixels = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1) //inset: 4)
+			doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 			let cg1 = doc1.cgImage(CGSize(width: 300, height: 300))!
 			let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
 			if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
 				let pngData = tiffData.representation(using: .png, properties: [:])
-				try! pngData?.write(to: tempURL.appendingPathComponent("dataInverted.png"))
+				try! pngData?.write(to: tempURL.appendingPathComponent("offPixels.png"))
 			}
 		}
 
@@ -106,8 +106,8 @@ class ViewController: NSViewController {
 			doc2.design.style.eye = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
 			doc2.design.style.pupil = QRCode.FillStyle.Solid(NSColor.systemBlue.cgColor)
 			
-			doc2.design.shape.data = QRCode.DataShape.RoundedPath()
-			doc2.design.style.data = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
+			doc2.design.shape.onPixels = QRCode.DataShape.RoundedPath()
+			doc2.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
 			
 			let cg2 = doc2.cgImage(CGSize(width: 300, height: 300))!
 			let im2 = NSImage(cgImage: cg2, size: CGSize(width: 150, height: 150))
@@ -130,7 +130,7 @@ class ViewController: NSViewController {
 				])!,
 				centerPoint: CGPoint(x: 0.5, y: 0.5)
 			)
-			doc3.design.style.data = radial
+			doc3.design.style.onPixels = radial
 
 			let cg3 = doc3.cgImage(CGSize(width: 300, height: 300))!
 			let im3 = NSImage(cgImage: cg3, size: CGSize(width: 150, height: 150))

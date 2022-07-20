@@ -46,6 +46,8 @@ struct QRCodeGen: ParsableCommand {
 		CommandConfiguration(
 			abstract: "Create a qr code",
 			discussion: """
+Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
@@ -80,21 +82,21 @@ struct QRCodeGen: ParsableCommand {
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var eyeShape: String?
 
-	@Option(name: [.customShort("d"), .long], help: "The data shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
-	var dataShape: String?
+	@Option(name: [.customShort("d"), .long], help: "The onPixels shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
+	var onPixelShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this
-	@Option(name: [.customShort("n"), .long], help: "The spacing around each individual pixel in the data section")
+	@Option(name: [.customShort("n"), .long], help: "The spacing around each individual pixel in the onPixels section")
 	var inset: Double?
 
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
-	@Option(name: [.customShort("r"), .long], help: "The data shape corner radius fractional value (0.0 -> 1.0)")
-	var dataShapeCornerRadius: Double?
+	@Option(name: [.customShort("r"), .long], help: "The onPixels shape corner radius fractional value (0.0 -> 1.0)")
+	var onPixelShapeCornerRadius: Double?
 
 	@Option(name: [.long], help: "The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
 	var bgColor: String?
 
-	@Option(name: [.long], help: "The data color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
+	@Option(name: [.long], help: "The onPixels color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
 	var dataColor: String?
 
 	@Option(name: [.long], help: "The eye color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
@@ -136,7 +138,7 @@ struct QRCodeGen: ParsableCommand {
 
 		if let archive = self.dataColor,
 			let dataColor = CGColor.UnarchiveSRGBA(archive) {
-			design.style.data = QRCode.FillStyle.Solid(dataColor)
+			design.style.onPixels = QRCode.FillStyle.Solid(dataColor)
 		}
 
 		if let archive = self.eyeColor,
@@ -161,21 +163,21 @@ struct QRCodeGen: ParsableCommand {
 			design.shape.eye = shape
 		}
 
-		// The data shape
+		// The onPixels shape
 
-		let dataShapeName = self.dataShape ?? "square"
+		let dataShapeName = self.onPixelShape ?? "square"
 		let settings: [String: Any] = [
 			"inset": inset ?? 0,
-			"cornerRadiusFraction": dataShapeCornerRadius ?? 0
+			"cornerRadiusFraction": onPixelShapeCornerRadius ?? 0
 		]
 
 		guard let shape = QRCodeDataShapeFactory.shared.named(dataShapeName, settings: settings) else {
-			Swift.print("Unknown data style '\(dataShapeName)'.")
+			Swift.print("Unknown 'onPixels' style '\(dataShapeName)'.")
 			let known = QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
-			Swift.print("Available data styles are \(known) ")
+			Swift.print("Available 'onPixels' styles are \(known)")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}
-		design.shape.data = shape
+		design.shape.onPixels = shape
 
 		// Error correction
 

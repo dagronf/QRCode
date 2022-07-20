@@ -40,8 +40,11 @@ public extension QRCode {
 		/// The non-eye, 'off' pixels
 		public static let offPixels = Components(rawValue: 1 << 3)
 
-		/// The entire qrcode
+		/// The entire qrcode without offPixels (default presentation)
 		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
+
+		/// Every component of the QR code, including the off pixels
+		public static let everything: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels, Components.offPixels]
 
 		public var rawValue: Int8
 		@objc public required init(rawValue: Int8) {
@@ -148,13 +151,13 @@ public extension QRCode {
 		}
 
 		// 'off' pixels
-		if components.contains(.offPixels), let offPixelShape = shape.dataInverted {
+		if components.contains(.offPixels), let offPixelShape = shape.offPixels {
 			path.addPath(offPixelShape.offPath(size: size, data: self, isTemplate: false))
 		}
 
 		// 'on' content
 		if components.contains(.onPixels) {
-			path.addPath(shape.data.onPath(size: size, data: self, isTemplate: false))
+			path.addPath(shape.onPixels.onPath(size: size, data: self, isTemplate: false))
 		}
 
 		return path
@@ -178,7 +181,7 @@ public extension QRCode {
 		let qr = QRCode(generator: self.generator)
 		qr.current = matrix
 		let sh = QRCode.Shape()
-		sh.data = dataShape
+		sh.onPixels = dataShape
 		return qr.path(size, components: [.onPixels], shape: sh)
 	}
 }

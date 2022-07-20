@@ -22,7 +22,7 @@
 	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 
 	// Set the foreground color to a solid red
-	document.design.style.data = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+	document.design.style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
 	document.design.style.eye = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
 
 	// Use the leaf style

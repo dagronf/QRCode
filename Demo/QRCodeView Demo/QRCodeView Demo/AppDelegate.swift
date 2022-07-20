@@ -37,11 +37,11 @@ extension AppDelegate {
 		let design = QRCode.Design()
 
 		let style = QRCode.Style()
-		style.data = QRCode.FillStyle.LinearGradient(gr, startPoint: CGPoint(x: 0, y: 0.5), endPoint: CGPoint(x: 1, y: 0.5))
+		style.onPixels = QRCode.FillStyle.LinearGradient(gr, startPoint: CGPoint(x: 0, y: 0.5), endPoint: CGPoint(x: 1, y: 0.5))
 		design.style = style
 
 		let contentShape = QRCode.Shape()
-		contentShape.data = QRCode.DataShape.RoundedRect(inset: 1, cornerRadiusFraction: 0.8)
+		contentShape.onPixels = QRCode.DataShape.RoundedRect(inset: 1, cornerRadiusFraction: 0.8)
 		contentShape.eye = QRCode.EyeShape.RoundedRect()
 		design.shape = contentShape
 

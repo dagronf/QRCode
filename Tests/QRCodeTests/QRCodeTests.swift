@@ -31,7 +31,7 @@ final class QRCodeTests: XCTestCase {
 		}
 
 		let design = QRCode.Design()
-		design.shape.data = QRCode.DataShape.Squircle()
+		design.shape.onPixels = QRCode.DataShape.Squircle()
 		design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 
 		do {
