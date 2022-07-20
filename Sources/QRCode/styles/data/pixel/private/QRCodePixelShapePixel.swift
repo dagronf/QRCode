@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapePixel.swift
+//  QRCodePixelShapePixel.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,7 +23,7 @@
 import CoreGraphics
 import Foundation
 
-internal extension QRCode.DataShape {
+internal extension QRCode.PixelShape {
 	// A data shape generator where every pixel in the qr code becomes a discrete shape
 	class CommonPixelGenerator {
 		enum PixelType: String, CaseIterable {

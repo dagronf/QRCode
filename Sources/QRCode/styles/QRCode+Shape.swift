@@ -33,21 +33,21 @@ public extension QRCode {
 		@objc public static func create() -> Shape { return Shape() }
 
 		/// The shape of the 'on' pixels. Defaults to simple square 'pixels'
-		@objc public var onPixels: QRCodeDataShapeGenerator = QRCode.DataShape.Square()
+		@objc public var onPixels: QRCodePixelShapeGenerator = QRCode.PixelShape.Square()
 
 		/// Deprecated. Use `onPixels` instead.
 		@available(*, deprecated, renamed: "onPixels")
-		@objc public var data: QRCodeDataShapeGenerator {
+		@objc public var data: QRCodePixelShapeGenerator {
 			get { onPixels }
 			set { onPixels = newValue }
 		}
 
 		/// The shape for drawing the non-drawn sections of the qr code.
-		@objc public var offPixels: QRCodeDataShapeGenerator?
+		@objc public var offPixels: QRCodePixelShapeGenerator?
 
 		/// Deprecated. Use `offPixels` instead.
 		@available(*, deprecated, renamed: "offPixels")
-		@objc public var dataInverted: QRCodeDataShapeGenerator? {
+		@objc public var dataInverted: QRCodePixelShapeGenerator? {
 			get { offPixels }
 			set { offPixels = newValue }
 		}
@@ -75,12 +75,17 @@ public extension QRCode.Shape {
 	@objc func settings() -> [String: Any] {
 		var result: [String: Any] = [:]
 
+		// The 'on' pixel shape settings
 		result["onPixels"] = onPixels.coreSettings()
-		result["eye"] = eye.coreSettings()
 
+		// The 'off' pixels shape settings if they are defined
 		if let offPixels = offPixels {
 			result["offPixels"] = offPixels.coreSettings()
 		}
+
+		// The 'eye' pixel shape settings
+		result["eye"] = eye.coreSettings()
+
 		return result
 	}
 
@@ -91,12 +96,12 @@ public extension QRCode.Shape {
 
 		// Backwards compatibility. Upgrade from old data type
 		if let data = settings["data"] as? [String: Any],
-			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+			let shape = QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.onPixels = shape
 		}
 		else if let data = settings["onPixels"] as? [String: Any],
-				  let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+				  let shape = QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.onPixels = shape
 		}
@@ -113,12 +118,12 @@ public extension QRCode.Shape {
 
 		// Load from the old version if it is available
 		if let data = settings["dataInverted"] as? [String: Any],
-			let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+			let shape = QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.offPixels = shape
 		}
 		else if let data = settings["offPixels"] as? [String: Any],
-				  let shape = QRCodeDataShapeFactory.shared.create(settings: data)
+				  let shape = QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.offPixels = shape
 		}

@@ -41,7 +41,7 @@ extension AppDelegate {
 		design.style = style
 
 		let contentShape = QRCode.Shape()
-		contentShape.onPixels = QRCode.DataShape.RoundedRect(inset: 1, cornerRadiusFraction: 0.8)
+		contentShape.onPixels = QRCode.PixelShape.RoundedRect(inset: 1, cornerRadiusFraction: 0.8)
 		contentShape.eye = QRCode.EyeShape.RoundedRect()
 		design.shape = contentShape
 

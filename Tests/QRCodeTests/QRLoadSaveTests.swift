@@ -14,7 +14,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		XCTAssertEqual(doc2.data, doc1.data)
 
 		// Should default to square pixels
-		_ = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.DataShape.Square)
+		_ = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Square)
 	}
 
 	func testBasicPixelEncodeDecode() throws {
@@ -22,7 +22,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		do {
 			let doc = QRCode.Document()
 			doc.data = "this is a test".data(using: .utf8)!
-			doc.design.shape.onPixels = QRCode.DataShape.Circle(inset: 2)
+			doc.design.shape.onPixels = QRCode.PixelShape.Circle(inset: 2)
 			doc.design.shape.eye = QRCode.EyeShape.Leaf()
 
 			let data = try XCTUnwrap(doc.jsonData())
@@ -30,7 +30,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 			let doc2 = try QRCode.Document.Create(jsonData: data)
 
 			// Make sure the data shape comes back out
-			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.DataShape.Circle)
+			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Circle)
 			XCTAssertEqual(shape.inset, 2)
 
 			// Make sure the eye shape comes back out
@@ -40,10 +40,10 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		do {
 			let doc = QRCode.Document()
 			doc.data = "this is a test".data(using: .utf8)!
-			doc.design.shape.onPixels = QRCode.DataShape.RoundedRect(inset: 1.1, cornerRadiusFraction: 0.8)
+			doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(inset: 1.1, cornerRadiusFraction: 0.8)
 			let data = try XCTUnwrap(doc.jsonData())
 			let doc2 = try QRCode.Document.Create(jsonData: data)
-			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.DataShape.RoundedRect)
+			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.RoundedRect)
 			XCTAssertEqual(shape.inset, 1.1, accuracy: 0.0001)
 			XCTAssertEqual(shape.cornerRadiusFraction, 0.8, accuracy: 0.0001)
 		}
@@ -51,10 +51,10 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		do {
 			let doc = QRCode.Document()
 			doc.data = "this is a test and fishes like squircles".data(using: .utf8)!
-			doc.design.shape.onPixels = QRCode.DataShape.Squircle(inset: 2.3)
+			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(inset: 2.3)
 			let data = try XCTUnwrap(doc.jsonData())
 			let doc2 = try QRCode.Document.Create(jsonData: data)
-			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.DataShape.Squircle)
+			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Squircle)
 			XCTAssertEqual(shape.inset, 2.3, accuracy: 0.0001)
 		}
 	}

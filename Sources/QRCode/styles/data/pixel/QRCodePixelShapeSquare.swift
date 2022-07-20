@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeSquircle.swift
+//  QRCodePixelShapeSquare.swift
 //
 //  Created by Darren Ford on 3/5/22.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,27 +23,27 @@
 import Foundation
 import CoreGraphics
 
-public extension QRCode.DataShape {
-	/// A squircle pixel shape
-	@objc(QRCodeDataShapeSquircle) class Squircle: NSObject, QRCodeDataShapeGenerator {
-		static public var Name: String { "squircle" }
+public extension QRCode.PixelShape {
+	/// A square pixel shape
+	@objc(QRCodePixelShapeSquare) class Square: NSObject, QRCodePixelShapeGenerator {
+		static public var Name: String { "square" }
 		private let common: CommonPixelGenerator
 
 		/// Create
 		/// - Parameters:
 		///   - inset: The inset between each pixel
 		@objc public init(inset: CGFloat = 0) {
-			self.common = CommonPixelGenerator(pixelType: .squircle, inset: inset)
+			self.common = CommonPixelGenerator(pixelType: .square, inset: inset)
 			super.init()
 		}
 
-		public static func Create(_ settings: [String : Any]?) -> QRCodeDataShapeGenerator {
+		public static func Create(_ settings: [String : Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
-			return Squircle(inset: inset)
+			return Square(inset: inset)
 		}
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
-			return Squircle(inset: self.common.inset)
+		public func copyShape() -> QRCodePixelShapeGenerator {
+			return Square(inset: self.common.inset)
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
@@ -58,22 +58,6 @@ public extension QRCode.DataShape {
 
 		public func settings() -> [String : Any] {
 			return [ "inset": self.common.inset ]
-		}
-
-		// A 10x10 'pixel' representation of a squircle
-		internal static func squircle10x10() -> CGPath {
-			let s10 = CGMutablePath()
-			s10.move(to: CGPoint(x: 5, y: 0))
-			s10.curve(to: CGPoint(x: 9.2, y: 0.8), controlPoint1: CGPoint(x: 7.19, y: 0), controlPoint2: CGPoint(x: 8.41, y: 0))
-			s10.curve(to: CGPoint(x: 10, y: 5), controlPoint1: CGPoint(x: 10, y: 1.59), controlPoint2: CGPoint(x: 10, y: 2.81))
-			s10.curve(to: CGPoint(x: 9.2, y: 9.2), controlPoint1: CGPoint(x: 10, y: 7.19), controlPoint2: CGPoint(x: 10, y: 8.41))
-			s10.curve(to: CGPoint(x: 5, y: 10), controlPoint1: CGPoint(x: 8.41, y: 10), controlPoint2: CGPoint(x: 7.19, y: 10))
-			s10.curve(to: CGPoint(x: 0.8, y: 9.2), controlPoint1: CGPoint(x: 2.81, y: 10), controlPoint2: CGPoint(x: 1.59, y: 10))
-			s10.curve(to: CGPoint(x: 0, y: 5), controlPoint1: CGPoint(x: 0, y: 8.41), controlPoint2: CGPoint(x: 0, y: 7.19))
-			s10.curve(to: CGPoint(x: 0.8, y: 0.8), controlPoint1: CGPoint(x: 0, y: 2.81), controlPoint2: CGPoint(x: 0, y: 1.59))
-			s10.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 1.59, y: 0), controlPoint2: CGPoint(x: 2.81, y: 0))
-			s10.close()
-			return s10
 		}
 	}
 }

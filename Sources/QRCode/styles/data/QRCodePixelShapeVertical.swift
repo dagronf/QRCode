@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeVertical.swift
+//  QRCodePixelShapeVertical.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,14 +23,14 @@
 import CoreGraphics
 import Foundation
 
-public extension QRCode.DataShape {
-	@objc(QRCodeDataShapeVertical) class Vertical: NSObject, QRCodeDataShapeGenerator {
+public extension QRCode.PixelShape {
+	@objc(QRCodePixelShapeVertical) class Vertical: NSObject, QRCodePixelShapeGenerator {
 
 		static public let Name: String = "vertical"
-		static public func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
+		static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
 			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
-			return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: radius)
+			return QRCode.PixelShape.Vertical(inset: inset, cornerRadiusFraction: radius)
 		}
 
 		public func settings() -> [String : Any] {
@@ -40,7 +40,7 @@ public extension QRCode.DataShape {
 			]
 		}
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
+		public func copyShape() -> QRCodePixelShapeGenerator {
 			return Vertical(
 				inset: self.inset,
 				cornerRadiusFraction: self.cornerRadiusFraction

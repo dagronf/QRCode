@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapePointy.swift
+//  QRCodePixelShapePointy.swift
 //
 //  Created by Darren Ford on 28/1/2022.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,11 +23,11 @@
 import Foundation
 import CoreGraphics
 
-public extension QRCode.DataShape {
-	@objc(QRCodeDataShapePointy) class Pointy: NSObject, QRCodeDataShapeGenerator {
+public extension QRCode.PixelShape {
+	@objc(QRCodePixelShapePointy) class Pointy: NSObject, QRCodePixelShapeGenerator {
 		public static var Name: String = "pointy"
-		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
-			QRCode.DataShape.Pointy()
+		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			QRCode.PixelShape.Pointy()
 		}
 
 		public func settings() -> [String: Any] {
@@ -87,7 +87,7 @@ public extension QRCode.DataShape {
 			return p
 		}()
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
+		public func copyShape() -> QRCodePixelShapeGenerator {
 			return Pointy()
 		}
 
@@ -97,7 +97,7 @@ public extension QRCode.DataShape {
 			let dm = min(dx, dy)
 
 			// The scale required to convert our template paths to output path size
-			let w = QRCode.DataShape.RoundedPath.DefaultSize.width
+			let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
 			let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
 
 			let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0

@@ -18,7 +18,7 @@ struct ContentView: View {
 	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
-	@State var dataShape: DataShapeType = .square
+	@State var pixelShape: PixelShapeType = .square
 	@State var eyeStyle: EyeShapeType = .square
 
 	@State var dataInset: Double = 0
@@ -31,8 +31,8 @@ struct ContentView: View {
 			errorCorrection: correction
 		)
 		
-		let dataShape = dataShapeHandler(
-			self.dataShape,
+		let pixelShape = pixelShapeHandler(
+			self.pixelShape,
 			inset: dataInset,
 			cornerRadiusFraction: cornerRadiusFraction)
 		let eyeStyle = eyeShapeHandler(self.eyeStyle)
@@ -49,15 +49,15 @@ struct ContentView: View {
 					Text("Quantize (Q)").tag(QRCode.ErrorCorrection.quantize)
 					Text("High (H)").tag(QRCode.ErrorCorrection.high)
 				}.pickerStyle(RadioGroupPickerStyle())
-				Picker(selection: $dataShape, label: Text("Data Shape:")) {
-					Text("Square").tag(DataShapeType.square)
-					Text("Round Rect").tag(DataShapeType.roundedrect)
-					Text("Circle").tag(DataShapeType.circle)
-					Text("Squircle").tag(DataShapeType.squircle)
-					Text("Horizontal").tag(DataShapeType.horizontal)
-					Text("Vertical").tag(DataShapeType.vertical)
-					Text("Rounded Path").tag(DataShapeType.roundedpath)
-					Text("Pointy").tag(DataShapeType.pointy)
+				Picker(selection: $pixelShape, label: Text("Data Shape:")) {
+					Text("Square").tag(PixelShapeType.square)
+					Text("Round Rect").tag(PixelShapeType.roundedrect)
+					Text("Circle").tag(PixelShapeType.circle)
+					Text("Squircle").tag(PixelShapeType.squircle)
+					Text("Horizontal").tag(PixelShapeType.horizontal)
+					Text("Vertical").tag(PixelShapeType.vertical)
+					Text("Rounded Path").tag(PixelShapeType.roundedpath)
+					Text("Pointy").tag(PixelShapeType.pointy)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
 				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
@@ -96,11 +96,11 @@ struct ContentView: View {
 					.fill(pupilColor)
 				qrContent
 					.components(.onPixels)
-					.dataShape(dataShape)
+					.pixelShape(pixelShape)
 					.fill(dataColor)
 //				qrContent
 //					.components(.unsetContent)
-//					.dataShape(dataShape)
+//					.pixelShape(pixelShape)
 //					.fill(.gray.opacity(0.2))
 			}
 			.frame(alignment: .center)

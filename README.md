@@ -145,9 +145,10 @@ let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
 @objc public var data: Data
 
 /// Set a string
-public func setString(_ string: String, 
-                      encoding: String.Encoding = .utf8, 
-                      allowLossyConversion: Bool = false) -> Bool
+public func setString(
+   _ string: String, 
+   encoding: String.Encoding = .utf8, 
+   allowLossyConversion: Bool = false) -> Bool
 
 /// Set raw data using a qrcode message formatter
 @objc func setMessage(_ message: QRCodeMessageFormatter)
@@ -161,12 +162,12 @@ public func setString(_ string: String,
 
 The `QRCode.Document` has 4 different encoding levels
 
-| Error correction | Description    |
-|-----|:-----|
-| low | Lowest error correction (L - Recovers 7% of data) |
-| medium | Medium error correction (M - Recovers 15% of data) |
-| quantize | Quantize error correction (Q - Recovers 25% of data) |
-| high | High error correction (H - Recovers 30% of data) |
+| Error correction | Description                                          |
+|------------------|:-----------------------------------------------------|
+| low              | Lowest error correction (L - Recovers 7% of data)    |
+| medium           | Medium error correction (M - Recovers 15% of data)   |
+| quantize         | Quantize error correction (Q - Recovers 25% of data) |
+| high             | High error correction (H - Recovers 30% of data)     |
 
 The higher the error correction level, the larger the QR code will be.
 
@@ -176,10 +177,10 @@ The higher the error correction level, the larger the QR code will be.
 
 The design comprises two components
 
-|    | Description    |
-|-------|:--------------------------------------------------------------------------|
-| shape | The shape of each of the individual components within the QR code         |
-| style | The fill styles for each of the individual components within the QR code  |
+|        | Description    |
+|--------|:--------------------------------------------------------------------------|
+| shape  | The shape of each of the individual components within the QR code         |
+| style  | The fill styles for each of the individual components within the QR code  |
 
 You can individually specify the shape and fill style for each of the components of the QR code.
 
@@ -209,18 +210,18 @@ square, circle, rounded rectangle, and more.
 ### Data shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
-however you can supply a `DataShape` object to custom-draw the data.  There are built-in generators for
+however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
-|<img src="./Art/images/data_square.png" width="60"/>      |"square"|`QRCode.DataShape.Square`|A basic square pixel (default)|
-|<img src="./Art/images/data_circle.png" width="60"/>      |"circle"|`QRCode.DataShape.Circle`|A basic circle pixel|
-|<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.DataShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
-|<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.DataShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
-|<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.DataShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
-|<img src="./Art/images/data_roundedPath.png" width="60"/> |"roundedPath"|`QRCode.DataShape.RoundedPath`|A smooth rounded-edge path|
-|<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.DataShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.DataShape.Pointy`|A 'pointy' style|
+|<img src="./Art/images/data_square.png" width="60"/>      |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
+|<img src="./Art/images/data_circle.png" width="60"/>      |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
+|<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
+|<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+|<img src="./Art/images/data_roundedPath.png" width="60"/> |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 
 #### 'offPixels' shape (optional)
 
@@ -238,9 +239,9 @@ It's really important to make sure that there is a high color contrast between t
 let doc1 = QRCode.Document(utf8String: "Hi there noodle")
 doc1.design.backgroundColor(NSColor.white.cgColor)
 doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-doc1.design.shape.onPixels = QRCode.DataShape.Circle()
+doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-doc1.design.shape.offPixels = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
+doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
 doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 // Generate a image for the QRCode
@@ -267,7 +268,7 @@ You can provide a custom fill for any of the individual components of the qr cod
 let doc2 = QRCode.Document(utf8String: "Github example for colors")
 doc2.design.backgroundColor(NSColor.white.cgColor)
 doc2.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-doc2.design.shape.onPixels = QRCode.DataShape.RoundedPath()
+doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 
 // Eye color
 doc2.design.style.eye = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
@@ -447,7 +448,7 @@ Set which components of the QR code to be added to the path
 ```swift
 func contentShape(_ shape: QRCode.Shape) -> QRCodeUI
 func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI
-func dataShape(_ dataShape: QRCodeDataShape) -> QRCodeUI
+func pixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
 ```
 
 Set the shape for the eye/data or both.
@@ -508,7 +509,7 @@ The `QRCode.Document` class has methods for loading/saving QRCode definitions to
 ```swift
 let qrCode = QRCode.Document()
 qrCode.data = "this is a test".data(using: .utf8)!
-qrCode.design.shape.onPixels = QRCode.DataShape.Circle()
+qrCode.design.shape.onPixels = QRCode.PixelShape.Circle()
 qrCode.design.shape.eye = QRCode.EyeShape.Leaf()
 
 let jsonData = try qrCode.jsonData()

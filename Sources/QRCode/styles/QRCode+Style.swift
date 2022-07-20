@@ -93,8 +93,8 @@ public extension QRCode.Style {
 		let style = QRCode.Style()
 
 		if let d = settings["onPixels"] as? [String: Any],
-			let dataShape = FillStyleFactory.Create(settings: d) {
-			style.onPixels = dataShape
+			let pixelShape = FillStyleFactory.Create(settings: d) {
+			style.onPixels = pixelShape
 		}
 
 		if let e = settings["eye"] as? [String: Any],

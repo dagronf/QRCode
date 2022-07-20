@@ -44,7 +44,7 @@ do {
 	code.design.backgroundColor(CGColor(red: 0, green: 0, blue: 0.2, alpha: 1))
 	code.design.foregroundColor(CGColor(red: 0.4, green: 0.4, blue: 1, alpha: 1))
 	code.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-	code.design.shape.onPixels = QRCode.DataShape.RoundedPath()
+	code.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 	code.design.style.eye = QRCode.FillStyle.Solid(CGColor(red: 0.3, green: 1, blue: 0.3, alpha: 1))
 
 	code.design.style.pupil = QRCode.FillStyle.Solid(CGColor(red: 1, green: 0.3, blue: 0.3, alpha: 1))

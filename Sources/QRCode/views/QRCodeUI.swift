@@ -141,10 +141,10 @@ public extension QRCodeUI {
 		)
 	}
 
-	/// Change the data shape to another shape
-	func dataShape(_ dataShape: QRCodeDataShapeGenerator) -> QRCodeUI {
+	/// Change the pixel shape
+	func pixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
-		shape.onPixels = dataShape
+		shape.onPixels = pixelShape
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,
@@ -152,6 +152,25 @@ public extension QRCodeUI {
 			contentShape: shape,
 			generator: self.qrCodeGenerator.generator
 		)
+	}
+
+	/// Change the pixel shape
+	func offPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
+		let shape = self.contentShape.copyShape()
+		shape.offPixels = pixelShape
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: self.errorCorrection,
+			components: self.components,
+			contentShape: shape,
+			generator: self.qrCodeGenerator.generator
+		)
+	}
+
+	/// Deprecated. Use `pixelShape` instead.
+	@available(*, deprecated, renamed: "pixelShape")
+	func dataShape(_ dataShape: QRCodePixelShapeGenerator) -> QRCodeUI {
+		pixelShape(dataShape)
 	}
 }
 
@@ -178,9 +197,43 @@ let DemoContent2 = "Harness the power of Quartz technology to perform lightweigh
 @available(macOS 11, iOS 14, tvOS 14, watchOS 6.0, *)
 struct QRCodeUI_Previews: PreviewProvider {
 	static var previews: some View {
-		HStack {
-			QRCodeUI(text: DemoContent, errorCorrection: .low)!
-				.components(.all)
+		VStack {
+			HStack {
+				QRCodeUI(text: DemoContent, errorCorrection: .low)!
+					.components(.all)
+					.pixelShape(QRCodePixelShapeFactory.shared.named("circle")!)
+				QRCodeUI(text: DemoContent2, errorCorrection: .medium)!
+			}
+
+			Text("Components")
+
+			VStack {
+				HStack {
+					VStack {
+						QRCodeUI(text: "Hello there how are you", errorCorrection: .low)!
+							.components(.onPixels)
+						Text("'on' pixels only")
+					}
+					VStack {
+						QRCodeUI(text: "Hello there how are you", errorCorrection: .low)!
+							.offPixelShape(QRCode.PixelShape.Square())
+							.components(.offPixels)
+						Text("'off' pixels only")
+					}
+				}
+				HStack {
+					VStack {
+					QRCodeUI(text: "Hello there how are you", errorCorrection: .low)!
+						.components(.eyeOuter)
+						Text("eye outer only")
+					}
+					VStack {
+					QRCodeUI(text: "Hello there how are you", errorCorrection: .low)!
+						.components(.eyePupil)
+						Text("pupil only")
+					}
+				}
+			}
 		}
 	}
 }

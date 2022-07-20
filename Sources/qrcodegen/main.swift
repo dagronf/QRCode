@@ -82,7 +82,7 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var eyeShape: String?
 
-	@Option(name: [.customShort("d"), .long], help: "The onPixels shape to use. Available shapes are \(QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
+	@Option(name: [.customShort("d"), .long], help: "The onPixels shape to use. Available shapes are \(QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var onPixelShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this
@@ -171,9 +171,9 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 			"cornerRadiusFraction": onPixelShapeCornerRadius ?? 0
 		]
 
-		guard let shape = QRCodeDataShapeFactory.shared.named(dataShapeName, settings: settings) else {
+		guard let shape = QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings) else {
 			Swift.print("Unknown 'onPixels' style '\(dataShapeName)'.")
-			let known = QRCodeDataShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
+			let known = QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 			Swift.print("Available 'onPixels' styles are \(known)")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}

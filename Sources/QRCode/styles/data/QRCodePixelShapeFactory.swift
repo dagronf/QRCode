@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeFactory.swift
+//  QRCodePixelShapeFactory.swift
 //
 //  Created by Darren Ford on 3/5/22.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -24,31 +24,32 @@ import CoreGraphics
 import Foundation
 
 /// A data shape factory
-@objc public class QRCodeDataShapeFactory: NSObject {
+@objc public class QRCodePixelShapeFactory: NSObject {
 	/// Shared data shape factory
-	@objc public static let shared = QRCodeDataShapeFactory()
+	@objc public static let shared = QRCodePixelShapeFactory()
 
 	/// Create
 	@objc override public init() {
 		self.registeredTypes = [
-			QRCode.DataShape.Square.self,
-			QRCode.DataShape.Circle.self,
-			QRCode.DataShape.RoundedRect.self,
-			QRCode.DataShape.Squircle.self,
-			QRCode.DataShape.Vertical.self,
-			QRCode.DataShape.Horizontal.self,
-			QRCode.DataShape.RoundedPath.self,
-			QRCode.DataShape.Pointy.self,
+			QRCode.PixelShape.Square.self,
+			QRCode.PixelShape.Circle.self,
+			QRCode.PixelShape.RoundedRect.self,
+			QRCode.PixelShape.Squircle.self,
+			QRCode.PixelShape.Vertical.self,
+			QRCode.PixelShape.Horizontal.self,
+			QRCode.PixelShape.RoundedPath.self,
+			QRCode.PixelShape.Pointy.self,
 		]
 		super.init()
 	}
 
+	/// The available pixel shape generator names
 	@objc public var availableGeneratorNames: [String] {
 		self.registeredTypes.map { $0.Name }.sorted()
 	}
 
 	/// Return a new instance of the data shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodeDataShapeGenerator? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePixelShapeGenerator? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
@@ -56,27 +57,33 @@ import Foundation
 	}
 
 	/// Create a data shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> QRCodeDataShapeGenerator? {
-		guard let type = settings[DataShapeTypeName_] as? String else { return nil }
-		let settings = settings[DataShapeSettingsName_] as? [String: Any]
+	@objc public func create(settings: [String: Any]) -> QRCodePixelShapeGenerator? {
+		guard let type = settings[PixelShapeTypeName_] as? String else { return nil }
+		let settings = settings[PixelShapeSettingsName_] as? [String: Any]
 		return self.named(type, settings: settings)
 	}
 
 	// Private
 
-	internal var registeredTypes: [QRCodeDataShapeGenerator.Type]
+	internal var registeredTypes: [QRCodePixelShapeGenerator.Type]
 }
 
-public extension QRCodeDataShapeFactory {
+public extension QRCodePixelShapeFactory {
 	/// Generate an image of the data represented by a specific data generator for a fixed 5x5 data pixel representation
 	/// - Parameters:
-	///   - dataShape: The data generator to use
+	///   - pixelShape: The pixel generator to use
 	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
 	/// - Returns: A CGImage representation of the data
-	@objc func image(dataShape: QRCodeDataShapeGenerator, isOn: Bool = true, dimension: CGFloat, foregroundColor: CGColor, backgroundColor: CGColor? = nil) -> CGImage? {
+	@objc func image(
+		pixelShape: QRCodePixelShapeGenerator,
+		isOn: Bool = true,
+		dimension: CGFloat,
+		foregroundColor: CGColor,
+		backgroundColor: CGColor? = nil
+	) -> CGImage? {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -123,10 +130,10 @@ public extension QRCodeDataShapeFactory {
 		let path = CGMutablePath()
 		let p2: CGPath = {
 			if isOn {
-				return dataShape.onPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
+				return pixelShape.onPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
 			}
 			else {
-				return dataShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
+				return pixelShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
 			}
 		}()
 		path.addPath(p2)
@@ -145,10 +152,15 @@ import AppKit
 import UIKit
 #endif
 
-public extension QRCodeDataShapeFactory {
+public extension QRCodePixelShapeFactory {
 #if os(macOS)
-	func nsImage(dataShape: QRCodeDataShapeGenerator, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
-		if let cgi = image(dataShape: dataShape, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
+	/// Create an NSImage representation of a pixel shape
+	func nsImage(
+		pixelShape: QRCodePixelShapeGenerator,
+		dimension: CGFloat,
+		foregroundColor: NSColor
+	) -> NSImage? {
+		if let cgi = image(pixelShape: pixelShape, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
 			return NSImage(cgImage: cgi, size: .zero)
 		}
 		return nil

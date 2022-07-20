@@ -8,7 +8,7 @@
 import SwiftUI
 import QRCode
 
-enum DataShapeType {
+enum PixelShapeType {
 	case square
 	case roundedrect
 	case circle
@@ -29,24 +29,24 @@ enum EyeShapeType {
 	case squircle
 }
 
-func dataShapeHandler(_ dataShape: DataShapeType, inset: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodeDataShapeGenerator {
-	switch dataShape {
+func pixelShapeHandler(_ pixelShape: PixelShapeType, inset: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodePixelShapeGenerator {
+	switch pixelShape {
 	case .square:
-		return QRCode.DataShape.Square(inset: inset)
+		return QRCode.PixelShape.Square(inset: inset)
 	case .roundedrect:
-		return QRCode.DataShape.RoundedRect(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		return QRCode.PixelShape.RoundedRect(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .circle:
-		return QRCode.DataShape.Circle(inset: inset)
+		return QRCode.PixelShape.Circle(inset: inset)
 	case .squircle:
-		return QRCode.DataShape.Squircle(inset: inset)
+		return QRCode.PixelShape.Squircle(inset: inset)
 	case .horizontal:
-		return QRCode.DataShape.Horizontal(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		return QRCode.PixelShape.Horizontal(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .vertical:
-		return QRCode.DataShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		return QRCode.PixelShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .roundedpath:
-		return QRCode.DataShape.RoundedPath()
+		return QRCode.PixelShape.RoundedPath()
 	case .pointy:
-		return QRCode.DataShape.Pointy()
+		return QRCode.PixelShape.Pointy()
 	}
 }
 

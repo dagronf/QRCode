@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeSquare.swift
+//  QRCodePixelShapeCircle.swift
 //
 //  Created by Darren Ford on 3/5/22.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,27 +23,27 @@
 import Foundation
 import CoreGraphics
 
-public extension QRCode.DataShape {
-	/// A square pixel shape
-	@objc(QRCodeDataShapeSquare) class Square: NSObject, QRCodeDataShapeGenerator {
-		static public var Name: String { "square" }
+public extension QRCode.PixelShape {
+	/// A circle pixel shape
+	@objc(QRCodePixelShapeCircle) class Circle: NSObject, QRCodePixelShapeGenerator {
+		static public var Name: String { "circle" }
 		private let common: CommonPixelGenerator
 
 		/// Create
 		/// - Parameters:
 		///   - inset: The inset between each pixel
 		@objc public init(inset: CGFloat = 0) {
-			self.common = CommonPixelGenerator(pixelType: .square, inset: inset)
+			self.common = CommonPixelGenerator(pixelType: .circle, inset: inset)
 			super.init()
 		}
 
-		public static func Create(_ settings: [String : Any]?) -> QRCodeDataShapeGenerator {
+		public static func Create(_ settings: [String : Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
-			return Square(inset: inset)
+			return Circle(inset: inset)
 		}
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
-			return Square(inset: self.common.inset)
+		public func copyShape() -> QRCodePixelShapeGenerator {
+			return Circle(inset: self.common.inset)
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {

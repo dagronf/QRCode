@@ -19,10 +19,10 @@ class ViewController: NSViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		//q1.design.shape.data = QRCode.DataShape.RoundedPath()
-		q2.design.shape.onPixels = QRCode.DataShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
+		//q1.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
+		q2.design.shape.onPixels = QRCode.PixelShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
 		q2.design.shape.eye  = QRCode.EyeShape.Leaf()
-		q3.design.shape.onPixels = QRCode.DataShape.RoundedPath()
+		q3.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 		q3.design.shape.eye  = QRCode.EyeShape.RoundedPointingIn()
 
 
@@ -34,7 +34,7 @@ class ViewController: NSViewController {
 			centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 		q4.design.style.background = gr
-		q4.design.shape.onPixels = QRCode.DataShape.Squircle()
+		q4.design.shape.onPixels = QRCode.PixelShape.Squircle()
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
 		// Do any additional setup after loading the view.
@@ -46,12 +46,12 @@ class ViewController: NSViewController {
 
 		///
 
-		let lf3 = QRCode.DataShape.RoundedRect(inset: 4, cornerRadiusFraction: 0.5)
-		let im3 = QRCodeDataShapeFactory.shared.image(dataShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
+		let lf3 = QRCode.PixelShape.RoundedRect(inset: 4, cornerRadiusFraction: 0.5)
+		let im3 = QRCodePixelShapeFactory.shared.image(pixelShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
 		let imn3 = NSImage(cgImage: im3, size: .zero)
 
-		let lf2 = QRCode.DataShape.RoundedPath()
-		let im2 = QRCodeDataShapeFactory.shared.image(dataShape: lf2, dimension: 200, foregroundColor: NSColor.systemRed.cgColor)!
+		let lf2 = QRCode.PixelShape.RoundedPath()
+		let im2 = QRCodePixelShapeFactory.shared.image(pixelShape: lf2, dimension: 200, foregroundColor: NSColor.systemRed.cgColor)!
 		let imn2 = NSImage(cgImage: im2, size: .zero)
 		imn2.isTemplate = true
 		Swift.print(imn2)

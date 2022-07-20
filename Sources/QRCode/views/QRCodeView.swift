@@ -88,7 +88,7 @@ import UIKit
 	}
 
 	private var _eyeShape: String = ""
-	private var _dataShape: String = ""
+	private var _pixelShape: String = ""
 }
 
 // MARK: - Interface Builder conveniences
@@ -103,8 +103,8 @@ public extension QRCodeView {
 
 	/// The name of the shape generator for the data
 	@IBInspectable var ibDataShape: String {
-		get { _dataShape }
-		set { _dataShape = newValue; self.regenerate() }
+		get { _pixelShape }
+		set { _pixelShape = newValue; self.regenerate() }
 	}
 
 	/// Interface builder correction level
@@ -209,7 +209,7 @@ extension QRCodeView {
 	// Build up the qr representation
 	private func regenerate() {
 		self.document.update(self.data, errorCorrection: self.errorCorrection)
-		self.document.design.shape.onPixels = QRCodeDataShapeFactory.shared.named(_dataShape) ?? QRCode.DataShape.Square()
+		self.document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
 		self.document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
 		self.setNeedsDisplay()
 	}

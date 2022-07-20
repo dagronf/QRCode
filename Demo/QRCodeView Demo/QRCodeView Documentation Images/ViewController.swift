@@ -63,11 +63,11 @@ class ViewController: NSViewController {
 			}
 		}
 
-		for name in QRCodeDataShapeFactory.shared.availableGeneratorNames.sorted() {
+		for name in QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted() {
 			guard
-				let gen = QRCodeDataShapeFactory.shared.named(name, settings: ["inset": 1, "cornerRadiusFraction": 0.75]),
-				let dataImage = QRCodeDataShapeFactory.shared.image(
-					dataShape: gen,
+				let gen = QRCodePixelShapeFactory.shared.named(name, settings: ["inset": 1, "cornerRadiusFraction": 0.75]),
+				let dataImage = QRCodePixelShapeFactory.shared.image(
+					pixelShape: gen,
 					dimension: imageSize * 2,
 					foregroundColor: .black,
 					backgroundColor: .white)
@@ -86,9 +86,9 @@ class ViewController: NSViewController {
 			let doc1 = QRCode.Document(utf8String: "Hi there noodle")
 			doc1.design.backgroundColor(NSColor.white.cgColor)
 			doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-			doc1.design.shape.onPixels = QRCode.DataShape.Circle()
+			doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 			doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-			doc1.design.shape.offPixels = QRCode.DataShape.Horizontal(inset: 4, cornerRadiusFraction: 1) //inset: 4)
+			doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 4, cornerRadiusFraction: 1) //inset: 4)
 			doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 			let cg1 = doc1.cgImage(CGSize(width: 300, height: 300))!
@@ -106,7 +106,7 @@ class ViewController: NSViewController {
 			doc2.design.style.eye = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
 			doc2.design.style.pupil = QRCode.FillStyle.Solid(NSColor.systemBlue.cgColor)
 			
-			doc2.design.shape.onPixels = QRCode.DataShape.RoundedPath()
+			doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 			doc2.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
 			
 			let cg2 = doc2.cgImage(CGSize(width: 300, height: 300))!

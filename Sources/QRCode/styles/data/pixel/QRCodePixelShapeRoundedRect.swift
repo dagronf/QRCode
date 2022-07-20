@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeRoundedRect.swift
+//  QRCodePixelShapeRoundedRect.swift
 //
 //  Created by Darren Ford on 3/5/22.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,9 +23,9 @@
 import CoreGraphics
 import Foundation
 
-public extension QRCode.DataShape {
+public extension QRCode.PixelShape {
 	/// A rounded rect pixel shape
-	@objc(QRCodeDataShapeRoundedRect) class RoundedRect: NSObject, QRCodeDataShapeGenerator {
+	@objc(QRCodePixelShapeRoundedRect) class RoundedRect: NSObject, QRCodePixelShapeGenerator {
 		public static var Name: String { "roundedRect" }
 		private let common: CommonPixelGenerator
 
@@ -38,13 +38,13 @@ public extension QRCode.DataShape {
 			super.init()
 		}
 
-		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
+		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
 			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
 			return RoundedRect(inset: inset, cornerRadiusFraction: radius)
 		}
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
+		public func copyShape() -> QRCodePixelShapeGenerator {
 			return RoundedRect(inset: self.common.inset, cornerRadiusFraction: self.common.cornerRadiusFraction)
 		}
 

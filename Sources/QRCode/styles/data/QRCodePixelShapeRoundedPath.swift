@@ -1,5 +1,5 @@
 //
-//  QRCodeDataShapeRoundedPath.swift
+//  QRCodePixelShapeRoundedPath.swift
 //
 //  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
@@ -23,11 +23,11 @@
 import CoreGraphics
 import Foundation
 
-public extension QRCode.DataShape {
-	@objc(QRCodeDataShapeRoundedPath) class RoundedPath: NSObject, QRCodeDataShapeGenerator {
+public extension QRCode.PixelShape {
+	@objc(QRCodePixelShapeRoundedPath) class RoundedPath: NSObject, QRCodePixelShapeGenerator {
 		public static var Name = "roundedPath"
-		public static func Create(_ settings: [String: Any]?) -> QRCodeDataShapeGenerator {
-			return QRCode.DataShape.RoundedPath()
+		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			return QRCode.PixelShape.RoundedPath()
 		}
 
 		public func settings() -> [String: Any] {
@@ -38,7 +38,7 @@ public extension QRCode.DataShape {
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 		static let DefaultRadius = CGSize(width: 3, height: 3)
 
-		public func copyShape() -> QRCodeDataShapeGenerator {
+		public func copyShape() -> QRCodePixelShapeGenerator {
 			RoundedPath()
 		}
 
@@ -104,14 +104,14 @@ public extension QRCode.DataShape {
 	}
 }
 
-extension QRCode.DataShape.RoundedPath {
+extension QRCode.PixelShape.RoundedPath {
 	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
 		let dx = size.width / CGFloat(data.pixelSize)
 		let dy = size.height / CGFloat(data.pixelSize)
 		let dm = min(dx, dy)
 
 		// The scale required to convert our template paths to output path size
-		let w = QRCode.DataShape.RoundedPath.DefaultSize.width
+		let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
 		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
 
 		let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
@@ -137,63 +137,63 @@ extension QRCode.DataShape.RoundedPath {
 
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateCircle,
+						QRCode.PixelShape.RoundedPath.templateCircle,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasRight, !hasTop, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateRoundRight,
+						QRCode.PixelShape.RoundedPath.templateRoundRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasRight, !hasTop, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateRoundLeft,
+						QRCode.PixelShape.RoundedPath.templateRoundLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, hasTop, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateRoundBottom,
+						QRCode.PixelShape.RoundedPath.templateRoundBottom,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, !hasTop, hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateRoundTop,
+						QRCode.PixelShape.RoundedPath.templateRoundTop,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else if hasLeft, hasTop, !hasRight, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateBottomRight,
+						QRCode.PixelShape.RoundedPath.templateBottomRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasTop, hasRight, !hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateBottomLeft,
+						QRCode.PixelShape.RoundedPath.templateBottomLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasTop, !hasRight, hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateTopRight,
+						QRCode.PixelShape.RoundedPath.templateTopRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasTop, hasRight, hasBottom {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateTopLeft,
+						QRCode.PixelShape.RoundedPath.templateTopLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else {
 					path.addPath(
-						QRCode.DataShape.RoundedPath.templateSquare,
+						QRCode.PixelShape.RoundedPath.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
