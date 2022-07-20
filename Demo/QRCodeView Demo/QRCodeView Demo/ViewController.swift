@@ -14,6 +14,8 @@ class ViewController: NSViewController {
 	@IBOutlet weak var q3: QRCodeView!
 	@IBOutlet weak var q4: QRCodeView!
 
+	let debounce = DSFDebounce(seconds: 0.1)
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -72,9 +74,37 @@ class ViewController: NSViewController {
 extension ViewController: NSControlTextEditingDelegate {
 	func controlTextDidChange(_ obj: Notification) {
 		guard let msg = (obj.object as? NSTextField)?.stringValue else { return }
-		_ = q1.setString(msg)
-		_ = q2.setString(msg)
-		_ = q3.setString(msg)
-		_ = q4.setString(msg)
+
+		debounce.debounce {
+			DispatchQueue.main.async {
+				_ = self.q1.setString(msg)
+				_ = self.q2.setString(msg)
+				_ = self.q3.setString(msg)
+				_ = self.q4.setString(msg)
+			}
+		}
+	}
+}
+
+
+import Dispatch
+
+public class DSFDebounce {
+
+	// MARK: - Properties
+	private let queue = DispatchQueue.main
+	private var workItem = DispatchWorkItem(block: {})
+	private var interval: TimeInterval
+
+	// MARK: - Initializer
+	init(seconds: TimeInterval) {
+		self.interval = seconds
+	}
+
+	// MARK: - Debouncing function
+	func debounce(action: @escaping (() -> Void)) {
+		workItem.cancel()
+		workItem = DispatchWorkItem(block: { action() })
+		queue.asyncAfter(deadline: .now() + interval, execute: workItem)
 	}
 }
