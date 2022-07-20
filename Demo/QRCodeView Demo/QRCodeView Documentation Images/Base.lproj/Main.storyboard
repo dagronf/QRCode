@@ -724,11 +724,11 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" name="systemTealColor" catalog="System" colorSpace="catalog"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibEyeShape" value="leaf"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibDataShape" value="roundedPath"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibPixelShape" value="roundedPath"/>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>

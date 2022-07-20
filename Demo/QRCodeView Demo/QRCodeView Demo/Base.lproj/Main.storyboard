@@ -727,7 +727,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="Q"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
@@ -740,7 +740,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="L"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.89056569340000002" green="0.70289796589999998" blue="0.81566268210000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
@@ -753,7 +753,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="M"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
@@ -766,7 +766,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="H"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibDataColor">
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">

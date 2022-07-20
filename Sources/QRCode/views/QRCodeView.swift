@@ -102,7 +102,7 @@ public extension QRCodeView {
 	}
 
 	/// The name of the shape generator for the data
-	@IBInspectable var ibDataShape: String {
+	@IBInspectable var ibPixelShape: String {
 		get { _pixelShape }
 		set { _pixelShape = newValue; self.regenerate() }
 	}
@@ -121,7 +121,7 @@ public extension QRCodeView {
 
 	#if os(macOS)
 	/// Interface builder data color
-	@IBInspectable var ibDataColor: NSColor {
+	@IBInspectable var ibPixelColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
 		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
@@ -145,7 +145,7 @@ public extension QRCodeView {
 	}
 	#else
 	/// Interface builder data color
-	@IBInspectable var ibDataColor: UIColor {
+	@IBInspectable var ibPixelColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
 		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor) }
 	}
