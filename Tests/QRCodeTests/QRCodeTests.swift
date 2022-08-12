@@ -117,9 +117,11 @@ final class QRCodeTests: XCTestCase {
 
 			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
 
+			#if !os(watchOS)
 			let qrr = QRCode.DetectQRCodes(outputImage)
 			XCTAssertEqual(1, qrr.count)
 			XCTAssertEqual("https://www.apple.com/mac-studio/", qrr[0].messageString)
+			#endif
 		}
 
 		do {
@@ -128,9 +130,11 @@ final class QRCodeTests: XCTestCase {
 
 			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
 
+			#if !os(watchOS)
 			let qrr = QRCode.DetectQRCodes(outputImage)
 			XCTAssertEqual(1, qrr.count)
 			XCTAssertEqual("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के", qrr[0].messageString)
+			#endif
 		}
 	}
 }

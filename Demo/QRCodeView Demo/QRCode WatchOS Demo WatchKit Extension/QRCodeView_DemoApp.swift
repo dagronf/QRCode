@@ -11,7 +11,7 @@ import QRCode3rdPartyGenerator
 
 class testing {
 	init() {
-		let document = QRCode.Document(generator: QRCodeGenerator_3rdParty())
+		let document = QRCode.Document(generator: QRCodeGenerator_WatchOS())
 		document.errorCorrection = .quantize
 		document.data = "Generating a QR Code using watchOS".data(using: .utf8)!
 

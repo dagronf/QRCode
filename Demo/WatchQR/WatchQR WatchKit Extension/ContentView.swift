@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  QRCode WatchOS Demo WatchKit Extension
+//  WatchQR WatchKit Extension
 //
-//  Created by Darren Ford on 10/12/21.
+//  Created by Darren Ford on 12/8/2022.
 //
 
 import SwiftUI
@@ -11,8 +11,9 @@ import QRCode
 import QRCode3rdPartyGenerator
 
 struct ContentView: View {
+
 	let fixedCode = QRCodeUI(
-		text: "QRCode WatchOS Demo",
+		text: "Generating a QR Code using watchOS - wheeeee!",
 		errorCorrection: .quantize,
 		generator: QRCodeGenerator_WatchOS())!
 

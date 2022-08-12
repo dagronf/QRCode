@@ -12,25 +12,41 @@ let package = Package(
 		.watchOS(.v6)
 	],
 	products: [
-		// a dynamically linkable QR code library
+
+		// Static/Dynamic QRCode libraries
+
 		.library(
 			name: "QRCode",
+			type: .static,
+			targets: ["QRCode"]
+		),
+		.library(
+			name: "QRCodeDynamic",
 			type: .dynamic,
 			targets: ["QRCode"]
 		),
 
-		// statically linkable QR code library
+		// watchOS convenience including the 3rd party generator
+
 		.library(
-			name: "QRCodeStatic",
+			name: "QRCodeWatchOS",
 			type: .static,
-			targets: ["QRCode"]
+			targets: ["QRCode", "QRCode3rdPartyGenerator"]
 		),
 
-		// A wrapper around a 3rd party QR Code generator for watchOS
+		.library(
+			name: "QRCodeWatchOSDynamic",
+			type: .dynamic,
+			targets: ["QRCode", "QRCode3rdPartyGenerator"]
+		),
+
+		// A wrapper around a 3rd party QR Code generator
+
 		.library(
 			name: "QRCode3rdPartyGenerator",
 			type: .static,
-			targets: ["QRCode3rdPartyGenerator"])
+			targets: ["QRCode3rdPartyGenerator"]
+		),
 	],
 	dependencies: [
 		// Swift argument parser is used for the command-line application

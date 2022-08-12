@@ -58,3 +58,6 @@ public class QRCodeGenerator_3rdParty: QRCodeEngine {
 		return result
 	}
 }
+
+/// A convenience alias for watchOS (more understandable code)
+public typealias QRCodeGenerator_WatchOS = QRCodeGenerator_3rdParty

@@ -105,18 +105,17 @@ If you have used earlier version of this library, you would have used `QRCode` f
 
 ### Special requirements for watchOS
 
-Since watchOS doesn't support Core Image filters (which this library uses on macOS/iOS and tvOS for generating the 
-QR Code) a [third-party dependency](https://github.com/fwcd/swift-qrcode-generator) is provided. It has been 
-wrapped in a module (`QRCode3rdPartyGenerator`) to allow you to optionally import when needed.
+Due to watchOS limitations the `QRCodeWatchOS` products include a [3rd-party QR code generator](https://github.com/fwcd/swift-qrcode-generator) 
+for creating a raw QR code.
 
-It is required for watchOS projects, for macOS, iOS and tvOS this module is optional and is not required in your projects. 
+To use `QRCode` within your watchOS app, you will need to :-
 
-The 3rd party QR Code generator may generate different QR Codes from the built-in Core Image generator.
-If you need consistent QR Code generation across platforms that includes watchOS, you should use the third party
-generator (`QRCodeGenerator_3rdParty`) on all platforms.
+1. Link your project against the `QRCodeWatchOS` library instead of `QRCode`.
+2. Import `QRCode3rdPartyGenerator` in your sources **IN ADDITION** to `QRCode`
+3. Provide the `QRCodeGeneratorWatchOS` generator when creating your QRCode document.
 
 <details>
-<summary>tl;dr Simple Example</summary>
+<summary>Click here to see a watchOS code example</summary>
 
 ```swift
 // watchOS generation sample
@@ -124,7 +123,7 @@ generator (`QRCodeGenerator_3rdParty`) on all platforms.
 import QRCode
 import QRCode3rdPartyGenerator
 
-let doc = QRCode.Document(generator: QRCodeGenerator_3rdParty())
+let doc = QRCode.Document(generator: QRCodeGeneratorWatchOS())
 
 // Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
 doc.data = "Example text".data(using: .utf8)!
@@ -134,7 +133,16 @@ doc.errorCorrection = .high
 let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
 ```
 
+**Frameworks, Libraries, and Embedded Content**
+
+<img src="./Art/watchos-link-settings.jpg" />
+
 </details>
+
+There is also a very basic example called `WatchQR` in the `Demos` folder
+
+Why this additional complexity? Including a 3rd party dependency always introduces more risk. 
+If you don't need watchOS support, you should link against `QRCode` and reduce both your code complexity and risk surface.
 
 ## Settings
 
@@ -632,12 +640,39 @@ watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/Q
 
 ## License
 
-MIT. Use it for anything you want, just attribute my work if you do. Let me know if you do use it somewhere, I'd love to hear about it!
+[QRCode](https://github.com/dagronf/QRCode)
 
 ```
 MIT License
 
 Copyright (c) 2022 Darren Ford
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+[swift-qrcode-generator](https://github.com/fwcd/swift-qrcode-generator)
+
+```
+MIT License
+
+Copyright (c) Project Nayuki. (MIT License)
+Copyright (c) 2020 fwcd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
