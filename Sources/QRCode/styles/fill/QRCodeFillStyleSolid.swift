@@ -30,7 +30,8 @@ public extension QRCode.FillStyle {
 
 		@objc public static var Name: String { "solid" }
 
-		let color: CGColor
+		/// The fill color
+		@objc public let color: CGColor
 
 		@objc public func settings() -> [String: Any] {
 			[ "color": color.archiveSRGBA() ?? "1.0,0.0,0.0,0.5" ]

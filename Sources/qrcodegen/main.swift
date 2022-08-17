@@ -31,6 +31,7 @@ enum SupportedExtensions: String {
 	case png
 	case pdf
 	case jpg
+	case svg
 	case ascii
 	case smallascii
 
@@ -64,7 +65,7 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 	@Option(help: "The output file")
 	var outputFile: String?
 
-	@Option(help: "The output format (png [default],pdf,ascii,smallascii)")
+	@Option(help: "The output format (png [default],pdf,svg,ascii,smallascii)")
 	var outputFormat: String?
 
 	@Option(help: "The output format compression factor (if the output format supports it, png,jpg)")
@@ -263,6 +264,19 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 			}
 			do {
 				try data.write(to: outURL, options: .atomic)
+			}
+			catch {
+				Swift.print("Unable to write to output file \(outURL.absoluteString)")
+				QRCodeGen.exit(withError: ExitCode(-9))
+			}
+
+		case .svg:
+			let str = qrCode.svg(
+				foreground: (design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black,
+				background: (design.style.background as? QRCode.FillStyle.Solid)?.color
+			)
+			do {
+				try str.write(to: outURL, atomically: true, encoding: .utf8)
 			}
 			catch {
 				Swift.print("Unable to write to output file \(outURL.absoluteString)")

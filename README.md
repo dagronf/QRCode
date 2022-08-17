@@ -624,7 +624,7 @@ OPTIONS:
   --output-file <output-file>
                           The output file 
   --output-format <output-format>
-                          The output format (png [default],pdf,ascii,smallascii) 
+                          The output format (png [default],pdf,svg,ascii,smallascii) 
   --output-compression <output-compression>
                           The output format compression factor (if the output format supports it, png,jpg) 
   -t, --text <text>       The text to be stored in the QR code 
