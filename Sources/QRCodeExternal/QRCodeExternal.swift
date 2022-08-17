@@ -32,7 +32,7 @@ import QRCode
 ///
 /// By wrapping the 3rd party library in a separate Swift module it provides the flexibility to ignore it if you
 /// don't need it.
-public class QRCodeGenerator_3rdParty: QRCodeEngine {
+public class QRCodeGenerator_External: QRCodeEngine {
 
 	public init() {}
 
@@ -58,6 +58,3 @@ public class QRCodeGenerator_3rdParty: QRCodeEngine {
 		return result
 	}
 }
-
-/// A convenience alias for watchOS (more understandable code)
-public typealias QRCodeGenerator_WatchOS = QRCodeGenerator_3rdParty

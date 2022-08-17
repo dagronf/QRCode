@@ -44,6 +44,16 @@ public extension QRCode {
 			}
 		}
 
+		/// A UTF8 string to display in the QR code
+		@objc public var utf8String: String? {
+			get {
+				String(data: self.data, encoding: .utf8)
+			}
+			set {
+				self.data = newValue?.data(using: .utf8) ?? Data()
+			}
+		}
+
 		/// The style to use when drawing the qr code
 		@objc public var design = QRCode.Design() {
 			didSet { self.regenerate() }

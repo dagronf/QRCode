@@ -29,23 +29,15 @@ let package = Package(
 		// watchOS convenience including the 3rd party generator
 
 		.library(
-			name: "QRCodeWatchOS",
+			name: "QRCodeExternal",
 			type: .static,
-			targets: ["QRCode", "QRCode3rdPartyGenerator"]
+			targets: ["QRCode", "QRCodeExternal"]
 		),
 
 		.library(
-			name: "QRCodeWatchOSDynamic",
+			name: "QRCodeExternalDynamic",
 			type: .dynamic,
-			targets: ["QRCode", "QRCode3rdPartyGenerator"]
-		),
-
-		// A wrapper around a 3rd party QR Code generator
-
-		.library(
-			name: "QRCode3rdPartyGenerator",
-			type: .static,
-			targets: ["QRCode3rdPartyGenerator"]
+			targets: ["QRCode", "QRCodeExternal"]
 		),
 	],
 	dependencies: [
@@ -71,7 +63,7 @@ let package = Package(
 
 		// The wrapper library for the 3rd party qr code generator
 		.target(
-			name: "QRCode3rdPartyGenerator",
+			name: "QRCodeExternal",
 			dependencies: [
 				.product(
 					name: "QRCodeGenerator",
@@ -92,7 +84,7 @@ let package = Package(
 		// testing target
 		.testTarget(
 			name: "QRCodeTests",
-			dependencies: ["QRCode", "QRCode3rdPartyGenerator"],
+			dependencies: ["QRCode", "QRCodeExternal"],
 			resources: [
 				.process("resources"),
 			]

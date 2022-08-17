@@ -20,7 +20,7 @@
 		239FBB1F28A63DB7002F74AC /* WatchQRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB1E28A63DB7002F74AC /* WatchQRTests.swift */; };
 		239FBB2928A63DB7002F74AC /* WatchQRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB2828A63DB7002F74AC /* WatchQRUITests.swift */; };
 		239FBB2B28A63DB7002F74AC /* WatchQRUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB2A28A63DB7002F74AC /* WatchQRUITestsLaunchTests.swift */; };
-		239FBB4228A63E00002F74AC /* QRCodeWatchOS in Frameworks */ = {isa = PBXBuildFile; productRef = 239FBB4128A63E00002F74AC /* QRCodeWatchOS */; };
+		23C7585E28AC760A007528CE /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7585D28AC760A007528CE /* QRCodeExternal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				239FBB4228A63E00002F74AC /* QRCodeWatchOS in Frameworks */,
+				23C7585E28AC760A007528CE /* QRCodeExternal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +259,7 @@
 			);
 			name = "WatchQR WatchKit Extension";
 			packageProductDependencies = (
-				239FBB4128A63E00002F74AC /* QRCodeWatchOS */,
+				23C7585D28AC760A007528CE /* QRCodeExternal */,
 			);
 			productName = "WatchQR WatchKit Extension";
 			productReference = 239FBB0028A63DB6002F74AC /* WatchQR WatchKit Extension.appex */;
@@ -841,9 +841,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		239FBB4128A63E00002F74AC /* QRCodeWatchOS */ = {
+		23C7585D28AC760A007528CE /* QRCodeExternal */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeWatchOS;
+			productName = QRCodeExternal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

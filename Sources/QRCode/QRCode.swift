@@ -27,21 +27,20 @@ import Foundation
 
 /// A QRCode generator class
 @objc public class QRCode: NSObject {
-
 	/// The generator to use when generating the QR code.
 	///
 	/// Defaults to CoreImage on macOS/iOS/tvOS, or none on watchOS (import QRCode3rdPartyGenerator for watchOS)
 	@objc public var generator: QRCodeEngine = {
-		#if os(watchOS)
+#if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
 		return QRCodeGenerator_None()
-		#else
+#else
 		return QRCodeGenerator_CoreImage()
-		#endif
+#endif
 	}()
 
 	/// Create a blank QRCode
-	@objc public override init() {
+	@objc override public init() {
 		super.init()
 		self.update(Data(), errorCorrection: .default)
 	}
@@ -57,8 +56,8 @@ import Foundation
 	@objc public init(
 		_ data: Data,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil)
-	{
+		generator: QRCodeEngine? = nil
+	) {
 		if let g = generator { self.generator = g }
 		super.init()
 		self.update(data, errorCorrection: errorCorrection)
@@ -68,8 +67,8 @@ import Foundation
 	@objc public init(
 		text: String,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil)
-	{
+		generator: QRCodeEngine? = nil
+	) {
 		if let g = generator { self.generator = g }
 		super.init()
 		self.update(text: text, errorCorrection: errorCorrection)
@@ -79,8 +78,8 @@ import Foundation
 	@objc public init(
 		message: QRCodeMessageFormatter,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil)
-	{
+		generator: QRCodeEngine? = nil
+	) {
 		if let g = generator { self.generator = g }
 		super.init()
 		self.update(message: message, errorCorrection: errorCorrection)
@@ -100,7 +99,7 @@ import Foundation
 
 extension QRCode: NSCopying {
 	/// Return a copy of the QR Code
-	public func copy(with zone: NSZone? = nil) -> Any {
+	@objc public func copy(with zone: NSZone? = nil) -> Any {
 		let c = QRCode()
 		c.current = self.current
 		return c
@@ -131,7 +130,6 @@ public extension QRCode {
 // MARK: - Ascii representations
 
 public extension QRCode {
-
 	/// Return an ASCII representation of the QR code using the extended ASCII code set
 	///
 	/// Only makes sense if presented using a fixed-width font

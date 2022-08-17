@@ -38,9 +38,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPupilColor">
                                         <color key="value" red="0.21092865346117581" green="0.34618140048668034" blue="0.1895222496643772" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="ibCorrectionLevel">
-                                        <integer key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="3"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>

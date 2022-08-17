@@ -3,7 +3,7 @@ import XCTest
 #if !os(watchOS)
 
 @testable import QRCode
-@testable import QRCode3rdPartyGenerator
+@testable import QRCodeExternal
 
 #if os(macOS)
 typealias CommonImage = NSImage
@@ -20,7 +20,7 @@ final class QRCodeDetectionTests: XCTestCase {
 	func test3rdPartyGenerator() throws {
 
 		// Make sure the third party generator can generate a qr code
-		let doc = QRCode.Document(generator: QRCodeGenerator_3rdParty())
+		let doc = QRCode.Document(generator: QRCodeGenerator_External())
 
 		_ = doc.setString("This is a test")
 

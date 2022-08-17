@@ -8,14 +8,14 @@
 import SwiftUI
 
 import QRCode
-import QRCode3rdPartyGenerator
+import QRCodeExternal
 
 struct ContentView: View {
 
 	let fixedCode = QRCodeUI(
 		text: "Generating a QR Code using watchOS - wheeeee!",
 		errorCorrection: .quantize,
-		generator: QRCodeGenerator_WatchOS())!
+		generator: QRCodeGenerator_External())!
 
 	var dataColor: Color = Color(red: 1.0, green: 1.0, blue: 0.5)
 	var eyeColor: Color = .yellow

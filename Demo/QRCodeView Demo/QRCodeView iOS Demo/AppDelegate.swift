@@ -35,7 +35,7 @@ extension AppDelegate {
 	func generateQRCodeImage() {
 
 		let doc = QRCode.Document()
-		doc.data = "This is a test".data(using: .utf8)!
+		doc.utf8String = "This is a test"
 		doc.errorCorrection = .high
 
 		// Generate a CGPath object containing the QR code

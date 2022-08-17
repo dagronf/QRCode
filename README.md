@@ -74,7 +74,7 @@ You can further style the qr code (see below)
  
 ```swift
 let doc = QRCode.Document()
-doc.data = "This is a test".data(using: .utf8)!
+doc.utf8String = "This is a test"
 doc.errorCorrection = .high
 
 // Set the background color to clear
@@ -101,18 +101,43 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 
 </details>
 
-If you have used earlier version of this library, you would have used `QRCode` for generating qr codes. The `QRCode.Document` object wraps both the `QRCode` and the design object for the QR code into a single class to allow loading and saving. Existing code that uses `QRCode` directly will not be affected.
+## Using `QRCode` in your project
 
-### Special requirements for watchOS
+### QRCode / QRCodeDynamic
 
-Due to watchOS limitations the `QRCodeWatchOS` products include a [3rd-party QR code generator](https://github.com/fwcd/swift-qrcode-generator) 
-for creating a raw QR code.
+This is the base QRCode generator that uses Core Image to generate QR Codes. 
+If you're developing for **macOS, macCatalyst, iOS or tvOS** this is most likely all that you'll need to use.
 
-To use `QRCode` within your watchOS app, you will need to :-
+1. Link against `QRCode` OR `QRCodeDynamic`
+2. Add `import QRCode` to any source files
 
-1. Link your project against the `QRCodeWatchOS` library instead of `QRCode`.
-2. Import `QRCode3rdPartyGenerator` in your sources **IN ADDITION** to `QRCode`
-3. Provide the `QRCodeGeneratorWatchOS` generator when creating your QRCode document.
+<details>
+<summary>Click here to see a code example</summary>
+
+```swift
+import QRCode
+
+let doc = QRCode.Document()
+
+// Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
+doc.utf8String = "This is a test"
+doc.errorCorrection = .high
+
+// And generate a UIImage from the pdf data
+let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
+```
+
+</details>
+
+### QRCodeExternal / QRCodeExternalDynamic
+
+**watchOS** limitations require that a [3rd-party QR code generation library](https://github.com/fwcd/swift-qrcode-generator)
+is required to generate the raw QR code data on-device. These libraries can also be used for macOS, macCatalyst, iOS and 
+tvOS if you need consistent QR codes across multiple platforms including watchOS.
+
+1. Link against `QRCodeExternal` or `QRCodeExternalDynamic`
+2. Import both `QRCode` and `QRCodeExternal` in your source file(s)
+3. When creating your `QRCode()` or `QRCode.Document()`, provide `QRCodeGenerator_External()` as the generator. 
 
 <details>
 <summary>Click here to see a watchOS code example</summary>
@@ -121,12 +146,12 @@ To use `QRCode` within your watchOS app, you will need to :-
 // watchOS generation sample
 
 import QRCode
-import QRCode3rdPartyGenerator
+import QRCodeExternal
 
-let doc = QRCode.Document(generator: QRCodeGeneratorWatchOS())
+let doc = QRCode.Document(generator: QRCodeGenerator_External())
 
 // Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
-doc.data = "Example text".data(using: .utf8)!
+doc.utf8String = "This is a test"
 doc.errorCorrection = .high
 
 // And generate a UIImage from the pdf data
@@ -141,8 +166,9 @@ let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
 
 There is also a very basic example called `WatchQR` in the `Demos` folder
 
-Why this additional complexity? Including a 3rd party dependency always introduces more risk. 
-If you don't need watchOS support, you should link against `QRCode` and reduce both your code complexity and risk surface.
+**NOTE:** Including a 3rd party dependency always introduces more risk.
+If you don't need watchOS support, you should probably avoid using either `QRCodeExternal` or `QRCodeExternalDynamic`
+to reduce both your code complexity and risk surface.
 
 ## Settings
 

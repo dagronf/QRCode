@@ -1,6 +1,6 @@
 import XCTest
 @testable import QRCode
-@testable import QRCode3rdPartyGenerator
+@testable import QRCodeExternal
 
 final class QRCodeTests: XCTestCase {
 
