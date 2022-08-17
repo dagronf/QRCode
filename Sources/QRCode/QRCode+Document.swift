@@ -352,7 +352,7 @@ public extension QRCode.Document {
 	@objc func svg(
 		outputDimension: UInt = 0,
 		border: UInt = 1,
-		foreground: CGColor = .black,
+		foreground: CGColor = CGColor(gray: 0, alpha: 1),
 		background: CGColor? = nil
 	) -> String {
 		self.qrcode.svg(outputDimension: outputDimension, border: border, foreground: foreground, background: background)

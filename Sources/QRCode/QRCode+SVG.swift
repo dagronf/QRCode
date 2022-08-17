@@ -39,7 +39,7 @@ public extension QRCode {
 	@objc func svg(
 		outputDimension: UInt = 0,
 		border: UInt = 0,
-		foreground: CGColor = .black,
+		foreground: CGColor = CGColor(gray: 0, alpha: 1),
 		background: CGColor? = nil
 	) -> String {
 		let border = Int(border)
