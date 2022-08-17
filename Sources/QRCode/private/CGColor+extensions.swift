@@ -37,21 +37,21 @@ private let ArchiveRGBAColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 		self.b = b
 		self.a = a
 	}
-
+	
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
 	@objc public var stringValue: String {
-		"\(r),\(g),\(b),\(a)"
+		"\(self.r),\(self.g),\(self.b),\(self.a)"
 	}
 }
 
 public extension CGColor {
-
 	func sRGBAComponents() -> RGBAComponents? {
 		guard
 			let c = self.converted(
 				to: ArchiveRGBAColorSpace,
 				intent: .defaultIntent,
-				options: nil),
+				options: nil
+			),
 			let comps = c.components,
 			comps.count == 4
 		else {
@@ -59,19 +59,19 @@ public extension CGColor {
 		}
 		return RGBAComponents(r: comps[0], g: comps[1], b: comps[2], a: comps[3])
 	}
-
+	
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
 	func archiveSRGBA() -> String? {
-		return sRGBAComponents()?.stringValue
+		return self.sRGBAComponents()?.stringValue
 	}
-
+	
 	/// Create a CGColor from an archive string for the format "r,g,b,a" (eg. "1.0,0.0,0.0,0.5")
 	static func UnarchiveSRGBA(_ archive: String) -> CGColor? {
 		let comps = archive
 			.split(separator: ",")
 			.map { $0.trimmingCharacters(in: .whitespaces) }
 			.compactMap { CGFloat($0) }
-			.compactMap { $0.clamped(to: 0.0...1.0) }
+			.compactMap { $0.clamped(to: 0.0 ... 1.0) }
 		guard comps.count == 4 else {
 			return nil
 		}
@@ -86,3 +86,17 @@ extension CGColor {
 	static let clear = CGColor(gray: 0, alpha: 0)
 }
 #endif
+
+extension CGColor {
+	// Return an RGBA hex code (eg. "#00000000")
+	func hexCode() -> String? {
+		guard let comps = sRGBAComponents() else {
+			return nil
+		}
+		let rv = Int(comps.r * 255.0)
+		let gv = Int(comps.g * 255.0)
+		let bv = Int(comps.b * 255.0)
+		let av = Int(comps.a * 255.0)
+		return String(format: "#%02x%02x%02x%02x", rv, gv, bv, av)
+	}
+}

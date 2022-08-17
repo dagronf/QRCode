@@ -419,6 +419,14 @@ Generate an CGImage from the QR Code, using an (optional) design object for styl
 
 Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution
 
+### Generate a basic scalable SVG representation of the QR Code
+
+```swift
+@objc func svg(border: UInt = 0, foreground: CGColor = .black, background: CGColor? = nil) -> String
+```
+
+The SVG renderer currently doesn't support design formatting beyond setting the foreground and background colors.
+
 ### Generate a text representation of the QR code
 
 ```swift

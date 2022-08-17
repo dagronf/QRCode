@@ -137,4 +137,22 @@ final class QRCodeTests: XCTestCase {
 			#endif
 		}
 	}
+
+	func testSVG() throws {
+		let doc = QRCode.Document(utf8String: "This is a test")
+		let svg = doc.svg(foreground: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+		XCTAssertGreaterThan(svg.count, 0)
+
+		let tempURL: URL = {
+			try! FileManager.default.url(
+				for: .itemReplacementDirectory,
+				in: .userDomainMask,
+				appropriateFor: URL(fileURLWithPath: NSTemporaryDirectory()),
+				create: true
+			)
+			.appendingPathComponent(UUID().uuidString + ".svg")
+		}()
+		try svg.write(to: tempURL, atomically: true, encoding: .utf8)
+		Swift.print(tempURL)
+	}
 }

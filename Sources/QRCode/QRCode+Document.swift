@@ -337,6 +337,24 @@ public extension QRCode.Document {
 	) -> CGPath {
 		return self.qrcode.path(size, components: components, shape: self.design.shape)
 	}
+
+	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
+	/// - Parameters:
+	///   - border: The number of pixels for the border to the svg qrcode
+	///   - foreground: The foreground color
+	///   - background: The background color
+	/// - Returns: An SVG representation of the QR code
+	///
+	/// Currently doesn't support any of the design formatting other than foreground and background colors.
+	///
+	/// The string always uses Unix newlines (\n), regardless of the platform.
+	@objc func svg(
+		border: UInt = 1,
+		foreground: CGColor = .black,
+		background: CGColor? = nil
+	) -> String {
+		self.qrcode.svg(border: border, foreground: foreground, background: background)
+	}
 }
 
 // MARK: Imaging
