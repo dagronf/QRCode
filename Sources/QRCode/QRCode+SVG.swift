@@ -27,6 +27,7 @@ import CoreGraphics
 public extension QRCode {
 	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
 	/// - Parameters:
+	///   - outputDimension: The dimension of the output svg
 	///   - border: The number of pixels for the border to the svg qrcode
 	///   - foreground: The foreground color
 	///   - background: The background color
@@ -36,6 +37,7 @@ public extension QRCode {
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svg(
+		outputDimension: UInt = 0,
 		border: UInt = 0,
 		foreground: CGColor = .black,
 		background: CGColor? = nil
@@ -44,6 +46,15 @@ public extension QRCode {
 
 		let size = self.boolMatrix.dimension
 		let dimension = size + (border * 2)
+
+		let scale: Double = {
+			if outputDimension > 0 {
+				return CGFloat(outputDimension) / CGFloat(dimension)
+			}
+			return 1.0
+		}()
+
+		let od = (outputDimension > 0) ? Int(outputDimension) : dimension
 
 		// Colors
 
@@ -60,7 +71,7 @@ public extension QRCode {
 		let path = (0..<size).map { y in
 			(0..<size).map { x in
 				self.boolMatrix[x, y]
-				? "\(x != 0 || y != 0 ? " " : "")M\(x + border),\(y + border)h1v1h-1z"
+				? "\(x != 0 || y != 0 ? " " : "")M\((Double(x) + Double(border))*scale),\((Double(y) + Double(border))*scale)h\(scale)v\(scale)h-\(scale)z"
 				: ""
 			}.joined()
 		}.joined()
@@ -68,7 +79,7 @@ public extension QRCode {
 		return """
 			<?xml version="1.0" encoding="UTF-8"?>
 			<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 \(dimension) \(dimension)" stroke="none">
+			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 \(od) \(od)" stroke="none">
 			\(backgroundRect)
 			<path d="\(path)" fill="\(fc)"/>
 			</svg>

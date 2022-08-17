@@ -340,6 +340,7 @@ public extension QRCode.Document {
 
 	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
 	/// - Parameters:
+	///   - outputDimension: The dimension of the output svg
 	///   - border: The number of pixels for the border to the svg qrcode
 	///   - foreground: The foreground color
 	///   - background: The background color
@@ -349,11 +350,12 @@ public extension QRCode.Document {
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svg(
+		outputDimension: UInt = 0,
 		border: UInt = 1,
 		foreground: CGColor = .black,
 		background: CGColor? = nil
 	) -> String {
-		self.qrcode.svg(border: border, foreground: foreground, background: background)
+		self.qrcode.svg(outputDimension: outputDimension, border: border, foreground: foreground, background: background)
 	}
 }
 

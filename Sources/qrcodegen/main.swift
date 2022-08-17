@@ -272,6 +272,7 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 
 		case .svg:
 			let str = qrCode.svg(
+				outputDimension: UInt(outputSize.width),
 				foreground: (design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black,
 				background: (design.style.background as? QRCode.FillStyle.Solid)?.color
 			)
