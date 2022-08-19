@@ -138,8 +138,8 @@ public extension QRCode {
 		/// This is the pixel dimension for the current QR Code.
 		@objc public var pixelSize: Int { self.qrcode.pixelSize }
 
-		// The qrcode content generator
-		private let qrcode: QRCode
+		// The qrcode content.
+		internal let qrcode: QRCode
 	}
 }
 

@@ -34,6 +34,7 @@ enum SupportedExtensions: String {
 	case svg
 	case ascii
 	case smallascii
+	case clipboard
 
 	var fileBased: Bool {
 		return self == .png || self == .pdf || self == .jpg
@@ -47,7 +48,9 @@ struct QRCodeGen: ParsableCommand {
 		CommandConfiguration(
 			abstract: "Create a qr code",
 			discussion: """
-Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+Examples:
+   qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+   qrcodegen -t "QRCode on the clipboard" --output-format clipboard 1024
 
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
@@ -65,7 +68,7 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 	@Option(help: "The output file")
 	var outputFile: String?
 
-	@Option(help: "The output format (png [default],pdf,svg,ascii,smallascii)")
+	@Option(help: "The output format (png [default],pdf,svg,ascii,smallascii,clipboard)")
 	var outputFormat: String?
 
 	@Option(help: "The output format compression factor (if the output format supports it, png,jpg)")
@@ -221,6 +224,8 @@ Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
 		let qrCode = QRCode(data, errorCorrection: errorCorrection)
 
 		switch outputType {
+		case .clipboard:
+			qrCode.addToPasteboard(outputSize)
 		case .png:
 			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
 				Swift.print("Unable to generate image from qrcode")

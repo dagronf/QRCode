@@ -427,7 +427,21 @@ Generate a scalable PDF from the QRCode using an (optional) design object for st
 
 The SVG renderer currently doesn't support design formatting beyond setting the foreground and background colors.
 
-### Generate a text representation of the QR code
+### Add a QR Code to the pasteboard (macOS/iOS)
+
+Adds multiple representations of the QRCode to the specified pasteboard
+
+| Platform | Added Types        |
+|:---------|:-------------------|
+| macOS    | `PDF`/`PNG`/`TIFF` | 
+| iOS      | `PDF`/`PNG`        |
+
+```swift
+@objc func addToPasteboard(pasteboard: NSPasteboard = NSPasteboard.general, _ size: CGSize, scale: CGFloat = 2)
+@objc func addToPasteboard(pasteboard: UIPasteboard = UIPasteboard.general, _ size: CGSize, scale: CGFloat = 2)
+```
+
+### Generate a text representation of the QR Code
 
 ```swift
 @objc func asciiRepresentation() -> String
@@ -607,13 +621,15 @@ The `qrcodegen` tool can be found in the `.build/release` folder.
 % .build/release/qrcodegen --help
 OVERVIEW: Create a qr code
 
-Example: qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+Examples:
+   qrcodegen -t "This is a QR code" --output-file "fish.png" 512
+   qrcodegen -t "QRCode on the clipboard" --output-format clipboard 1024
 
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
 
-USAGE: qr-code-gen [<options>] <dimension>
+USAGE: qrcodegen [<options>] <dimension>
 
 ARGUMENTS:
   <dimension>             The QR code dimension. 
@@ -624,7 +640,7 @@ OPTIONS:
   --output-file <output-file>
                           The output file 
   --output-format <output-format>
-                          The output format (png [default],pdf,svg,ascii,smallascii) 
+                          The output format (png [default],pdf,svg,ascii,smallascii,clipboard) 
   --output-compression <output-compression>
                           The output format compression factor (if the output format supports it, png,jpg) 
   -t, --text <text>       The text to be stored in the QR code 

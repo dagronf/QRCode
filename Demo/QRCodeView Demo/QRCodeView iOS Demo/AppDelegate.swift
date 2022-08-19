@@ -40,11 +40,14 @@ extension AppDelegate {
 
 		// Generate a CGPath object containing the QR code
 		let path = doc.path(CGSize(width: 400, height: 400))
+		assert(!path.isEmpty)
 
 		// Generate an image using the default styling (square, black foreground, white background) with 3x resolution
 		let image = doc.uiImage(CGSize(width: 400, height: 400), scale: 3)
+		assert(image != nil)
 
 		// Generate pdf data containing the qr code
 		let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
+		assert(pdfdata != nil)
 	}
 }
