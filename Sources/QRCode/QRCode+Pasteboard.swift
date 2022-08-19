@@ -39,10 +39,11 @@ public extension QRCode {
 	@objc func addToPasteboard(
 		pasteboard: NSPasteboard = NSPasteboard.general,
 		_ size: CGSize,
-		scale: CGFloat = 2
+		scale: CGFloat = 2,
+		design: QRCode.Design = QRCode.Design()
 	) {
 		pasteboard.clearContents()
-		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale) {
+		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale, design: design) {
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
 
@@ -68,14 +69,15 @@ public extension QRCode {
 	@objc func addToPasteboard(
 		pasteboard: UIPasteboard = UIPasteboard.general,
 		_ size: CGSize,
-		scale: CGFloat = 2
+		scale: CGFloat = 2,
+		design: QRCode.Design = QRCode.Design()
 	) {
 		pasteboard.items = []
-		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale) {
+		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale, design: design) {
 			pasteboard.setData(pdfData, forPasteboardType: String("com.adobe.pdf"))
 		}
 
-		guard let image = self.uiImage(size, scale: scale) else {
+		guard let image = self.uiImage(size, scale: scale, design: design) else {
 			return
 		}
 
@@ -100,7 +102,7 @@ public extension QRCode.Document {
 		_ size: CGSize,
 		scale: CGFloat = 2
 	) {
-		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale)
+		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale, design: self.design)
 	}
 
 #elseif os(iOS)
@@ -114,7 +116,7 @@ public extension QRCode.Document {
 		_ size: CGSize,
 		scale: CGFloat = 2
 	) {
-		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale)
+		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale, design: self.design)
 	}
 #endif
 }

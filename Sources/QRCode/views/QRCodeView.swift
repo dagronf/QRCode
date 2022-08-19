@@ -75,6 +75,18 @@ import UIKit
 		self.setup()
 	}
 
+#if os(iOS)
+	public override func didMoveToWindow() {
+		super.didMoveToWindow()
+		if self.supportsDrag {
+			let dragInteraction = UIDragInteraction(delegate: self)
+			self.addInteraction(dragInteraction)
+
+			self.isUserInteractionEnabled = true
+		}
+	}
+#endif
+
 	/// Text content to display in the QR code
 	@objc @inlinable public func setString(_ text: String) -> Bool {
 		guard let msg = text.data(using: .utf8) else { return false }
@@ -307,6 +319,42 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 		}
 	}
 }
+#endif
+
+#if os(iOS)
+
+extension QRCodeView: UIDragInteractionDelegate {
+	public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+		let qrCodeData = QRCodeItemProvider(document: self.document, size: self.dragImageSize)
+		return [UIDragItem(itemProvider: NSItemProvider(object: qrCodeData))]
+	}
+}
+
+internal class QRCodeItemProvider: NSObject, NSItemProviderWriting {
+	static var writableTypeIdentifiersForItemProvider = [ "com.adobe.pdf", "public.png" ]
+
+	func loadData(
+		withTypeIdentifier typeIdentifier: String,
+		forItemProviderCompletionHandler completionHandler: @escaping (Data?, Error?) -> Void) -> Progress?
+	{
+		if typeIdentifier == "com.adobe.pdf" {
+			completionHandler(self.pdfData, nil)
+		}
+		else if typeIdentifier == "public.png" {
+			completionHandler(self.pngData, nil)
+		}
+		return nil
+	}
+
+	let pdfData: Data?
+	let pngData: Data?
+	init(document: QRCode.Document, size: CGSize) {
+		self.pdfData = document.pdfData(size)
+		self.pngData = document.uiImage(size)?.pngData()
+		super.init()
+	}
+}
+
 #endif
 
 #endif

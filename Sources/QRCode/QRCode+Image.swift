@@ -31,7 +31,10 @@ public extension QRCode {
 	///   - dimension: The dimension of the image to generate
 	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred
-	@objc func cgImage(dimension: CGFloat, design: QRCode.Design = QRCode.Design()) -> CGImage? {
+	@objc func cgImage(
+		dimension: CGFloat,
+		design: QRCode.Design = QRCode.Design()
+	) -> CGImage? {
 		self.cgImage(CGSize(dimension: dimension), design: design)
 	}
 
@@ -56,7 +59,8 @@ public extension QRCode {
 			bytesPerRow: 0,
 			space: colorSpace,
 			bitmapInfo: bitmapInfo.rawValue
-		) else {
+		)
+		else {
 			return nil
 		}
 
@@ -93,9 +97,30 @@ public extension QRCode {
 		}
 	}
 
+	/// Return a PNG representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
+	///   - design: The design for the QR Code
+	/// - Returns: The PNG data
+	@objc func pngData(
+		dimension: CGFloat,
+		design: QRCode.Design = QRCode.Design()
+	) -> Data? {
+#if os(macOS)
+		guard let image = self.nsImage(CGSize(width: dimension, height: dimension), design: design) else {
+			return nil
+		}
+		return image.pngRepresentation
+#else
+		guard let image = self.uiImage(CGSize(width: dimension, height: dimension), design: design) else {
+			return nil
+		}
+		return image.pngData()
+#endif
+	}
+
 	/// Draw the current qrcode into the context using the specified style
 	@objc func draw(ctx: CGContext, rect: CGRect, design: QRCode.Design) {
-
 		let style = design.style
 
 		// Fill the background first

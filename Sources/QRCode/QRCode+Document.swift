@@ -404,6 +404,13 @@ public extension QRCode.Document {
 		self.qrcode.pdfData(size, pdfResolution: pdfResolution, design: self.design)
 	}
 
+	/// Returns a PNG representation of the QRCode
+	/// - Parameter dimension: The size of the QR code
+	/// - Returns: The PNG data
+	func pngData(dimension: CGFloat) -> Data? {
+		return self.qrcode.pngData(dimension: dimension, design: self.design)
+	}
+
 #if os(macOS)
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:

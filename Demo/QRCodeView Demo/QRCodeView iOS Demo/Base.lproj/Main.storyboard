@@ -39,6 +39,7 @@
                                         <color key="value" red="0.21092865346117581" green="0.34618140048668034" blue="0.1895222496643772" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="3"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
