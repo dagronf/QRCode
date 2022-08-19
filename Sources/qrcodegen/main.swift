@@ -225,7 +225,7 @@ Examples:
 
 		switch outputType {
 		case .clipboard:
-			qrCode.addToPasteboard(outputSize)
+			qrCode.addToPasteboard(outputSize, design: design)
 		case .png:
 			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
 				Swift.print("Unable to generate image from qrcode")
