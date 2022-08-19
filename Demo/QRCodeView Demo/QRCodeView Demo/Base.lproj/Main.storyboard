@@ -733,6 +733,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" red="0.57874745130000005" green="0.32151988149999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCode">
@@ -772,6 +773,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" name="selectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>

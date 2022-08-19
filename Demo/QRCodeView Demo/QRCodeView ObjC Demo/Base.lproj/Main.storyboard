@@ -720,6 +720,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>

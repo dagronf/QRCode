@@ -87,6 +87,12 @@ import UIKit
 		self.data = msgType.data
 	}
 
+	/// If true, the view allows dragging a QRCode representation out
+	@IBInspectable var supportsDrag: Bool = false
+
+	/// The size of the QRCode image when dragged out of the view
+	@IBInspectable var dragImageSize: CGSize = CGSize(width: 512, height: 512)
+
 	private var _eyeShape: String = ""
 	private var _pixelShape: String = ""
 }
@@ -94,7 +100,6 @@ import UIKit
 // MARK: - Interface Builder conveniences
 
 public extension QRCodeView {
-
 	/// The name of the shape generator for the eye
 	@IBInspectable var ibEyeShape: String {
 		get { _eyeShape }
@@ -214,5 +219,94 @@ extension QRCodeView {
 		self.setNeedsDisplay()
 	}
 }
+
+// MARK: - Drag drop support for macOS
+
+#if os(macOS)
+
+let PasteboardFileURLPromise = NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFileURLPromise)
+let PasteboardFilePromiseContent = NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent)
+let PasteboardFilePasteLocation = NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")
+
+extension QRCodeView {
+	override public func mouseDown(with event: NSEvent) {
+		if self.supportsDrag {
+			let pasteboardItem = NSPasteboardItem()
+
+			// 1. The sender promises kPasteboardTypeFileURLPromise for a file yet to be created.
+			// 2. The sender adds kPasteboardTypeFilePromiseContent containing the UTI describing the file's content.
+			pasteboardItem.setDataProvider(self, forTypes: [.pdf, .png, .tiff, PasteboardFileURLPromise, PasteboardFilePromiseContent])
+
+			// 3.
+			let draggingItem = NSDraggingItem(pasteboardWriter: pasteboardItem)
+
+			// Generate drag representation
+			let sz = CGSize(width: 128, height: 128)
+			let image = self.document.nsImage(sz, scale: 2)
+
+			draggingItem.setDraggingFrame(CGRect(origin: .zero, size: sz), contents: image)
+
+			beginDraggingSession(with: [draggingItem], event: event, source: self)
+		}
+	}
+}
+
+extension QRCodeView: NSDraggingSource {
+	public func draggingSession(_: NSDraggingSession, sourceOperationMaskFor _: NSDraggingContext) -> NSDragOperation {
+		if self.supportsDrag {
+			return .copy
+		}
+		return []
+	}
+}
+
+extension QRCodeView: NSPasteboardItemDataProvider {
+	public func pasteboard(_ pasteboard: NSPasteboard?, item: NSPasteboardItem, provideDataForType type: NSPasteboard.PasteboardType) {
+		// If there's no pasteboard, we can't do anything
+		guard let pasteboard = pasteboard else {
+			return
+		}
+
+		if type == .pdf {
+			let pdfData = self.document.pdfData(self.dragImageSize)
+			pasteboard.setData(pdfData, forType: .pdf)
+		}
+		else if type == .tiff,
+			let imageData = self.document.nsImage(self.dragImageSize, scale: 2)?.tiffRepresentation {
+			pasteboard.setData(imageData, forType: .tiff)
+		}
+		else if type == .png,
+			let pngdata = self.document.nsImage(self.dragImageSize, scale: 2)?.pngRepresentation {
+			pasteboard.setData(pngdata, forType: .png)
+		}
+		else if type == PasteboardFilePromiseContent {
+			// 3. The receiver asks for kPasteboardTypeFilePromiseContent to decide if it wants the file.
+			// In our case, we are dropping a PDF file, so send back the pdf mime type
+			pasteboard.setString(String(kUTTypePDF), forType: PasteboardFilePromiseContent)
+		}
+		else if type == PasteboardFileURLPromise {
+			// 4. The receiver asks for kPasteboardTypeFileURLPromise.
+			guard let str = pasteboard.string(forType: PasteboardFilePasteLocation),
+				let destinationFolderURL = URL(string: str) else {
+				return
+			}
+
+			// Make sure we have a unique name for the dropped file
+			let dest = FileManager.UniqueFileURL(for: "Dropped QRCode.pdf", in: destinationFolderURL)
+			
+			let pdfData = self.document.pdfData(self.dragImageSize)
+			do {
+				try pdfData?.write(to: dest, options: .atomic)
+
+				// 5. The sender's promise callback for kPasteboardTypeFileURLPromise is called.
+				pasteboard.setString(dest.absoluteString, forType: PasteboardFileURLPromise)
+			}
+			catch {
+				print(error)
+			}
+		}
+	}
+}
+#endif
 
 #endif
