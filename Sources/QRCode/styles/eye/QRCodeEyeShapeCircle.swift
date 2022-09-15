@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeStyleCircle.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -57,7 +56,25 @@ public extension QRCode.EyeShape {
 			return circleEyePath
 		}
 
-		public func pupilPath() -> CGPath {
+		private static let _defaultPupil = QRCode.PupilShape.Circle()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A circle style pupil design
+	@objc(QRCodePupilShapeCircle) class Circle: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "Circle" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			Circle()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { Circle() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			return CGPath(ellipseIn: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
 		}
 	}

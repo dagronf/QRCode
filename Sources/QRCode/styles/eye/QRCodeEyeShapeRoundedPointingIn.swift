@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeStyleLeaf.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -59,8 +58,24 @@ public extension QRCode.EyeShape {
 			tearEyePath.close()
 			return tearEyePath
 		}
-		
-		public func pupilPath() -> CGPath {
+
+		private static let generator_ = QRCode.PupilShape.RoundedPointingIn()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self.generator_ }
+	}
+}
+
+public extension QRCode.PupilShape {
+	/// A 'rounded rect with a pointy bit facing inwards' style pupil design
+	@objc(QRCodePupilShapeRoundedPointingIn) class RoundedPointingIn: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "RoundedPointingIn" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			RoundedPointingIn()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { RoundedPointingIn() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerRadius: 6,

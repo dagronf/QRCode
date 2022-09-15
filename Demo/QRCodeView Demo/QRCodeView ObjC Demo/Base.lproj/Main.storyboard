@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21503.1" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21503.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -715,12 +715,20 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is an Objective-C test"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
-                                        <color key="value" red="0.16038380260000001" green="0.15716277309999999" blue="0.38040411280000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.37445163729999997" green="0.13120910529999999" blue="0.75954717400000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                        <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibEyeShape" value="roundedOuter"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibPupilShape" value="barsVertical"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibPupilColor">
+                                        <color key="value" red="0.28442225017357087" green="0.091292767255581511" blue="0.30587278375971505" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="ibEyeColor">
+                                        <color key="value" red="0.052926726639999998" green="0.16026672719999999" blue="0.6928522587" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>

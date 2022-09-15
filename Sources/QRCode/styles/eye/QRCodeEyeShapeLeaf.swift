@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeStyleLeaf.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -59,7 +58,25 @@ public extension QRCode.EyeShape {
 			return eyePath
 		}
 		
-		public func pupilPath() -> CGPath {
+		private static let _defaultPupil = QRCode.PupilShape.Leaf()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A 'leaf' style pupil design
+	@objc(QRCodePupilShapeLeaf) class Leaf: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "Leaf" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			Leaf()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { Leaf() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerRadius: 6,

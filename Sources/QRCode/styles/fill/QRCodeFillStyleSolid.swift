@@ -50,15 +50,23 @@ public extension QRCode.FillStyle {
 			self.color = color
 		}
 
+		/// Create a color from rgb float values
+		@objc public convenience init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) {
+			self.init(CGColor(red: red, green: green, blue: blue, alpha: 1))
+		}
+
+		/// Returns a new copy of the fill style
 		public func copyStyle() -> QRCodeFillStyleGenerator {
 			return Solid(self.color.copy()!)
 		}
 
+		/// fill the provided rect in the context with the current fill color
 		public func fill(ctx: CGContext, rect: CGRect) {
 			ctx.setFillColor(color)
 			ctx.fill(rect)
 		}
 
+		/// fill the provided path in the context with the current fill color
 		public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
 			ctx.setFillColor(color)
 			ctx.addPath(path)

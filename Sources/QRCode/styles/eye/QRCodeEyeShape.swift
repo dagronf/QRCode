@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeShape.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -40,7 +39,8 @@ public extension QRCode {
 	@objc func settings() -> [String: Any]
 	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
-	@objc func pupilPath() -> CGPath
+
+	@objc func defaultPupil() -> QRCodePupilShapeGenerator
 }
 
 public extension QRCodeEyeShapeGenerator {
@@ -49,6 +49,32 @@ public extension QRCodeEyeShapeGenerator {
 	internal func coreSettings() -> [String: Any] {
 		var core: [String: Any] = [EyeShapeTypeName_: self.name]
 		core[EyeShapeSettingsName_] = self.settings()
+		return core
+	}
+}
+
+internal let PupilShapeTypeName_ = "type"
+internal let PupilShapeSettingsName_ = "settings"
+
+public extension QRCode {
+	/// The shape of an 'eye' within the qr code
+	@objc(QRCodePupilShape) class PupilShape: NSObject {}
+}
+
+@objc public protocol QRCodePupilShapeGenerator {
+	@objc static var Name: String { get }
+	@objc static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator
+	@objc func settings() -> [String: Any]
+	@objc func copyShape() -> QRCodePupilShapeGenerator
+	@objc func pupilPath() -> CGPath
+}
+
+public extension QRCodePupilShapeGenerator {
+	var name: String { return Self.Name }
+
+	internal func coreSettings() -> [String: Any] {
+		var core: [String: Any] = [PupilShapeTypeName_: self.name]
+		core[PupilShapeSettingsName_] = self.settings()
 		return core
 	}
 }

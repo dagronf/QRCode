@@ -1,5 +1,5 @@
 //
-//  QRCodeEyeShapeFactory.swift
+//  QRCodePupilShapeFactory.swift
 //
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
@@ -19,26 +19,25 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import CoreGraphics
 import Foundation
 
 /// An eye shape factory
-@objc public class QRCodeEyeShapeFactory: NSObject {
+@objc public class QRCodePupilShapeFactory: NSObject {
 	/// A shared eye shape factory
-	@objc public static let shared = QRCodeEyeShapeFactory()
+	@objc public static let shared = QRCodePupilShapeFactory()
 
 	/// Create
 	@objc override public init() {
 		self.registeredTypes = [
-			QRCode.EyeShape.Circle.self,
-			QRCode.EyeShape.RoundedRect.self,
-			QRCode.EyeShape.RoundedPointingIn.self,
-			QRCode.EyeShape.Squircle.self,
-			QRCode.EyeShape.RoundedOuter.self,
-			QRCode.EyeShape.Square.self,
-			QRCode.EyeShape.Leaf.self,
-			QRCode.EyeShape.BarsVertical.self,
-			QRCode.EyeShape.BarsHorizontal.self,
+			QRCode.PupilShape.Circle.self,
+			QRCode.PupilShape.RoundedRect.self,
+			QRCode.PupilShape.RoundedPointingIn.self,
+			QRCode.PupilShape.Squircle.self,
+			QRCode.PupilShape.RoundedOuter.self,
+			QRCode.PupilShape.Square.self,
+			QRCode.PupilShape.Leaf.self,
+			QRCode.PupilShape.BarsVertical.self,
+			QRCode.PupilShape.BarsHorizontal.self,
 		]
 		super.init()
 	}
@@ -48,7 +47,7 @@ import Foundation
 	}
 
 	/// Return a new instance of an eye shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodeEyeShapeGenerator? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePupilShapeGenerator? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
@@ -56,29 +55,35 @@ import Foundation
 	}
 
 	/// Create an eye shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> QRCodeEyeShapeGenerator? {
-		guard let type = settings[EyeShapeTypeName_] as? String else { return nil }
-		let settings = settings[EyeShapeSettingsName_] as? [String: Any] ?? [:]
+	@objc public func create(settings: [String: Any]) -> QRCodePupilShapeGenerator? {
+		guard let type = settings[PupilShapeTypeName_] as? String else { return nil }
+		let settings = settings[PupilShapeSettingsName_] as? [String: Any] ?? [:]
 		return self.named(type, settings: settings)
 	}
 
 	// Private
 
-	internal var registeredTypes: [QRCodeEyeShapeGenerator.Type]
+	internal var registeredTypes: [QRCodePupilShapeGenerator.Type]
 }
 
-public extension QRCodeEyeShapeFactory {
-	/// Generate an image of the eye represented by a specific eye generator
+///////////
+
+#if os(macOS)
+import AppKit
+#endif
+
+import CoreGraphics
+
+public extension QRCodePupilShapeFactory {
+	/// Generate an image of the data represented by a specific data generator for a fixed 5x5 data pixel representation
 	/// - Parameters:
-	///   - eye: The eye generator to use
-	///   - pupil: The pupil generator to use. If nil, uses the default eye pupil
+	///   - pixelShape: The pixel generator to use
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
-	/// - Returns: A CGImage representation of the eye
+	/// - Returns: A CGImage representation of the data
 	func image(
-		eye: QRCodeEyeShapeGenerator,
-		pupil: QRCodePupilShapeGenerator? = nil,
+		pupilGenerator: QRCodePupilShapeGenerator,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil
@@ -115,10 +120,7 @@ public extension QRCodeEyeShapeFactory {
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
-		path.addPath(eye.eyePath(), transform: scaleTransform)
-
-		let pupil = pupil ?? eye.defaultPupil()
-		path.addPath(pupil.pupilPath(), transform: scaleTransform)
+		path.addPath(pupilGenerator.pupilPath(), transform: scaleTransform)
 
 		context.addPath(path)
 		context.setFillColor(foregroundColor)
@@ -129,19 +131,20 @@ public extension QRCodeEyeShapeFactory {
 	}
 }
 
-#if os(macOS)
-import AppKit
-#else
-import UIKit
-#endif
 
-public extension QRCodeEyeShapeFactory {
-	#if os(macOS)
-	func nsImage(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
-		if let cgi = image(eye: eye, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
+
+public extension QRCodePupilShapeFactory {
+#if os(macOS)
+	/// Create an NSImage representation of a pixel shape
+	func nsImage(
+		pupilGenerator: QRCodePupilShapeGenerator,
+		dimension: CGFloat,
+		foregroundColor: NSColor
+	) -> NSImage? {
+		if let cgi = image(pupilGenerator: pupilGenerator, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
 			return NSImage(cgImage: cgi, size: .zero)
 		}
 		return nil
 	}
-	#endif
+#endif
 }

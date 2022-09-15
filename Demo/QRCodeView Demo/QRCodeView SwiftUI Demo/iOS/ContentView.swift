@@ -19,6 +19,7 @@ struct ContentView: View {
 
 	@State var pixelShape: PixelShapeType = .square
 	@State var eyeStyle: EyeShapeType = .square
+	@State var pupilStyle: PupilShapeType = .square
 
 	@State var dataInset: Double = 0
 	@State var cornerRadiusFraction: Double = 0.5
@@ -35,7 +36,8 @@ struct ContentView: View {
 			self.pixelShape,
 			inset: dataInset,
 			cornerRadiusFraction: cornerRadiusFraction)
-		let eyeStyle = eyeShapeHandler(self.eyeStyle)
+		let _eyeStyle = eyeShapeHandler(self.eyeStyle)
+		let _pupilStyle = pupilShapeHandler(self.pupilStyle)
 
 		ScrollView {
 			VStack {
@@ -64,24 +66,41 @@ struct ContentView: View {
 					Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
 					Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 
-					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
-						Text("Square").tag(EyeShapeType.square)
-						Text("Round Rect").tag(EyeShapeType.roundedRect)
-						Text("Circle").tag(EyeShapeType.circle)
-						Text("Leaf").tag(EyeShapeType.leaf)
-						Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
-						Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
-						Text("Squircle").tag(EyeShapeType.squircle)
-						Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
-						Text("Bar Vertical").tag(EyeShapeType.barVertical)
-					}.pickerStyle(WheelPickerStyle())
-					
+					VStack {
+						Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
+							Text("Square").tag(EyeShapeType.square)
+							Text("Round Rect").tag(EyeShapeType.roundedRect)
+							Text("Circle").tag(EyeShapeType.circle)
+							Text("Leaf").tag(EyeShapeType.leaf)
+							Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
+							Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
+							Text("Squircle").tag(EyeShapeType.squircle)
+							Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
+							Text("Bar Vertical").tag(EyeShapeType.barVertical)
+						}.pickerStyle(WheelPickerStyle())
+
+						Picker(selection: $pupilStyle, label: Text("Pupil Shape:")) {
+							Text("Square").tag(PupilShapeType.square)
+							Text("Round Rect").tag(PupilShapeType.roundedRect)
+							Text("Circle").tag(PupilShapeType.circle)
+							Text("Leaf").tag(PupilShapeType.leaf)
+							Text("Rounded Outer").tag(PupilShapeType.roundedOuter)
+							Text("Rounded Pointing In").tag(PupilShapeType.roundedPointingIn)
+							Text("Squircle").tag(PupilShapeType.squircle)
+							Text("Bar Horizontal").tag(PupilShapeType.barHorizontal)
+							Text("Bar Vertical").tag(PupilShapeType.barVertical)
+						}.pickerStyle(WheelPickerStyle())
+					}
+					.onChange(of: eyeStyle) { newValue in
+						pupilStyle = PupilShapeType(rawValue: newValue.rawValue)!
+					}
+
 					ColorPicker("Data Color", selection: $dataColor)
 					ColorPicker("Eye Color", selection: $eyeColor)
 					ColorPicker("Pupil Color", selection: $pupilColor)
 					ColorPicker("Background", selection: $backgroundColor)
-
 				}
+
 				.frame(alignment: .top)
 				.padding()
 
@@ -89,11 +108,11 @@ struct ContentView: View {
 					backgroundColor
 					qrContent
 						.components(.eyeOuter)
-						.eyeShape(eyeStyle)
+						.eyeShape(_eyeStyle)
 						.fill(eyeColor)
 					qrContent
 						.components(.eyePupil)
-						.eyeShape(eyeStyle)
+						.pupilShape(_pupilStyle)
 						.fill(pupilColor)
 					qrContent
 						.components(.onPixels)

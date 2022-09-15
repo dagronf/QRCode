@@ -1,7 +1,6 @@
 //
 //  QRCode+Shape.swift
 //
-//  Created by Darren Ford on 29/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -55,7 +54,15 @@ public extension QRCode {
 		/// The style of eyes to display
 		///
 		/// Defaults to a simple square eye
-		@objc public var eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square()
+		@objc public var eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square() {
+			didSet {
+				// Reset the pupil shape to match the eye shape
+				pupil = nil
+			}
+		}
+
+		/// The shape of the pupil
+		@objc public var pupil: QRCodePupilShapeGenerator? = nil
 
 		/// Make a copy of the content shape
 		public func copyShape() -> Shape {
@@ -63,6 +70,7 @@ public extension QRCode {
 			c.onPixels = self.onPixels.copyShape()
 			c.offPixels = self.offPixels?.copyShape()
 			c.eye = self.eye.copyShape()
+			c.pupil = self.pupil?.copyShape()
 			return c
 		}
 	}
@@ -85,6 +93,10 @@ public extension QRCode.Shape {
 
 		// The 'eye' pixel shape settings
 		result["eye"] = eye.coreSettings()
+
+		if let pupil = pupil {
+			result["pupil"] = pupil.coreSettings()
+		}
 
 		return result
 	}
@@ -126,6 +138,12 @@ public extension QRCode.Shape {
 				  let shape = QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.offPixels = shape
+		}
+
+		if let data = settings["pupil"] as? [String: Any],
+			let pupil = QRCodePupilShapeFactory.shared.create(settings: data)
+		{
+			result.pupil = pupil
 		}
 
 		return result

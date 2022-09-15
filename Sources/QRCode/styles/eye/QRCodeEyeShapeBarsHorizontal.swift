@@ -63,7 +63,27 @@ public extension QRCode.EyeShape {
 			return roundedRectEyePath
 		}
 
-		public func pupilPath() -> CGPath {
+		private static let _defaultPupil = QRCode.PupilShape.BarsHorizontal()
+		public func defaultPupil() -> QRCodePupilShapeGenerator {
+			Self._defaultPupil
+		}
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A horizontal bars style pupil design
+	@objc(QRCodePupilShapeBarsHorizontal) class BarsHorizontal: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "barsHorizontal" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			BarsHorizontal()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { BarsHorizontal() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let rectanglePath = CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
 			let rectangle2Path = CGPath(roundedRect: CGRect(x: 30, y: 40.33, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
 			let rectangle3Path = CGPath(roundedRect: CGRect(x: 30, y: 50.66, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)

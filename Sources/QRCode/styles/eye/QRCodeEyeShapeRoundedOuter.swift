@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeStyleRoundedOuter.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -24,7 +23,7 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode.EyeShape {
-	/// A 'leaf' style eye design
+	/// A 'square with a rounded outer corner' style eye design
 	@objc(QRCodeEyeStyleRoundedOuter) class RoundedOuter: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "roundedOuter"
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -57,7 +56,25 @@ public extension QRCode.EyeShape {
 			return roundedSharpOuterPath
 		}
 		
-		public func pupilPath() -> CGPath {
+		private static let _defaultPupil = QRCode.PupilShape.RoundedOuter()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A 'square with a rounded outer corner' style pupil design
+	@objc(QRCodePupilShapeRoundedOuter) class RoundedOuter: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "RoundedOuter" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			RoundedOuter()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { RoundedOuter() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				topLeftRadius: CGSize(width: 6, height: 6)

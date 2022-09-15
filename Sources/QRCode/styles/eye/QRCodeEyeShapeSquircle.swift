@@ -1,7 +1,6 @@
 //
 //  QRCodeEyeStyleCircle.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -24,6 +23,7 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode.EyeShape {
+	/// A 'squircle' eye style
 	@objc(QRCodeEyeShapeSquircle) class Squircle: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "squircle"
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -63,7 +63,25 @@ public extension QRCode.EyeShape {
 			return eyeOuterPath
 		}
 
-		public func pupilPath() -> CGPath {
+		private static let _defaultPupil = QRCode.PupilShape.Squircle()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A 'squircle' pupil style
+	@objc(QRCodePupilShapeSquircle) class Squircle: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "squircle" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			Squircle()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { Squircle() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let eyePupilPath = CGMutablePath()
 			eyePupilPath.move(to: CGPoint(x: 45, y: 30))
 			eyePupilPath.curve(to: CGPoint(x: 57.61, y: 32.39), controlPoint1: CGPoint(x: 51.57, y: 30), controlPoint2: CGPoint(x: 55.23, y: 30))

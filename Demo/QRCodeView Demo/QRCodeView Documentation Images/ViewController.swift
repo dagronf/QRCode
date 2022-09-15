@@ -51,7 +51,7 @@ class ViewController: NSViewController {
 					eye: gen,
 					dimension: imageSize * 2,
 					foregroundColor: .black,
-					backgroundColor: .white)
+					backgroundColor: CGColor(gray: 0.9, alpha: 1))
 			else {
 				fatalError()
 			}
@@ -70,7 +70,7 @@ class ViewController: NSViewController {
 					pixelShape: gen,
 					dimension: imageSize * 2,
 					foregroundColor: .black,
-					backgroundColor: .white)
+					backgroundColor: CGColor(gray: 0.9, alpha: 1))
 			else {
 				fatalError()
 			}
@@ -79,6 +79,25 @@ class ViewController: NSViewController {
 			if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
 				let pngData = tiffData.representation(using: .png, properties: [:])
 				try! pngData?.write(to: tempURL.appendingPathComponent("data_" + name).appendingPathExtension("png"))
+			}
+		}
+
+		for name in QRCodePupilShapeFactory.shared.availableGeneratorNames.sorted() {
+			guard
+				let gen = QRCodePupilShapeFactory.shared.named(name),
+				let pupilImage = QRCodePupilShapeFactory.shared.image(
+					pupilGenerator: gen,
+					dimension: imageSize * 2,
+					foregroundColor: .black,
+					backgroundColor: CGColor(gray: 0.9, alpha: 1))
+			else {
+				fatalError()
+			}
+			let nsImage = NSImage(cgImage: pupilImage, size: CGSize(width: imageSize, height: imageSize))
+
+			if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("pupil_" + name).appendingPathExtension("png"))
 			}
 		}
 
@@ -137,6 +156,23 @@ class ViewController: NSViewController {
 			if let tiff = im3.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
 				let pngData = tiffData.representation(using: .png, properties: [:])
 				try! pngData?.write(to: tempURL.appendingPathComponent("fillstyles.png"))
+			}
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "Custom pupil")
+			doc.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
+			doc.design.shape.eye = QRCode.EyeShape.Squircle()
+			doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
+			doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+			doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
+			if let image = doc.nsImage(CGSize(width: 150, height: 150)),
+				let tiff = image.tiffRepresentation,
+				let tiffData = NSBitmapImageRep(data: tiff)
+			{
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("custompupil.png"))
 			}
 		}
 

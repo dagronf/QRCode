@@ -1,7 +1,6 @@
 //
 //  QRCodeUI.swift
 //
-//  Created by Darren Ford on 9/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -154,10 +153,23 @@ public extension QRCodeUI {
 		)
 	}
 
-	/// Change the pixel shape
+	/// Change the 'off' pixel shape
 	func offPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
 		let shape = self.contentShape.copyShape()
 		shape.offPixels = pixelShape
+		return QRCodeUI(
+			data: self.data,
+			errorCorrection: self.errorCorrection,
+			components: self.components,
+			contentShape: shape,
+			generator: self.qrCodeGenerator.generator
+		)
+	}
+
+	/// Override the pupil shape
+	func pupilShape(_ pupilShape: QRCodePupilShapeGenerator) -> QRCodeUI {
+		let shape = self.contentShape.copyShape()
+		shape.pupil = pupilShape
 		return QRCodeUI(
 			data: self.data,
 			errorCorrection: self.errorCorrection,

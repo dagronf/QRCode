@@ -243,6 +243,42 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_barsHorizontal.png" width="60"/>   |"barsHorizontal"|`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
 |<img src="./Art/images/eye_barsVertical.png" width="60"/>     |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 
+### Custom Pupil shape (optional)
+
+You can provide an override to the default `EyeShape` pupil shape to change just the shape of the pupil. There are built-in generators for
+square, circle, rounded rectangle, and more.
+
+If you don't override the pupil shape, it defaults to the eye shape's pupil shape.
+
+| Preview | Name | Class | Description |
+|---|---|---|---|
+|<img src="./Art/images/pupil_square.png" width="60"/>           |"square"|`QRCode.PupilShape.Square`|Simple square (default)|
+|<img src="./Art/images/pupil_circle.png" width="60"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
+|<img src="./Art/images/pupil_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
+|<img src="./Art/images/pupil_roundedouter.png" width="60"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/pupil_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/pupil_leaf.png" width="60"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/pupil_squircle.png" width="60"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/pupil_barsHorizontal.png" width="60"/>   |"barsHorizontal"|`QRCode.PupilShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
+|<img src="./Art/images/pupil_barsVertical.png" width="60"/>     |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
+
+<details>
+<summary>Example</summary>
+
+```swift
+let doc = QRCode.Document(utf8String: "Custom pupil")
+doc.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
+doc.design.shape.eye = QRCode.EyeShape.Squircle()
+doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
+doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
+doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
+```
+
+<img src="./Art/images/custompupil.png" width="150"/>
+
+</details>
+
 ### Data shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
@@ -279,6 +315,9 @@ doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
 doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
 doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
+
+// Set a custom pupil shape. If this isn't set, the default pixel shape for the eye is used
+doc1.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
 // Generate a image for the QRCode
 let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
@@ -507,6 +546,7 @@ Set which components of the QR code to be added to the path
 func contentShape(_ shape: QRCode.Shape) -> QRCodeUI
 func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI
 func pixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+func pupilShape(_ pupilShape: QRCodePupilShape) -> QRCodeUI
 ```
 
 Set the shape for the eye/data or both.

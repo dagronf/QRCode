@@ -99,6 +99,35 @@ final class QRCodeTests: XCTestCase {
 		}
 	}
 
+	func testBasicEncodeDecodeWithCustomPupil() throws {
+		do {
+			let doc1 = QRCode.Document()
+			doc1.data = "this is a test".data(using: .utf8)!
+			doc1.design.shape.pupil = QRCode.PupilShape.Circle()
+
+			let s = doc1.settings()
+			let doc11 = try QRCode.Document.Create(settings: s)
+			XCTAssertNotNil(doc11)
+
+			let data = try XCTUnwrap(doc1.jsonData())
+			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
+
+			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data))
+			XCTAssertNotNil(doc111)
+			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
+			XCTAssertEqual(dataStr, data111Str)
+
+			// Check that the eye shape matches that which we encoded
+			let e1 = try XCTUnwrap(doc111.design.shape.eye.name)
+			XCTAssertEqual(e1, QRCode.EyeShape.Square.Name)
+
+			// Check that the custom pupil shape make it across the encoding
+			let o1 = try XCTUnwrap(doc111.design.shape.pupil?.name)
+			let r1 = try XCTUnwrap(doc111.design.shape.pupil?.name)
+			XCTAssertEqual(o1, r1)
+		}
+	}
+
 	func testBasicCreate() throws {
 		do {
 			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high)

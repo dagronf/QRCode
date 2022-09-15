@@ -63,8 +63,27 @@ public extension QRCode.EyeShape {
 			return roundedRectEyePath
 		}
 
-		public func pupilPath() -> CGPath {
-			//// RoundedRectPupil Drawing
+		private static let _defaultPupil = QRCode.PupilShape.BarsVertical()
+		public func defaultPupil() -> QRCodePupilShapeGenerator {
+			Self._defaultPupil
+		}
+	}
+}
+
+// MARK: - Pupil shape
+
+public extension QRCode.PupilShape {
+	/// A vertical bars style pupil design
+	@objc(QRCodePupilShapeBarsVertical) class BarsVertical: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "barsVertical" }
+		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+			BarsVertical()
+		}
+		@objc public func copyShape() -> QRCodePupilShapeGenerator { BarsVertical() }
+		@objc public func settings() -> [String : Any] { [:] }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
 			let roundedRectPupilPath = CGPath(roundedRect: CGRect(x: 30, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
 			let roundedRectPupil2Path = CGPath(roundedRect: CGRect(x: 40.33, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
 			let roundedRectPupil3Path = CGPath(roundedRect: CGRect(x: 50.66, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)

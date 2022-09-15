@@ -107,6 +107,7 @@ import UIKit
 
 	private var _eyeShape: String = ""
 	private var _pixelShape: String = ""
+	private var _pupilShape: String = ""
 }
 
 // MARK: - Interface Builder conveniences
@@ -122,6 +123,12 @@ public extension QRCodeView {
 	@IBInspectable var ibPixelShape: String {
 		get { _pixelShape }
 		set { _pixelShape = newValue; self.regenerate() }
+	}
+
+	/// The name of the shape generator for the data
+	@IBInspectable var ibPupilShape: String {
+		get { _pupilShape }
+		set { _pupilShape = newValue; self.regenerate() }
 	}
 
 	/// Interface builder correction level
@@ -228,6 +235,7 @@ extension QRCodeView {
 		self.document.update(self.data, errorCorrection: self.errorCorrection)
 		self.document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
 		self.document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
+		self.document.design.shape.pupil = (_pupilShape.count > 0) ? QRCodePupilShapeFactory.shared.named(_pupilShape) : nil
 		self.setNeedsDisplay()
 	}
 }
