@@ -38,6 +38,8 @@ import Foundation
 			QRCode.EyeShape.RoundedOuter.self,
 			QRCode.EyeShape.Square.self,
 			QRCode.EyeShape.Leaf.self,
+			QRCode.EyeShape.BarsVertical.self,
+			QRCode.EyeShape.BarsHorizontal.self,
 		]
 		super.init()
 	}

@@ -240,6 +240,8 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
 |<img src="./Art/images/eye_leaf.png" width="60"/>             |"leaf"|`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/eye_squircle.png" width="60"/>         |"squircle"|`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/eye_barsHorizontal.png" width="60"/>   |"barsHorizontal"|`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
+|<img src="./Art/images/eye_barsVertical.png" width="60"/>     |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 
 ### Data shape
 

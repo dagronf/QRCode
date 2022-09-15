@@ -1,7 +1,6 @@
 //
-//  QRCodeEyeStyleRoundedRect.swift
+//  QRCodeEyeShapeBarsHorizontal.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -24,11 +23,11 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode.EyeShape {
-	/// A 'rounded rect with a pointy bit facing inwards' style eye design
-	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
-		@objc public static let Name = "roundedRect"
+	/// An eye with vertical bars as the pupil
+	@objc(QRCodeEyeStyleBarsHorizontal) class BarsHorizontal: NSObject, QRCodeEyeShapeGenerator {
+		@objc public static let Name = "barsHorizontal"
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
-			return QRCode.EyeShape.RoundedRect()
+			return QRCode.EyeShape.BarsHorizontal()
 		}
 
 		// Has no configurable settings
@@ -65,7 +64,16 @@ public extension QRCode.EyeShape {
 		}
 
 		public func pupilPath() -> CGPath {
-			return CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
+			let rectanglePath = CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
+			let rectangle2Path = CGPath(roundedRect: CGRect(x: 30, y: 40.33, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
+			let rectangle3Path = CGPath(roundedRect: CGRect(x: 30, y: 50.66, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
+
+			let result = CGMutablePath()
+			result.addPath(rectanglePath)
+			result.addPath(rectangle2Path)
+			result.addPath(rectangle3Path)
+			result.close()
+			return result
 		}
 	}
 }
