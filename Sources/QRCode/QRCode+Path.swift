@@ -151,7 +151,8 @@ public extension QRCode {
 		}
 
 		// 'off' pixels
-		if components.contains(.offPixels), let offPixelShape = shape.offPixels {
+		if components.contains(.offPixels) {
+			let offPixelShape = shape.offPixels ?? QRCode.PixelShape.Square()
 			path.addPath(offPixelShape.offPath(size: size, data: self, isTemplate: false))
 		}
 
