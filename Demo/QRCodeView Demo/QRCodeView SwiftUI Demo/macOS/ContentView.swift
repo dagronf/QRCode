@@ -69,6 +69,8 @@ struct ContentView: View {
 					Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
 					Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
 					Text("Squircle").tag(EyeShapeType.squircle)
+					Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
+					Text("Bar Vertical").tag(EyeShapeType.barVertical)
 				}.pickerStyle(RadioGroupPickerStyle())
 				HStack {
 					ColorPicker("Data Color", selection: $dataColor)

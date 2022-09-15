@@ -27,6 +27,8 @@ enum EyeShapeType {
 	case roundedOuter
 	case roundedPointingIn
 	case squircle
+	case barHorizontal
+	case barVertical
 }
 
 func pixelShapeHandler(_ pixelShape: PixelShapeType, inset: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodePixelShapeGenerator {
@@ -66,5 +68,9 @@ func eyeShapeHandler(_ eyeStyle: EyeShapeType) -> QRCodeEyeShapeGenerator {
 		return QRCode.EyeShape.RoundedPointingIn()
 	case .squircle:
 		return QRCode.EyeShape.Squircle()
+	case .barHorizontal:
+		return QRCode.EyeShape.BarsHorizontal()
+	case .barVertical:
+		return QRCode.EyeShape.BarsVertical()
 	}
 }
