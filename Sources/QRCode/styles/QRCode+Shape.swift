@@ -61,7 +61,7 @@ public extension QRCode {
 			}
 		}
 
-		/// The shape of the pupil
+		/// The shape of the pupil. If nil, uses the default pupil shape as defined by the eye
 		@objc public var pupil: QRCodePupilShapeGenerator? = nil
 
 		/// Make a copy of the content shape

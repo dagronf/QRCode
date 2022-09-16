@@ -117,7 +117,7 @@ struct ContentView: View {
 					.fill(pupilColor)
 				qrContent
 					.components(.onPixels)
-					.pixelShape(pixelShape)
+					.onPixelShape(pixelShape)
 					.fill(dataColor)
 //				qrContent
 //					.components(.unsetContent)

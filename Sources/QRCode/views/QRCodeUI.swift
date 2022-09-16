@@ -31,17 +31,17 @@ public struct QRCodeUI: Shape {
 		data: Data,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape(),
+		shape: QRCode.Shape = QRCode.Shape(),
 		generator: QRCodeEngine? = nil
 	) {
-		self.data = data
-		self.errorCorrection = errorCorrection
-		self.components = components
-		self.contentShape = contentShape
+		self.data__ = data
+		self.errorCorrection__ = errorCorrection
+		self.components__ = components
+		self.shape__ = shape
 		if let g = generator {
-			self.qrCodeGenerator.generator = g
+			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator.update(data, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified text
@@ -49,18 +49,18 @@ public struct QRCodeUI: Shape {
 		text: String,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape(),
+		shape: QRCode.Shape = QRCode.Shape(),
 		generator: QRCodeEngine? = nil
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
-		self.data = data
-		self.errorCorrection = errorCorrection
-		self.components = components
-		self.contentShape = contentShape
+		self.data__ = data
+		self.errorCorrection__ = errorCorrection
+		self.components__ = components
+		self.shape__ = shape
 		if let g = generator {
-			self.qrCodeGenerator.generator = g
+			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator.update(data, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified message formatter
@@ -68,25 +68,25 @@ public struct QRCodeUI: Shape {
 		message: QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
-		contentShape: QRCode.Shape = QRCode.Shape(),
+		shape: QRCode.Shape = QRCode.Shape(),
 		generator: QRCodeEngine? = nil
 	) {
-		self.data = message.data
-		self.errorCorrection = errorCorrection
-		self.components = components
-		self.contentShape = contentShape
+		self.data__ = message.data
+		self.errorCorrection__ = errorCorrection
+		self.components__ = components
+		self.shape__ = shape
 		if let g = generator {
-			self.qrCodeGenerator.generator = g
+			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator.update(self.data, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(self.data__, errorCorrection: errorCorrection)
 	}
 
 	// Private
-	private let data: Data
-	private let contentShape: QRCode.Shape
-	private let components: QRCode.Components
-	private let errorCorrection: QRCode.ErrorCorrection
-	private let qrCodeGenerator = QRCode()
+	private let data__: Data
+	private let shape__: QRCode.Shape
+	private let components__: QRCode.Components
+	private let errorCorrection__: QRCode.ErrorCorrection
+	private let qrCodeGenerator__ = QRCode()
 }
 
 // MARK: - Modifiers
@@ -97,85 +97,98 @@ public extension QRCodeUI {
 	/// Returns a copy of the qrcode using the specified error correction level
 	func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
 		return QRCodeUI(
-			data: self.data,
+			data: self.data__,
 			errorCorrection: errorCorrection,
-			components: self.components,
-			contentShape: self.contentShape.copyShape(),
-			generator: self.qrCodeGenerator.generator
+			components: self.components__,
+			shape: self.shape__.copyShape(),
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
 	/// Returns a copy of the qrcode using only the specified components being generated.
 	func components(_ components: QRCode.Components) -> QRCodeUI {
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
 			components: components,
-			contentShape: self.contentShape.copyShape(),
-			generator: self.qrCodeGenerator.generator
+			shape: self.shape__.copyShape(),
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
 	/// Returns a copy of the qrcode using the specified shape (both eye and data)
+	@available(*, deprecated, renamed: "shape")
 	func contentShape(_ shape: QRCode.Shape) -> QRCodeUI {
+		self.shape(shape)
+	}
+
+	/// Returns a copy of the qrcode using the specified shape (both eye and data)
+	@available(*, deprecated, renamed: "shape")
+	func shape(_ shape: QRCode.Shape) -> QRCodeUI {
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape.copyShape(),
-			generator: self.qrCodeGenerator.generator
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: shape.copyShape(),
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
 	/// Change the eye shape to another shape
 	func eyeShape(_ eyeShape: QRCodeEyeShapeGenerator) -> QRCodeUI {
-		let shape = self.contentShape.copyShape()
+		let shape = self.shape__.copyShape()
 		shape.eye = eyeShape
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape,
-			generator: self.qrCodeGenerator.generator
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: shape,
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
-	/// Change the pixel shape
+	/// Change the 'on' pixel shape
+	@available(*, deprecated, renamed: "onPixelShape")
 	func pixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
-		let shape = self.contentShape.copyShape()
+		onPixelShape(pixelShape)
+	}
+
+	/// Change the 'on' pixel shape
+	func onPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
+		let shape = self.shape__.copyShape()
 		shape.onPixels = pixelShape
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape,
-			generator: self.qrCodeGenerator.generator
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: shape,
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
 	/// Change the 'off' pixel shape
 	func offPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeUI {
-		let shape = self.contentShape.copyShape()
+		let shape = self.shape__.copyShape()
 		shape.offPixels = pixelShape
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape,
-			generator: self.qrCodeGenerator.generator
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: shape,
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
 	/// Override the pupil shape
 	func pupilShape(_ pupilShape: QRCodePupilShapeGenerator) -> QRCodeUI {
-		let shape = self.contentShape.copyShape()
+		let shape = self.shape__.copyShape()
 		shape.pupil = pupilShape
 		return QRCodeUI(
-			data: self.data,
-			errorCorrection: self.errorCorrection,
-			components: self.components,
-			contentShape: shape,
-			generator: self.qrCodeGenerator.generator
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: shape,
+			generator: self.qrCodeGenerator__.generator
 		)
 	}
 
@@ -192,7 +205,7 @@ public extension QRCodeUI {
 public extension QRCodeUI {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
-		let path = self.qrCodeGenerator.path(rect.size, components: self.components, shape: self.contentShape) // pixelStyle: self.pixelStyle)
+		let path = self.qrCodeGenerator__.path(rect.size, components: self.components__, shape: self.shape__)
 		return Path(path)
 	}
 }
@@ -213,7 +226,7 @@ struct QRCodeUI_Previews: PreviewProvider {
 			HStack {
 				QRCodeUI(text: DemoContent, errorCorrection: .low)!
 					.components(.all)
-					.pixelShape(QRCodePixelShapeFactory.shared.named("circle")!)
+					.onPixelShape(QRCodePixelShapeFactory.shared.named("circle")!)
 				QRCodeUI(text: DemoContent2, errorCorrection: .medium)!
 			}
 

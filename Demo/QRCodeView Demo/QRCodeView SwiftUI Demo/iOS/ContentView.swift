@@ -116,7 +116,7 @@ struct ContentView: View {
 						.fill(pupilColor)
 					qrContent
 						.components(.onPixels)
-						.pixelShape(pixelShape)
+						.onPixelShape(pixelShape)
 						.fill(dataColor)
 				}
 				.frame(width: 250, height: 250, alignment: .center)
@@ -127,7 +127,7 @@ struct ContentView: View {
 					errorCorrection: .high
 				)!
 				.eyeShape(QRCode.EyeShape.Leaf())
-				.pixelShape(QRCode.PixelShape.RoundedPath())
+				.onPixelShape(QRCode.PixelShape.RoundedPath())
 				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
 				.shadow(color: .black, radius: 1, x: 1, y: 1)
 				.frame(width: 250, height: 250, alignment: .center)

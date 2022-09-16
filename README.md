@@ -543,13 +543,34 @@ func components(_ components: QRCode.Components) -> QRCodeUI
 Set which components of the QR code to be added to the path
 
 ```swift
-func contentShape(_ shape: QRCode.Shape) -> QRCodeUI
+func shape(_ shape: QRCode.Shape) -> QRCodeUI
+```
+
+Set the shape (onPixels, offPixels, eye, pupil)
+
+```swift
 func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI
-func pixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+```
+
+Set the shape of the eye (eye and pupil)
+
+```swift
 func pupilShape(_ pupilShape: QRCodePupilShape) -> QRCodeUI
 ```
 
-Set the shape for the eye/data or both.
+Set the shape of the pupil
+
+```swift
+func onPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+```
+
+Set the shape of the 'on' pixels in the QR code
+
+```swift
+func offPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+```
+
+Set the shape of the 'off' pixels in the QR code
 
 <details>
 <summary>Example</summary> 
