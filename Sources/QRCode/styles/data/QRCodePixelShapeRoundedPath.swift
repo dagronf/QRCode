@@ -27,7 +27,7 @@ public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapeRoundedPath) class RoundedPath: NSObject, QRCodePixelShapeGenerator {
 		public static var Name = "roundedPath"
 		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? DefaultCornerRadiusValue
+			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? self.DefaultCornerRadiusValue
 			return RoundedPath(cornerRadiusFraction: radius)
 		}
 
@@ -40,32 +40,33 @@ public extension QRCode.PixelShape {
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 
 		// The default radius for the curved edges is 3
-		static let DefaultCornerRadiusValue: CGFloat = 0.3
+		private static let DefaultCornerRadiusValue: CGFloat = 0.3
 
-		private var actualRadiusSize: CGSize = CGSize(width: 3, height: 3)
-		private var actualRadius: CGFloat = 3 {
-			didSet {
-				actualRadiusSize = CGSize(width: actualRadius, height: actualRadius)
-			}
+		private var actualRadiusSize = CGSize(width: 3, height: 3)
+		private var actualRadius: CGFloat = 3
+
+		private func cornerRadiusChanged() {
+			self.actualRadius = self._cornerRadius * 5
+			self.actualRadiusSize = CGSize(width: self.actualRadius, height: self.actualRadius)
 		}
 
 		// The radius as relates to the 10x10 pixel size
 		private var _cornerRadius: CGFloat = DefaultCornerRadiusValue {
 			didSet {
-				actualRadius = _cornerRadius * 5
+				self.cornerRadiusChanged()
 			}
 		}
 
 		/// The corner radius fraction (0 ... 1)
 		@objc public var cornerRadiusFraction: CGFloat {
-			get { _cornerRadius }
-			set { _cornerRadius = newValue.clamped(to: 0 ... 1) }
+			get { self._cornerRadius }
+			set { self._cornerRadius = newValue.clamped(to: 0 ... 1) }
 		}
 
 		@objc public init(cornerRadiusFraction: CGFloat = 0.3) {
 			self._cornerRadius = cornerRadiusFraction.clamped(to: 0 ... 1)
-			self.actualRadius = self._cornerRadius * 5
-			self.actualRadiusSize = CGSize(width: self.actualRadius, height: self.actualRadius)
+			super.init()
+			self.cornerRadiusChanged()
 		}
 
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
@@ -253,5 +254,4 @@ private extension QRCode.PixelShape.RoundedPath {
 			bottomLeftRadius: actualRadiusSize
 		)
 	}
-
 }
