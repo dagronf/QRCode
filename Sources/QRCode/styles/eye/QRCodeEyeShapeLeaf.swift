@@ -68,7 +68,7 @@ public extension QRCode.EyeShape {
 public extension QRCode.PupilShape {
 	/// A 'leaf' style pupil design
 	@objc(QRCodePupilShapeLeaf) class Leaf: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "Leaf" }
+		@objc public static var Name: String { "leaf" }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Leaf()
 		}

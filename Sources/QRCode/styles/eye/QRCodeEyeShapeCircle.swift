@@ -66,7 +66,7 @@ public extension QRCode.EyeShape {
 public extension QRCode.PupilShape {
 	/// A circle style pupil design
 	@objc(QRCodePupilShapeCircle) class Circle: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "Circle" }
+		@objc public static var Name: String { "circle" }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Circle()
 		}
