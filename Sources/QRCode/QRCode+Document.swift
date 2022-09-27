@@ -59,6 +59,14 @@ public extension QRCode {
 			didSet { self.regenerate() }
 		}
 
+		@objc public func copyDocument() -> Document {
+			let c = Document()
+			c.data = self.data
+			c.design = self.design.copyDesign()
+			c.errorCorrection = self.errorCorrection
+			return c
+		}
+
 		/// Create a QRCode document with default settings
 		@objc public override init() {
 			self.qrcode = QRCode()
