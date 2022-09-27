@@ -46,27 +46,29 @@ struct ContentView: View {
 						Text("Content")
 						TextField("Text", text: $content)
 					}
-					Picker(selection: $correction, label: Text("Error correction:")) {
-						Text("Low (L)").tag(QRCode.ErrorCorrection.low)
-						Text("Medium (M)").tag(QRCode.ErrorCorrection.medium)
-						Text("Quantize (Q)").tag(QRCode.ErrorCorrection.quantize)
-						Text("Max (H)").tag(QRCode.ErrorCorrection.high)
-					}.pickerStyle(WheelPickerStyle())
+					HStack {
+						Picker(selection: $correction, label: Text("Error correction:")) {
+							Text("Low (L)").tag(QRCode.ErrorCorrection.low)
+							Text("Medium (M)").tag(QRCode.ErrorCorrection.medium)
+							Text("Quantize (Q)").tag(QRCode.ErrorCorrection.quantize)
+							Text("Max (H)").tag(QRCode.ErrorCorrection.high)
+						}.pickerStyle(WheelPickerStyle())
 
-					Picker(selection: $pixelShape, label: Text("Data Shape:")) {
-						Text("Square").tag(PixelShapeType.square)
-						Text("Round Rect").tag(PixelShapeType.roundedrect)
-						Text("Circle").tag(PixelShapeType.circle)
-						Text("Squircle").tag(PixelShapeType.squircle)
-						Text("Horizontal").tag(PixelShapeType.horizontal)
-						Text("Vertical").tag(PixelShapeType.vertical)
-						Text("Rounded Path").tag(PixelShapeType.roundedpath)
-						Text("Pointy").tag(PixelShapeType.pointy)
-					}.pickerStyle(WheelPickerStyle())
+						Picker(selection: $pixelShape, label: Text("Data Shape:")) {
+							Text("Square").tag(PixelShapeType.square)
+							Text("Round Rect").tag(PixelShapeType.roundedrect)
+							Text("Circle").tag(PixelShapeType.circle)
+							Text("Squircle").tag(PixelShapeType.squircle)
+							Text("Horizontal").tag(PixelShapeType.horizontal)
+							Text("Vertical").tag(PixelShapeType.vertical)
+							Text("Rounded Path").tag(PixelShapeType.roundedpath)
+							Text("Pointy").tag(PixelShapeType.pointy)
+						}.pickerStyle(WheelPickerStyle())
+					}
 					Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
 					Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 
-					VStack {
+					HStack {
 						Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
 							Text("Square").tag(EyeShapeType.square)
 							Text("Round Rect").tag(EyeShapeType.roundedRect)
@@ -77,6 +79,7 @@ struct ContentView: View {
 							Text("Squircle").tag(EyeShapeType.squircle)
 							Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
 							Text("Bar Vertical").tag(EyeShapeType.barVertical)
+							Text("Pixels").tag(EyeShapeType.pixels)
 						}.pickerStyle(WheelPickerStyle())
 
 						Picker(selection: $pupilStyle, label: Text("Pupil Shape:")) {
@@ -89,6 +92,7 @@ struct ContentView: View {
 							Text("Squircle").tag(PupilShapeType.squircle)
 							Text("Bar Horizontal").tag(PupilShapeType.barHorizontal)
 							Text("Bar Vertical").tag(PupilShapeType.barVertical)
+							Text("Pixels").tag(PupilShapeType.pixels)
 						}.pickerStyle(WheelPickerStyle())
 					}
 					.onChange(of: eyeStyle) { newValue in
@@ -122,15 +126,15 @@ struct ContentView: View {
 				.frame(width: 250, height: 250, alignment: .center)
 				.padding()
 
-				QRCodeUI(
-					text: "A static simple QR code with some basic styling",
-					errorCorrection: .high
-				)!
-				.eyeShape(QRCode.EyeShape.Leaf())
-				.onPixelShape(QRCode.PixelShape.RoundedPath())
-				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
-				.shadow(color: .black, radius: 1, x: 1, y: 1)
-				.frame(width: 250, height: 250, alignment: .center)
+//				QRCodeUI(
+//					text: "A static simple QR code with some basic styling",
+//					errorCorrection: .high
+//				)!
+//				.eyeShape(QRCode.EyeShape.Leaf())
+//				.onPixelShape(QRCode.PixelShape.RoundedPath())
+//				.fill(LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+//				.shadow(color: .black, radius: 1, x: 1, y: 1)
+//				.frame(width: 250, height: 250, alignment: .center)
 			}
 		}
 	}

@@ -74,6 +74,7 @@ struct ContentView: View {
 						Text("Squircle").tag(EyeShapeType.squircle)
 						Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
 						Text("Bar Vertical").tag(EyeShapeType.barVertical)
+						Text("Pixels").tag(EyeShapeType.pixels)
 					}.pickerStyle(RadioGroupPickerStyle())
 					Picker(selection: $pupilStyle, label: Text("Pupil Shape:")) {
 						Text("Square").tag(PupilShapeType.square)
@@ -85,6 +86,7 @@ struct ContentView: View {
 						Text("Squircle").tag(PupilShapeType.squircle)
 						Text("Bar Horizontal").tag(PupilShapeType.barHorizontal)
 						Text("Bar Vertical").tag(PupilShapeType.barVertical)
+						Text("Pixels").tag(PupilShapeType.pixels)
 					}.pickerStyle(RadioGroupPickerStyle())
 				}
 				.onChange(of: eyeStyle) { newValue in

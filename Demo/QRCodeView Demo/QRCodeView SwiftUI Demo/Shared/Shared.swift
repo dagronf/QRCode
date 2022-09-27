@@ -29,6 +29,7 @@ enum EyeShapeType: Int {
 	case squircle = 6
 	case barHorizontal = 7
 	case barVertical = 8
+	case pixels = 9
 }
 
 enum PupilShapeType: Int {
@@ -41,6 +42,7 @@ enum PupilShapeType: Int {
 	case squircle = 6
 	case barHorizontal = 7
 	case barVertical = 8
+	case pixels = 9
 }
 
 func pixelShapeHandler(_ pixelShape: PixelShapeType, inset: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodePixelShapeGenerator {
@@ -58,7 +60,7 @@ func pixelShapeHandler(_ pixelShape: PixelShapeType, inset: Double = 0, cornerRa
 	case .vertical:
 		return QRCode.PixelShape.Vertical(inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 	case .roundedpath:
-		return QRCode.PixelShape.RoundedPath()
+		return QRCode.PixelShape.RoundedPath(cornerRadiusFraction: cornerRadiusFraction)
 	case .pointy:
 		return QRCode.PixelShape.Pointy()
 	}
@@ -84,6 +86,8 @@ func eyeShapeHandler(_ eyeStyle: EyeShapeType) -> QRCodeEyeShapeGenerator {
 		return QRCode.EyeShape.BarsHorizontal()
 	case .barVertical:
 		return QRCode.EyeShape.BarsVertical()
+	case .pixels:
+		return QRCode.EyeShape.Pixels()
 	}
 }
 
@@ -107,5 +111,7 @@ func pupilShapeHandler(_ pupilShape: PupilShapeType) -> QRCodePupilShapeGenerato
 		return QRCode.PupilShape.BarsHorizontal()
 	case .barVertical:
 		return QRCode.PupilShape.BarsVertical()
+	case .pixels:
+		return QRCode.PupilShape.Pixels()
 	}
 }

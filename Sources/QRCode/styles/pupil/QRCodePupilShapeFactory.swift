@@ -35,6 +35,7 @@ import Foundation
 			QRCode.PupilShape.Squircle.self,
 			QRCode.PupilShape.RoundedOuter.self,
 			QRCode.PupilShape.Square.self,
+			QRCode.PupilShape.Pixels.self,
 			QRCode.PupilShape.Leaf.self,
 			QRCode.PupilShape.BarsVertical.self,
 			QRCode.PupilShape.BarsHorizontal.self,
