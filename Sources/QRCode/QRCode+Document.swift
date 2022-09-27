@@ -59,6 +59,7 @@ public extension QRCode {
 			didSet { self.regenerate() }
 		}
 
+		/// Make a copy of the document
 		@objc public func copyDocument() -> Document {
 			let c = Document()
 			c.data = self.data
