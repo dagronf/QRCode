@@ -115,9 +115,18 @@ public extension QRCodePupilShapeFactory {
 		context.scaleBy(x: 1, y: -1)
 		context.translateBy(x: 0, y: -dimension)
 
+		// Scale the context drawing so that the default size (90px) fits into the drawing
 		let fitScale = dimension / 90
+		context.scaleBy(x: fitScale, y: fitScale)
+
+		// Transform to move and scale the pupil to fit the full 90x90 range
 		var scaleTransform = CGAffineTransform.identity
-		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
+
+		// Scale the pupil to 90x90
+		scaleTransform = scaleTransform.scaledBy(x: 3, y: 3)
+
+		// Move the pupil back to origin
+		scaleTransform = scaleTransform.translatedBy(x: -30, y: -30)
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
@@ -132,10 +141,8 @@ public extension QRCodePupilShapeFactory {
 	}
 }
 
-
-
 public extension QRCodePupilShapeFactory {
-#if os(macOS)
+	#if os(macOS)
 	/// Create an NSImage representation of a pixel shape
 	func nsImage(
 		pupilGenerator: QRCodePupilShapeGenerator,
@@ -147,5 +154,5 @@ public extension QRCodePupilShapeFactory {
 		}
 		return nil
 	}
-#endif
+	#endif
 }

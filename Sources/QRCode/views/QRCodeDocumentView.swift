@@ -19,7 +19,9 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Basic document views for both AppKit/UIKit and SwiftUI
+// Basic document views for both AppKit/UIKit and SwiftUI. No additional functionality
+// If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
+
 
 // MARK: - NSView/UIView
 
@@ -65,16 +67,30 @@ public extension QRCodeDocumentView {
 
 import SwiftUI
 
+// Mark the document as observable.
+//
+
+/// Observable document extension
+///
+/// This is a bit of a hack to allow SwiftUI to redraw when the
+/// document is updated.
+@available(macOS 11, iOS 13.0, tvOS 13.0, *)
+extension QRCode.Document: ObservableObject {
+	@inlinable public func setHasChanged() {
+		self.objectWillChange.send()
+	}
+}
+
 /// A SwiftUI view for display the content of a QRCode.Document
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 public struct QRCodeDocumentUIView: DSFViewRepresentable {
 	public typealias NSViewType = QRCodeDocumentView
 	public typealias UIViewType = QRCodeDocumentView
 
-	@Binding var document: QRCode.Document
+	@ObservedObject var document: QRCode.Document
 
-	public init(document: Binding<QRCode.Document>) {
-		self._document = document
+	public init(document: QRCode.Document) {
+		self.document = document
 	}
 
 	#if os(macOS)
@@ -108,7 +124,7 @@ private let __dummy = QRCode.Document()
 @available(macOS 11, iOS 13.0, tvOS 13.0, *)
 struct QRCodeDocumentUIView_Previews: PreviewProvider {
 	static var previews: some View {
-		QRCodeDocumentUIView(document: .constant(__dummy))
+		QRCodeDocumentUIView(document: __dummy)
 	}
 }
 
