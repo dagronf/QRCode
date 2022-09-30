@@ -33,13 +33,6 @@ public extension QRCode.PixelShape {
 			return QRCode.PixelShape.Horizontal(inset: inset, cornerRadiusFraction: radius)
 		}
 
-		public func settings() -> [String : Any] {
-			return [
-				"inset": self.inset,
-				"cornerRadiusFraction": self.cornerRadiusFraction
-			]
-		}
-
 		public func copyShape() -> QRCodePixelShapeGenerator {
 			return Horizontal(
 				inset: self.inset,
@@ -47,8 +40,8 @@ public extension QRCode.PixelShape {
 			)
 		}
 
-		let inset: CGFloat
-		let cornerRadiusFraction: CGFloat
+		var inset: CGFloat
+		var cornerRadiusFraction: CGFloat
 		@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
 			self.inset = inset
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
@@ -143,5 +136,45 @@ public extension QRCode.PixelShape {
 			}
 			return path
 		}
+	}
+}
+
+// MARK: - Settings
+
+public extension QRCode.PixelShape.Horizontal {
+	/// Does the shape generator support setting values for a particular key?
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		return key == "inset" || key == "cornerRadiusFraction"
+	}
+
+	/// Returns a storable representation of the shape handler
+	@objc func settings() -> [String : Any] {
+		return [
+			"inset": self.inset,
+			"cornerRadiusFraction": self.cornerRadiusFraction
+		]
+	}
+
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == "inset" {
+			guard let v = value else {
+				self.inset = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.inset = v
+			return true
+		}
+		else if key == "cornerRadiusFraction" {
+			guard let v = value else {
+				self.cornerRadiusFraction = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.cornerRadiusFraction = v
+			return true
+		}
+		return false
 	}
 }

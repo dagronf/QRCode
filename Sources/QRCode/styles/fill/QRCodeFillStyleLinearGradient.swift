@@ -30,22 +30,25 @@ public extension QRCode.FillStyle {
 
 		@objc public static var Name: String { "lineargradient" }
 
-		let gradient: DSFGradient
+		/// The gradient
+		@objc public let gradient: DSFGradient
+		/// linear starting point (0 -> 1)
+		@objc public let startPoint: CGPoint
+		/// linear ending point (0 -> 1)
+		@objc public let endPoint: CGPoint
 
-		// For linear
-		@objc public var startPoint: CGPoint
-		@objc public var endPoint: CGPoint
-
+		/// The current settings for the linear gradient
 		@objc public func settings() -> [String: Any] {
 			[
 				"startX": startPoint.x,
 				"startY": startPoint.y,
-				"endX": startPoint.x,
-				"endY": startPoint.y,
+				"endX": endPoint.x,
+				"endY": endPoint.y,
 				"gradient": self.gradient.asRGBAGradientString() ?? ""
 			]
 		}
 
+		/// Create a linear gradient with the specified settings
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 			if let sX = DoubleValue(settings["startX"]),
 				let sY = DoubleValue(settings["startY"]),

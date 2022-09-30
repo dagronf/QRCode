@@ -59,6 +59,12 @@ public extension QRCode {
 
 	/// Returns a storable representation of the shape handler
 	func settings() -> [String: Any]
+
+	/// Set a configuration value for a particular setting string
+	func setSettingValue(_ value: Any?, forKey key: String) -> Bool
+
+	/// Does the shape generator support setting values for a particular key?
+	func supportsSettingValue(forKey key: String) -> Bool
 }
 
 public extension QRCodePixelShapeGenerator {

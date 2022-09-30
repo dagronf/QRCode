@@ -20,13 +20,13 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCode.PixelShape {
 	/// A square pixel shape
 	@objc(QRCodePixelShapeSquare) class Square: NSObject, QRCodePixelShapeGenerator {
-		static public var Name: String { "square" }
+		@objc public static var Name: String { "square" }
 		private let common: CommonPixelGenerator
 
 		/// Create
@@ -37,27 +37,54 @@ public extension QRCode.PixelShape {
 			super.init()
 		}
 
-		public static func Create(_ settings: [String : Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
 			return Square(inset: inset)
 		}
 
-		public func copyShape() -> QRCodePixelShapeGenerator {
+		/// Make a copy of this shape
+		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Square(inset: self.common.inset)
 		}
 
+		/// The path representing the 'on' pixels in the qr code
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.onPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.onPath(size: size, data: data, isTemplate: isTemplate)
 		}
 
+		/// The path representing the 'off' pixels in the qr code
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.offPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.offPath(size: size, data: data, isTemplate: isTemplate)
 		}
 
-		@objc public var inset: CGFloat { common.inset }
+		@objc public var inset: CGFloat { self.common.inset }
+	}
+}
 
-		public func settings() -> [String : Any] {
-			return [ "inset": self.common.inset ]
+// MARK: - Settings
+
+public extension QRCode.PixelShape.Square {
+	/// Returns true if the shape supports setting a value for the specified key, false otherwise
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		return key == "inset"
+	}
+
+	/// Returns the current settings for the shape
+	@objc func settings() -> [String: Any] {
+		return ["inset": self.common.inset]
+	}
+
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == "inset" {
+			guard let v = value else {
+				self.common.inset = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.common.inset = v
+			return true
 		}
+		return false
 	}
 }

@@ -30,11 +30,13 @@ public extension QRCode.FillStyle {
 
 		@objc public static var Name: String { "radialgradient" }
 
-		let gradient: DSFGradient
+		/// The gradient to use
+		@objc public let gradient: DSFGradient
 
-		// For radial gradients, the center point
-		public var centerPoint: CGPoint
+		/// The center point for the radial gradient
+		@objc public var centerPoint: CGPoint
 
+		/// The current settings for the radial gradient
 		@objc public func settings() -> [String: Any] {
 			[
 				"centerX": centerPoint.x,
@@ -43,6 +45,7 @@ public extension QRCode.FillStyle {
 			]
 		}
 
+		/// Create a radial gradient with the specified settings
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 			if let cX = DoubleValue(settings["centerX"]),
 				let cY = DoubleValue(settings["centerY"]),

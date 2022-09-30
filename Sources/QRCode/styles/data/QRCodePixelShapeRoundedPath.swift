@@ -31,10 +31,6 @@ public extension QRCode.PixelShape {
 			return RoundedPath(cornerRadiusFraction: radius)
 		}
 
-		public func settings() -> [String: Any] {
-			return ["cornerRadiusFraction": self._cornerRadius]
-		}
-
 		// The template pixel generator size is 10x10
 		static let DefaultSize = CGSize(width: 10, height: 10)
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
@@ -253,5 +249,33 @@ private extension QRCode.PixelShape.RoundedPath {
 			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
 			bottomLeftRadius: actualRadiusSize
 		)
+	}
+}
+
+// MARK: - Settings
+
+public extension QRCode.PixelShape.RoundedPath {
+	/// Does the shape generator support setting values for a particular key?
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		return key == "cornerRadiusFraction"
+	}
+
+	/// Returns a storable representation of the shape handler
+	@objc func settings() -> [String: Any] {
+		return ["cornerRadiusFraction": self._cornerRadius]
+	}
+
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == "cornerRadiusFraction" {
+			guard let v = value else {
+				self.cornerRadiusFraction = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.cornerRadiusFraction = v
+			return true
+		}
+		return false
 	}
 }

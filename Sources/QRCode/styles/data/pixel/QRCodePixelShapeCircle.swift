@@ -55,9 +55,33 @@ public extension QRCode.PixelShape {
 		}
 
 		@objc public var inset: CGFloat { common.inset }
+	}
+}
 
-		public func settings() -> [String : Any] {
-			return [ "inset": self.common.inset ]
+// MARK: - Settings
+
+public extension QRCode.PixelShape.Circle {
+	/// Returns true if the shape supports setting a value for the specified key, false otherwise
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		return key == "inset"
+	}
+
+	/// Returns the current settings for the shape
+	@objc func settings() -> [String : Any] {
+		return [ "inset": self.common.inset ]
+	}
+
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == "inset" {
+			guard let v = value else {
+				self.common.inset = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.common.inset = v
+			return true
 		}
+		return false
 	}
 }

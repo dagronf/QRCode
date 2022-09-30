@@ -22,6 +22,8 @@
 
 // Command line access to qrcode
 
+#if os(macOS)
+
 import AppKit
 import ArgumentParser
 import Foundation
@@ -315,3 +317,5 @@ do {
 catch {
 	QRCodeGen.exit(withError: error)
 }
+
+#endif

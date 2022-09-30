@@ -20,15 +20,15 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCode.PixelShape {
 	/// A squircle pixel shape
 	@objc(QRCodePixelShapeSquircle) class Squircle: NSObject, QRCodePixelShapeGenerator {
-		static public var Name: String { "squircle" }
+		public static var Name: String { "squircle" }
 		private let common: CommonPixelGenerator
-
+		
 		/// Create
 		/// - Parameters:
 		///   - inset: The inset between each pixel
@@ -36,30 +36,26 @@ public extension QRCode.PixelShape {
 			self.common = CommonPixelGenerator(pixelType: .squircle, inset: inset)
 			super.init()
 		}
-
-		public static func Create(_ settings: [String : Any]?) -> QRCodePixelShapeGenerator {
+		
+		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
 			return Squircle(inset: inset)
 		}
-
+		
 		public func copyShape() -> QRCodePixelShapeGenerator {
 			return Squircle(inset: self.common.inset)
 		}
-
+		
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.onPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.onPath(size: size, data: data, isTemplate: isTemplate)
 		}
-
+		
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			common.offPath(size: size, data: data, isTemplate: isTemplate)
+			self.common.offPath(size: size, data: data, isTemplate: isTemplate)
 		}
-
-		@objc public var inset: CGFloat { common.inset }
-
-		public func settings() -> [String : Any] {
-			return [ "inset": self.common.inset ]
-		}
-
+		
+		@objc public var inset: CGFloat { self.common.inset }
+		
 		// A 10x10 'pixel' representation of a squircle
 		internal static func squircle10x10() -> CGPath {
 			let s10 = CGMutablePath()
@@ -75,5 +71,33 @@ public extension QRCode.PixelShape {
 			s10.close()
 			return s10
 		}
+	}
+}
+
+// MARK: - Settings
+
+public extension QRCode.PixelShape.Squircle {
+	/// Returns true if the shape supports setting a value for the specified key, false otherwise
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		return key == "inset"
+	}
+	
+	/// Returns the current settings for the shape
+	@objc func settings() -> [String: Any] {
+		return ["inset": self.common.inset]
+	}
+	
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == "inset" {
+			guard let v = value else {
+				self.common.inset = 0
+				return true
+			}
+			guard let v = DoubleValue(v) else { return false }
+			self.common.inset = v
+			return true
+		}
+		return false
 	}
 }

@@ -30,10 +30,6 @@ public extension QRCode.PixelShape {
 			QRCode.PixelShape.Pointy()
 		}
 
-		public func settings() -> [String: Any] {
-			return [:]
-		}
-
 		static let DefaultSize = CGSize(width: 10, height: 10)
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 		static let templateSquare: CGPath = {
@@ -167,5 +163,22 @@ public extension QRCode.PixelShape {
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
 			return CGMutablePath()
 		}
+	}
+}
+
+// MARK: - Settings
+
+public extension QRCode.PixelShape.Pointy {
+	/// Does the shape generator support setting values for a particular key?
+	@objc func supportsSettingValue(forKey key: String) -> Bool { false }
+
+	/// Returns a storable representation of the shape handler
+	@objc func settings() -> [String: Any] {
+		return [:]
+	}
+
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		return false
 	}
 }

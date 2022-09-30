@@ -22,6 +22,7 @@
 // Basic document views for both AppKit/UIKit and SwiftUI. No additional functionality
 // If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
 
+#if os(macOS) || os(iOS)
 
 // MARK: - NSView/UIView
 
@@ -127,5 +128,7 @@ struct QRCodeDocumentUIView_Previews: PreviewProvider {
 		QRCodeDocumentUIView(document: __dummy)
 	}
 }
+
+#endif
 
 #endif

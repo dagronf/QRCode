@@ -20,6 +20,8 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if os(macOS)
+
 import AppKit
 
 // MARK: - stdin handling
@@ -95,3 +97,5 @@ func temporaryFile(extn: String) -> URL {
 	)
 	.appendingPathComponent(UUID().uuidString + "." + extn)
 }
+
+#endif

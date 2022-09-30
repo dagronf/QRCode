@@ -34,9 +34,9 @@ internal extension QRCode.PixelShape {
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
-		let inset: CGFloat
-		let pixelType: PixelType
-		let cornerRadiusFraction: CGFloat
+		var inset: CGFloat
+		var pixelType: PixelType
+		var cornerRadiusFraction: CGFloat
 
 		// Create
 		// - Parameters:
