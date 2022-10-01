@@ -32,7 +32,7 @@ import SwiftUI
 import AppKit
 public typealias DSFView = NSView
 public typealias DSFImage = NSImage
-@available(macOS 11, *)
+@available(macOS 10.15, *)
 typealias DSFViewRepresentable = NSViewRepresentable
 
 extension NSView {

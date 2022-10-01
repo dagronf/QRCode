@@ -548,3 +548,20 @@ public extension QRCode.Document {
 	/// ```
 	@objc var smallAsciiRepresentation: String { return self.qrcode.smallAsciiRepresentation() }
 }
+
+#if canImport(SwiftUI)
+
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
+extension QRCode.Document: ObservableObject {
+	/// A convenience for marking a document as having been updated.
+	///
+	/// The core QRCode.Document class needs to support OSes that don't support Combine.
+	/// As such, we can't litter the QRCode.Document with `Published` types to detect automatically reflect changes
+	/// within the QRCode document. One day when these old OS versions are not supported anymore, we can
+	/// refactor the document to automatically handle combine.
+	@inlinable public func setHasChanged() {
+		self.objectWillChange.send()
+	}
+}
+
+#endif

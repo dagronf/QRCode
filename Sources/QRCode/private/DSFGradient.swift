@@ -166,3 +166,16 @@ public extension DSFGradient {
 		return DSFGradient(pins: pins)
 	}
 }
+
+// MARK: - SwiftUI conformances
+
+#if canImport(SwiftUI)
+import SwiftUI
+@available(macOS 11, iOS 14, tvOS 14, watchOS 7.0, *)
+public extension DSFGradient.Pin {
+	/// Returns a SwiftUI Gradient.Stop object for this pin
+	@inlinable var gradientStop: Gradient.Stop {
+		Gradient.Stop(color: Color(self.color), location: self.position)
+	}
+}
+#endif

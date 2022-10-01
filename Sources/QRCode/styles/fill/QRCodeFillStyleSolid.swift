@@ -74,3 +74,19 @@ public extension QRCode.FillStyle {
 		}
 	}
 }
+
+// MARK: - SwiftUI conformances
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 11, iOS 14, tvOS 14, watchOS 7.0, *)
+public extension QRCode.FillStyle.Solid {
+	/// Returns a SwiftUI Color object for this solid color
+	@inlinable func colorUI() -> Color {
+		Color(self.color)
+	}
+}
+#endif
+
+

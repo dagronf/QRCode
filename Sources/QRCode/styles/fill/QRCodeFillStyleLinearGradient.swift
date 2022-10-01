@@ -118,3 +118,24 @@ public extension QRCode.FillStyle {
 		}
 	}
 }
+
+// MARK: - SwiftUI conformances
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 11, iOS 14, tvOS 14, watchOS 7.0, *)
+public extension QRCode.FillStyle.LinearGradient {
+	/// Returns a SwiftUI LinearGradient for this fill style
+	func linearGradient() -> LinearGradient {
+		let stops: [Gradient.Stop] = self.gradient.pins
+			.map { $0.gradientStop }
+			.sorted { a, b in a.location < b.location }
+		return LinearGradient(
+			stops: stops,
+			startPoint: UnitPoint(x: self.startPoint.x, y: self.startPoint.y),
+			endPoint: UnitPoint(x: self.endPoint.x, y: self.endPoint.y)
+		)
+	}
+}
+#endif

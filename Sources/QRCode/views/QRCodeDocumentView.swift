@@ -19,10 +19,16 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Basic document views for both AppKit/UIKit and SwiftUI. No additional functionality
+// Basic document view for both AppKit/UIKit/tvOS. It provides no additional functionality.
 // If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
 
-#if os(macOS) || os(iOS)
+#if os(macOS) || os(iOS) || os(tvOS)
+
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 
 // MARK: - NSView/UIView
 
@@ -32,8 +38,18 @@
 	public override var isFlipped: Bool { true }
 	#endif
 
+	@objc public init(document: QRCode.Document = QRCode.Document()) {
+		self.document = document
+		super.init(frame: .zero)
+		self.setNeedsDisplay()
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+	}
+
 	/// The document to display
-	@objc public var document: QRCode.Document = QRCode.Document() {
+	@IBOutlet @objc public var document: QRCode.Document? {
 		didSet {
 			self.setNeedsDisplay()
 		}
@@ -58,77 +74,8 @@ public extension QRCodeDocumentView {
 
 	// Draw the QR Code into the specified context
 	private func draw(_ ctx: CGContext) {
-		self.document.draw(ctx: ctx, rect: self.bounds)
+		self.document?.draw(ctx: ctx, rect: self.bounds)
 	}
 }
-
-// MARK: - SwiftUI
-
-#if canImport(SwiftUI)
-
-import SwiftUI
-
-// Mark the document as observable.
-//
-
-/// Observable document extension
-///
-/// This is a bit of a hack to allow SwiftUI to redraw when the
-/// document is updated.
-@available(macOS 11, iOS 13.0, tvOS 13.0, *)
-extension QRCode.Document: ObservableObject {
-	@inlinable public func setHasChanged() {
-		self.objectWillChange.send()
-	}
-}
-
-/// A SwiftUI view for display the content of a QRCode.Document
-@available(macOS 11, iOS 13.0, tvOS 13.0, *)
-public struct QRCodeDocumentUIView: DSFViewRepresentable {
-	public typealias NSViewType = QRCodeDocumentView
-	public typealias UIViewType = QRCodeDocumentView
-
-	@ObservedObject var document: QRCode.Document
-
-	public init(document: QRCode.Document) {
-		self.document = document
-	}
-
-	#if os(macOS)
-	public func makeNSView(context: Context) -> QRCodeDocumentView {
-		let v = QRCodeDocumentView()
-		v.document = self.document
-		return v
-	}
-
-	public func updateNSView(_ nsView: QRCodeDocumentView, context: Context) {
-		nsView.document = self.document
-		nsView.setNeedsDisplay()
-	}
-	#else
-	public func makeUIView(context: Context) -> QRCodeDocumentView {
-		let v = QRCodeDocumentView()
-		v.document = self.document
-		return v
-	}
-
-	public func updateUIView(_ nsView: QRCodeDocumentView, context: Context) {
-		nsView.document = self.document
-		nsView.setNeedsDisplay()
-	}
-	#endif
-}
-
-@available(macOS 11, iOS 13.0, tvOS 13.0, *)
-private let __dummy = QRCode.Document()
-
-@available(macOS 11, iOS 13.0, tvOS 13.0, *)
-struct QRCodeDocumentUIView_Previews: PreviewProvider {
-	static var previews: some View {
-		QRCodeDocumentUIView(document: __dummy)
-	}
-}
-
-#endif
 
 #endif

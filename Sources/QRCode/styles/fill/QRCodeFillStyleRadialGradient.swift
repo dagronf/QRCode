@@ -105,3 +105,25 @@ public extension QRCode.FillStyle {
 		}
 	}
 }
+
+// MARK: - SwiftUI conformances
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 11, iOS 14, tvOS 14, watchOS 7.0, *)
+public extension QRCode.FillStyle.RadialGradient {
+	/// Returns a SwiftUI RadialGradient for this fill style
+	func radialGradient(startRadius: CGFloat, endRadius: CGFloat) -> RadialGradient {
+		let stops: [Gradient.Stop] = self.gradient.pins
+			.map { $0.gradientStop }
+			.sorted { a, b in a.location < b.location }
+		return RadialGradient(
+			stops: stops,
+			center: UnitPoint(x: self.centerPoint.x, y: self.centerPoint.y),
+			startRadius: startRadius,
+			endRadius: endRadius
+		)
+	}
+}
+#endif
