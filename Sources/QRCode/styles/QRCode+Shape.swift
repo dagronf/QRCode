@@ -76,6 +76,15 @@ public extension QRCode {
 	}
 }
 
+public extension QRCode.Shape {
+	/// Returns the actual shape that will be used when drawing.
+	///
+	/// If the pupil shape is `nil`, falls back to the eye shape
+	@objc var actualPupilShape: QRCodePupilShapeGenerator {
+		self.pupil ?? self.eye.defaultPupil()
+	}
+}
+
 // MARK: - Load/Save
 
 public extension QRCode.Shape {

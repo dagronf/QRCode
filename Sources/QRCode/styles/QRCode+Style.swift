@@ -72,6 +72,18 @@ public extension QRCode {
 }
 
 public extension QRCode.Style {
+	/// Returns the eye style that will be used when drawing. Handles the case where the eye style is nil
+	@objc var actualEyeStyle: QRCodeFillStyleGenerator {
+		return self.eye ?? self.onPixels
+	}
+
+	/// Returns the pupil style that will be used when drawing. Handles the case where the pupil style is nil
+	@objc var actualPupilStyle: QRCodeFillStyleGenerator {
+		return self.pupil ?? self.eye ?? self.onPixels
+	}
+}
+
+public extension QRCode.Style {
 	@objc func settings() -> [String: Any] {
 		var result = [ "onPixels": onPixels.coreSettings() ]
 		if let e = eye?.coreSettings() {

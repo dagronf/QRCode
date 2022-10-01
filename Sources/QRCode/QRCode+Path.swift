@@ -122,7 +122,7 @@ public extension QRCode {
 		// Add the pupils if wanted
 
 		if components.contains(.eyePupil) {
-			let pupil = shape.pupil ?? eyeShape.defaultPupil()
+			let pupil = shape.actualPupilShape
 			let p = pupil.pupilPath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)
 

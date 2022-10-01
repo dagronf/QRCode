@@ -132,15 +132,13 @@ public extension QRCode {
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 		ctx.usingGState { context in
-			let outerStyle = style.eye ?? style.onPixels
-			outerStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
+			style.actualEyeStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
 		}
 
 		// Draw the eye 'pupil'
 		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
 		ctx.usingGState { context in
-			let pupilStyle = style.pupil ?? style.eye ?? style.onPixels
-			pupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
+			style.actualPupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
 		}
 
 		// Now, the 'on' pixels
