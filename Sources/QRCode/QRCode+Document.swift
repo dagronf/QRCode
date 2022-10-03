@@ -547,6 +547,47 @@ public extension QRCode.Document {
 	@objc var smallAsciiRepresentation: String { return self.qrcode.smallAsciiRepresentation() }
 }
 
+// MARK: - Templating conveniences
+
+public extension QRCode.Document {
+	/// Return a new document using the style and design supplied by the template data with the specified text
+	@objc static func UsingTemplate(
+		templateJSONData: Data,
+		utf8String: String
+	) throws -> QRCode.Document {
+		let doc = try QRCode.Document(jsonData: templateJSONData)
+		doc.utf8String = utf8String
+		return doc
+	}
+
+	/// Return an image using the style and design supplied by the template data with the specified text
+	@objc @inlinable static func PNGUsingTemplate(
+		templateJSONData: Data,
+		utf8String: String,
+		dimension: CGFloat
+	) -> Data? {
+		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
+			return doc.pngData(dimension: dimension)
+		}
+		return nil
+	}
+
+	/// Return a pdf using the style and design supplied by the template data with the specified text
+	@objc @inlinable static func PDFUsingTemplate(
+		templateJSONData: Data,
+		utf8String: String,
+		dimension: CGFloat,
+		resolution: CGFloat = 72.0
+	) -> Data? {
+		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
+			return doc.pdfData(dimension: dimension, pdfResolution: resolution)
+		}
+		return nil
+	}
+}
+
+// MARK: - SwiftUI extensions
+
 #if canImport(SwiftUI)
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
