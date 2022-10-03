@@ -10,6 +10,15 @@ import SwiftUI
 import QRCode
 import QRCodeExternal
 
+let savedDocument: QRCode.Document = {
+	let data = NSDataAsset(name: "saved-document")!
+	return try! QRCode.Document(
+		jsonData: data.data,
+		generator: QRCodeGenerator_External()
+	)
+}()
+
+
 struct ContentView: View {
 
 	let fixedCode = QRCodeUI(
@@ -22,21 +31,33 @@ struct ContentView: View {
 	var pupilColor: Color = Color(red: 1.0, green: 0.8, blue: 0.3)
 
 	var body: some View {
-		ZStack {
-			fixedCode
-				.components(.eyeOuter)
-				.eyeShape(QRCode.EyeShape.RoundedOuter())
-				.fill(eyeColor)
-			fixedCode
-				.components(.eyePupil)
-				.eyeShape(QRCode.EyeShape.RoundedOuter())
-				.fill(pupilColor)
-			fixedCode
-				.components(.onPixels)
-				.onPixelShape(QRCode.PixelShape.RoundedPath())
-				.fill(dataColor)
+		ScrollView {
+			VStack {
+
+				// Build a QR Code from its components
+				ZStack {
+					fixedCode
+						.components(.eyeOuter)
+						.eyeShape(QRCode.EyeShape.RoundedOuter())
+						.fill(eyeColor)
+					fixedCode
+						.components(.eyePupil)
+						.pupilShape(QRCode.PupilShape.RoundedOuter())
+						.fill(pupilColor)
+					fixedCode
+						.components(.onPixels)
+						.onPixelShape(QRCode.PixelShape.RoundedPath())
+						.fill(dataColor)
+				}
+				.frame(width: 150, height: 150)
+
+				// Use the QRCodeDocumentUIView class to draw a QR document
+				QRCodeDocumentUIView(document: savedDocument)
+					.frame(width: 150, height: 150)
+			}
+
 		}
-		.padding()
+		//.padding()
 		.background(Color(red: 0.0, green: 0.0, blue: 0.2, opacity: 1.0))
 	}
 }

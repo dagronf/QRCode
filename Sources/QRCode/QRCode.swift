@@ -29,7 +29,7 @@ import Foundation
 @objc public class QRCode: NSObject {
 	/// The generator to use when generating the QR code.
 	///
-	/// Defaults to CoreImage on macOS/iOS/tvOS, or none on watchOS (import QRCode3rdPartyGenerator for watchOS)
+	/// Defaults to CoreImage on macOS/iOS/tvOS, or none on watchOS (import QRCodeExternal for watchOS)
 	@objc public var generator: QRCodeEngine = {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
@@ -42,7 +42,6 @@ import Foundation
 	/// Create a blank QRCode
 	@objc override public init() {
 		super.init()
-		self.update(Data(), errorCorrection: .default)
 	}
 
 	/// Create a blank QRCode with a custom QR code generation engine

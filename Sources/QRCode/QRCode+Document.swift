@@ -69,16 +69,13 @@ public extension QRCode {
 		}
 
 		/// Create a QRCode document with default settings
-		@objc public override init() {
-			self.qrcode = QRCode()
-			super.init()
-		}
-
-		/// Create a QRCode document
-		/// - Parameter errorCorrection: The error correction to use
-		@objc public init(errorCorrection: QRCode.ErrorCorrection) {
-			self.qrcode = QRCode()
-			self.errorCorrection = errorCorrection
+		@objc public init(generator: QRCodeEngine? = nil) {
+			if let generator = generator {
+				self.qrcode = QRCode(generator: generator)
+			}
+			else {
+				self.qrcode = QRCode()
+			}
 			super.init()
 		}
 
@@ -86,8 +83,17 @@ public extension QRCode {
 		/// - Parameters:
 		///   - data: The data to encode
 		///   - errorCorrection: The error correction level
-		@objc public init(data: Data, errorCorrection: QRCode.ErrorCorrection = .default) {
-			self.qrcode = QRCode()
+		///   - generator: The generator to use when creating the QR code. Defaults to Core Image
+		@objc public init(
+			data: Data,
+			errorCorrection: QRCode.ErrorCorrection = .default,
+			generator: QRCodeEngine? = nil
+		) {
+			self.qrcode = QRCode(
+				data,
+				errorCorrection: errorCorrection,
+				generator: generator
+			)
 			super.init()
 			self.data = data
 			self.errorCorrection = errorCorrection
@@ -98,11 +104,18 @@ public extension QRCode {
 		/// - Parameters:
 		///   - utf8String: The UTF8 string to encode
 		///   - errorCorrection: The error correction level
-		@objc public init(utf8String: String, errorCorrection: QRCode.ErrorCorrection = .default) {
-			self.qrcode = QRCode()
+		///   - generator: The generator to use when creating the QR code. Defaults to Core Image
+		@objc public init(
+			utf8String: String,
+			errorCorrection: QRCode.ErrorCorrection = .default,
+			generator: QRCodeEngine? = nil
+		) {
+			self.qrcode = QRCode(
+				text: utf8String,
+				errorCorrection: errorCorrection,
+				generator: generator
+			)
 			super.init()
-			self.setString(utf8String)
-			self.errorCorrection = errorCorrection
 			self.regenerate()
 		}
 
@@ -110,36 +123,15 @@ public extension QRCode {
 		/// - Parameters:
 		///   - message: The message formatter
 		///   - errorCorrection: The error correction level
-		@objc public init(message: QRCodeMessageFormatter, errorCorrection: QRCode.ErrorCorrection = .default) {
+		///   - generator: The generator to use when creating the QR code. Defaults to Core Image
+		@objc public init(
+			message: QRCodeMessageFormatter,
+			errorCorrection: QRCode.ErrorCorrection = .default,
+			generator: QRCodeEngine? = nil
+		) {
 			self.qrcode = QRCode()
 			super.init()
 			self.data = message.data
-			self.errorCorrection = errorCorrection
-			self.regenerate()
-		}
-
-		/// Create a QRCode document with the default settings using the specified generator
-		/// - Parameters:
-		///   - generator: The generator to use when creating the QR code
-		///   - data: The data to encode
-		///   - errorCorrection: The error correction to use
-		@objc public init(generator: QRCodeEngine, data: Data? = nil, errorCorrection: QRCode.ErrorCorrection = .default) {
-			self.qrcode = QRCode(generator: generator)
-			super.init()
-			if let d = data { self.data = d }
-			self.errorCorrection = errorCorrection
-			self.regenerate()
-		}
-
-		/// Create a QRCode document with the default settings using the specified generator
-		/// - Parameters:
-		///   - generator: The generator to use when creating the QR code
-		///   - utf8String: The UTF8 string to encode
-		///   - errorCorrection: The error correction to use
-		@objc public init(generator: QRCodeEngine, utf8String: String, errorCorrection: QRCode.ErrorCorrection = .default) {
-			self.qrcode = QRCode(generator: generator)
-			super.init()
-			self.setString(utf8String)
 			self.errorCorrection = errorCorrection
 			self.regenerate()
 		}
@@ -192,8 +184,14 @@ private extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// Create a QRCode document using the QRCode settings defined in `jsonData`
-	@objc convenience init(jsonData: Data) throws {
-		self.init()
+	/// - Parameters:
+	///   - jsonData: The data to display (json format)
+	///   - generator: The generator to use when creating the QR code. Defaults to Core Image
+	@objc convenience init(
+		jsonData: Data,
+		generator: QRCodeEngine? = nil
+	) throws {
+		self.init(generator: generator)
 		try self.load(jsonData: jsonData)
 	}
 

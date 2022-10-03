@@ -99,6 +99,7 @@ public struct QRCodeDocumentUIView: View {
 				{
 					Rectangle()
 						.fill(style)
+						.zIndex(0)
 				}
 
 				// Draw the 'on' pixels

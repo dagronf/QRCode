@@ -32,6 +32,7 @@ import Foundation
 internal class QRCodeGenerator_None: QRCodeEngine {
 	/// Generate the QR code using the custom generator
 	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		Swift.print("Warning: QRCode generator is not set...")
 		return nil
 	}
 }
