@@ -86,83 +86,90 @@ public extension QRCode.PixelShape {
 		public func copyShape() -> QRCodePixelShapeGenerator {
 			return Pointy()
 		}
+	}
+}
 
-		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			let dx = size.width / CGFloat(data.pixelSize)
-			let dy = size.height / CGFloat(data.pixelSize)
-			let dm = min(dx, dy)
+public extension QRCode.PixelShape.Pointy {
+	func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+		return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
+	}
 
-			// The scale required to convert our template paths to output path size
-			let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
-			let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
+	func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+		return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
+	}
 
-			let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
-			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
+	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
+		let dx = size.width / CGFloat(data.pixelSize)
+		let dy = size.height / CGFloat(data.pixelSize)
+		let dm = min(dx, dy)
 
-			let path = CGMutablePath()
+		// The scale required to convert our template paths to output path size
+		let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
+		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
 
-			for row in 0 ..< data.pixelSize {
-				for col in 0 ..< data.pixelSize {
-					let isEye = data.isEyePixel(row, col) && isTemplate == false
+		let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
+		let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
 
-					if isEye || data.current[row, col] == false {
-						continue
-					}
+		let path = CGMutablePath()
 
-					let hasLeft = (col - 1) >= 0 ? data.current[row, col - 1] : false
-					let hasRight = (col + 1) < data.pixelSize ? data.current[row, col + 1] : false
-					let hasTop = (row - 1) >= 0 ? data.current[row - 1, col] : false
-					let hasBottom = (row + 1) < data.pixelSize ? data.current[row + 1, col] : false
+		// Mask out the QR patterns
+		let currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+		
+		for row in 1 ..< data.pixelSize - 1 {
+			for col in 1 ..< data.pixelSize - 1 {
+				guard currentData[row, col] == true else { continue }
 
-					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
+				let hasLeft = (col - 1) >= 0 ? currentData[row, col - 1] : false
+				let hasRight = (col + 1) < data.pixelSize ? currentData[row, col + 1] : false
+				let hasTop = (row - 1) >= 0 ? currentData[row - 1, col] : false
+				let hasBottom = (row + 1) < data.pixelSize ? currentData[row + 1, col] : false
 
-					if !hasLeft, !hasRight, !hasTop, !hasBottom {
-						// isolated block
-						path.addPath(Pointy.templateSquare,
-										 transform: scaleTransform.concatenating(translate))
-					}
-					else if !hasLeft, !hasRight, !hasTop, hasBottom {
-						// pointing up block
-						path.addPath(
-							Pointy.templatePointingUp,
-							transform: scaleTransform.concatenating(translate)
-						)
-					}
-					else if !hasLeft, !hasRight, !hasBottom, hasTop {
-						// pointing down block
-						path.addPath(
-							Pointy.templatePointingDown,
-							transform: scaleTransform.concatenating(translate)
-						)
-					}
-					else if !hasTop, !hasRight, !hasBottom, hasLeft {
-						// pointing right block
-						path.addPath(
-							Pointy.templatePointingRight,
-							transform: scaleTransform.concatenating(translate)
-						)
-					}
-					else if !hasTop, !hasLeft, !hasBottom, hasRight {
-						// pointing left block
-						path.addPath(
-							Pointy.templatePointingLeft,
-							transform: scaleTransform.concatenating(translate)
-						)
-					}
-					else {
-						path.addPath(
-							Pointy.templateSquare,
-							transform: scaleTransform.concatenating(translate)
-						)
-					}
+				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
+
+				if !hasLeft, !hasRight, !hasTop, !hasBottom {
+					// isolated block
+					path.addPath(
+						QRCode.PixelShape.Pointy.templateSquare,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if !hasLeft, !hasRight, !hasTop, hasBottom {
+					// pointing up block
+					path.addPath(
+						QRCode.PixelShape.Pointy.templatePointingUp,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if !hasLeft, !hasRight, !hasBottom, hasTop {
+					// pointing down block
+					path.addPath(
+						QRCode.PixelShape.Pointy.templatePointingDown,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if !hasTop, !hasRight, !hasBottom, hasLeft {
+					// pointing right block
+					path.addPath(
+						QRCode.PixelShape.Pointy.templatePointingRight,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if !hasTop, !hasLeft, !hasBottom, hasRight {
+					// pointing left block
+					path.addPath(
+						QRCode.PixelShape.Pointy.templatePointingLeft,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else {
+					path.addPath(
+						QRCode.PixelShape.Pointy.templateSquare,
+						transform: scaleTransform.concatenating(translate)
+					)
 				}
 			}
-			return path
 		}
-
-		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			return CGMutablePath()
-		}
+		return path
 	}
 }
 

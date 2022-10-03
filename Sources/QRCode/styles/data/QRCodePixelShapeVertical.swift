@@ -49,54 +49,14 @@ public extension QRCode.PixelShape {
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			let dx = size.width / CGFloat(data.pixelSize)
-			let dy = size.height / CGFloat(data.pixelSize)
-			let dm = min(dx, dy)
-			
-			let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
-			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
-			
-			let path = CGMutablePath()
-
-			let cc = isTemplate ? 0 : 1
-
-			for col in cc ..< data.pixelSize - cc {
-				var activeRect: CGRect?
-				
-				for row in cc ..< data.pixelSize - cc {
-					let isEye = data.isEyePixel(row, col) && isTemplate == false
-
-					if data.current[row, col] == false || isEye {
-						if let r = activeRect {
-							// Close the rect
-							let ri = r.insetBy(dx: self.inset, dy: self.inset)
-							let cr = (ri.width / 2.0) * self.cornerRadiusFraction
-							path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
-						}
-						activeRect = nil
-						continue
-					}
-					
-					if var a = activeRect {
-						a.size.height += dm
-						activeRect = a
-					}
-					else {
-						activeRect = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					}
-				}
-				
-				if let r = activeRect {
-					// Close the rect
-					let ri = r.insetBy(dx: self.inset, dy: self.inset)
-					let cr = (ri.width / 2.0) * self.cornerRadiusFraction
-					path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
-				}
-			}
-			return path
+			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
 		}
-		
+
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
+			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
+		}
+
+		private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
 			let dx = size.width / CGFloat(data.pixelSize)
 			let dy = size.height / CGFloat(data.pixelSize)
 			let dm = min(dx, dy)
@@ -105,30 +65,34 @@ public extension QRCode.PixelShape {
 			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
 			
 			let path = CGMutablePath()
-			
-			for col in 0 ..< data.pixelSize {
+
+			// Mask out the QR patterns
+			let currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+
+			for col in 1 ..< data.pixelSize - 1 {
 				var activeRect: CGRect?
 				
-				for row in 0 ..< data.pixelSize {
-					let isEye = data.isEyePixel(row, col) && isTemplate == false
-
-					if data.current[row, col] == true || isEye {
+				for row in 1 ..< data.pixelSize - 1 {
+					if currentData[row, col] == false {
 						if let r = activeRect {
-							// Close the rect
+							// We had an active rect. Close it.
 							let ri = r.insetBy(dx: self.inset, dy: self.inset)
 							let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 							path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 						}
 						activeRect = nil
-						continue
 					}
-					
-					if var a = activeRect {
-						a.size.height += dm
-						activeRect = a
+					else if activeRect != nil {
+						// We are still going...
+						activeRect?.size.height += dm
 					}
 					else {
-						activeRect = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
+						// Starting a new rect
+						activeRect = CGRect(
+							x: xoff + (CGFloat(col) * dm),
+							y: yoff + (CGFloat(row) * dm),
+							width: dm, height: dm
+						)
 					}
 				}
 				

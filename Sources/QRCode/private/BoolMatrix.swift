@@ -29,6 +29,10 @@ import Foundation
 		super.init()
 	}
 
+	@objc public func copyMatrix() -> BoolMatrix {
+		BoolMatrix(dimension: dimension, flattened: flattened)
+	}
+
 	@objc public init(dimension: Int) {
 		self.content = Array2D(
 			rows: dimension,
@@ -57,6 +61,16 @@ import Foundation
 		return content.rows
 	}
 
+	/// Return a flattened version of the bool matrix
+	@objc public var flattened: [Bool] {
+		content.flattened
+	}
+
+	/// Returns a new matrix with toggled values
+	@objc public var flipped: BoolMatrix {
+		BoolMatrix(dimension: content.columns, flattened: flattened.map { !$0 })
+	}
+
 	/// get/set the value at the row/column position. Does not check for out of bounds (that's your responsibility!)
 	@objc public subscript(row: Int, column: Int) -> Bool {
 		get {
@@ -68,4 +82,31 @@ import Foundation
 	}
 
 	private var content: Array2D<Bool> = Array2D(rows: 0, columns: 0, initialValue: false)
+}
+
+extension BoolMatrix {
+	/// Returns a new copy of this matrix with the eyes and 'quiet' space (the 1px border) masked to false
+	/// - Parameter inverted: If true, inverts the mask content before returning
+	/// - Returns: A new masked copy of this matrix
+	func maskingQREyes(inverted: Bool) -> BoolMatrix {
+		let maskedResult = self.copyMatrix()
+		for row in 0 ..< maskedResult.dimension {
+			for col in 0 ..< maskedResult.dimension {
+				if (row == 0 || row == (maskedResult.dimension - 1)) ||
+					(col == 0 || col == (maskedResult.dimension - 1)) ||
+					(row < 9 && col < 9) ||
+					(col < 9 && row >= maskedResult.dimension - 9) ||
+					(row < 9 && col >= maskedResult.dimension - 9)
+				{
+					// Masking out the eye component
+					maskedResult[row, col] = false
+				}
+				else if inverted {
+					// Flip true->false and vice-versa
+					maskedResult[row, col].toggle()
+				}
+			}
+		}
+		return maskedResult
+	}
 }

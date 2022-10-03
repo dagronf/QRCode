@@ -42,4 +42,27 @@ public struct Array2D<T> {
 	mutating func setIndexed(_ index: Int, value: T) {
 		self.array[index] = value
 	}
+
+	/// Returns a flattened version of the array
+	///
+	/// eg.
+	///
+	///   1  2  3  4
+	///   5  6  7  8
+	///   9 10 11 12
+	///
+	/// returns
+	///
+	///  [1 2 3 4 5 6 7 8 9 10 11 12]
+	///
+	public var flattened: [T] {
+		return array
+	}
+}
+
+extension Array2D where T == Bool {
+	/// Returns a flipped version of a Bool Array2D
+	@inlinable func flipped() -> Array2D<T> {
+		Array2D<T>(rows: self.rows, columns: self.columns, flattened: self.flattened.map { !$0 })
+	}
 }

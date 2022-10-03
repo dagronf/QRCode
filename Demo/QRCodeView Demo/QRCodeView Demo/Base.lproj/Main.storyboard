@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21506"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -739,10 +739,10 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="EGm-mh-5JA" customClass="QRCodeView" customModule="QRCode">
                                 <rect key="frame" x="20" y="261" width="243" height="212"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="Purple with horizontal bars"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="L"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
-                                        <color key="value" red="0.89056569340000002" green="0.70289796589999998" blue="0.81566268210000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" red="0.53686392309999997" green="0.40097856520000003" blue="0.67384272810000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -752,10 +752,10 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="eKM-kc-OYa" customClass="QRCodeView" customModule="QRCode">
                                 <rect key="frame" x="283" y="261" width="242" height="212"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="Lavender with purple, eyes pointing in!"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="M"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
-                                        <color key="value" red="0.79461610319999998" green="0.70625692610000002" blue="0.87796360250000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="value" red="0.2844222502" green="0.091292767260000005" blue="0.30587278379999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
                                         <color key="value" red="0.4441777468" green="0.44415655729999998" blue="0.74806731940000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -765,7 +765,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="4zG-cU-rqM" customClass="QRCodeView" customModule="QRCode">
                                 <rect key="frame" x="283" y="26" width="242" height="213"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="This is a test"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="Radial Fire"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibCorrectionLevel" value="H"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.95786648990000001" green="0.72098064419999996" blue="0.66761595009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

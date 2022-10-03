@@ -290,6 +290,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |---|---|---|---|
 |<img src="./Art/images/data_square.png" width="60"/>      |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
 |<img src="./Art/images/data_circle.png" width="60"/>      |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_curvePixel.png" width="60"/>  |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
 |<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
 |<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|

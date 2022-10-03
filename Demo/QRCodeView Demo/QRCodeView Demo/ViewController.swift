@@ -34,7 +34,11 @@ class ViewController: NSViewController {
 			centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 		q4.design.style.background = gr
-		q4.design.shape.onPixels = QRCode.PixelShape.Squircle()
+		q4.design.shape.onPixels = QRCode.PixelShape.Squircle(inset: 1)
+
+		q4.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 1, cornerRadiusFraction: 0.8)
+		q4.design.style.offPixels = QRCode.FillStyle.Solid(1, alpha: 0.1)
+
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
 		// Do any additional setup after loading the view.

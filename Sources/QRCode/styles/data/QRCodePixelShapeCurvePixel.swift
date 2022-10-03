@@ -1,7 +1,6 @@
 //
-//  QRCodePixelShapeRoundedPath.swift
+//  QRCodePixelShapeCurvePixel.swift
 //
-//  Created by Darren Ford on 17/11/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -24,11 +23,11 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode.PixelShape {
-	@objc(QRCodePixelShapeRoundedPath) class RoundedPath: NSObject, QRCodePixelShapeGenerator {
-		public static var Name = "roundedPath"
+	@objc(QRCodePixelShapeCurvePixel) class CurvePixel: NSObject, QRCodePixelShapeGenerator {
+		public static var Name = "curvePixel"
 		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? self.DefaultCornerRadiusValue
-			return RoundedPath(cornerRadiusFraction: radius)
+			return CurvePixel(cornerRadiusFraction: radius)
 		}
 
 		// The template pixel generator size is 10x10
@@ -36,13 +35,16 @@ public extension QRCode.PixelShape {
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 
 		// The default radius for the curved edges is 3
-		private static let DefaultCornerRadiusValue: CGFloat = 0.3
+		private static let DefaultCornerRadiusValue: CGFloat = 1
 
-		private var actualRadiusSize = CGSize(width: 3, height: 3)
-		private var actualRadius: CGFloat = 3
+		private var actualRadius: CGFloat = CurvePixel.DefaultCornerRadiusValue
+		private var actualRadiusSize = CGSize(
+			width: CurvePixel.DefaultCornerRadiusValue,
+			height: CurvePixel.DefaultCornerRadiusValue
+		)
 
 		private func cornerRadiusChanged() {
-			self.actualRadius = self._cornerRadius * 5
+			self.actualRadius = self._cornerRadius * 4.5
 			self.actualRadiusSize = CGSize(width: self.actualRadius, height: self.actualRadius)
 		}
 
@@ -59,14 +61,14 @@ public extension QRCode.PixelShape {
 			set { self._cornerRadius = newValue.clamped(to: 0 ... 1) }
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0.3) {
+		@objc public init(cornerRadiusFraction: CGFloat = 1) {
 			self._cornerRadius = cornerRadiusFraction.clamped(to: 0 ... 1)
 			super.init()
 			self.cornerRadiusChanged()
 		}
 
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			RoundedPath(cornerRadiusFraction: self.cornerRadiusFraction)
+			CurvePixel(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
 
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
@@ -79,14 +81,14 @@ public extension QRCode.PixelShape {
 	}
 }
 
-extension QRCode.PixelShape.RoundedPath {
+extension QRCode.PixelShape.CurvePixel {
 	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
 		let dx = size.width / CGFloat(data.pixelSize)
 		let dy = size.height / CGFloat(data.pixelSize)
 		let dm = min(dx, dy)
 
 		// The scale required to convert our template paths to output path size
-		let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
+		let w = QRCode.PixelShape.CurvePixel.DefaultSize.width
 		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
 
 		let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
@@ -94,10 +96,10 @@ extension QRCode.PixelShape.RoundedPath {
 
 		let path = CGMutablePath()
 
-		// Mask out the QR patterns (if we're not a template image)
+		// Mask out the QR patterns
 		let currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
 
-		for row in 1 ..< data.pixelSize - 1 {
+		for row in 1 ..< data.pixelSize - 1{
 			for col in 1 ..< data.pixelSize - 1 {
 				guard currentData[row, col] == true else { continue }
 
@@ -166,7 +168,7 @@ extension QRCode.PixelShape.RoundedPath {
 
 				else {
 					path.addPath(
-						QRCode.PixelShape.RoundedPath.templateSquare,
+						QRCode.PixelShape.CurvePixel.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
@@ -178,12 +180,15 @@ extension QRCode.PixelShape.RoundedPath {
 
 // MARK: - Template shapes
 
-private extension QRCode.PixelShape.RoundedPath {
-	private static let templateSquare = CGPath(rect: QRCode.PixelShape.RoundedPath.DefaultRect, transform: nil)
+private extension QRCode.PixelShape.CurvePixel {
+	private static let templateSquare = CGPath(
+		rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
+		transform: nil
+	)
 
 	private func templateCircle() -> CGPath {
 		CGPath(
-			roundedRect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			roundedRect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			cornerWidth: actualRadius, cornerHeight: actualRadius,
 			transform: nil
 		)
@@ -191,7 +196,7 @@ private extension QRCode.PixelShape.RoundedPath {
 
 	private func templateRoundTop() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			topLeftRadius: actualRadiusSize,
 			topRightRadius: actualRadiusSize
 		)
@@ -199,7 +204,7 @@ private extension QRCode.PixelShape.RoundedPath {
 
 	private func templateRoundRight() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			topRightRadius: actualRadiusSize,
 			bottomRightRadius: actualRadiusSize
 		)
@@ -207,7 +212,7 @@ private extension QRCode.PixelShape.RoundedPath {
 
 	private func templateRoundBottom() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			bottomLeftRadius: actualRadiusSize,
 			bottomRightRadius: actualRadiusSize
 		)
@@ -215,7 +220,7 @@ private extension QRCode.PixelShape.RoundedPath {
 
 	private func templateRoundLeft() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			topLeftRadius: actualRadiusSize,
 			bottomLeftRadius: actualRadiusSize
 		)
@@ -223,28 +228,28 @@ private extension QRCode.PixelShape.RoundedPath {
 
 	private func templateBottomRight() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			bottomRightRadius: actualRadiusSize
 		)
 	}
 
 	private func templateTopRight() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			topRightRadius: actualRadiusSize
 		)
 	}
 
 	private func templateTopLeft() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			topLeftRadius: actualRadiusSize
 		)
 	}
 
 	private func templateBottomLeft() -> CGPath {
 		CGPath.RoundedRect(
-			rect: QRCode.PixelShape.RoundedPath.DefaultRect,
+			rect: QRCode.PixelShape.CurvePixel.DefaultRect.insetBy(dx: 0.5, dy: 0.5),
 			bottomLeftRadius: actualRadiusSize
 		)
 	}
@@ -252,7 +257,7 @@ private extension QRCode.PixelShape.RoundedPath {
 
 // MARK: - Settings
 
-public extension QRCode.PixelShape.RoundedPath {
+public extension QRCode.PixelShape.CurvePixel {
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == "cornerRadiusFraction"
