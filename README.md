@@ -232,37 +232,38 @@ You can provide an `EyeShape` object to style just the eyes of the generated qr 
 square, circle, rounded rectangle, and more.
 
 | Preview | Name | Class | Description |
-|---|---|---|---|
-|<img src="./Art/images/eye_square.png" width="60"/>           |"square"|`QRCode.EyeShape.Square`|Simple square (default)|
-|<img src="./Art/images/eye_circle.png" width="60"/>           |"circle"|`QRCode.EyeShape.Circle`|Simple circle|
-|<img src="./Art/images/eye_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
-|<img src="./Art/images/eye_roundedouter.png" width="60"/>     |"roundedOuter"|`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
-|<img src="./Art/images/eye_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
-|<img src="./Art/images/eye_leaf.png" width="60"/>             |"leaf"|`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
-|<img src="./Art/images/eye_squircle.png" width="60"/>         |"squircle"|`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/eye_barsHorizontal.png" width="60"/>   |"barsHorizontal"|`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
-|<img src="./Art/images/eye_barsVertical.png" width="60"/>     |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
-|<img src="./Art/images/eye_pixels.png" width="60"/>           |"pixels"|`QRCode.EyeShape.Pixels`| A simple collection of pixels with configurable corner radius|
+|:---:|---|---|---|
+|<img src="./Art/images/eye_square.png" width="60"/>            |"square"|`QRCode.EyeShape.Square`|Simple square (default)|
+|<img src="./Art/images/eye_circle.png" width="60"/>            |"circle"|`QRCode.EyeShape.Circle`|Simple circle|
+|<img src="./Art/images/eye_roundedRect.png" width="60"/>       |"roundedRect"|`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
+|<img src="./Art/images/eye_roundedouter.png" width="60"/>      |"roundedOuter"|`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/eye_roundedpointingin.png" width="60"/> |"roundedPointingIn"|`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/eye_leaf.png" width="60"/>              |"leaf"|`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/eye_squircle.png" width="60"/>          |"squircle"|`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/eye_barsHorizontal.png" width="60"/>    |"barsHorizontal"|`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
+|<img src="./Art/images/eye_barsVertical.png" width="60"/>      |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
+|<img src="./Art/images/eye_pixels.png" width="60"/>            |"pixels"|`QRCode.EyeShape.Pixels`| A simple collection of pixels with configurable corner radius for each pixel|
+|<img src="./Art/images/eye_corneredPixels.png" width="60"/>    |"corneredPixels"|`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
 
 ### Custom Pupil shape (optional)
 
-You can provide an override to the default `EyeShape` pupil shape to change just the shape of the pupil. There are built-in generators for
-square, circle, rounded rectangle, and more.
+You can provide an override to the default `EyeShape` pupil shape to change just the shape of the pupil. There are built-in generators for square, circle, rounded rectangle, and more.
 
 If you don't override the pupil shape, it defaults to the eye shape's pupil shape.
 
 | Preview | Name | Class | Description |
-|---|---|---|---|
-|<img src="./Art/images/pupil_square.png" width="60"/>           |"square"|`QRCode.PupilShape.Square`|Simple square (default)|
-|<img src="./Art/images/pupil_circle.png" width="60"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
-|<img src="./Art/images/pupil_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
-|<img src="./Art/images/pupil_roundedouter.png" width="60"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
-|<img src="./Art/images/pupil_roundedpointingin.png" width="60"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
-|<img src="./Art/images/pupil_leaf.png" width="60"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
-|<img src="./Art/images/pupil_squircle.png" width="60"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/pupil_barsHorizontal.png" width="60"/>   |"barsHorizontal"|`QRCode.PupilShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
-|<img src="./Art/images/pupil_barsVertical.png" width="60"/>     |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
-|<img src="./Art/images/pupil_pixels.png" width="60"/>           |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius |
+|:---:|---|---|---|
+|<img src="./Art/images/pupil_square.png" width="30"/>           |"square"|`QRCode.PupilShape.Square`|Simple square (default)|
+|<img src="./Art/images/pupil_circle.png" width="30"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
+|<img src="./Art/images/pupil_roundedRect.png" width="30"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
+|<img src="./Art/images/pupil_roundedouter.png" width="30"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/pupil_roundedpointingin.png" width="30"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/pupil_leaf.png" width="30"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/pupil_squircle.png" width="30"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/pupil_barsHorizontal.png" width="30"/>   |"barsHorizontal"|`QRCode.PupilShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
+|<img src="./Art/images/pupil_barsVertical.png" width="30"/>     |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
+|<img src="./Art/images/pupil_pixels.png" width="30"/>           |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius for each pixel |
+|<img src="./Art/images/pupil_corneredPixels.png" width="30"/>   |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |
 
 <details>
 <summary>Example</summary>
