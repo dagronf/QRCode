@@ -31,6 +31,7 @@ internal extension QRCode.PixelShape {
 			case circle
 			case roundedRect
 			case squircle
+			case sharp
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -95,6 +96,17 @@ internal extension QRCode.PixelShape {
 							))
 
 						let sq = Squircle.squircle10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .sharp {
+						let i = (self.inset / 2)
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + i,
+								y: yoff + (CGFloat(row) * dm) + i
+							))
+
+						let sq = Sharp.sharp10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else {

@@ -40,6 +40,7 @@ import Foundation
 			QRCode.PixelShape.RoundedPath.self,
 			QRCode.PixelShape.Pointy.self,
 			QRCode.PixelShape.CurvePixel.self,
+			QRCode.PixelShape.Sharp.self,
 		]
 		super.init()
 	}
