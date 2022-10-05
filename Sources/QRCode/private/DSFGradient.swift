@@ -69,7 +69,7 @@ import Foundation
 	///   - colorspace: The colorspace to use. If not specified uses DeviceRGB
 	@objc public init?(
 		pins: [Pin],
-		colorspace: CGColorSpace? = CGColorSpaceCreateDeviceRGB()
+		colorspace: CGColorSpace? = CGColorSpace(name: CGColorSpace.sRGB)!
 	) {
 		// Sort by the position from 0 (start position) -> 1 (end position)
 		self.pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
@@ -107,7 +107,7 @@ public extension DSFGradient {
 			if result.count > 0 { result += "|" }
 			guard
 				let pc = pin.color.converted(
-					to: CGColorSpace(name: CGColorSpace.genericRGBLinear)!,
+					to: CGColorSpace(name: CGColorSpace.sRGB)!,
 					intent: .defaultIntent,
 					options: nil),
 				let comps = pc.components,
