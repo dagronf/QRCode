@@ -39,8 +39,7 @@ import Foundation
 			QRCode.PupilShape.Pixels.self,
 			QRCode.PupilShape.Leaf.self,
 			QRCode.PupilShape.BarsVertical.self,
-			QRCode.PupilShape.BarsHorizontal.self,
-			QRCode.PupilShape.Sharp.self,
+			QRCode.PupilShape.BarsHorizontal.self
 		]
 		super.init()
 	}
