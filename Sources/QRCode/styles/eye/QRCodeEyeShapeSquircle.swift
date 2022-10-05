@@ -31,6 +31,8 @@ public extension QRCode.EyeShape {
 		}
 
 		@objc public func settings() -> [String: Any] { return [:] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		public func copyShape() -> QRCodeEyeShapeGenerator {
 			return Self.Create(self.settings())
@@ -78,7 +80,10 @@ public extension QRCode.PupilShape {
 			Squircle()
 		}
 		@objc public func copyShape() -> QRCodePupilShapeGenerator { Squircle() }
+
 		@objc public func settings() -> [String : Any] { [:] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {

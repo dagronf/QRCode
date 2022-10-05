@@ -32,6 +32,14 @@ public extension QRCode.EyeShape {
 		}
 
 		@objc public func settings() -> [String: Any] { ["cornerRadiusFraction": self.cornerRadiusFraction] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == "cornerRadiusFraction" }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == "cornerRadiusFraction", let value = DoubleValue(value) {
+				cornerRadiusFraction = max(0, min(1, value))
+				return true
+			}
+			return false
+		}
 
 		public func copyShape() -> QRCodeEyeShapeGenerator { return Self.Create(self.settings()) }
 
@@ -106,6 +114,14 @@ public extension QRCode.PupilShape {
 
 		@objc public func settings() -> [String: Any] {
 			[ "cornerRadiusFraction": self.cornerRadiusFraction ]
+		}
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == "cornerRadiusFraction" }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == "cornerRadiusFraction", let value = DoubleValue(value) {
+				cornerRadiusFraction = max(0, min(1, value))
+				return true
+			}
+			return false
 		}
 
 		private var _actualCornerRadius: CGFloat = 0

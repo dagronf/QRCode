@@ -36,11 +36,16 @@ public extension QRCode {
 @objc public protocol QRCodeEyeShapeGenerator {
 	@objc static var Name: String { get }
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
-	@objc func settings() -> [String: Any]
 	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
-
 	@objc func defaultPupil() -> QRCodePupilShapeGenerator
+
+	/// Returns a storable representation of the shape handler
+	@objc func settings() -> [String: Any]
+	/// Does the shape generator support setting values for a particular key?
+	@objc func supportsSettingValue(forKey key: String) -> Bool
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool
 }
 
 public extension QRCodeEyeShapeGenerator {
@@ -64,9 +69,15 @@ public extension QRCode {
 @objc public protocol QRCodePupilShapeGenerator {
 	@objc static var Name: String { get }
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator
-	@objc func settings() -> [String: Any]
 	@objc func copyShape() -> QRCodePupilShapeGenerator
 	@objc func pupilPath() -> CGPath
+
+	@objc func settings() -> [String: Any]
+	/// Does the shape generator support setting values for a particular key?
+	@objc func supportsSettingValue(forKey key: String) -> Bool
+	/// Set a configuration value for a particular setting string
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool
+
 }
 
 public extension QRCodePupilShapeGenerator {
