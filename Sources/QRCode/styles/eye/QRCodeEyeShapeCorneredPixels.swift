@@ -42,7 +42,7 @@ public extension QRCode.EyeShape {
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
+		@objc public init(cornerRadiusFraction: CGFloat = 1) {
 			self.cornerRadiusFraction = cornerRadiusFraction
 			self._actualCornerRadius = cornerRadiusFraction * 5.0
 		}
@@ -113,7 +113,7 @@ public extension QRCode.PupilShape {
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
+		@objc public init(cornerRadiusFraction: CGFloat = 1) {
 			self.cornerRadiusFraction = cornerRadiusFraction
 			self._actualCornerRadius = cornerRadiusFraction * 5.0
 		}
