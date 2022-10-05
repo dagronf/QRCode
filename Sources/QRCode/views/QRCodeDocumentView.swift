@@ -36,16 +36,23 @@ import UIKit
 @objc public class QRCodeDocumentView: DSFView {
 	#if os(macOS)
 	public override var isFlipped: Bool { true }
+	public override var isOpaque: Bool { false }
 	#endif
 
 	@objc public init(document: QRCode.Document = QRCode.Document()) {
 		self.document = document
 		super.init(frame: .zero)
+		#if !os(macOS)
+		self.isOpaque = false
+		#endif
 		self.setNeedsDisplay()
 	}
 
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
+		#if !os(macOS)
+		self.isOpaque = false
+		#endif
 	}
 
 	/// The document to display

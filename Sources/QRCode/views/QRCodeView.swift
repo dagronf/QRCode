@@ -64,6 +64,9 @@ import UIKit
 	/// Create a QRCodeView with default settings
 	@objc public convenience init() {
 		self.init(frame: .zero)
+		#if !os(macOS)
+		self.isOpaque = false
+		#endif
 	}
 
 	/// Create a QRCodeView with an initial document.
@@ -77,11 +80,17 @@ import UIKit
 
 	@objc override public init(frame frameRect: CGRect) {
 		super.init(frame: frameRect)
+		#if !os(macOS)
+		self.isOpaque = false
+		#endif
 		self.setup()
 	}
 
 	@objc public required init?(coder: NSCoder) {
 		super.init(coder: coder)
+		#if !os(macOS)
+		self.isOpaque = false
+		#endif
 		self.setup()
 	}
 
@@ -215,6 +224,7 @@ public extension QRCodeView {
 extension QRCodeView {
 	#if os(macOS)
 	override public var isFlipped: Bool { true }
+	public override var isOpaque: Bool { false }
 	#endif
 
 	private func setup() {
