@@ -38,6 +38,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2309F89E28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */; };
+		2309F8A028ED33F8009666A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89F28ED33F8009666A1 /* ContentView.swift */; };
+		2309F8A228ED33F9009666A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A128ED33F9009666A1 /* Assets.xcassets */; };
+		2309F8A528ED33F9009666A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A428ED33F9009666A1 /* Preview Assets.xcassets */; };
+		2309F8AA28ED340C009666A1 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 2309F8A928ED340C009666A1 /* QRCode */; };
+		2309F8AC28ED340C009666A1 /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 2309F8AB28ED340C009666A1 /* QRCodeExternal */; };
 		2322B099276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2322B09E276348310085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B09D276348310085B5EB /* Assets.xcassets */; };
 		2322B0A4276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -205,6 +211,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple tvOS QRCode.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_tvOS_QRCodeApp.swift; sourceTree = "<group>"; };
+		2309F89F28ED33F8009666A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2309F8A128ED33F9009666A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2309F8A428ED33F9009666A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2322B095276348300085B5EB /* QRCode WatchOS Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode WatchOS Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode WatchOS Demo WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2322B09D276348310085B5EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -272,6 +283,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2309F89828ED33F8009666A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2309F8AA28ED340C009666A1 /* QRCode in Frameworks */,
+				2309F8AC28ED340C009666A1 /* QRCodeExternal in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2322B0A0276348310085B5EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -347,6 +367,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */,
+				2309F89F28ED33F8009666A1 /* ContentView.swift */,
+				2309F8A128ED33F9009666A1 /* Assets.xcassets */,
+				2309F8A328ED33F9009666A1 /* Preview Content */,
+			);
+			path = "Simple tvOS QRCode";
+			sourceTree = "<group>";
+		};
+		2309F8A328ED33F9009666A1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2309F8A428ED33F9009666A1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		2322B09C276348300085B5EB /* QRCode WatchOS Demo WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +429,7 @@
 				23C64A5B282F448D0094E093 /* QRCodeView Documentation Images */,
 				236A0504286FE1960019C842 /* macOS QRCode Detector */,
 				236A0519286FE6570019C842 /* iOS QRCode Detector */,
+				2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */,
 				2348FB65273A2DDB004DB2BF /* Products */,
 				2348FB77273A2DF5004DB2BF /* Frameworks */,
 			);
@@ -409,6 +449,7 @@
 				23C64A5A282F448D0094E093 /* QRCodeView Documentation Images.app */,
 				236A0503286FE1960019C842 /* macOS QRCode Detector.app */,
 				236A0518286FE6570019C842 /* iOS QRCode Detector.app */,
+				2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -540,6 +581,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2309F8A828ED33F9009666A1 /* Build configuration list for PBXNativeTarget "Simple tvOS QRCode" */;
+			buildPhases = (
+				2309F89728ED33F8009666A1 /* Sources */,
+				2309F89828ED33F8009666A1 /* Frameworks */,
+				2309F89928ED33F8009666A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Simple tvOS QRCode";
+			packageProductDependencies = (
+				2309F8A928ED340C009666A1 /* QRCode */,
+				2309F8AB28ED340C009666A1 /* QRCodeExternal */,
+			);
+			productName = "Simple tvOS QRCode";
+			productReference = 2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */;
+			productType = "com.apple.product-type.application";
+		};
 		2322B094276348300085B5EB /* QRCode WatchOS Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2322B0BE276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo" */;
@@ -762,9 +824,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1340;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					2309F89A28ED33F8009666A1 = {
+						CreatedOnToolsVersion = 14.1;
+					};
 					2322B094276348300085B5EB = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -832,11 +897,21 @@
 				23C64A59282F448D0094E093 /* QRCodeView Documentation Images */,
 				236A0502286FE1960019C842 /* macOS QRCode Detector */,
 				236A0517286FE6570019C842 /* iOS QRCode Detector */,
+				2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2309F89928ED33F8009666A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2309F8A528ED33F9009666A1 /* Preview Assets.xcassets in Resources */,
+				2309F8A228ED33F9009666A1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2322B093276348300085B5EB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -936,6 +1011,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2309F89728ED33F8009666A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2309F8A028ED33F8009666A1 /* ContentView.swift in Sources */,
+				2309F89E28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2322B09F276348310085B5EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1146,6 +1230,65 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2309F8A628ED33F9009666A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Simple tvOS QRCode/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.qrcode.Simple-tvOS-QRCode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
+			};
+			name = Debug;
+		};
+		2309F8A728ED33F9009666A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Simple tvOS QRCode/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.qrcode.Simple-tvOS-QRCode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		2322B0B4276348320085B5EB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1932,6 +2075,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2309F8A828ED33F9009666A1 /* Build configuration list for PBXNativeTarget "Simple tvOS QRCode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2309F8A628ED33F9009666A1 /* Debug */,
+				2309F8A728ED33F9009666A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2322B0BC276348320085B5EB /* Build configuration list for PBXNativeTarget "QRCode WatchOS Demo WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2061,6 +2213,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2309F8A928ED340C009666A1 /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCode;
+		};
+		2309F8AB28ED340C009666A1 /* QRCodeExternal */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeExternal;
+		};
 		239FBAE028A638C2002F74AC /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
