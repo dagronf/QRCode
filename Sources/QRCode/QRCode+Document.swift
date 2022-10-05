@@ -68,8 +68,15 @@ public extension QRCode {
 			return c
 		}
 
+		@objc override public init() {
+			self.data = Data()
+			self.errorCorrection = .default
+			self.qrcode = QRCode(data, errorCorrection: errorCorrection, generator: nil)
+			super.init()
+		}
+
 		/// Create a QRCode document with default settings
-		@objc public init(generator: QRCodeEngine? = nil) {
+		@objc public init(generator: QRCodeEngine?) {
 			self.data = Data()
 			self.errorCorrection = .default
 			self.qrcode = QRCode(
