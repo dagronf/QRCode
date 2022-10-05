@@ -254,12 +254,12 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 | Preview | Name | Class | Description |
 |:---:|---|---|---|
 |<img src="./Art/images/pupil_square.png" width="30"/>           |"square"|`QRCode.PupilShape.Square`|Simple square (default)|
-|<img src="./Art/images/pupil_circle.png" width="30"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
+|<img src="./Art/images/pupil_Circle.png" width="30"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
 |<img src="./Art/images/pupil_roundedRect.png" width="30"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
-|<img src="./Art/images/pupil_roundedouter.png" width="30"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
-|<img src="./Art/images/pupil_roundedpointingin.png" width="30"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
-|<img src="./Art/images/pupil_leaf.png" width="30"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
-|<img src="./Art/images/pupil_squircle.png" width="30"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/pupil_RoundedOuter.png" width="30"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
+|<img src="./Art/images/pupil_RoundedPointingIn.png" width="30"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/pupil_Leaf.png" width="30"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/pupil_Squircle.png" width="30"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/pupil_barsHorizontal.png" width="30"/>   |"barsHorizontal"|`QRCode.PupilShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
 |<img src="./Art/images/pupil_barsVertical.png" width="30"/>     |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 |<img src="./Art/images/pupil_pixels.png" width="30"/>           |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius for each pixel |
@@ -685,18 +685,19 @@ You can build the command line tool by opening a terminal window, `cd` into the 
 The `qrcodegen` tool can be found in the `.build/release` folder.
 
 ```zsh
-% .build/release/qrcodegen --help
+% .build/debug/qrcodegen -h                                                                                              64 ↵ ✹
 OVERVIEW: Create a qr code
 
 Examples:
    qrcodegen -t "This is a QR code" --output-file "fish.png" 512
    qrcodegen -t "QRCode on the clipboard" --output-format clipboard 1024
+   qrcodegen --style-template-file qrtemplate.json -t "QRCode on the clipboard" --output-format clipboard 1024
 
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
 
-USAGE: qrcodegen [<options>] <dimension>
+USAGE: qr-code-gen [<options>] <dimension>
 
 ARGUMENTS:
   <dimension>             The QR code dimension. 
@@ -710,16 +711,21 @@ OPTIONS:
                           The output format (png [default],pdf,svg,ascii,smallascii,clipboard) 
   --output-compression <output-compression>
                           The output format compression factor (if the output format supports it, png,jpg) 
+  --style-template-file <style-template-file>
+                          The QR code file to use as a style template 
   -t, --text <text>       The text to be stored in the QR code 
   -s, --silence           Silence any output 
   -c, --error-correction <error-correction>
-                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H"
-                          (max) 
+                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize), "H"
+                          (high) 
+  -p, --pupil-shape <pupil-shape>
+                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle, corneredPixels,
+                          leaf, pixels, roundedOuter, roundedPointingIn, roundedRect, square, squircle. 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are circle, leaf, roundedOuter, roundedPointingIn,
-                          roundedRect, square, squircle. 
+                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle, corneredPixels,
+                          leaf, pixels, roundedOuter, roundedPointingIn, roundedRect, square, squircle. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are circle, horizontal, pointy, roundedPath,
+                          The onPixels shape to use. Available shapes are circle, curvePixel, horizontal, pointy, roundedPath,
                           roundedRect, square, squircle, vertical. 
   -n, --inset <inset>     The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>

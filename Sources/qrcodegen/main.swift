@@ -53,6 +53,7 @@ struct QRCodeGen: ParsableCommand {
 Examples:
    qrcodegen -t "This is a QR code" --output-file "fish.png" 512
    qrcodegen -t "QRCode on the clipboard" --output-format clipboard 1024
+   qrcodegen --style-template-file qrtemplate.json -t "QRCode on the clipboard" --output-format clipboard 1024
 
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
@@ -76,14 +77,20 @@ Examples:
 	@Option(help: "The output format compression factor (if the output format supports it, png,jpg)")
 	var outputCompression: Double?
 
+	@Option(name: [.long], help: "The QR code file to use as a style template")
+	var styleTemplateFile: String?
+
 	@Option(name: [.customShort("t"), .long], help: "The text to be stored in the QR code")
 	var text: String?
 
 	@Flag(name: [.customShort("s"), .long], help: "Silence any output")
 	var silence = false
 
-	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (high), "H" (max)"#)
+	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize), "H" (high)"#)
 	var errorCorrection: String?
+
+	@Option(name: [.customShort("p"), .long], help: "The pupil shape to use. Available shapes are \(QRCodePupilShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
+	var pupilShape: String?
 
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var eyeShape: String?
@@ -133,7 +140,21 @@ Examples:
 		}
 
 		// Create the design to use
-		let design = QRCode.Design()
+		let design: QRCode.Design = {
+			if let styleTemplateFile = styleTemplateFile {
+				let templateURL = URL(fileURLWithPath: styleTemplateFile)
+				do {
+					return try QRCode.Document(jsonData: try Data(contentsOf: templateURL)).design
+				}
+				catch {
+					Swift.print("Invalid style template file '\(styleTemplateFile)'.")
+					QRCodeGen.exit(withError: ExitCode(-10))
+				}
+			}
+			else {
+				return QRCode.Design()
+			}
+		}()
 
 		// Colors
 
@@ -167,6 +188,16 @@ Examples:
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
 			design.shape.eye = shape
+		}
+
+		if let name = pupilShape {
+			guard let shape = QRCodePupilShapeFactory.shared.named(name) else {
+				Swift.print("Unknown pupil style '\(name)'.")
+				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
+				Swift.print("Available pupil styles are \(known)")
+				QRCodeGen.exit(withError: ExitCode(-2))
+			}
+			design.shape.pupil = shape
 		}
 
 		// The onPixels shape
