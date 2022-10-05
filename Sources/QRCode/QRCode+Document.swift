@@ -38,7 +38,7 @@ public extension QRCode {
 		}
 
 		/// Binary data to display in the QR code
-		@objc public var data = Data() {
+		@objc public var data: Data {
 			didSet {
 				self.regenerate()
 			}
@@ -70,13 +70,15 @@ public extension QRCode {
 
 		/// Create a QRCode document with default settings
 		@objc public init(generator: QRCodeEngine? = nil) {
-			if let generator = generator {
-				self.qrcode = QRCode(generator: generator)
-			}
-			else {
-				self.qrcode = QRCode()
-			}
+			self.data = Data()
+			self.errorCorrection = .default
+			self.qrcode = QRCode(
+				self.data,
+				errorCorrection: self.errorCorrection,
+				generator: generator
+			)
 			super.init()
+			self.regenerate()
 		}
 
 		/// Create a QRCode document
@@ -89,14 +91,14 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
+			self.data = data
+			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
 				data,
 				errorCorrection: errorCorrection,
 				generator: generator
 			)
 			super.init()
-			self.data = data
-			self.errorCorrection = errorCorrection
 			self.regenerate()
 		}
 
@@ -110,8 +112,10 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
+			self.data = utf8String.data(using: .utf8) ?? Data()
+			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
-				text: utf8String,
+				data,
 				errorCorrection: errorCorrection,
 				generator: generator
 			)
@@ -129,10 +133,14 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
-			self.qrcode = QRCode()
-			super.init()
 			self.data = message.data
 			self.errorCorrection = errorCorrection
+			self.qrcode = QRCode(
+				message.data,
+				errorCorrection: errorCorrection,
+				generator: generator
+			)
+			super.init()
 			self.regenerate()
 		}
 

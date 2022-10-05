@@ -52,6 +52,10 @@ import Foundation
 	}
 
 	/// Create a QRCode with the given data and error correction
+	/// - Parameters:
+	///   - data: The initial data to display
+	///   - errorCorrection: The initial error correction to use
+	///   - generator: The QR engine to use. Specify nil to use the default generator.
 	@objc public init(
 		_ data: Data,
 		errorCorrection: ErrorCorrection = .default,
