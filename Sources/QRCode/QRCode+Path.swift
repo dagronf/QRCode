@@ -39,12 +39,20 @@ public extension QRCode {
 		public static let onPixels = Components(rawValue: 1 << 2)
 		/// The non-eye, 'off' pixels
 		public static let offPixels = Components(rawValue: 1 << 3)
+		/// The background of the eye
+		public static let eyeBackground = Components(rawValue: 1 << 4)
 
 		/// The entire qrcode without offPixels (default presentation)
-		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
+		public static let all: Components = [Components.eyeOuter, Components.eyeBackground, Components.eyePupil, Components.onPixels]
 
 		/// Every component of the QR code, including the off pixels
-		public static let everything: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels, Components.offPixels]
+		public static let everything: Components = [
+			Components.eyeOuter,
+			Components.eyeBackground,
+			Components.eyePupil,
+			Components.onPixels,
+			Components.offPixels
+		]
 
 		public var rawValue: Int8
 		@objc public required init(rawValue: Int8) {
@@ -90,6 +98,42 @@ public extension QRCode {
 
 		// The outer part of the eye
 		let eyeShape = shape.eye
+
+		// The background of the eye.
+
+		if components.contains(.eyeBackground) {
+
+			var plt = CGAffineTransform(scaleX: 1, y: -1)
+				.concatenating(CGAffineTransform(translationX: 0, y: 90))
+
+			let p = eyeShape.eyeBackgroundPath().copy(using: &plt)!
+			var scaledTopLeft = scaleTransform.concatenating(posTransform)
+
+			// top left
+			let tl = p.copy(using: &scaledTopLeft)!
+			path.addPath(tl)
+
+			// bottom left
+			var blt = CGAffineTransform(scaleX: 1, y: -1)
+				.concatenating(CGAffineTransform(translationX: 0, y: 90))
+				.concatenating(scaledTopLeft)
+
+			var bl = p.copy(using: &blt)!
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			bl = bl.copy(using: &bltrans)!
+			path.addPath(bl)
+
+			// top right
+			var tlt = CGAffineTransform(scaleX: -1, y: 1)
+				.concatenating(CGAffineTransform(translationX: 90, y: 0))
+				.concatenating(scaledTopLeft)
+
+			var br = p.copy(using: &tlt)!
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			br = br.copy(using: &brtrans)!
+			path.addPath(br)
+		}
+
 		if components.contains(.eyeOuter) {
 			let p = eyeShape.eyePath()
 			var scaledTopLeft = scaleTransform.concatenating(posTransform)

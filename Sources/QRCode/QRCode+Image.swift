@@ -129,6 +129,16 @@ public extension QRCode {
 			backgroundStyle.fill(ctx: context, rect: rect)
 		}
 
+		// Draw the background color behind the eyes
+		if let eColor = design.style.eyeBackground {
+			let eyeBackgroundPath = self.path(rect.size, components: .eyeBackground, shape: design.shape)
+			ctx.usingGState { context in
+				ctx.setFillColor(eColor)
+				ctx.addPath(eyeBackgroundPath)
+				ctx.fillPath()
+			}
+		}
+
 		// Draw the outer eye
 		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 		ctx.usingGState { context in

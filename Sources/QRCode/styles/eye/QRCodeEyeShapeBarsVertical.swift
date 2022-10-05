@@ -65,6 +65,21 @@ public extension QRCode.EyeShape {
 			return roundedRectEyePath
 		}
 
+		@objc public func eyeBackgroundPath() -> CGPath {
+			let roundedRectEye2Path = CGMutablePath()
+			roundedRectEye2Path.move(to: CGPoint(x: 90, y: 77.14))
+			roundedRectEye2Path.line(to: CGPoint(x: 90, y: 12.86))
+			roundedRectEye2Path.curve(to: CGPoint(x: 77.14, y: 0), controlPoint1: CGPoint(x: 90, y: 5.76), controlPoint2: CGPoint(x: 84.24, y: -0))
+			roundedRectEye2Path.line(to: CGPoint(x: 12.86, y: 0))
+			roundedRectEye2Path.curve(to: CGPoint(x: 0, y: 12.86), controlPoint1: CGPoint(x: 5.76, y: 0), controlPoint2: CGPoint(x: 0, y: 5.76))
+			roundedRectEye2Path.line(to: CGPoint(x: 0, y: 77.14))
+			roundedRectEye2Path.curve(to: CGPoint(x: 12.86, y: 90), controlPoint1: CGPoint(x: 0, y: 84.24), controlPoint2: CGPoint(x: 5.76, y: 90))
+			roundedRectEye2Path.line(to: CGPoint(x: 77.14, y: 90))
+			roundedRectEye2Path.curve(to: CGPoint(x: 90, y: 77.14), controlPoint1: CGPoint(x: 84.24, y: 90), controlPoint2: CGPoint(x: 90, y: 84.24))
+			roundedRectEye2Path.close()
+			return roundedRectEye2Path
+		}
+
 		private static let _defaultPupil = QRCode.PupilShape.BarsVertical()
 		public func defaultPupil() -> QRCodePupilShapeGenerator {
 			Self._defaultPupil

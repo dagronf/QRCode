@@ -58,6 +58,11 @@ public extension QRCode {
 		/// The background style for the QR code. If nil, no background is drawn. Defaults to white
 		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 
+		/// The background color behind the eyes.
+		///
+		/// Setting a solid background color (eg. white) behind the eyes can make the QR code more readable
+		@objc public var eyeBackground: CGColor? = nil
+
 		/// Copy the style
 		public func copyStyle() -> Style {
 			let c = Style()
@@ -65,6 +70,7 @@ public extension QRCode {
 			c.offPixels = self.offPixels?.copyStyle()
 			c.background = self.background?.copyStyle()
 			c.eye = self.eye?.copyStyle()
+			c.eyeBackground = self.eyeBackground?.copy()
 			c.pupil = self.pupil?.copyStyle()
 			return c
 		}
@@ -98,6 +104,10 @@ public extension QRCode.Style {
 		if let di = offPixels?.coreSettings() {
 			result["offPixels"] = di
 		}
+		if self.eyeBackground != .clear,
+			let eb = self.eyeBackground?.archiveSRGBA() {
+			result["eyeBackground"] = ["color": eb]
+		}
 		return result
 	}
 
@@ -112,6 +122,13 @@ public extension QRCode.Style {
 		if let e = settings["eye"] as? [String: Any],
 			let eye = FillStyleFactory.Create(settings: e) {
 			style.eye = eye
+		}
+
+		if let eb = settings["eyeBackground"] as? [String: Any],
+			let ebs = eb["color"] as? String,
+			let ec = CGColor.UnarchiveSRGBA(ebs)
+		{
+			style.eyeBackground = ec
 		}
 
 		if let e = settings["pupil"] as? [String: Any],

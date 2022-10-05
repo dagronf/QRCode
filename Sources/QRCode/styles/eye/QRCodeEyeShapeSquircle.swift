@@ -65,6 +65,22 @@ public extension QRCode.EyeShape {
 			return eyeOuterPath
 		}
 
+		@objc public func eyeBackgroundPath() -> CGPath {
+			let eyeOuter2Path = CGMutablePath()
+			eyeOuter2Path.move(to: CGPoint(x: 82.84, y: 82.84))
+			eyeOuter2Path.curve(to: CGPoint(x: 90, y: 45), controlPoint1: CGPoint(x: 90, y: 75.68), controlPoint2: CGPoint(x: 90, y: 64.72))
+			eyeOuter2Path.curve(to: CGPoint(x: 82.84, y: 7.16), controlPoint1: CGPoint(x: 90, y: 25.28), controlPoint2: CGPoint(x: 90, y: 14.32))
+			eyeOuter2Path.curve(to: CGPoint(x: 45, y: 0), controlPoint1: CGPoint(x: 75.68, y: -0), controlPoint2: CGPoint(x: 64.72, y: 0))
+			eyeOuter2Path.curve(to: CGPoint(x: 7.16, y: 7.16), controlPoint1: CGPoint(x: 25.28, y: 0), controlPoint2: CGPoint(x: 14.32, y: -0))
+			eyeOuter2Path.curve(to: CGPoint(x: 0, y: 45), controlPoint1: CGPoint(x: 0, y: 14.32), controlPoint2: CGPoint(x: 0, y: 25.28))
+			eyeOuter2Path.curve(to: CGPoint(x: 2.64, y: 75.74), controlPoint1: CGPoint(x: 0, y: 59.14), controlPoint2: CGPoint(x: 0, y: 68.78))
+			eyeOuter2Path.curve(to: CGPoint(x: 7.16, y: 82.84), controlPoint1: CGPoint(x: 3.68, y: 78.48), controlPoint2: CGPoint(x: 5.13, y: 80.81))
+			eyeOuter2Path.curve(to: CGPoint(x: 45, y: 90), controlPoint1: CGPoint(x: 14.32, y: 90), controlPoint2: CGPoint(x: 25.28, y: 90))
+			eyeOuter2Path.curve(to: CGPoint(x: 82.84, y: 82.84), controlPoint1: CGPoint(x: 64.72, y: 90), controlPoint2: CGPoint(x: 75.68, y: 90))
+			eyeOuter2Path.close()
+			return eyeOuter2Path
+		}
+
 		private static let _defaultPupil = QRCode.PupilShape.Squircle()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
 	}

@@ -61,6 +61,20 @@ public extension QRCode.EyeShape {
 			return tearEyePath
 		}
 
+		@objc public func eyeBackgroundPath() -> CGPath {
+			let tearEye2Path = CGMutablePath()
+			tearEye2Path.move(to: CGPoint(x: 90, y: 60.43))
+			tearEye2Path.line(to: CGPoint(x: 90, y: 0))
+			tearEye2Path.line(to: CGPoint(x: 29.57, y: 0))
+			tearEye2Path.curve(to: CGPoint(x: 0, y: 29.57), controlPoint1: CGPoint(x: 13.24, y: 0), controlPoint2: CGPoint(x: 0, y: 13.24))
+			tearEye2Path.line(to: CGPoint(x: 0, y: 60.43))
+			tearEye2Path.curve(to: CGPoint(x: 29.57, y: 90), controlPoint1: CGPoint(x: 0, y: 76.76), controlPoint2: CGPoint(x: 13.24, y: 90))
+			tearEye2Path.line(to: CGPoint(x: 60.43, y: 90))
+			tearEye2Path.curve(to: CGPoint(x: 90, y: 60.43), controlPoint1: CGPoint(x: 76.76, y: 90), controlPoint2: CGPoint(x: 90, y: 76.76))
+			tearEye2Path.close()
+			return tearEye2Path
+		}
+
 		private static let generator_ = QRCode.PupilShape.RoundedPointingIn()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self.generator_ }
 	}

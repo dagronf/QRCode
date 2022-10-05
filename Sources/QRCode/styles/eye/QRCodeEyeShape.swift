@@ -38,6 +38,7 @@ public extension QRCode {
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
 	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
+	@objc func eyeBackgroundPath() -> CGPath
 	@objc func defaultPupil() -> QRCodePupilShapeGenerator
 
 	/// Returns a storable representation of the shape handler

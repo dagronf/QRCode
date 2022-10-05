@@ -59,6 +59,20 @@ public extension QRCode.EyeShape {
 			eyePath.close()
 			return eyePath
 		}
+
+		public func eyeBackgroundPath() -> CGPath {
+			let eye2Path = CGMutablePath()
+			eye2Path.move(to: CGPoint(x: 90, y: 0))
+			eye2Path.curve(to: CGPoint(x: 90, y: 64.29), controlPoint1: CGPoint(x: 90, y: -0), controlPoint2: CGPoint(x: 90, y: 64.29))
+			eye2Path.curve(to: CGPoint(x: 64.29, y: 90), controlPoint1: CGPoint(x: 90, y: 78.49), controlPoint2: CGPoint(x: 78.49, y: 90))
+			eye2Path.line(to: CGPoint(x: 0, y: 90))
+			eye2Path.line(to: CGPoint(x: 0, y: 25.71))
+			eye2Path.curve(to: CGPoint(x: 25.71, y: 0), controlPoint1: CGPoint(x: 0, y: 11.51), controlPoint2: CGPoint(x: 11.51, y: 0))
+			eye2Path.line(to: CGPoint(x: 90, y: 0))
+			eye2Path.line(to: CGPoint(x: 90, y: 0))
+			eye2Path.close()
+			return eye2Path
+		}
 		
 		private static let _defaultPupil = QRCode.PupilShape.Leaf()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }

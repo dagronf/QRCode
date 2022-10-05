@@ -90,6 +90,10 @@ public extension QRCode.EyeShape {
 			return path
 		}
 
+		@objc public func eyeBackgroundPath() -> CGPath {
+			CGPath(rect: CGRect(origin: .zero, size: CGSize(width: 90, height: 90)), transform: nil)
+		}
+
 		private static let _defaultPupil = QRCode.PupilShape.CorneredPixels()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CorneredPixels(cornerRadiusFraction: self.cornerRadiusFraction) }
 	}
