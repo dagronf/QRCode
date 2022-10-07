@@ -33,6 +33,9 @@ public extension QRCode {
 		/// The style for the data component for the QR code. Defaults to black
 		@objc public var onPixels: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
 
+		/// The background color for the 'on' pixels
+		@objc public var onPixelsBackground: CGColor?
+		
 		/// Deprecated. Use `onPixels` instead
 		@available(*, deprecated, renamed: "onPixels")
 		@objc public var data: QRCodeFillStyleGenerator {
@@ -42,6 +45,9 @@ public extension QRCode {
 		
 		/// The style for drawing the non-drawn sections for the qr code.
 		@objc public var offPixels: QRCodeFillStyleGenerator?
+
+		/// The background color for the 'off' pixels
+		@objc public var offPixelsBackground: CGColor?
 
 		/// Deprecated. Use `offPixels` instead
 		@available(*, deprecated, renamed: "offPixels")
@@ -67,7 +73,9 @@ public extension QRCode {
 		public func copyStyle() -> Style {
 			let c = Style()
 			c.onPixels = self.onPixels.copyStyle()
+			c.onPixelsBackground = self.onPixelsBackground?.copy()
 			c.offPixels = self.offPixels?.copyStyle()
+			c.offPixelsBackground = self.offPixelsBackground?.copy()
 			c.background = self.background?.copyStyle()
 			c.eye = self.eye?.copyStyle()
 			c.eyeBackground = self.eyeBackground?.copy()
@@ -104,9 +112,20 @@ public extension QRCode.Style {
 		if let di = offPixels?.coreSettings() {
 			result["offPixels"] = di
 		}
-		if self.eyeBackground != .clear,
-			let eb = self.eyeBackground?.archiveSRGBA() {
+
+		// The eye background
+
+		if let e = self.eyeBackground, let eb = e.archiveSRGBA() {
 			result["eyeBackground"] = ["color": eb]
+		}
+
+		// the backgrounds for the pixels
+
+		if let e = self.onPixelsBackground, let eb = e.archiveSRGBA() {
+			result["onPixelsBackground"] = ["color": eb]
+		}
+		if let e = self.offPixelsBackground, let eb = e.archiveSRGBA() {
+			result["offPixelsBackground"] = ["color": eb]
 		}
 		return result
 	}
@@ -124,13 +143,6 @@ public extension QRCode.Style {
 			style.eye = eye
 		}
 
-		if let eb = settings["eyeBackground"] as? [String: Any],
-			let ebs = eb["color"] as? String,
-			let ec = CGColor.UnarchiveSRGBA(ebs)
-		{
-			style.eyeBackground = ec
-		}
-
 		if let e = settings["pupil"] as? [String: Any],
 			let pupil = FillStyleFactory.Create(settings: e) {
 			style.pupil = pupil
@@ -140,11 +152,40 @@ public extension QRCode.Style {
 			let background = FillStyleFactory.Create(settings: e) {
 			style.background = background
 		}
+		else {
+			style.background = nil
+		}
 
 		if let e = settings["offPixels"] as? [String: Any],
 			let offPixels = FillStyleFactory.Create(settings: e) {
 			style.offPixels = offPixels
 		}
+
+		// The eye background
+
+		if let eb = settings["eyeBackground"] as? [String: Any],
+			let ebs = eb["color"] as? String,
+			let ec = CGColor.UnarchiveSRGBA(ebs)
+		{
+			style.eyeBackground = ec
+		}
+
+		// the backgrounds for the pixels
+
+		if let eb = settings["onPixelsBackground"] as? [String: Any],
+			let ebs = eb["color"] as? String,
+			let ec = CGColor.UnarchiveSRGBA(ebs)
+		{
+			style.onPixelsBackground = ec
+		}
+
+		if let eb = settings["offPixelsBackground"] as? [String: Any],
+			let ebs = eb["color"] as? String,
+			let ec = CGColor.UnarchiveSRGBA(ebs)
+		{
+			style.offPixelsBackground = ec
+		}
+
 		return style
 	}
 }

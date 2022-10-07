@@ -98,6 +98,21 @@ import Foundation
 
 	// Private
 	private let DefaultPDFResolution: CGFloat = 72
+
+	// The pixel design to use for drawing the pixel background color
+	internal let onPixelBackgroundDesign: QRCode.Design = {
+		let d = QRCode.Design()
+		d.shape.offPixels = QRCode.PixelShape.Square()
+		return d
+	}()
+
+	// The pixel design to use for drawing the pixel background color
+	internal let offPixelBackgroundDesign: QRCode.Design = {
+		let d = QRCode.Design()
+		d.shape.offPixels = QRCode.PixelShape.Square()
+		return d
+	}()
+
 }
 
 extension QRCode: NSCopying {
