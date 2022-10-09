@@ -99,7 +99,6 @@ extension QRCode.PixelShape.RoundedPath {
 
 		for row in 1 ..< data.pixelSize - 1 {
 			for col in 1 ..< data.pixelSize - 1 {
-				guard currentData[row, col] == true else { continue }
 
 				let hasLeft = (col - 1) >= 0 ? currentData[row, col - 1] : false
 				let hasRight = (col + 1) < data.pixelSize ? currentData[row, col + 1] : false
@@ -107,6 +106,39 @@ extension QRCode.PixelShape.RoundedPath {
 				let hasBottom = (row + 1) < data.pixelSize ? currentData[row + 1, col] : false
 
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
+
+				guard currentData[row, col] == true else {
+					let hasTopLeft = ((col - 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col - 1] : false
+					let hasTopRight = ((col + 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col + 1] : false
+					let hasBottomLeft = ((col - 1) >= 0 && (row + 1) >= 0) ? currentData[row + 1, col - 1] : false
+					let hasBottomRight = ((col + 1) >= 0 && (row + 1) >= 0) ? currentData[row + 1, col + 1] : false
+
+					if hasLeft, hasTop, hasTopLeft {
+						path.addPath(
+							self.templateRoundTopLeft(),
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if hasRight, hasTop, hasTopRight {
+						path.addPath(
+							self.templateRoundTopRight(),
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if hasLeft, hasBottom, hasBottomLeft {
+						path.addPath(
+							self.templateRoundBottomLeft(),
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if hasRight, hasBottom, hasBottomRight {
+						path.addPath(
+							self.templateRoundBottomRight(),
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					continue
+				}
 
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
 					path.addPath(
@@ -248,6 +280,67 @@ private extension QRCode.PixelShape.RoundedPath {
 			bottomLeftRadius: actualRadiusSize
 		)
 	}
+}
+
+// MARK: - Template corner shapes
+
+private extension QRCode.PixelShape.RoundedPath {
+	private func templateRoundTopLeft() -> CGPath {
+		let tlPath = CGMutablePath()
+		tlPath.move(to: CGPoint(x: 1.31, y: 0.14))
+		tlPath.curve(to: CGPoint(x: 0.58, y: 0.58), controlPoint1: CGPoint(x: 1, y: 0.24), controlPoint2: CGPoint(x: 0.77, y: 0.39))
+		tlPath.curve(to: CGPoint(x: 0.15, y: 1.26), controlPoint1: CGPoint(x: 0.39, y: 0.77), controlPoint2: CGPoint(x: 0.24, y: 1))
+		tlPath.curve(to: CGPoint(x: 0, y: 3.06), controlPoint1: CGPoint(x: -0, y: 1.74), controlPoint2: CGPoint(x: 0, y: 2.18))
+		tlPath.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 0, y: 1.35), controlPoint2: CGPoint(x: 0, y: 0))
+		tlPath.line(to: CGPoint(x: 3.06, y: 0))
+		tlPath.curve(to: CGPoint(x: 1.26, y: 0.15), controlPoint1: CGPoint(x: 2.18, y: 0), controlPoint2: CGPoint(x: 1.74, y: 0))
+		tlPath.line(to: CGPoint(x: 1.31, y: 0.14))
+		tlPath.close()
+		return tlPath
+	}
+
+	private func templateRoundTopRight() -> CGPath {
+		let trPath = CGMutablePath()
+		trPath.move(to: CGPoint(x: 8.69, y: 0.14))
+		trPath.curve(to: CGPoint(x: 9.42, y: 0.58), controlPoint1: CGPoint(x: 9, y: 0.24), controlPoint2: CGPoint(x: 9.23, y: 0.39))
+		trPath.curve(to: CGPoint(x: 9.85, y: 1.26), controlPoint1: CGPoint(x: 9.61, y: 0.77), controlPoint2: CGPoint(x: 9.76, y: 1))
+		trPath.curve(to: CGPoint(x: 10, y: 3.06), controlPoint1: CGPoint(x: 10, y: 1.74), controlPoint2: CGPoint(x: 10, y: 2.18))
+		trPath.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 10, y: 1.35), controlPoint2: CGPoint(x: 10, y: 0))
+		trPath.line(to: CGPoint(x: 6.94, y: 0))
+		trPath.curve(to: CGPoint(x: 8.74, y: 0.15), controlPoint1: CGPoint(x: 7.82, y: 0), controlPoint2: CGPoint(x: 8.26, y: 0))
+		trPath.line(to: CGPoint(x: 8.69, y: 0.14))
+		trPath.close()
+		return trPath
+	}
+
+	private func templateRoundBottomLeft() -> CGPath {
+		let blPath = CGMutablePath()
+		blPath.move(to: CGPoint(x: 1.31, y: 9.86))
+		blPath.curve(to: CGPoint(x: 0.58, y: 9.42), controlPoint1: CGPoint(x: 1, y: 9.76), controlPoint2: CGPoint(x: 0.77, y: 9.61))
+		blPath.curve(to: CGPoint(x: 0.15, y: 8.74), controlPoint1: CGPoint(x: 0.39, y: 9.23), controlPoint2: CGPoint(x: 0.24, y: 9))
+		blPath.curve(to: CGPoint(x: 0, y: 6.94), controlPoint1: CGPoint(x: -0, y: 8.26), controlPoint2: CGPoint(x: 0, y: 7.82))
+		blPath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 0, y: 8.65), controlPoint2: CGPoint(x: 0, y: 10))
+		blPath.line(to: CGPoint(x: 3.06, y: 10))
+		blPath.curve(to: CGPoint(x: 1.26, y: 9.85), controlPoint1: CGPoint(x: 2.18, y: 10), controlPoint2: CGPoint(x: 1.74, y: 10))
+		blPath.line(to: CGPoint(x: 1.31, y: 9.86))
+		blPath.close()
+		return blPath
+	}
+
+	private func templateRoundBottomRight() -> CGPath {
+		let brPath = CGMutablePath()
+		brPath.move(to: CGPoint(x: 8.69, y: 9.86))
+		brPath.curve(to: CGPoint(x: 9.42, y: 9.42), controlPoint1: CGPoint(x: 9, y: 9.76), controlPoint2: CGPoint(x: 9.23, y: 9.61))
+		brPath.curve(to: CGPoint(x: 9.85, y: 8.74), controlPoint1: CGPoint(x: 9.61, y: 9.23), controlPoint2: CGPoint(x: 9.76, y: 9))
+		brPath.curve(to: CGPoint(x: 10, y: 6.94), controlPoint1: CGPoint(x: 10, y: 8.26), controlPoint2: CGPoint(x: 10, y: 7.82))
+		brPath.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 10, y: 8.65), controlPoint2: CGPoint(x: 10, y: 10))
+		brPath.line(to: CGPoint(x: 6.94, y: 10))
+		brPath.curve(to: CGPoint(x: 8.74, y: 9.85), controlPoint1: CGPoint(x: 7.82, y: 10), controlPoint2: CGPoint(x: 8.26, y: 10))
+		brPath.line(to: CGPoint(x: 8.69, y: 9.86))
+		brPath.close()
+		return brPath
+	}
+
 }
 
 // MARK: - Settings
