@@ -25,8 +25,11 @@ import CoreGraphics
 
 public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapePointy) class Pointy: NSObject, QRCodePixelShapeGenerator {
-		public static var Name: String = "pointy"
-		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		/// The generator name
+		@objc public static let Name: String = "pointy"
+
+		/// Create an instance of this path generator with the specified settings
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			QRCode.PixelShape.Pointy()
 		}
 
@@ -83,7 +86,8 @@ public extension QRCode.PixelShape {
 			return p
 		}()
 
-		public func copyShape() -> QRCodePixelShapeGenerator {
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Pointy()
 		}
 	}

@@ -26,9 +26,9 @@ import Foundation
 public extension QRCode.PixelShape {
 	/// A rounded rect pixel shape
 	@objc(QRCodePixelShapeRoundedRect) class RoundedRect: NSObject, QRCodePixelShapeGenerator {
-		public static var Name: String { "roundedRect" }
-		private let common: CommonPixelGenerator
-		
+		/// The generator name
+		@objc public static let Name: String = "roundedRect"
+
 		/// Create
 		/// - Parameters:
 		///   - inset: The inset between each pixel
@@ -37,14 +37,16 @@ public extension QRCode.PixelShape {
 			self.common = CommonPixelGenerator(pixelType: .roundedRect, inset: inset, cornerRadiusFraction: cornerRadiusFraction)
 			super.init()
 		}
-		
-		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
+
+		/// Create an instance of this path generator with the specified settings
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
 			return RoundedRect(inset: inset, cornerRadiusFraction: radius)
 		}
-		
-		public func copyShape() -> QRCodePixelShapeGenerator {
+
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return RoundedRect(inset: self.common.inset, cornerRadiusFraction: self.common.cornerRadiusFraction)
 		}
 		
@@ -58,6 +60,8 @@ public extension QRCode.PixelShape {
 		
 		@objc public var cornerRadiusFraction: CGFloat { self.common.cornerRadiusFraction }
 		@objc public var inset: CGFloat { self.common.inset }
+
+		private let common: CommonPixelGenerator
 	}
 }
 
@@ -66,20 +70,21 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.RoundedRect {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "inset" || key == "cornerRadiusFraction"
+		return key == QRCode.SettingsKey.inset
+			 || key == QRCode.SettingsKey.cornerRadiusFraction
 	}
 	
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String: Any] {
 		return [
-			"inset": self.common.inset,
-			"cornerRadiusFraction": self.common.cornerRadiusFraction,
+			QRCode.SettingsKey.inset: self.common.inset,
+			QRCode.SettingsKey.cornerRadiusFraction: self.common.cornerRadiusFraction,
 		]
 	}
 	
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "inset" {
+		if key == QRCode.SettingsKey.inset {
 			guard let v = value else {
 				self.common.inset = 0
 				return true
@@ -88,7 +93,7 @@ public extension QRCode.PixelShape.RoundedRect {
 			self.common.inset = v
 			return true
 		}
-		else if key == "cornerRadiusFraction" {
+		else if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
 				self.common.cornerRadiusFraction = 0
 				return true

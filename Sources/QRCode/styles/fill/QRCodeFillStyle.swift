@@ -38,16 +38,12 @@ public extension QRCode {
 	@objc static var Name: String { get }
 	/// Create a fill style generator using the specified settings
 	static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator?
-
 	/// Make a copy of the style
 	@objc func copyStyle() -> QRCodeFillStyleGenerator
-
 	/// Returns the current settings for the style generator
 	@objc func settings() -> [String: Any]
-
 	/// Fill the specified rect with the current style settings
 	func fill(ctx: CGContext, rect: CGRect)
-
 	/// Fill the specified path with the current style settings
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 }

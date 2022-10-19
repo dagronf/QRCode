@@ -35,6 +35,7 @@ import UIKit
 /// Very simple QRCode view for displaying a document. No other functionality is provided
 @objc public class QRCodeDocumentView: DSFView {
 	#if os(macOS)
+	/// :nodoc:
 	public override var isFlipped: Bool { true }
 	public override var isOpaque: Bool { false }
 	#endif

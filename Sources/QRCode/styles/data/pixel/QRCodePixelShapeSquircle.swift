@@ -26,9 +26,9 @@ import Foundation
 public extension QRCode.PixelShape {
 	/// A squircle pixel shape
 	@objc(QRCodePixelShapeSquircle) class Squircle: NSObject, QRCodePixelShapeGenerator {
-		public static var Name: String { "squircle" }
-		private let common: CommonPixelGenerator
-		
+		/// The generator name
+		@objc public static let Name: String = "squircle"
+
 		/// Create
 		/// - Parameters:
 		///   - inset: The inset between each pixel
@@ -36,13 +36,15 @@ public extension QRCode.PixelShape {
 			self.common = CommonPixelGenerator(pixelType: .squircle, inset: inset)
 			super.init()
 		}
-		
-		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
+
+		/// Create an instance of this path generator with the specified settings
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
 			return Squircle(inset: inset)
 		}
-		
-		public func copyShape() -> QRCodePixelShapeGenerator {
+
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Squircle(inset: self.common.inset)
 		}
 		
@@ -71,6 +73,8 @@ public extension QRCode.PixelShape {
 			s10.close()
 			return s10
 		}
+
+		private let common: CommonPixelGenerator
 	}
 }
 
@@ -79,17 +83,17 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.Squircle {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "inset"
+		return key == QRCode.SettingsKey.inset
 	}
 	
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String: Any] {
-		return ["inset": self.common.inset]
+		return [QRCode.SettingsKey.inset: self.common.inset]
 	}
 	
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "inset" {
+		if key == QRCode.SettingsKey.inset {
 			guard let v = value else {
 				self.common.inset = 0
 				return true

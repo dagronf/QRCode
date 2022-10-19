@@ -24,9 +24,12 @@ import Foundation
 
 public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapeCurvePixel) class CurvePixel: NSObject, QRCodePixelShapeGenerator {
-		public static var Name = "curvePixel"
-		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? self.DefaultCornerRadiusValue
+		/// The generator name
+		@objc public static let Name = "curvePixel"
+
+		/// Create an instance of this path generator with the specified settings
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? self.DefaultCornerRadiusValue
 			return CurvePixel(cornerRadiusFraction: radius)
 		}
 
@@ -67,6 +70,7 @@ public extension QRCode.PixelShape {
 			self.cornerRadiusChanged()
 		}
 
+		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			CurvePixel(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
@@ -260,17 +264,17 @@ private extension QRCode.PixelShape.CurvePixel {
 public extension QRCode.PixelShape.CurvePixel {
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "cornerRadiusFraction"
+		return key == QRCode.SettingsKey.cornerRadiusFraction
 	}
 
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String: Any] {
-		return ["cornerRadiusFraction": self._cornerRadius]
+		return [QRCode.SettingsKey.cornerRadiusFraction: self._cornerRadius]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "cornerRadiusFraction" {
+		if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
 				self.cornerRadiusFraction = 0
 				return true

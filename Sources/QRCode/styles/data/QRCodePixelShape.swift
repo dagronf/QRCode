@@ -35,11 +35,11 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the data shape for a path
 @objc public protocol QRCodePixelShapeGenerator {
-	static var Name: String { get }
-	static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator
+	@objc static var Name: String { get }
+	@objc static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator
 
 	/// Make a copy of the shape object
-	func copyShape() -> QRCodePixelShapeGenerator
+	@objc func copyShape() -> QRCodePixelShapeGenerator
 
 	/// Generate a path representing the 'on' _data_ pixels within the specified QRCode data (ie. no eyes etc)
 	/// - Parameters:

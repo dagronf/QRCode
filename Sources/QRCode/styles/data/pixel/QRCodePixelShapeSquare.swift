@@ -26,8 +26,8 @@ import Foundation
 public extension QRCode.PixelShape {
 	/// A square pixel shape
 	@objc(QRCodePixelShapeSquare) class Square: NSObject, QRCodePixelShapeGenerator {
-		@objc public static var Name: String { "square" }
-		private let common: CommonPixelGenerator
+		/// The generator name
+		@objc public static let Name: String = "square"
 
 		/// Create
 		/// - Parameters:
@@ -37,8 +37,9 @@ public extension QRCode.PixelShape {
 			super.init()
 		}
 
+		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
+			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
 			return Square(inset: inset)
 		}
 
@@ -58,6 +59,8 @@ public extension QRCode.PixelShape {
 		}
 
 		@objc public var inset: CGFloat { self.common.inset }
+
+		private let common: CommonPixelGenerator
 	}
 }
 
@@ -66,17 +69,17 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.Square {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "inset"
+		return key == QRCode.SettingsKey.inset
 	}
 
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String: Any] {
-		return ["inset": self.common.inset]
+		return [QRCode.SettingsKey.inset: self.common.inset]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "inset" {
+		if key == QRCode.SettingsKey.inset {
 			guard let v = value else {
 				self.common.inset = 0
 				return true

@@ -25,10 +25,14 @@ import Foundation
 
 public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapeRoundedPath) class RoundedPath: NSObject, QRCodePixelShapeGenerator {
-		public static var Name = "roundedPath"
-		public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? self.DefaultCornerRadiusValue
-			return RoundedPath(cornerRadiusFraction: radius)
+		/// The generator name
+		@objc public static let Name = "roundedPath"
+
+		/// Create an instance of this path generator with the specified settings
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? self.DefaultCornerRadiusValue
+			let hasInnerCorners = BoolValue(settings?[QRCode.SettingsKey.hasInnerCorners]) ?? false
+			return RoundedPath(cornerRadiusFraction: radius, hasInnerCorners: hasInnerCorners)
 		}
 
 		// The template pixel generator size is 10x10
@@ -59,20 +63,34 @@ public extension QRCode.PixelShape {
 			set { self._cornerRadius = newValue.clamped(to: 0 ... 1) }
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0.3) {
+		/// Do we draw the inner corners when drawing path?
+		@objc public var hasInnerCorners: Bool = false
+
+		/// Create
+		@objc public init(
+			cornerRadiusFraction: CGFloat = 0.3,
+			hasInnerCorners: Bool = false
+		) {
 			self._cornerRadius = cornerRadiusFraction.clamped(to: 0 ... 1)
+			self.hasInnerCorners = hasInnerCorners
 			super.init()
 			self.cornerRadiusChanged()
 		}
 
+		/// Make a copy of the shape
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			RoundedPath(cornerRadiusFraction: self.cornerRadiusFraction)
+			RoundedPath(
+				cornerRadiusFraction: self.cornerRadiusFraction,
+				hasInnerCorners: self.hasInnerCorners
+			)
 		}
 
+		/// The path representing the 'on' pixels
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
 		}
 
+		/// The path representing the 'off' pixels
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
 			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
 		}
@@ -108,6 +126,10 @@ extension QRCode.PixelShape.RoundedPath {
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 
 				guard currentData[row, col] == true else {
+					guard hasInnerCorners == true else {
+						continue
+					}
+
 					let hasTopLeft = ((col - 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col - 1] : false
 					let hasTopRight = ((col + 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col + 1] : false
 					let hasBottomLeft = ((col - 1) >= 0 && (row + 1) >= 0) ? currentData[row + 1, col - 1] : false
@@ -348,23 +370,36 @@ private extension QRCode.PixelShape.RoundedPath {
 public extension QRCode.PixelShape.RoundedPath {
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "cornerRadiusFraction"
+		return key == QRCode.SettingsKey.cornerRadiusFraction
+			 || key == QRCode.SettingsKey.hasInnerCorners
 	}
 
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String: Any] {
-		return ["cornerRadiusFraction": self._cornerRadius]
+		return [
+			QRCode.SettingsKey.cornerRadiusFraction: self._cornerRadius,
+			QRCode.SettingsKey.hasInnerCorners: self.hasInnerCorners
+		]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "cornerRadiusFraction" {
+		if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
 				self.cornerRadiusFraction = 0
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
 			self.cornerRadiusFraction = v
+			return true
+		}
+		if key == QRCode.SettingsKey.hasInnerCorners {
+			guard let v = value else {
+				self.hasInnerCorners = false
+				return true
+			}
+			guard let v = BoolValue(v) else { return false }
+			self.hasInnerCorners = v
 			return true
 		}
 		return false

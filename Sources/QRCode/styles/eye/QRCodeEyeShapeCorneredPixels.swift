@@ -26,22 +26,26 @@ public extension QRCode.EyeShape {
 	/// A 'pixel' style eye design which provides corner radius configuration
 	@objc(QRCodeEyeStyleCorneredPixels) class CorneredPixels: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "corneredPixels"
+
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
 			return CorneredPixels(cornerRadiusFraction: radius)
 		}
 
-		@objc public func settings() -> [String: Any] { ["cornerRadiusFraction": self.cornerRadiusFraction] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == "cornerRadiusFraction" }
+		@objc public func settings() -> [String: Any] { [QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == QRCode.SettingsKey.cornerRadiusFraction }
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-			if key == "cornerRadiusFraction", let value = DoubleValue(value) {
+			if key == QRCode.SettingsKey.cornerRadiusFraction, let value = DoubleValue(value) {
 				cornerRadiusFraction = max(0, min(1, value))
 				return true
 			}
 			return false
 		}
-		
-		public func copyShape() -> QRCodeEyeShapeGenerator { return Self.Create(self.settings()) }
+
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+			return Self.Create(self.settings())
+		}
 
 		private var _actualCornerRadius: CGFloat = 1
 		@objc public var cornerRadiusFraction: CGFloat = 1 {
@@ -106,20 +110,21 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeCorneredPixels) class CorneredPixels: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "corneredPixels" }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
 			return CorneredPixels(cornerRadiusFraction: radius)
 		}
 
+		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePupilShapeGenerator {
 			CorneredPixels(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
 
 		@objc public func settings() -> [String: Any] {
-			[ "cornerRadiusFraction": self.cornerRadiusFraction ]
+			[ QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction ]
 		}
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == "cornerRadiusFraction" }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == QRCode.SettingsKey.cornerRadiusFraction }
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-			if key == "cornerRadiusFraction", let value = DoubleValue(value) {
+			if key == QRCode.SettingsKey.cornerRadiusFraction, let value = DoubleValue(value) {
 				cornerRadiusFraction = max(0, min(1, value))
 				return true
 			}

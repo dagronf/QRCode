@@ -65,7 +65,7 @@ public extension QRCode {
 		@objc public var pupil: QRCodePupilShapeGenerator? = nil
 
 		/// Make a copy of the content shape
-		public func copyShape() -> Shape {
+		@objc public func copyShape() -> Shape {
 			let c = Shape()
 			c.onPixels = self.onPixels.copyShape()
 			c.offPixels = self.offPixels?.copyShape()

@@ -100,7 +100,7 @@ public extension DSFGradient {
 	// red,green,blue,alpha,position|red,green,blue,alpha,position|red,green,blue,alpha,position:...
 	//  0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0
 
-	/// Create a string 'archive' of the object
+	/// Create a DSFGradient archive format string representation of the gradient
 	@objc func asRGBAGradientString() -> String? {
 		var result = ""
 		for pin in self.pins {
@@ -124,7 +124,7 @@ public extension DSFGradient {
 		return numberFormatter.string(for: value) ?? "0"
 	}
 
-	/// Create a DSFGradient from a DSFGradient archive format
+	/// Create a DSFGradient from a DSFGradient archive format string
 	/// - Parameter content: The archive 'string'
 	/// - Returns: The DSFGradient, or nil if the content didn't contain a valid DSFGradient archive
 	@objc static func FromRGBAGradientString(_ content: String) -> DSFGradient? {

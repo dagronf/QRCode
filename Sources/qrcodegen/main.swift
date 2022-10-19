@@ -204,8 +204,8 @@ Examples:
 
 		let dataShapeName = self.onPixelShape ?? "square"
 		let settings: [String: Any] = [
-			"inset": inset ?? 0,
-			"cornerRadiusFraction": onPixelShapeCornerRadius ?? 0
+			QRCode.SettingsKey.inset: inset ?? 0,
+			QRCode.SettingsKey.cornerRadiusFraction: onPixelShapeCornerRadius ?? 0
 		]
 
 		guard let shape = QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings) else {

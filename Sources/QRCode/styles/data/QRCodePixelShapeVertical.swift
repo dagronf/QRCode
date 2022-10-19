@@ -25,11 +25,13 @@ import Foundation
 
 public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapeVertical) class Vertical: NSObject, QRCodePixelShapeGenerator {
+		/// The generators name
+		@objc static public let Name: String = "vertical"
 
-		static public let Name: String = "vertical"
-		static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?["inset", default: 0]) ?? 0
-			let radius = DoubleValue(settings?["cornerRadiusFraction"]) ?? 0
+		/// Create an instance of this path generator with the specified settings
+		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
 			return QRCode.PixelShape.Vertical(inset: inset, cornerRadiusFraction: radius)
 		}
 
@@ -41,7 +43,8 @@ public extension QRCode.PixelShape {
 			super.init()
 		}
 
-		public func copyShape() -> QRCodePixelShapeGenerator {
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Vertical(
 				inset: self.inset,
 				cornerRadiusFraction: self.cornerRadiusFraction
@@ -113,20 +116,21 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.Vertical {
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == "inset" || key == "cornerRadiusFraction"
+		return key == QRCode.SettingsKey.inset
+			 || key == QRCode.SettingsKey.cornerRadiusFraction
 	}
 
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String : Any] {
 		return [
-			"inset": self.inset,
-			"cornerRadiusFraction": self.cornerRadiusFraction
+			QRCode.SettingsKey.inset: self.inset,
+			QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction
 		]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == "inset" {
+		if key == QRCode.SettingsKey.inset {
 			guard let v = value else {
 				self.inset = 0
 				return true
@@ -135,7 +139,7 @@ public extension QRCode.PixelShape.Vertical {
 			self.inset = v
 			return true
 		}
-		else if key == "cornerRadiusFraction" {
+		else if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
 				self.cornerRadiusFraction = 0
 				return true

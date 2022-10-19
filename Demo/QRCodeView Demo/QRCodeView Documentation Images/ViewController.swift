@@ -65,7 +65,10 @@ class ViewController: NSViewController {
 
 		for name in QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted() {
 			guard
-				let gen = QRCodePixelShapeFactory.shared.named(name, settings: ["inset": 1, "cornerRadiusFraction": 0.75]),
+				let gen = QRCodePixelShapeFactory.shared.named(name, settings: [
+					QRCode.Keys.inset: 1,
+					QRCode.Keys.cornerRadiusFraction: 0.75
+				]),
 				let dataImage = QRCodePixelShapeFactory.shared.image(
 					pixelShape: gen,
 					dimension: imageSize * 2,

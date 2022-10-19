@@ -1,7 +1,7 @@
 //
-//  Utils.swift
+//  QRCode+SettingsKey.swift
 //
-//  Created by Darren Ford on 27/11/19.
+//  Created by Darren Ford on 12/12/21.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -22,12 +22,14 @@
 
 import Foundation
 
-/// Attempt to convert an opaque type to a double value.
-@inlinable @inline(__always) internal func DoubleValue(_ opaque: Any?) -> Double? {
-	return (opaque as? NSNumber)?.doubleValue
-}
-
-/// Attempt to convert an opaque type to a bool value.
-@inlinable @inline(__always) internal func BoolValue(_ opaque: Any?) -> Bool? {
-	return (opaque as? NSNumber)?.boolValue
+public extension QRCode {
+	/// Constant Keys
+	@objc class SettingsKey: NSObject {
+		/// Settings key for 'corner radius fraction'
+		@objc public static let cornerRadiusFraction = "cornerRadiusFraction"
+		/// Settings key for 'inset'
+		@objc public static let inset = "inset"
+		/// Settings key for 'has inner corners'
+		@objc public static let hasInnerCorners = "hasInnerCorners"
+	}
 }
