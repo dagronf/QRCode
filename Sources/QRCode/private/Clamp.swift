@@ -1,8 +1,7 @@
 //
 //  Clamp.swift
 //
-//  Created by Darren Ford on 6/7/20.
-//  Copyright © 2020 Darren Ford. All rights reserved.
+//  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
 //

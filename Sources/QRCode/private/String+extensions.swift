@@ -1,7 +1,6 @@
 //
 //  String+extensions.swift
 //
-//  Created by Darren Ford on 27/11/19.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license

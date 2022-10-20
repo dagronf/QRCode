@@ -1,7 +1,6 @@
 //
 //  QRCodePixelShapeSquare.swift
 //
-//  Created by Darren Ford on 3/5/22.
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT license
