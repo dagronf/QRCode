@@ -20,34 +20,67 @@ swift build -c release --arch arm64
 echo "**"
 echo "** macOS build and test..."
 echo "**"
+
 xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=macOS' -quiet
 xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=macOS' -quiet
+
+echo "** macOS build and test COMPLETE..."
+echo
 
 echo "**"
 echo "** macCatalyst build and test..."
 echo "**"
-xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=macOS,variant=Mac Catalyst' -quiet
-xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=macOS,variant=Mac Catalyst' -quiet
+
+xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=macOS,variant=Mac Catalyst' -quiet
+xcodebuild test -scheme "QRCode" -destination 'platform=macOS,variant=Mac Catalyst' -quiet
+
+xcodebuild clean build archive -scheme "QRCodeExternal" -destination 'generic/platform=macOS,variant=Mac Catalyst' -quiet
+xcodebuild test -scheme "QRCodeExternal" -destination 'platform=macOS,variant=Mac Catalyst' -quiet
+
+echo "** macCatalyst build and test COMPLETE..."
+echo
 
 echo "**"
 echo "** iOS build and test..."
 echo "**"
-xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=iOS Simulator,name=IPhone 11 Pro Max' -quiet
-xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=iOS Simulator,name=IPhone 11 Pro Max' -quiet
+
+xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=iOS' -quiet
+xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' -quiet
+
+xcodebuild clean build archive -scheme "QRCodeExternal" -destination 'generic/platform=iOS' -quiet
+xcodebuild test -scheme "QRCodeExternal" -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' -quiet
+
+echo "** iOS build and test COMPLETE..."
+echo
 
 echo "**"
 echo "** ipadOS build and test..."
 echo "**"
-xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' -quiet
-xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' -quiet
+
+xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' -quiet
+xcodebuild test -scheme "QRCodeExternal" -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' -quiet
+
+echo "** ipadOS build and test COMPLETE..."
+echo
 
 echo "**"
 echo "** tvOS build and test..."
 echo "**"
-xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=tvOS Simulator,name=Apple TV' -quiet
-xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=tvOS Simulator,name=Apple TV' -quiet
+
+xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=tvOS' -quiet
+xcodebuild test -scheme "QRCode" -destination 'platform=tvOS Simulator,name=Apple TV' -quiet
+
+xcodebuild clean build archive -scheme "QRCodeExternal" -destination 'generic/platform=tvOS' -quiet
+xcodebuild test -scheme "QRCodeExternal" -destination 'platform=tvOS Simulator,name=Apple TV' -quiet
+
+echo "** tvOS build and test COMPLETE..."
+echo
 
 echo "**"
 echo "** watchOS build and test..."
 echo "**"
-xcodebuild clean build archive test -scheme "QRCodeExternal" -destination 'platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm' -quiet
+
+xcodebuild clean build archive -scheme "QRCodeExternal" -destination 'generic/platform=watchOS' -quiet
+xcodebuild test -scheme "QRCodeExternal" -destination 'platform=watchOS Simulator,name=Apple Watch Series 5 (40mm)' -quiet
+
+echo "** watchOS build and test COMPLETE..."
