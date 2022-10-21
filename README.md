@@ -257,7 +257,8 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_Circle.png" width="30"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
 |<img src="./Art/images/pupil_roundedRect.png" width="30"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
 |<img src="./Art/images/pupil_RoundedOuter.png" width="30"/>     |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|
-|<img src="./Art/images/pupil_RoundedPointingIn.png" width="30"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
+|<img src="./Art/images/pupil_RoundedPointingIn.png" width="30"/>|"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the inner corner as a point|
+|<img src="./Art/images/pupil_roundedPointingOut.png" width="30"/>|"roundedPointingOut"|`QRCode.PupilShape.RoundedPointingOut`|A rounded rect with the outer corner as a point|
 |<img src="./Art/images/pupil_Leaf.png" width="30"/>             |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/pupil_Squircle.png" width="30"/>         |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/pupil_barsHorizontal.png" width="30"/>   |"barsHorizontal"|`QRCode.PupilShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
@@ -317,7 +318,7 @@ doc1.design.backgroundColor(NSColor.white.cgColor)
 doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 4, cornerRadiusFraction: 1)
+doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1)
 doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 // Set a custom pupil shape. If this isn't set, the default pixel shape for the eye is used
@@ -685,7 +686,7 @@ You can build the command line tool by opening a terminal window, `cd` into the 
 The `qrcodegen` tool can be found in the `.build/release` folder.
 
 ```zsh
-% .build/debug/qrcodegen -h                                                                                              64 ↵ ✹
+% .build/debug/qrcodegen -h
 OVERVIEW: Create a qr code
 
 Examples:
@@ -716,18 +717,21 @@ OPTIONS:
   -t, --text <text>       The text to be stored in the QR code 
   -s, --silence           Silence any output 
   -c, --error-correction <error-correction>
-                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize), "H"
-                          (high) 
+                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize),
+                          "H" (high) 
   -p, --pupil-shape <pupil-shape>
-                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle, corneredPixels,
-                          leaf, pixels, roundedOuter, roundedPointingIn, roundedRect, square, squircle. 
+                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle,
+                          corneredPixels, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
+                          roundedRect, square, squircle. 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle, corneredPixels,
-                          leaf, pixels, roundedOuter, roundedPointingIn, roundedRect, square, squircle. 
+                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle,
+                          corneredPixels, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
+                          roundedRect, square, squircle. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are circle, curvePixel, horizontal, pointy, roundedPath,
-                          roundedRect, square, squircle, vertical. 
-  -n, --inset <inset>     The spacing around each individual pixel in the onPixels section 
+                          The onPixels shape to use. Available shapes are circle, curvePixel, horizontal, pointy,
+                          roundedPath, roundedRect, sharp, square, squircle, vertical. 
+  -n, --inset-fraction <inset-fraction>
+                          The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>
                           The onPixels shape corner radius fractional value (0.0 -> 1.0) 
   --bg-color <bg-color>   The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 

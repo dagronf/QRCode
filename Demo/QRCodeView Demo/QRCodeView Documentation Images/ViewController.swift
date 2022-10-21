@@ -66,8 +66,8 @@ class ViewController: NSViewController {
 		for name in QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted() {
 			guard
 				let gen = QRCodePixelShapeFactory.shared.named(name, settings: [
-					QRCode.Keys.inset: 1,
-					QRCode.Keys.cornerRadiusFraction: 0.75
+					QRCode.SettingsKey.insetFraction: 0.1,
+					QRCode.SettingsKey.cornerRadiusFraction: 0.75
 				]),
 				let dataImage = QRCodePixelShapeFactory.shared.image(
 					pixelShape: gen,
@@ -110,7 +110,7 @@ class ViewController: NSViewController {
 			doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 			doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 			doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-			doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 4, cornerRadiusFraction: 1) //inset: 4)
+			doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
 			doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
 
 			let cg1 = doc1.cgImage(CGSize(width: 300, height: 300))!

@@ -125,10 +125,10 @@ public extension QRCodePupilShapeFactory {
 		var scaleTransform = CGAffineTransform.identity
 
 		// Scale the pupil to 90x90
-		scaleTransform = scaleTransform.scaledBy(x: 3, y: 3)
+		scaleTransform = scaleTransform.scaledBy(x: 2, y: 2)
 
 		// Move the pupil back to origin
-		scaleTransform = scaleTransform.translatedBy(x: -30, y: -30)
+		scaleTransform = scaleTransform.translatedBy(x: -22, y: -22)
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()

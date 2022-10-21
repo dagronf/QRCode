@@ -26,8 +26,8 @@ public extension QRCode {
 	@objc class SettingsKey: NSObject {
 		/// Settings key for 'corner radius fraction'
 		@objc public static let cornerRadiusFraction = "cornerRadiusFraction"
-		/// Settings key for 'inset'
-		@objc public static let inset = "inset"
+		/// Settings key for 'insetFraction'
+		@objc public static let insetFraction = "insetFraction"
 		/// Settings key for 'has inner corners'
 		@objc public static let hasInnerCorners = "hasInnerCorners"
 	}

@@ -34,7 +34,7 @@ struct ContentView: View {
 		
 		let pixelShape = pixelShapeHandler(
 			self.pixelShape,
-			inset: dataInset,
+			insetFraction: dataInset,
 			cornerRadiusFraction: cornerRadiusFraction)
 		let _eyeStyle = eyeShapeHandler(self.eyeStyle)
 		let _pupilStyle = pupilShapeHandler(self.pupilStyle)
@@ -61,7 +61,7 @@ struct ContentView: View {
 					Text("Rounded Path").tag(PixelShapeType.roundedpath)
 					Text("Pointy").tag(PixelShapeType.pointy)
 				}.pickerStyle(RadioGroupPickerStyle())
-				Slider(value: $dataInset, in: 0.0 ... 5.0, label: { Text("Inset") })
+				Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
 				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 				HStack {
 					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {

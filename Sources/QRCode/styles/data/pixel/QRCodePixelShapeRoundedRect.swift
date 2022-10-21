@@ -30,23 +30,23 @@ public extension QRCode.PixelShape {
 
 		/// Create
 		/// - Parameters:
-		///   - inset: The inset between each pixel
+		///   - insetFraction: The inset between each pixel
 		///   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
-		@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
-			self.common = CommonPixelGenerator(pixelType: .roundedRect, inset: inset, cornerRadiusFraction: cornerRadiusFraction)
+		@objc public init(insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+			self.common = CommonPixelGenerator(pixelType: .roundedRect, insetFraction: insetFraction, cornerRadiusFraction: cornerRadiusFraction)
 			super.init()
 		}
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
-			return RoundedRect(inset: inset, cornerRadiusFraction: radius)
+			return RoundedRect(insetFraction: insetFraction, cornerRadiusFraction: radius)
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			return RoundedRect(inset: self.common.inset, cornerRadiusFraction: self.common.cornerRadiusFraction)
+			return RoundedRect(insetFraction: self.common.insetFraction, cornerRadiusFraction: self.common.cornerRadiusFraction)
 		}
 		
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
@@ -56,9 +56,12 @@ public extension QRCode.PixelShape {
 		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
 			self.common.offPath(size: size, data: data, isTemplate: isTemplate)
 		}
-		
+
+		/// The fractional corner radius for the pixel
 		@objc public var cornerRadiusFraction: CGFloat { self.common.cornerRadiusFraction }
-		@objc public var inset: CGFloat { self.common.inset }
+
+		/// The fractional inset for the pixel
+		@objc public var insetFraction: CGFloat { self.common.insetFraction }
 
 		private let common: CommonPixelGenerator
 	}
@@ -69,27 +72,27 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.RoundedRect {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == QRCode.SettingsKey.inset
+		return key == QRCode.SettingsKey.insetFraction
 			 || key == QRCode.SettingsKey.cornerRadiusFraction
 	}
 	
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String: Any] {
 		return [
-			QRCode.SettingsKey.inset: self.common.inset,
+			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
 			QRCode.SettingsKey.cornerRadiusFraction: self.common.cornerRadiusFraction,
 		]
 	}
 	
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == QRCode.SettingsKey.inset {
+		if key == QRCode.SettingsKey.insetFraction {
 			guard let v = value else {
-				self.common.inset = 0
+				self.common.insetFraction = 0
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
-			self.common.inset = v
+			self.common.insetFraction = v
 			return true
 		}
 		else if key == QRCode.SettingsKey.cornerRadiusFraction {

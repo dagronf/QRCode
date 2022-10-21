@@ -29,15 +29,19 @@ public extension QRCode.PixelShape {
 
 		/// Create an instance of this path generator with the specified settings
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
-			return QRCode.PixelShape.Vertical(inset: inset, cornerRadiusFraction: radius)
+			return QRCode.PixelShape.Vertical(insetFraction: insetFraction, cornerRadiusFraction: radius)
 		}
 
-		var inset: CGFloat
+		// The fractional inset for the pixel
+		var insetFraction: CGFloat
+		// The fractional corner radius for the pixel
 		var cornerRadiusFraction: CGFloat
-		@objc public init(inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
-			self.inset = inset
+
+		/// Create a generator with a specified inset fraction and corner radius fraction
+		@objc public init(insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+			self.insetFraction = insetFraction.clamped(to: 0...1)
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 			super.init()
 		}
@@ -45,7 +49,7 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Vertical(
-				inset: self.inset,
+				insetFraction: self.insetFraction,
 				cornerRadiusFraction: self.cornerRadiusFraction
 			)
 		}
@@ -78,7 +82,10 @@ public extension QRCode.PixelShape {
 					if currentData[row, col] == false {
 						if let r = activeRect {
 							// We had an active rect. Close it.
-							let ri = r.insetBy(dx: self.inset, dy: self.inset)
+							let ri = r.insetBy(
+								dx: self.insetFraction * (r.width / 2.0),
+								dy: self.insetFraction * (r.width / 2.0)
+							)
 							let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 							path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 						}
@@ -100,7 +107,10 @@ public extension QRCode.PixelShape {
 				
 				if let r = activeRect {
 					// Close the rect
-					let ri = r.insetBy(dx: self.inset, dy: self.inset)
+					let ri = r.insetBy(
+						dx: self.insetFraction * (r.width / 2.0),
+						dy: self.insetFraction * (r.width / 2.0)
+					)
 					let cr = (ri.width / 2.0) * self.cornerRadiusFraction
 					path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 				}
@@ -115,27 +125,27 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.Vertical {
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == QRCode.SettingsKey.inset
+		return key == QRCode.SettingsKey.insetFraction
 			 || key == QRCode.SettingsKey.cornerRadiusFraction
 	}
 
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String : Any] {
 		return [
-			QRCode.SettingsKey.inset: self.inset,
+			QRCode.SettingsKey.insetFraction: self.insetFraction,
 			QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction
 		]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == QRCode.SettingsKey.inset {
+		if key == QRCode.SettingsKey.insetFraction {
 			guard let v = value else {
-				self.inset = 0
+				self.insetFraction = 0
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
-			self.inset = v
+			self.insetFraction = v
 			return true
 		}
 		else if key == QRCode.SettingsKey.cornerRadiusFraction {

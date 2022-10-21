@@ -99,7 +99,7 @@ Examples:
 
 	/// Inset for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("n"), .long], help: "The spacing around each individual pixel in the onPixels section")
-	var inset: Double?
+	var insetFraction: Double?
 
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("r"), .long], help: "The onPixels shape corner radius fractional value (0.0 -> 1.0)")
@@ -203,7 +203,7 @@ Examples:
 
 		let dataShapeName = self.onPixelShape ?? "square"
 		let settings: [String: Any] = [
-			QRCode.SettingsKey.inset: inset ?? 0,
+			QRCode.SettingsKey.insetFraction: insetFraction ?? 0,
 			QRCode.SettingsKey.cornerRadiusFraction: onPixelShapeCornerRadius ?? 0
 		]
 

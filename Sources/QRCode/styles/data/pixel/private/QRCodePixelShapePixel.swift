@@ -34,19 +34,22 @@ internal extension QRCode.PixelShape {
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
-		var inset: CGFloat
 		var pixelType: PixelType
+
+		// The fractional inset for the pixel
+		var insetFraction: CGFloat
+		// The fractional corner radius for the pixel
 		var cornerRadiusFraction: CGFloat
 
 		// Create
 		// - Parameters:
 		//   - pixelType: The type of pixel to use (eg. square, circle)
-		//   - inset: The inset within the each pixel to generate the pixel's path
+		//   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
 		//   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
-		init(pixelType: PixelType, inset: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+		init(pixelType: PixelType, insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
 			self.pixelType = pixelType
-			self.inset = inset
-			self.cornerRadiusFraction = cornerRadiusFraction
+			self.insetFraction = insetFraction.clamped(to: 0...1)
+			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 		}
 
 		private func path(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
@@ -77,7 +80,8 @@ internal extension QRCode.PixelShape {
 					}
 
 					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					let ri = r.insetBy(dx: self.inset, dy: self.inset)
+					let insetValue = self.insetFraction * (r.height / 2.0)
+					let ri = r.insetBy(dx: insetValue, dy: insetValue)
 
 					if self.pixelType == .roundedRect {
 						let cr = (ri.height / 2.0) * self.cornerRadiusFraction
@@ -87,22 +91,20 @@ internal extension QRCode.PixelShape {
 						path.addPath(CGPath(ellipseIn: ri, transform: nil))
 					}
 					else if self.pixelType == .squircle {
-						let i = (self.inset / 2)
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
 							.concatenating(CGAffineTransform(
-								translationX: xoff + (CGFloat(col) * dm) + i,
-								y: yoff + (CGFloat(row) * dm) + i
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
 
 						let sq = Squircle.squircle10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .sharp {
-						let i = (self.inset / 2)
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
 							.concatenating(CGAffineTransform(
-								translationX: xoff + (CGFloat(col) * dm) + i,
-								y: yoff + (CGFloat(row) * dm) + i
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
 
 						let sq = Sharp.sharp10x10()

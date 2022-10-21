@@ -20,7 +20,7 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 
 		//q1.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
-		q2.design.shape.onPixels = QRCode.PixelShape.Horizontal(inset: 1, cornerRadiusFraction: 0.75)
+		q2.design.shape.onPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.1, cornerRadiusFraction: 0.75)
 		q2.design.shape.eye  = QRCode.EyeShape.Leaf()
 		q3.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 		q3.design.shape.eye  = QRCode.EyeShape.RoundedPointingIn()
@@ -34,9 +34,9 @@ class ViewController: NSViewController {
 			centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 		q4.design.style.background = gr
-		q4.design.shape.onPixels = QRCode.PixelShape.Squircle(inset: 1)
+		q4.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
 
-		q4.design.shape.offPixels = QRCode.PixelShape.Horizontal(inset: 1, cornerRadiusFraction: 0.8)
+		q4.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.1, cornerRadiusFraction: 0.8)
 		q4.design.style.offPixels = QRCode.FillStyle.Solid(1, alpha: 0.1)
 
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
@@ -50,7 +50,7 @@ class ViewController: NSViewController {
 
 		///
 
-		let lf3 = QRCode.PixelShape.RoundedRect(inset: 4, cornerRadiusFraction: 0.5)
+		let lf3 = QRCode.PixelShape.RoundedRect(insetFraction: 0.4, cornerRadiusFraction: 0.5)
 		let im3 = QRCodePixelShapeFactory.shared.image(pixelShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
 		let imn3 = NSImage(cgImage: im3, size: .zero)
 

@@ -28,26 +28,26 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "sharp"
 
-		/// The inset for the pixel
-		@objc public var inset: CGFloat { common.inset }
+		/// The fractional inset for the pixel
+		@objc public var insetFraction: CGFloat { common.insetFraction }
 
 		/// Create
 		/// - Parameters:
-		///   - inset: The inset between each pixel
-		@objc public init(inset: CGFloat = 0) {
-			self.common = CommonPixelGenerator(pixelType: .sharp, inset: inset)
+		///   - insetFraction: The inset between each pixel
+		@objc public init(insetFraction: CGFloat = 0) {
+			self.common = CommonPixelGenerator(pixelType: .sharp, insetFraction: insetFraction)
 			super.init()
 		}
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let inset = DoubleValue(settings?[QRCode.SettingsKey.inset, default: 0]) ?? 0
-			return Sharp(inset: inset)
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
+			return Sharp(insetFraction: insetFraction)
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			return Sharp(inset: self.common.inset)
+			return Sharp(insetFraction: self.common.insetFraction)
 		}
 		
 		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
@@ -83,23 +83,23 @@ public extension QRCode.PixelShape {
 public extension QRCode.PixelShape.Sharp {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		return key == QRCode.SettingsKey.inset
+		return key == QRCode.SettingsKey.insetFraction
 	}
 
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String : Any] {
-		return [ QRCode.SettingsKey.inset: self.common.inset ]
+		return [ QRCode.SettingsKey.insetFraction: self.common.insetFraction ]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == QRCode.SettingsKey.inset {
+		if key == QRCode.SettingsKey.insetFraction {
 			guard let v = value else {
-				self.common.inset = 0
+				self.common.insetFraction = 0
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
-			self.common.inset = v
+			self.common.insetFraction = v
 			return true
 		}
 		return false
