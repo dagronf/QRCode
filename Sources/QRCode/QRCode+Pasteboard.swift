@@ -55,7 +55,7 @@ public extension QRCode {
 			pasteboard.setData(tiffData, forType: .tiff)
 		}
 
-		if let pngData = image.pngRepresentation {
+		if let pngData = image.pngRepresentation() {
 			pasteboard.setData(pngData, forType: .png)
 		}
 	}

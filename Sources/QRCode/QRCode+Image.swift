@@ -109,12 +109,39 @@ public extension QRCode {
 		guard let image = self.nsImage(CGSize(width: dimension, height: dimension), design: design) else {
 			return nil
 		}
-		return image.pngRepresentation
+		return image.pngRepresentation()
 #else
 		guard let image = self.uiImage(CGSize(width: dimension, height: dimension), design: design) else {
 			return nil
 		}
 		return image.pngData()
+#endif
+	}
+
+	/// Return a JPEG representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
+	///   - design: The design for the QR Code
+	///   - compression: The compression level when generating the JPEG file (0.0 ... 1.0)
+	/// - Returns: The JPEG data
+	@objc func jpegData(
+		dimension: CGFloat,
+		design: QRCode.Design = QRCode.Design(),
+		compression: Double = 0.9
+	) -> Data? {
+		guard (0.0 ... 1.0).contains(compression) else {
+			return nil
+		}
+#if os(macOS)
+		guard let image = self.nsImage(CGSize(width: dimension, height: dimension), design: design) else {
+			return nil
+		}
+		return image.jpegRepresentation(compression: compression)
+#else
+		guard let image = self.uiImage(CGSize(width: dimension, height: dimension), design: design) else {
+			return nil
+		}
+		return image.jpegData(compressionQuality: compression)
 #endif
 	}
 

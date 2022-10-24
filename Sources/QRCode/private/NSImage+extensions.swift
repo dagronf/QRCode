@@ -26,15 +26,26 @@ import Foundation
 
 extension NSImage {
 	/// Returns a png representation of the current image.
-	var pngRepresentation: Data? {
-		if
+	func pngRepresentation() -> Data? {
+		guard
 			let tiff = self.tiffRepresentation,
 			let tiffData = NSBitmapImageRep(data: tiff)
-		{
-			return tiffData.representation(using: .png, properties: [:])
+		else {
+			return nil
 		}
+		return tiffData.representation(using: .png, properties: [:])
+	}
 
-		return nil
+	/// Returns a jpeg representation of the current image.
+	func jpegRepresentation(compression: Double = 0.9) -> Data? {
+		guard
+			(0.0 ... 1.0).contains(compression),
+			let tiff = self.tiffRepresentation,
+			let tiffData = NSBitmapImageRep(data: tiff)
+		else {
+			return nil
+		}
+		return tiffData.representation(using: .jpeg, properties: [.compressionFactor: compression])
 	}
 }
 

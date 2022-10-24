@@ -432,6 +432,19 @@ public extension QRCode.Document {
 		return self.qrcode.pngData(dimension: dimension, design: self.design)
 	}
 
+	/// Returns a JPEG representation of the QRCode
+	/// - Parameter
+	///   - dimension: The size of the QR code
+	///   - compression: The compression level to use when generating the JPEG (0.0 -> 1.0)
+	/// - Returns: The PNG data
+	func jpegData(dimension: CGFloat, compression: Double = 0.9) -> Data? {
+		return self.qrcode.jpegData(
+			dimension: dimension,
+			design: self.design,
+			compression: compression.clamped(to: 0.0 ... 1.0)
+		)
+	}
+
 #if os(macOS)
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:
