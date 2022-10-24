@@ -28,7 +28,7 @@ struct ContentView: View {
 
 	var body: some View {
 
-		let qrContent = QRCodeUI(
+		let qrContent = QRCodeShape(
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
@@ -126,7 +126,7 @@ struct ContentView: View {
 				.frame(width: 250, height: 250, alignment: .center)
 				.padding()
 
-//				QRCodeUI(
+//				QRCodeShape(
 //					text: "A static simple QR code with some basic styling",
 //					errorCorrection: .high
 //				)!

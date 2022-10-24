@@ -418,25 +418,6 @@ Produces a CGPath representation of the QRCode
 
 The components allow the caller to generate individual paths for the QR code components which can then be individually styled and recombined later on. 
 
-For example, the SwiftUI implementation is a Shape object, and you can use a ZStack to overlay each 
-component using different a different fill style (for example).
-
-```swift
-   let qrContent = QRCodeUI(myData)
-   ...
-   ZStack {
-      qrContent
-         .components(.eyeOuter)
-         .fill(.green)
-      qrContent
-         .components(.eyePupil)
-         .fill(.teal)
-      qrContent
-         .components(.onPixels)
-         .fill(.black)
-   }
-```
-
 ### Generating a styled image
 
 ```swift
@@ -524,55 +505,91 @@ This library provides drop-in components for presenting a styled QR code.
 
 ### NSView/UIView
 
-`QRCodeView` is an `NSView` (macOS)/`UIView` (iOS/tvOS) implementation for displaying the content of a `QRCode` object.
+#### `QRCodeDocumentView`
+
+`QRCodeDocumentView` is a view implementation to display a `QRCode.Document` object.
+
+#### `QRCodeView`
+
+`QRCodeView` is a view implementation for displaying a QR Code . This view supports :-
+
+* `@IBDesignable` via Interface Builder so you can design and style your QR code completely within Interface Builder without having a `QRCode.Document` object.
+* (Optional) drag support for dragging a QR code out of the view.
 
 ### SwiftUI
 
-`QRCodeUI` is the SwiftUI implementation which presents as a Shape. So anything you can do with any SwiftUI shape object 
-(eg. a rectangle) you can now do with a styled QRCode shape outline. 
+#### `QRCodeDocumentViewUI`
 
-For example, you can use `.fill` to set the color content (eg. a linear gradient, solid color etc), add a drop shadow,
-add a transform etc...
+`QRCodeDocumentViewUI` is a `SwiftUI` View that displays a `QRCode.Document` object. 
+
+#### `QRCodeShape`
+
+`QRCodeShape` is a `SwiftUI` Shape object generating paths from different components of a QR code. 
+
+So anything you can do with any SwiftUI shape object (eg. a rectangle) you can now do with a styled QRCode shape outline. 
+
+For example, you can use `.fill` to set the color content (eg. a linear gradient, solid color etc), add a drop shadow, add a transform etc...
+
+<details>
+<summary>Example</summary> 
+
+```swift
+let qrContent = QRCodeShape(myData)
+...
+ZStack {
+   qrContent
+      .components(.eyeOuter)
+      .fill(.green)
+   qrContent
+      .components(.eyePupil)
+      .fill(.teal)
+   qrContent
+      .components(.onPixels)
+      .fill(.black)
+}
+```
+
+</details>
 
 ### Modifiers
 
 ```swift
-func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeUI {
+func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeShape {
 ```
 Set the error correction level
 
 ```swift
-func components(_ components: QRCode.Components) -> QRCodeUI
+func components(_ components: QRCode.Components) -> QRCodeShape
 ```
 
 Set which components of the QR code to be added to the path
 
 ```swift
-func shape(_ shape: QRCode.Shape) -> QRCodeUI
+func shape(_ shape: QRCode.Shape) -> QRCodeShape
 ```
 
 Set the shape (onPixels, offPixels, eye, pupil)
 
 ```swift
-func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeUI
+func eyeShape(_ eyeShape: QRCodeEyeShape) -> QRCodeShape
 ```
 
 Set the shape of the eye (eye and pupil)
 
 ```swift
-func pupilShape(_ pupilShape: QRCodePupilShape) -> QRCodeUI
+func pupilShape(_ pupilShape: QRCodePupilShape) -> QRCodeShape
 ```
 
 Set the shape of the pupil
 
 ```swift
-func onPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+func onPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeShape
 ```
 
 Set the shape of the 'on' pixels in the QR code
 
 ```swift
-func offPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeUI
+func offPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeShape
 ```
 
 Set the shape of the 'off' pixels in the QR code

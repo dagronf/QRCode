@@ -21,7 +21,7 @@ let savedDocument: QRCode.Document = {
 
 struct ContentView: View {
 
-	let fixedCode = QRCodeUI(
+	let fixedCode = QRCodeShape(
 		text: "Generating a QR Code using watchOS - wheeeee!",
 		errorCorrection: .quantize,
 		generator: QRCodeGenerator_External())!

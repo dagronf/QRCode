@@ -27,7 +27,7 @@ struct ContentView: View {
 
 	var body: some View {
 
-		let qrContent = QRCodeUI(
+		let qrContent = QRCodeShape(
 			data: content.data(using: .utf8) ?? Data(),
 			errorCorrection: correction
 		)
@@ -122,8 +122,8 @@ struct ContentView: View {
 					.onPixelShape(pixelShape)
 					.fill(dataColor)
 //				qrContent
-//					.components(.unsetContent)
-//					.pixelShape(pixelShape)
+//					.components(.offPixels)
+//					.offPixelShape(pixelShape)
 //					.fill(.gray.opacity(0.2))
 			}
 			.frame(alignment: .center)

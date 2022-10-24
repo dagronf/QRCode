@@ -11,7 +11,7 @@ import QRCode
 import QRCodeExternal
 
 struct ContentView: View {
-	let fixedCode = QRCodeUI(
+	let fixedCode = QRCodeShape(
 		text: "QRCode WatchOS Demo",
 		errorCorrection: .quantize,
 		generator: QRCodeGenerator_External())!

@@ -83,7 +83,7 @@ public struct QRCodeDocumentUIView: View {
 
 	public var body: some View {
 
-		let qrCodeRepresentation = QRCodeUI(
+		let qrCodeRepresentation = QRCodeShape(
 			data: document.data,
 			errorCorrection: document.errorCorrection,
 			generator: document.qrcode.generator
