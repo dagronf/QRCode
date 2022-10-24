@@ -1,5 +1,5 @@
 //
-//  QRCodeDocumentView.swift
+//  Debounce.swift
 //
 //  Copyright © 2022 Darren Ford. All rights reserved.
 //
@@ -19,44 +19,26 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Basic document view for both AppKit/UIKit/tvOS. It provides no additional functionality.
-// If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
+import Foundation
+import Dispatch
 
-#if os(iOS) || os(tvOS)
+internal class DSFDebounce {
 
-import UIKit
+	// MARK: - Properties
+	private let queue: DispatchQueue
+	private var workItem = DispatchWorkItem(block: {})
+	private var interval: TimeInterval
 
-// MARK: - UIView
-
-/// Very simple QRCode view for displaying a document. No other functionality is provided
-@objc public class QRCodeDocumentView: UIView {
-
-	@objc public init(document: QRCode.Document = QRCode.Document()) {
-		self.document = document
-		super.init(frame: .zero)
-		self.isOpaque = false
-		self.setNeedsDisplay()
+	// MARK: - Initializer
+	init(seconds: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
+		self.interval = seconds
+		self.queue = queue
 	}
 
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		self.isOpaque = false
-	}
-
-	/// The document to display
-	@IBOutlet @objc public var document: QRCode.Document? {
-		didSet {
-			self.setNeedsDisplay()
-		}
+	// MARK: - Debouncing function
+	func debounce(action: @escaping (() -> Void)) {
+		self.workItem.cancel()
+		self.workItem = DispatchWorkItem(block: { action() })
+		self.queue.asyncAfter(deadline: .now() + interval, execute: workItem)
 	}
 }
-
-public extension QRCodeDocumentView {
-	override func draw(_ rect: CGRect) {
-		if let ctx = UIGraphicsGetCurrentContext() {
-			self.document?.draw(ctx: ctx, rect: self.bounds)
-		}
-	}
-}
-
-#endif

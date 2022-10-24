@@ -33,64 +33,62 @@ import UIKit
 // MARK: - QRCode View
 
 /// A simple NSView/UIView that displays a QR Code
-@objc @IBDesignable public class QRCodeView: DSFView {
-	/// The qrcode document to render
-	@objc public var document = QRCode.Document() {
-		didSet { self.setNeedsDisplay() }
-	}
+@objc @IBDesignable public class QRCodeView: QRCodeDocumentView {
 
 	/// The correction level to use when generating the QR code
 	@objc public var errorCorrection: QRCode.ErrorCorrection {
-		get { return self.document.errorCorrection }
-		set { self.document.errorCorrection = newValue; self.setNeedsDisplay() }
+		get { return self._document.errorCorrection }
+		set { self._document.errorCorrection = newValue; self.rebuildQRCode() }
 	}
 
 	/// Binary data to display in the QR code
 	@objc public var data: Data {
-		get { return self.document.data }
-		set { self.document.data = newValue; self.setNeedsDisplay() }
+		get { return self._document.data }
+		set { self._document.data = newValue; self.rebuildQRCode() }
+	}
+
+	/// The QRCode document represented for this view
+	public override var document: QRCode.Document? {
+		get {
+			self._document
+		}
+		set {
+			self._document = newValue ?? QRCode.Document()
+			self.rebuildQRCode()
+		}
 	}
 
 	/// The style to use when drawing the qr code
 	@objc public var design: QRCode.Design {
-		get { return self.document.design }
-		set { self.document.design = newValue; self.setNeedsDisplay() }
+		get { return self._document.design }
+		set { self._document.design = newValue; self.rebuildQRCode() }
 	}
 
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
-	@objc public var pixelSize: Int { self.document.pixelSize }
+	@objc public var pixelSize: Int { self._document.pixelSize }
 
 	/// Create a QRCodeView with default settings
 	@objc public convenience init() {
 		self.init(frame: .zero)
-		#if !os(macOS)
-		self.isOpaque = false
-		#endif
 	}
 
 	/// Create a QRCodeView with an initial document.
 	///
 	/// Modifying values within this view will modify the content of the document
-	@objc public convenience init(document: QRCode.Document) {
-		self.init()
-		self.document = document
-		self.setNeedsDisplay()
+	@objc public override init(document: QRCode.Document) {
+		super.init(document: document)
+		self._document = document
+		self.rebuildQRCode()
 	}
 
-	@objc override public init(frame frameRect: CGRect) {
-		super.init(frame: frameRect)
-		#if !os(macOS)
-		self.isOpaque = false
-		#endif
-		self.setup()
+	@objc public init(frame frameRect: CGRect) {
+		super.init()
+		self.rebuildQRCode()
 	}
 
 	@objc public required init?(coder: NSCoder) {
 		super.init(coder: coder)
-		#if !os(macOS)
-		self.isOpaque = false
-		#endif
-		self.setup()
+		self.rebuildQRCode()
 	}
 
 #if os(iOS)
@@ -126,6 +124,11 @@ import UIKit
 	private var _eyeShape: String = ""
 	private var _pixelShape: String = ""
 	private var _pupilShape: String = ""
+
+	/// The internal document.
+	private var _document = QRCode.Document() {
+		didSet { self.rebuildQRCode() }
+	}
 }
 
 // MARK: - Interface Builder conveniences
@@ -134,128 +137,107 @@ public extension QRCodeView {
 	/// The name of the shape generator for the eye
 	@IBInspectable var ibEyeShape: String {
 		get { _eyeShape }
-		set { _eyeShape = newValue; self.rebuildDocumentUsingStoredProperties() }
+		set { _eyeShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// The name of the shape generator for the data
 	@IBInspectable var ibPixelShape: String {
 		get { _pixelShape }
-		set { _pixelShape = newValue; self.rebuildDocumentUsingStoredProperties() }
+		set { _pixelShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// The name of the shape generator for the data
 	@IBInspectable var ibPupilShape: String {
 		get { _pupilShape }
-		set { _pupilShape = newValue; self.rebuildDocumentUsingStoredProperties() }
+		set { _pupilShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// Interface builder correction level
 	@IBInspectable var ibCorrectionLevel: String {
 		get { return self.errorCorrection.ECLevel }
-		set { self.errorCorrection = QRCode.ErrorCorrection.Create(newValue.first ?? "q") ?? .quantize; self.setNeedsDisplay() }
+		set { self.errorCorrection = QRCode.ErrorCorrection.Create(newValue.first ?? "q") ?? .quantize; self.rebuildQRCode() }
 	}
 
 	/// Interface builder text content
 	@IBInspectable var ibTextContent: String {
 		get { String(data: self.data, encoding: .utf8) ?? "" }
-		set { self.data = newValue.data(using: .utf8) ?? Data(); self.setNeedsDisplay() }
+		set { self.data = newValue.data(using: .utf8) ?? Data(); self.rebuildQRCode() }
 	}
 
 	#if os(macOS)
 	/// Interface builder data color
 	@IBInspectable var ibPixelColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder eye color
 	@IBInspectable var ibEyeColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder pupil color
 	@IBInspectable var ibPupilColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .black) ?? .black }
-		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder background color
 	@IBInspectable var ibBackgroundColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? .white) ?? .white }
-		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 	#else
 	/// Interface builder data color
 	@IBInspectable var ibPixelColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder eye color
 	@IBInspectable var ibEyeColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder pupil color
 	@IBInspectable var ibPupilColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
-		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder background color
 	@IBInspectable var ibBackgroundColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
-		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.setNeedsDisplay() }
+		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	#endif
 
+	/// Rebuild the QR code after manual changes to the document
+	func rebuildQRCode() {
+		super.document = self._document
+	}
+
 	override func prepareForInterfaceBuilder() {
 		super.prepareForInterfaceBuilder()
-		self.setup()
+		self.rebuildDocumentUsingStoredProperties()
 	}
 }
 
 // MARK: - Drawing
 
 extension QRCodeView {
-	#if os(macOS)
-	override public var isFlipped: Bool { true }
-	public override var isOpaque: Bool { false }
-	#endif
-
-	private func setup() {
-		self.rebuildDocumentUsingStoredProperties()
-	}
-
-	#if os(macOS)
-	override public func draw(_ dirtyRect: NSRect) {
-		if let ctx = NSGraphicsContext.current?.cgContext {
-			self.draw(ctx)
-		}
-	}
-	#else
-	override public func draw(_ rect: CGRect) {
-		if let ctx = UIGraphicsGetCurrentContext() {
-			self.draw(ctx)
-		}
-	}
-	#endif
-
-	// Draw the QR Code into the specified context
-	private func draw(_ ctx: CGContext) {
-		self.document.draw(ctx: ctx, rect: self.bounds)
-	}
-
 	// Build up the qr representation
 	private func rebuildDocumentUsingStoredProperties() {
-		self.document.update(self.data, errorCorrection: self.errorCorrection)
-		self.document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
-		self.document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
-		self.document.design.shape.pupil = (_pupilShape.count > 0) ? QRCodePupilShapeFactory.shared.named(_pupilShape) : nil
-		self.setNeedsDisplay()
+		self._document.update(self.data, errorCorrection: self.errorCorrection)
+		self._document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
+		self._document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
+		self._document.design.shape.pupil = (_pupilShape.count > 0) ? QRCodePupilShapeFactory.shared.named(_pupilShape) : nil
+
+		// Push the document to the document viewer
+		self.rebuildQRCode()
 	}
 }
 
@@ -281,7 +263,7 @@ extension QRCodeView {
 
 			// Generate drag representation
 			let sz = CGSize(width: 128, height: 128)
-			let image = self.document.nsImage(sz, scale: 2)
+			let image = self._document.nsImage(sz, scale: 2)
 
 			draggingItem.setDraggingFrame(CGRect(origin: .zero, size: sz), contents: image)
 
@@ -307,15 +289,15 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 		}
 
 		if type == .pdf {
-			let pdfData = self.document.pdfData(self.dragImageSize)
+			let pdfData = self._document.pdfData(self.dragImageSize)
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
 		else if type == .tiff,
-			let imageData = self.document.nsImage(self.dragImageSize, scale: 2)?.tiffRepresentation {
+			let imageData = self._document.nsImage(self.dragImageSize, scale: 2)?.tiffRepresentation {
 			pasteboard.setData(imageData, forType: .tiff)
 		}
 		else if type == .png,
-			let pngdata = self.document.nsImage(self.dragImageSize, scale: 2)?.pngRepresentation {
+			let pngdata = self._document.nsImage(self.dragImageSize, scale: 2)?.pngRepresentation() {
 			pasteboard.setData(pngdata, forType: .png)
 		}
 		else if type == PasteboardFilePromiseContent {
@@ -333,7 +315,7 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 			// Make sure we have a unique name for the dropped file
 			let dest = FileManager.UniqueFileURL(for: "Dropped QRCode.pdf", in: destinationFolderURL)
 			
-			let pdfData = self.document.pdfData(self.dragImageSize)
+			let pdfData = self._document.pdfData(self.dragImageSize)
 			do {
 				try pdfData?.write(to: dest, options: .atomic)
 
@@ -352,7 +334,7 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 
 extension QRCodeView: UIDragInteractionDelegate {
 	public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-		let qrCodeData = QRCodeItemProvider(document: self.document, size: self.dragImageSize)
+		let qrCodeData = QRCodeItemProvider(document: self._document, size: self.dragImageSize)
 		return [UIDragItem(itemProvider: NSItemProvider(object: qrCodeData))]
 	}
 }
