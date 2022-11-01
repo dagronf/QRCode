@@ -15,30 +15,15 @@ let package = Package(
 
 		// Static/Dynamic QRCode libraries
 
-		.library(
-			name: "QRCode",
-			type: .static,
-			targets: ["QRCode"]
-		),
-		.library(
-			name: "QRCodeDynamic",
-			type: .dynamic,
-			targets: ["QRCode"]
-		),
+		.library(name: "QRCode", targets: ["QRCode"]),
+		.library(name: "QRCodeStatic", type: .static, targets: ["QRCode"]),
+		.library(name: "QRCodeDynamic", type: .dynamic, targets: ["QRCode"]),
 
 		// watchOS convenience including the 3rd party generator
 
-		.library(
-			name: "QRCodeExternal",
-			type: .static,
-			targets: ["QRCode", "QRCodeExternal"]
-		),
-
-		.library(
-			name: "QRCodeExternalDynamic",
-			type: .dynamic,
-			targets: ["QRCode", "QRCodeExternal"]
-		),
+		.library(name: "QRCodeExternal", targets: ["QRCode", "QRCodeExternal"]),
+		.library(name: "QRCodeExternalStatic", type: .static, targets: ["QRCode", "QRCodeExternal"]),
+		.library(name: "QRCodeExternalDynamic", type: .dynamic, targets: ["QRCode", "QRCodeExternal"]),
 	],
 	dependencies: [
 		// Swift argument parser is used for the command-line application
