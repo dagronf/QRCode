@@ -118,6 +118,41 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - SVG Representation
+
+public extension QRCode.FillStyle.LinearGradient {
+
+	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+
+		/*
+		 <linearGradient id="Gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+			<stop offset="0%" stop-color="red" stop-opacity="50%"/>
+			<stop offset="100%" stop-color="green"/>
+		 </linearGradient>
+		 */
+
+		var svg = "<linearGradient "
+		svg += "id=\"\(styleIdentifier)\" "
+		svg += "x1=\"\(self.startPoint.x)\" "
+		svg += "y1=\"\(self.startPoint.y)\" "
+		svg += "x2=\"\(self.endPoint.y)\" "
+		svg += "y2=\"\(self.endPoint.y)\">\n"
+
+		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
+
+		for pin in sorted {
+			guard let rgbColor = pin.color.hexRGBCode() else { return nil }
+			svg += "<stop offset=\"\(pin.position)\" stop-color=\"\(rgbColor)\" stop-opacity=\"\(pin.color.alpha)\" />\n"
+		}
+		svg += "</linearGradient>\n"
+
+		return QRCode.FillStyle.SVGDefinition(
+			styleAttribute: "fill=\"url('#\(styleIdentifier)')\"",
+			styleDefinition: svg
+		)
+	}
+}
+
 // MARK: - SwiftUI conformances
 
 #if canImport(SwiftUI)

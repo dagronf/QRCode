@@ -105,6 +105,32 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - SVG Representation
+
+public extension QRCode.FillStyle.RadialGradient {
+
+	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+
+		var svg = "<radialGradient "
+		svg += "id=\"\(styleIdentifier)\" "
+
+		let center = self.centerPoint
+		svg += "cx=\"\(center.x)\" cy=\"\(center.x)\" r=\"0.5\">\n"
+
+		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
+		for pin in sorted {
+			guard let rgbColor = pin.color.hexRGBCode() else { return nil }
+			svg += "   <stop offset=\"\(pin.position)\" stop-color=\"\(rgbColor)\" stop-opacity=\"\(pin.color.alpha)\" />\n"
+		}
+		svg += "</radialGradient>\n"
+
+		return QRCode.FillStyle.SVGDefinition(
+			styleAttribute: "fill=\"url('#\(styleIdentifier)')\"",
+			styleDefinition: svg
+		)
+	}
+}
+
 // MARK: - SwiftUI conformances
 
 #if canImport(SwiftUI)

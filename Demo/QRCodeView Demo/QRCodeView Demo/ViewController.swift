@@ -42,33 +42,16 @@ class ViewController: NSViewController {
 		q4.design.style.offPixels = QRCode.FillStyle.Solid(1, alpha: 0.1)
 
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
+
+		q4.logoTemplate = QRCode.LogoTemplate(
+			path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
+			inset: 4
+		)
+		//q4.design.shape.relativeMaskPath = mask
+
 		q4.rebuildQRCode()
 
 		// Do any additional setup after loading the view.
-
-//		let lf = QRCode.EyeShape.Leaf()
-//		let im = QRCodeEyeShapeFactory.shared.image(eye: lf, dimension: 200, foregroundColor: NSColor.systemGreen.cgColor)!
-//		let imn = NSImage(cgImage: im, size: .zero)
-//		Swift.print(imn)
-//
-//		///
-//
-//		let lf3 = QRCode.PixelShape.RoundedRect(insetFraction: 0.4, cornerRadiusFraction: 0.5)
-//		let im3 = QRCodePixelShapeFactory.shared.image(pixelShape: lf3, isOn: false, dimension: 200, foregroundColor: NSColor.systemGray.withAlphaComponent(0.1).cgColor)!
-//		let imn3 = NSImage(cgImage: im3, size: .zero)
-//
-//		let lf2 = QRCode.PixelShape.RoundedPath()
-//		let im2 = QRCodePixelShapeFactory.shared.image(pixelShape: lf2, dimension: 200, foregroundColor: NSColor.systemRed.cgColor)!
-//		let imn2 = NSImage(cgImage: im2, size: .zero)
-//		imn2.isTemplate = true
-//		Swift.print(imn2)
-//
-//		//let result = NSImage(size: CGSize(width: 90, height: 90))
-//		imn3.lockFocus()
-//		//imn3.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 1.0)
-//		imn2.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 1.0)
-//		imn3.unlockFocus()
-//		Swift.print(imn3)
 	}
 
 	override var representedObject: Any? {

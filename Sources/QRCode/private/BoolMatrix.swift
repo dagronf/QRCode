@@ -120,6 +120,10 @@ extension BoolMatrix {
 		return maskedResult
 	}
 
+	func inverted() -> BoolMatrix {
+		BoolMatrix(dimension: self.dimension, flattened: self.flattened.map { !$0 } )
+	}
+
 	func applyingMask(_ mask: BoolMatrix) -> BoolMatrix {
 		assert(mask.dimension == self.dimension)
 		let result = BoolMatrix(dimension: self.dimension)

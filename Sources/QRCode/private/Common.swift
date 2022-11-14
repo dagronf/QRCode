@@ -21,8 +21,6 @@
 
 import Foundation
 
-#if !os(watchOS)
-
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
@@ -37,6 +35,9 @@ typealias DSFViewRepresentable = NSViewRepresentable
 extension NSView {
 	@inlinable func setNeedsDisplay() { self.needsDisplay = true }
 }
+#elseif os(watchOS)
+import UIKit
+public typealias DSFImage = UIImage
 #else
 import UIKit
 public typealias DSFView = UIView
@@ -45,4 +46,8 @@ public typealias DSFImage = UIImage
 typealias DSFViewRepresentable = UIViewRepresentable
 #endif
 
+#if !os(macOS)
+extension UIImage {
+	func pngRepresentation() -> Data? { self.pngData() }
+}
 #endif

@@ -1,9 +1,9 @@
 {
   "data" : [
     {
-      "filename" : "watchOSdemo.qrstylist",
+      "filename" : "sample-qrcode.json",
       "idiom" : "universal",
-      "universal-type-identifier" : "org.dagronf.qrcode.qrstylist"
+      "universal-type-identifier" : "public.json"
     }
   ],
   "info" : {

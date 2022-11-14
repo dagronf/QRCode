@@ -72,79 +72,22 @@ public struct QRCodeDocumentUIView: DSFViewRepresentable {
 
 import SwiftUI
 
-@available(watchOS 8.0, *)
-/// A SwiftUI view for display the content of a QRCode.Document on watchOS (v8 and above for AnyStyleShape)
+@available(watchOS 6.0, *)
+/// A SwiftUI view for display the content of a QRCode.Document on watchOS
+///
+/// Builds an image representation of the QR code for display
 public struct QRCodeDocumentUIView: View {
 	let document: QRCode.Document
+	let _image: UIImage
 
-	public init(document: QRCode.Document) {
+	public init(document: QRCode.Document, cachedImageSize: Int = 300) {
 		self.document = document
+		self._image = document.uiImage(dimension: CGFloat(cachedImageSize), scale: 1)!
 	}
 
 	public var body: some View {
-
-		let qrCodeRepresentation = QRCodeShape(
-			data: document.data,
-			errorCorrection: document.errorCorrection,
-			generator: document.qrcode.generator
-		)
-
-		GeometryReader { geo in
-
-			let dimension = max(geo.size.width, geo.size.height)
-
-			ZStack {
-				if let backgroundStyle = document.design.style.background,
-					let style = convertStyle(backgroundStyle, dimension: dimension)
-				{
-					Rectangle()
-						.fill(style)
-						.zIndex(0)
-				}
-
-				// Draw the 'on' pixels
-				qrCodeRepresentation
-					.components(.onPixels)
-					.onPixelShape(document.design.shape.onPixels)
-					.fill(convertStyle(document.design.style.onPixels, dimension: dimension))
-
-				// Draw the outer part of the eye
-				qrCodeRepresentation
-					.components(.eyeOuter)
-					.eyeShape(document.design.shape.eye)
-					.fill(convertStyle(document.design.style.actualEyeStyle, dimension: dimension))
-
-				// Draw the pupil
-				qrCodeRepresentation
-					.components(.eyePupil)
-					.pupilShape(document.design.shape.actualPupilShape)
-					.fill(convertStyle(document.design.style.actualPupilStyle, dimension: dimension))
-
-				// If the document has a style and shape for the 'off' pixels, draw them
-				if let offPixels = document.design.shape.offPixels,
-					let offStyle = document.design.style.offPixels
-				{
-					qrCodeRepresentation
-						.components(.offPixels)
-						.onPixelShape(offPixels)
-						.fill(convertStyle(offStyle, dimension: dimension))
-				}
-			}
-		}
-	}
-
-	// Map between QR code styles and SwiftUI ShapeStyles
-	private func convertStyle(_ q: QRCodeFillStyleGenerator?, dimension: CGFloat) -> AnyShapeStyle {
-		if let c = q as? QRCode.FillStyle.Solid {
-			return AnyShapeStyle(c.colorUI())
-		}
-		else if let c = q as? QRCode.FillStyle.LinearGradient {
-			return AnyShapeStyle(c.linearGradient())
-		}
-		else if let c = q as? QRCode.FillStyle.RadialGradient {
-			return AnyShapeStyle(c.radialGradient(startRadius: 0, endRadius: dimension))
-		}
-		return AnyShapeStyle(Color.red)
+		Image(uiImage: self._image)
+			.resizable()
 	}
 }
 

@@ -64,6 +64,11 @@ import UIKit
 		set { self._document.design = newValue; self.rebuildQRCode() }
 	}
 
+	@objc public var logoTemplate: QRCode.LogoTemplate? {
+		get { self._document.logoTemplate }
+		set { self._document.logoTemplate = newValue; self.rebuildQRCode() }
+	}
+
 	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
 	@objc public var pixelSize: Int { self._document.pixelSize }
 
@@ -235,7 +240,7 @@ extension QRCodeView {
 		self._document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
 		self._document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
 		self._document.design.shape.pupil = (_pupilShape.count > 0) ? QRCodePupilShapeFactory.shared.named(_pupilShape) : nil
-
+		self._document.logoTemplate = logoTemplate
 		// Push the document to the document viewer
 		self.rebuildQRCode()
 	}

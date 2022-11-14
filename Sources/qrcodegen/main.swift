@@ -38,7 +38,7 @@ enum SupportedExtensions: String {
 	case clipboard
 
 	var fileBased: Bool {
-		return self == .png || self == .pdf || self == .jpg
+		return self == .png || self == .pdf || self == .jpg || self == .svg
 	}
 }
 
@@ -78,6 +78,9 @@ Examples:
 
 	@Option(name: [.long], help: "The QR code file to use as a style template")
 	var styleTemplateFile: String?
+
+	@Option(name: [.long], help: "The image file to use as a logo if the style template file defines a logo template")
+	var logoImageFile: String?
 
 	@Option(name: [.customShort("t"), .long], help: "The text to be stored in the QR code")
 	var text: String?
@@ -138,12 +141,15 @@ Examples:
 			QRCodeGen.exit(withError: ExitCode(-1))
 		}
 
+		var styleDocument: QRCode.Document?
+
 		// Create the design to use
 		let design: QRCode.Design = {
 			if let styleTemplateFile = styleTemplateFile {
 				let templateURL = URL(fileURLWithPath: styleTemplateFile)
 				do {
-					return try QRCode.Document(jsonData: try Data(contentsOf: templateURL)).design
+					styleDocument = try QRCode.Document(jsonData: try Data(contentsOf: templateURL))
+					return styleDocument!.design
 				}
 				catch {
 					Swift.print("Invalid style template file '\(styleTemplateFile)'.")
@@ -153,6 +159,20 @@ Examples:
 			else {
 				return QRCode.Design()
 			}
+		}()
+
+		// logo template
+		let logoTemplate: QRCode.LogoTemplate? = {
+			if let styleDocument = styleDocument,
+				let template = styleDocument.logoTemplate,
+				let logoImageFile = logoImageFile,
+				let path = Optional(URL(fileURLWithPath: logoImageFile)),
+				let image = NSImage(contentsOf: path)
+			{
+				template.image = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				return template
+			}
+			return nil
 		}()
 
 		// Colors
@@ -257,9 +277,9 @@ Examples:
 
 		switch outputType {
 		case .clipboard:
-			qrCode.addToPasteboard(outputSize, design: design)
+			qrCode.addToPasteboard(outputSize, design: design, logoTemplate: logoTemplate)
 		case .png:
-			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
+			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design, logoTemplate: logoTemplate) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
@@ -277,7 +297,7 @@ Examples:
 			}
 
 		case .jpg:
-			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design) else {
+			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design, logoTemplate: logoTemplate) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
@@ -295,7 +315,7 @@ Examples:
 			}
 
 		case .pdf:
-			guard let data = qrCode.pdfData(outputSize, design: design) else {
+			guard let data = qrCode.pdfData(outputSize, design: design, logoTemplate: logoTemplate) else {
 				Swift.print("Unable to write to output file \(outURL.absoluteString)")
 				QRCodeGen.exit(withError: ExitCode(-8))
 			}
@@ -308,11 +328,7 @@ Examples:
 			}
 
 		case .svg:
-			let str = qrCode.svg(
-				outputDimension: UInt(outputSize.width),
-				foreground: (design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black,
-				background: (design.style.background as? QRCode.FillStyle.Solid)?.color
-			)
+			let str = qrCode.svg(dimension: Int(outputSize.width), design: design, logoTemplate: logoTemplate)
 			do {
 				try str.write(to: outURL, atomically: true, encoding: .utf8)
 			}

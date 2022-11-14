@@ -131,10 +131,11 @@ public extension QRCodePixelShapeFactory {
 		let path = CGMutablePath()
 		let p2: CGPath = {
 			if isOn {
-				return pixelShape.onPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
+				return pixelShape.generatePath(from: qr.current, size: CGSize(dimension: dimension))
 			}
 			else {
-				return pixelShape.offPath(size: CGSize(width: dimension, height: dimension), data: qr, isTemplate: true)
+				let inverted = qr.current.inverted()
+				return pixelShape.generatePath(from: inverted, size: CGSize(dimension: dimension))
 			}
 		}()
 		path.addPath(p2)

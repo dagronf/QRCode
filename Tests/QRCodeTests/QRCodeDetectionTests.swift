@@ -5,12 +5,6 @@ import XCTest
 @testable import QRCode
 @testable import QRCodeExternal
 
-#if os(macOS)
-typealias CommonImage = NSImage
-#else
-typealias CommonImage = UIImage
-#endif
-
 final class QRCodeDetectionTests: XCTestCase {
 	//let _msg = "DENSO WAVE serves as a leader in developing and manufacturing automatic data capture devices for barcodes, QR codes, and RFID, etc. and industrial robots (FA equipment), etc."
 
@@ -119,6 +113,94 @@ final class QRCodeDetectionTests: XCTestCase {
 			XCTAssertEqual(195, br.origin.y, accuracy: 1)
 			XCTAssertEqual(63, br.size.width, accuracy: 1)
 			XCTAssertEqual(65, br.size.height, accuracy: 1)
+		}
+	}
+
+	func testMessageFormatter() throws {
+
+		do {
+			let url = try XCTUnwrap(QRCode.Message.Link(string: "https://www.apple.com/mac-studio/"))
+			let code = QRCode.Document(message: url)
+
+			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+
+			let qrr = QRCode.DetectQRCodes(outputImage)
+			XCTAssertEqual(1, qrr.count)
+			XCTAssertEqual("https://www.apple.com/mac-studio/", qrr[0].messageString)
+		}
+
+		do {
+			let url = try XCTUnwrap(QRCode.Message.Text("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के"))
+			let code = QRCode.Document(message: url)
+
+			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+
+			let qrr = QRCode.DetectQRCodes(outputImage)
+			XCTAssertEqual(1, qrr.count)
+			XCTAssertEqual("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के", qrr[0].messageString)
+		}
+	}
+
+	func testBasicDetection() throws {
+
+		let qrCode = QRCode(generator: __testGenerator)
+		qrCode.update(text: "https://www.apple.com.au/", errorCorrection: .high)
+
+		// Convert to image and detect qr codes
+		do {
+			let imaged = try XCTUnwrap(qrCode.cgImage(CGSize(width: 600, height: 600)))
+			let features = QRCode.DetectQRCodes(imaged)
+			let first = features[0]
+			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
+		}
+
+		let design = QRCode.Design()
+		design.shape.onPixels = QRCode.PixelShape.Squircle()
+		design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
+
+		do {
+			let img = try XCTUnwrap(qrCode.cgImage(CGSize(width: 500, height: 500), design: design))
+			let features = QRCode.DetectQRCodes(img)
+			let first = features[0]
+			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
+		}
+	}
+
+	func testMaskedDetection() throws {
+		let text = "https://www.qrcode.com/en/howto/generate.html"
+		let doc = QRCode.Document(utf8String: text, errorCorrection: .high)
+
+		do {
+			let p = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
+			let t = QRCode.LogoTemplate(path: p)
+			doc.logoTemplate = t
+
+			let image = try XCTUnwrap(doc.cgImage(dimension: 300))
+#if os(macOS)
+			let nsImage = NSImage(cgImage: image, size: .zero)
+			XCTAssertNotNil(nsImage)
+#endif
+
+			let features = QRCode.DetectQRCodes(image)
+			XCTAssertEqual(1, features.count)
+			let first = features[0]
+			XCTAssertEqual(text, first.messageString)
+		}
+
+		do {
+			// This mask image is too big, and will fail detection using the built-in CIDetector
+			let p = CGPath(ellipseIn: CGRect(x: 0.20, y: 0.20, width: 0.60, height: 0.60), transform: nil)
+			let t = QRCode.LogoTemplate(path: p)
+			doc.logoTemplate = t
+
+			let image = try XCTUnwrap(doc.cgImage(dimension: 300))
+#if os(macOS)
+			let nsImage = NSImage(cgImage: image, size: .zero)
+			XCTAssertNotNil(nsImage)
+#endif
+
+			let features = QRCode.DetectQRCodes(image)
+			XCTAssertEqual(0, features.count)
 		}
 	}
 }

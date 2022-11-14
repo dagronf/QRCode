@@ -20,6 +20,19 @@ class ViewController: UIViewController {
 
 		let pixelShape = QRCode.PixelShape.Horizontal(insetFraction: 0.1, cornerRadiusFraction: 1)
 		self.qrCodeView.design.shape.onPixels = pixelShape
+		self.qrCodeView.backgroundColor = .clear
+
+		do {
+			let doc = self.qrCodeView.document!
+			let p = CGPath(ellipseIn: CGRect(x: 0.60, y: 0.30, width: 0.40, height: 0.40), transform: nil)
+			let logoTemplate = QRCode.LogoTemplate(
+				path: p,
+				inset: 16,
+				image: UIImage(named: "logo")!.cgImage
+			)
+			doc.logoTemplate = logoTemplate
+		}
+
 		self.qrCodeView.rebuildQRCode()
 	}
 }

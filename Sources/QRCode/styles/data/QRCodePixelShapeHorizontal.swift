@@ -54,35 +54,26 @@ public extension QRCode.PixelShape {
 			super.init()
 		}
 
-		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
-		}
-
-		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
-		}
-
-		private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
-			let dx = size.width / CGFloat(data.pixelSize)
-			let dy = size.height / CGFloat(data.pixelSize)
+		/// Generate a CGPath from the matrix contents
+		/// - Parameters:
+		///   - matrix: The matrix to generate
+		///   - size: The size of the resulting CGPath
+		/// - Returns: A path
+		@objc public func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
+			let dx = size.width / CGFloat(matrix.dimension)
+			let dy = size.height / CGFloat(matrix.dimension)
 			let dm = min(dx, dy)
 
-			let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
-			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
+			let xoff = (size.width - (CGFloat(matrix.dimension) * dm)) / 2.0
+			let yoff = (size.height - (CGFloat(matrix.dimension) * dm)) / 2.0
 
 			let path = CGMutablePath()
 
-			// Mask out the QR patterns
-			var currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
-			if let mask = data.currentMask {
-				currentData = currentData.applyingMask(mask)
-			}
-
-			for row in 1 ..< data.pixelSize - 1 {
+			for row in 0 ..< matrix.dimension {
 				var activeRect: CGRect?
 
-				for col in 1 ..< data.pixelSize - 1 {
-					if currentData[row, col] == false {
+				for col in 0 ..< matrix.dimension {
+					if matrix[row, col] == false {
 						if let r = activeRect {
 							// We had an active rect. Close it.
 							let ri = r.insetBy(dx: self.insetFraction * r.height / 2.0, dy: self.insetFraction * r.height / 2.0)
@@ -108,6 +99,7 @@ public extension QRCode.PixelShape {
 					path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
 				}
 			}
+
 			return path
 		}
 	}

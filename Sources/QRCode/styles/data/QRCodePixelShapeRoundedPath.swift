@@ -85,59 +85,72 @@ public extension QRCode.PixelShape {
 				hasInnerCorners: self.hasInnerCorners
 			)
 		}
-
-		/// The path representing the 'on' pixels
-		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: true, isTemplate: isTemplate)
-		}
-
-		/// The path representing the 'off' pixels
-		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.generatePath(size: size, data: data, isOn: false, isTemplate: isTemplate)
-		}
 	}
 }
 
 extension QRCode.PixelShape.RoundedPath {
-	private func generatePath(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
-		let dx = size.width / CGFloat(data.pixelSize)
-		let dy = size.height / CGFloat(data.pixelSize)
+	/// Generate a CGPath from the matrix contents
+	/// - Parameters:
+	///   - matrix: The matrix to generate
+	///   - size: The size of the resulting CGPath
+	/// - Returns: A path
+	@objc public func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
+		let dx = size.width / CGFloat(matrix.dimension)
+		let dy = size.height / CGFloat(matrix.dimension)
 		let dm = min(dx, dy)
+
+		let xoff = (size.width - (CGFloat(matrix.dimension) * dm)) / 2.0
+		let yoff = (size.height - (CGFloat(matrix.dimension) * dm)) / 2.0
 
 		// The scale required to convert our template paths to output path size
 		let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
 		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
 
-		let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
-		let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
-
 		let path = CGMutablePath()
 
-		// Mask out the QR patterns (if we're not a template image)
-		var currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
-		if let mask = data.currentMask {
-			currentData = currentData.applyingMask(mask)
-		}
+		for row in 0 ..< matrix.dimension {
+			for col in 0 ..< matrix.dimension {
 
-		for row in 1 ..< data.pixelSize - 1 {
-			for col in 1 ..< data.pixelSize - 1 {
-
-				let hasLeft = (col - 1) >= 0 ? currentData[row, col - 1] : false
-				let hasRight = (col + 1) < data.pixelSize ? currentData[row, col + 1] : false
-				let hasTop = (row - 1) >= 0 ? currentData[row - 1, col] : false
-				let hasBottom = (row + 1) < data.pixelSize ? currentData[row + 1, col] : false
+				let hasLeft: Bool = {
+					if col == 0 { return false }
+					return (col - 1) >= 0 ? matrix[row, col - 1] : false
+				}()
+				let hasRight: Bool = {
+					if col == (matrix.dimension - 1) { return false }
+					return (col + 1) < matrix.dimension ? matrix[row, col + 1] : false
+				}()
+				let hasTop: Bool = {
+					if row == 0 { return false }
+					return (row - 1) >= 0 ? matrix[row - 1, col] : false
+				}()
+				let hasBottom: Bool = {
+					if row == (matrix.dimension - 1) { return false }
+					return (row + 1) < matrix.dimension ? matrix[row + 1, col] : false
+				}()
 
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 
-				guard currentData[row, col] == true else {
+				guard matrix[row, col] == true else {
 					guard hasInnerCorners == true else {
 						continue
 					}
 
-					let hasTopLeft = ((col - 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col - 1] : false
-					let hasTopRight = ((col + 1) >= 0 && (row - 1) >= 0) ? currentData[row - 1, col + 1] : false
-					let hasBottomLeft = ((col - 1) >= 0 && (row + 1) >= 0) ? currentData[row + 1, col - 1] : false
-					let hasBottomRight = ((col + 1) >= 0 && (row + 1) >= 0) ? currentData[row + 1, col + 1] : false
+					let hasTopLeft: Bool = {
+						if col == 0 || row == 0 { return false }
+						return ((col - 1) >= 0 && (row - 1) >= 0) ? matrix[row - 1, col - 1] : false
+					}()
+					let hasTopRight: Bool = {
+						if col == (matrix.dimension - 1) || row == 0 { return false }
+						return ((col + 1) >= 0 && (row - 1) >= 0) ? matrix[row - 1, col + 1] : false
+					}()
+					let hasBottomLeft: Bool = {
+						if col == 0 || row == (matrix.dimension - 1) { return false }
+						return ((col - 1) >= 0 && (row + 1) >= 0) ? matrix[row + 1, col - 1] : false
+					}()
+					let hasBottomRight: Bool = {
+						if col == (matrix.dimension - 1) || row == (matrix.dimension - 1) { return false }
+						return ((col + 1) >= 0 && (row + 1) >= 0) ? matrix[row + 1, col + 1] : false
+					}()
 
 					if hasLeft, hasTop, hasTopLeft {
 						path.addPath(

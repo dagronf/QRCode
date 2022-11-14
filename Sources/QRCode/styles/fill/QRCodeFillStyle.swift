@@ -28,6 +28,18 @@ public extension QRCode {
 	@objc(QRCodeFillStyle) class FillStyle: NSObject {
 		/// Simple convenience for a clear fill
 		@objc public static let clear = FillStyle.Solid(.clear)
+
+		/// An object to contain SVG data during rendering
+		@objc public class SVGDefinition: NSObject {
+			/// The string representation that goes into the SVG tag (eg. `<rect [id="xxx", fill="yyy"] />`
+			let styleAttribute: String
+			/// The SVG style component that exists within the `<defs>` section of the SVG (optional)
+			let styleDefinition: String?
+			internal init(styleAttribute: String, styleDefinition: String?) {
+				self.styleAttribute = styleAttribute
+				self.styleDefinition = styleDefinition
+			}
+		}
 	}
 }
 
@@ -45,6 +57,8 @@ public extension QRCode {
 	func fill(ctx: CGContext, rect: CGRect)
 	/// Fill the specified path with the current style settings
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
+	/// Returns an SVG fill definition object for the fill style
+	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition?
 }
 
 private let FillStyleTypeName = "type"

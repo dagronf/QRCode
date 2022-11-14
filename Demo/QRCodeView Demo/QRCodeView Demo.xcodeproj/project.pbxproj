@@ -13,6 +13,8 @@
 			buildPhases = (
 			);
 			dependencies = (
+				23BF104429258E16006B23A9 /* PBXTargetDependency */,
+				23BF104229258CA1006B23A9 /* PBXTargetDependency */,
 				23C64A70282F67930094E093 /* PBXTargetDependency */,
 				2345F6E1274890860087569B /* PBXTargetDependency */,
 				2345F6D727488ADA0087569B /* PBXTargetDependency */,
@@ -94,6 +96,12 @@
 		23C7586228AC7842007528CE /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586128AC7842007528CE /* QRCode */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
 		23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9A29247CD800236B80 /* AppDelegate.swift */; };
+		23E66A9D29247CD800236B80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9C29247CD800236B80 /* ViewController.swift */; };
+		23E66A9F29247CD900236B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E66A9E29247CD900236B80 /* Assets.xcassets */; };
+		23E66AA229247CD900236B80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E66AA029247CD900236B80 /* Main.storyboard */; };
+		23E66AA829247CEA00236B80 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23E66AA729247CEA00236B80 /* QRCode */; };
+		23E66AAA29247CEA00236B80 /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 23E66AA929247CEA00236B80 /* QRCodeExternal */; };
 		23F8AE69273A493B00ED6288 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE68273A493B00ED6288 /* AppDelegate.m */; };
 		23F8AE6C273A493B00ED6288 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE6B273A493B00ED6288 /* ViewController.m */; };
 		23F8AE6E273A493C00ED6288 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F8AE6D273A493C00ED6288 /* Assets.xcassets */; };
@@ -164,6 +172,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2348FB7D273A2EF3004DB2BF;
 			remoteInfo = "QRCodeView iOS Demo";
+		};
+		23BF104129258CA1006B23A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23E66A9729247CD800236B80;
+			remoteInfo = "macOS Logo Image Demo";
 		};
 		23C64A6F282F67930094E093 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -249,7 +264,6 @@
 		2348FBA6273A310A004DB2BF /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		234DE7042745D72D00EC7FD2 /* QRCode */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QRCode; path = ../..; sourceTree = "<group>"; };
 		235F82742741F1B300E81D98 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		23638EAB2887D0F60057A190 /* QRCode Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "QRCode Playground.playground"; path = "../QRCode Playground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		236A0503286FE1960019C842 /* macOS QRCode Detector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS QRCode Detector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		236A0505286FE1960019C842 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		236A0507286FE1960019C842 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +285,12 @@
 		23C64A60282F448E0094E093 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		23C64A63282F448E0094E093 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		23C64A65282F448E0094E093 /* QRCodeView_Documentation_Images.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRCodeView_Documentation_Images.entitlements; sourceTree = "<group>"; };
+		23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS Logo Image Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23E66A9A29247CD800236B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		23E66A9C29247CD800236B80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		23E66A9E29247CD900236B80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		23E66AA129247CD900236B80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		23E66AA329247CD900236B80 /* macOS_Logo_Image_Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS_Logo_Image_Demo.entitlements; sourceTree = "<group>"; };
 		23F8AE65273A493A00ED6288 /* QRCodeView ObjC Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCodeView ObjC Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23F8AE67273A493B00ED6288 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		23F8AE68273A493B00ED6288 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -356,6 +376,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		23E66A9529247CD800236B80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23E66AA829247CEA00236B80 /* QRCode in Frameworks */,
+				23E66AAA29247CEA00236B80 /* QRCodeExternal in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23F8AE62273A493A00ED6288 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -418,7 +447,6 @@
 		2348FB5B273A2DDB004DB2BF = {
 			isa = PBXGroup;
 			children = (
-				23638EAB2887D0F60057A190 /* QRCode Playground.playground */,
 				234DE7042745D72D00EC7FD2 /* QRCode */,
 				2348FB66273A2DDB004DB2BF /* QRCodeView Demo */,
 				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,
@@ -430,6 +458,7 @@
 				236A0504286FE1960019C842 /* macOS QRCode Detector */,
 				236A0519286FE6570019C842 /* iOS QRCode Detector */,
 				2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */,
+				23E66A9929247CD800236B80 /* macOS Logo Image Demo */,
 				2348FB65273A2DDB004DB2BF /* Products */,
 				2348FB77273A2DF5004DB2BF /* Frameworks */,
 			);
@@ -450,6 +479,7 @@
 				236A0503286FE1960019C842 /* macOS QRCode Detector.app */,
 				236A0518286FE6570019C842 /* iOS QRCode Detector.app */,
 				2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */,
+				23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -561,6 +591,18 @@
 				23C64A65282F448E0094E093 /* QRCodeView_Documentation_Images.entitlements */,
 			);
 			path = "QRCodeView Documentation Images";
+			sourceTree = "<group>";
+		};
+		23E66A9929247CD800236B80 /* macOS Logo Image Demo */ = {
+			isa = PBXGroup;
+			children = (
+				23E66A9A29247CD800236B80 /* AppDelegate.swift */,
+				23E66A9C29247CD800236B80 /* ViewController.swift */,
+				23E66A9E29247CD900236B80 /* Assets.xcassets */,
+				23E66AA029247CD900236B80 /* Main.storyboard */,
+				23E66AA329247CD900236B80 /* macOS_Logo_Image_Demo.entitlements */,
+			);
+			path = "macOS Logo Image Demo";
 			sourceTree = "<group>";
 		};
 		23F8AE66273A493A00ED6288 /* QRCodeView ObjC Demo */ = {
@@ -797,6 +839,27 @@
 			productReference = 23C64A5A282F448D0094E093 /* QRCodeView Documentation Images.app */;
 			productType = "com.apple.product-type.application";
 		};
+		23E66A9729247CD800236B80 /* macOS Logo Image Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23E66AA629247CD900236B80 /* Build configuration list for PBXNativeTarget "macOS Logo Image Demo" */;
+			buildPhases = (
+				23E66A9429247CD800236B80 /* Sources */,
+				23E66A9529247CD800236B80 /* Frameworks */,
+				23E66A9629247CD800236B80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "macOS Logo Image Demo";
+			packageProductDependencies = (
+				23E66AA729247CEA00236B80 /* QRCode */,
+				23E66AA929247CEA00236B80 /* QRCodeExternal */,
+			);
+			productName = "macOS Logo Image Demo";
+			productReference = 23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		23F8AE64273A493A00ED6288 /* QRCodeView ObjC Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23F8AE77273A493C00ED6288 /* Build configuration list for PBXNativeTarget "QRCodeView ObjC Demo" */;
@@ -866,6 +929,9 @@
 					23C64A59282F448D0094E093 = {
 						CreatedOnToolsVersion = 13.3.1;
 					};
+					23E66A9729247CD800236B80 = {
+						CreatedOnToolsVersion = 14.1;
+					};
 					23F8AE64273A493A00ED6288 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -898,6 +964,7 @@
 				236A0502286FE1960019C842 /* macOS QRCode Detector */,
 				236A0517286FE6570019C842 /* iOS QRCode Detector */,
 				2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */,
+				23E66A9729247CD800236B80 /* macOS Logo Image Demo */,
 			);
 		};
 /* End PBXProject section */
@@ -999,6 +1066,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		23E66A9629247CD800236B80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23E66A9F29247CD900236B80 /* Assets.xcassets in Resources */,
+				23E66AA229247CD900236B80 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23F8AE63273A493A00ED6288 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1097,6 +1173,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		23E66A9429247CD800236B80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23E66A9D29247CD800236B80 /* ViewController.swift in Sources */,
+				23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23F8AE61273A493A00ED6288 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1154,6 +1239,15 @@
 			isa = PBXTargetDependency;
 			target = 2348FB7D273A2EF3004DB2BF /* QRCodeView iOS Demo */;
 			targetProxy = 236B043E274B5DFA004F0146 /* PBXContainerItemProxy */;
+		};
+		23BF104229258CA1006B23A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23E66A9729247CD800236B80 /* macOS Logo Image Demo */;
+			targetProxy = 23BF104129258CA1006B23A9 /* PBXContainerItemProxy */;
+		};
+		23BF104429258E16006B23A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 23BF104329258E16006B23A9 /* qrcodegen */;
 		};
 		23C64A70282F67930094E093 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1215,6 +1309,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				23C64A63282F448E0094E093 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		23E66AA029247CD900236B80 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23E66AA129247CD900236B80 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1339,7 +1441,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -1365,7 +1467,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -1641,8 +1743,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1675,8 +1776,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1976,7 +2076,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCodeView-Documentation-Images";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2005,9 +2105,67 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.qrcode.QRCodeView-Documentation-Images";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		23E66AA429247CD900236B80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.dsfquickactionbar.macOS-Logo-Image-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		23E66AA529247CD900236B80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.dsfquickactionbar.macOS-Logo-Image-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2201,6 +2359,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		23E66AA629247CD900236B80 /* Build configuration list for PBXNativeTarget "macOS Logo Image Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23E66AA429247CD900236B80 /* Debug */,
+				23E66AA529247CD900236B80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		23F8AE77273A493C00ED6288 /* Build configuration list for PBXNativeTarget "QRCodeView ObjC Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2241,6 +2408,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
 		};
+		23BF104329258E16006B23A9 /* qrcodegen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = qrcodegen;
+		};
 		23C7585B28AC7420007528CE /* QRCodeExternal */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeExternal;
@@ -2256,6 +2427,14 @@
 		23C7586528AC78B8007528CE /* QRCodeDynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeDynamic;
+		};
+		23E66AA729247CEA00236B80 /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCode;
+		};
+		23E66AA929247CEA00236B80 /* QRCodeExternal */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeExternal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

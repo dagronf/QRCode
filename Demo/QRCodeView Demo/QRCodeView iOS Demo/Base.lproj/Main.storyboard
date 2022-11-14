@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,20 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="10" verticalHuggingPriority="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZHz-cN-jSC" customClass="QRCodeView" customModule="QRCode">
-                                <rect key="frame" x="77" y="323" width="260" height="260"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="10" verticalHuggingPriority="10" horizontalCompressionResistancePriority="10" verticalCompressionResistancePriority="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZHz-cN-jSC" customClass="QRCodeView" customModule="QRCode">
+                                <rect key="frame" x="20" y="268" width="374" height="374"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="ZHz-cN-jSC" secondAttribute="height" multiplier="1:1" id="3Xv-iw-Q0E"/>
-                                    <constraint firstAttribute="width" constant="260" id="Idq-ad-7QU"/>
+                                    <constraint firstAttribute="width" secondItem="ZHz-cN-jSC" secondAttribute="height" multiplier="1:1" id="ohr-Tc-ftU"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibTextContent" value="Testing the QRView for iOS targets"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPixelColor">
                                         <color key="value" red="0.14026922650000001" green="0.13745216330000001" blue="0.33269563270000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="ibBackgroundColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibEyeColor">
                                         <color key="value" red="0.26134853675717218" green="0.15141784842553238" blue="0.1493204916399874" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -44,10 +39,14 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemYellowColor"/>
                         <constraints>
-                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="8QY-04-9Tx"/>
-                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="sh1-yG-zNm"/>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="10I-vG-hBd"/>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="1df-QM-r4l"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZHz-cN-jSC" secondAttribute="bottom" constant="20" id="AhK-ej-bQg"/>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="X1C-ta-oKc"/>
+                            <constraint firstItem="ZHz-cN-jSC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="jCn-rK-GkS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZHz-cN-jSC" secondAttribute="trailing" constant="20" id="oPt-JE-PPU"/>
                         </constraints>
                     </view>
                     <connections>
@@ -60,8 +59,8 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

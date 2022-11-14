@@ -87,7 +87,7 @@ extension CGColor {
 #endif
 
 extension CGColor {
-	// Return an RGBA hex code (eg. "#00000000")
+	/// Return an RGBA hex code (eg. "#00000000")
 	func hexCode() -> String? {
 		guard let comps = sRGBAComponents() else {
 			return nil
@@ -97,5 +97,16 @@ extension CGColor {
 		let bv = Int(comps.b * 255.0)
 		let av = Int(comps.a * 255.0)
 		return String(format: "#%02x%02x%02x%02x", rv, gv, bv, av)
+	}
+
+	/// Return an RGBA hex code (eg. "#00000000")
+	func hexRGBCode() -> String? {
+		guard let comps = sRGBAComponents() else {
+			return nil
+		}
+		let rv = Int(comps.r * 255.0)
+		let gv = Int(comps.g * 255.0)
+		let bv = Int(comps.b * 255.0)
+		return String(format: "#%02x%02x%02x", rv, gv, bv)
 	}
 }

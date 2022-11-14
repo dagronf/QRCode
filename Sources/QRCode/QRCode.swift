@@ -95,6 +95,9 @@ import Foundation
 		return self.current.dimension
 	}
 
+	/// Returns a copy of the boolean matrix representation of the current QR code data
+	@objc var boolMatrix: BoolMatrix { self.current }
+
 	// Private
 	private let DefaultPDFResolution: CGFloat = 72
 
@@ -112,7 +115,12 @@ import Foundation
 		return d
 	}()
 
+	// The mask represents the pixels that are NOT drawn
+	internal var currentMask: BoolMatrix? = nil
+	internal var currentErrorCorrection: ErrorCorrection = .default
 }
+
+// MARK: - Copying
 
 extension QRCode: NSCopying {
 	/// Return a copy of the QR Code
@@ -128,6 +136,7 @@ extension QRCode: NSCopying {
 public extension QRCode {
 	/// Build the QR Code using the given data and error correction
 	@objc func update(_ data: Data, errorCorrection: ErrorCorrection) {
+		self.currentErrorCorrection = errorCorrection
 		if let result = self.generator.generate(data, errorCorrection: errorCorrection) {
 			self.current = result
 		}
@@ -141,60 +150,6 @@ public extension QRCode {
 	/// Build the QR Code using the given message formatter and error correction
 	@objc func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
 		self.update(message.data, errorCorrection: errorCorrection)
-	}
-}
-
-// MARK: - Ascii representations
-
-public extension QRCode {
-	/// Return an ASCII representation of the QR code using the extended ASCII code set
-	///
-	/// Only makes sense if presented using a fixed-width font
-	@objc func asciiRepresentation() -> String {
-		var result = ""
-		for row in 0 ..< self.current.dimension {
-			for col in 0 ..< self.current.dimension {
-				if self.current[row, col] == true {
-					result += "██"
-				}
-				else {
-					result += "  "
-				}
-			}
-			result += "\n"
-		}
-		return result
-	}
-
-	/// Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
-	///
-	/// Only makes sense if presented using a fixed-width font
-	@objc func smallAsciiRepresentation() -> String {
-		var result = ""
-		for row in stride(from: 0, to: self.current.dimension, by: 2) {
-			for col in 0 ..< self.current.dimension {
-				let top = self.current[row, col]
-
-				if row <= self.current.dimension - 2 {
-					let bottom = self.current[row + 1, col]
-					if top,!bottom { result += "▀" }
-					if !top, bottom { result += "▄" }
-					if top, bottom { result += "█" }
-					if !top, !bottom { result += " " }
-				}
-				else {
-					if top { result += "▀" }
-					else { result += " " }
-				}
-			}
-			result += "\n"
-		}
-		return result
-	}
-
-	/// Returns a boolean matrix representation of the current QR code data
-	@objc var boolMatrix: BoolMatrix {
-		self.current
 	}
 }
 

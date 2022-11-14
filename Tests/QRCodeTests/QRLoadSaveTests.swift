@@ -3,12 +3,12 @@ import XCTest
 
 final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasic() throws {
-		let doc1 = QRCode.Document()
+		let doc1 = QRCode.Document(generator: __testGenerator)
 		doc1.data = "this is a test".data(using: .utf8)!
 
 		let data = try XCTUnwrap(doc1.jsonData())
 
-		let doc2 = try QRCode.Document.Create(jsonData: data)
+		let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 
 		// Data should be the same
 		XCTAssertEqual(doc2.data, doc1.data)
@@ -20,14 +20,14 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasicPixelEncodeDecode() throws {
 
 		do {
-			let doc = QRCode.Document()
+			let doc = QRCode.Document(generator: __testGenerator)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.2)
 			doc.design.shape.eye = QRCode.EyeShape.Leaf()
 
 			let data = try XCTUnwrap(doc.jsonData())
 
-			let doc2 = try QRCode.Document.Create(jsonData: data)
+			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 
 			// Make sure the data shape comes back out
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Circle)
@@ -38,22 +38,22 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document()
+			let doc = QRCode.Document(generator: __testGenerator)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(insetFraction: 0.2, cornerRadiusFraction: 0.8)
 			let data = try XCTUnwrap(doc.jsonData())
-			let doc2 = try QRCode.Document.Create(jsonData: data)
+			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.RoundedRect)
 			XCTAssertEqual(shape.insetFraction, 0.2, accuracy: 0.0001)
 			XCTAssertEqual(shape.cornerRadiusFraction, 0.8, accuracy: 0.0001)
 		}
 
 		do {
-			let doc = QRCode.Document()
+			let doc = QRCode.Document(generator: __testGenerator)
 			doc.data = "this is a test and fishes like squircles".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.6)
 			let data = try XCTUnwrap(doc.jsonData())
-			let doc2 = try QRCode.Document.Create(jsonData: data)
+			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Squircle)
 			XCTAssertEqual(shape.insetFraction, 0.6, accuracy: 0.0001)
 		}
@@ -68,7 +68,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		"""
 
 		let data = json.data(using: .utf8)!
-		let doc = try QRCode.Document.Create(jsonData: data)
+		let doc = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 
 		let msg = try XCTUnwrap(String(data: doc.data, encoding: .utf8))
 		XCTAssertEqual("this is a test", msg)
@@ -78,7 +78,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testSimpleFillStyleEncoding() throws {
 
-		let doc1 = QRCode.Document()
+		let doc1 = QRCode.Document(generator: __testGenerator)
 		doc1.data = "simple colors".data(using: .utf8)!
 		doc1.errorCorrection = .quantize
 
@@ -96,7 +96,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 		let data = try XCTUnwrap(doc1.jsonData())
 
-		let doc2 = try QRCode.Document.Create(jsonData: data)
+		let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 		XCTAssertEqual(doc1.data, doc2.data)
 		XCTAssertEqual(doc1.errorCorrection, doc2.errorCorrection)
 	}
@@ -134,5 +134,28 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		XCTAssertEqual(0.8, st.centerPoint.y, accuracy: 0.0001)
 		XCTAssertEqual(c.gradient.pins.count, st.gradient.pins.count)
 		XCTAssertEqual(c.gradient.pins.map { $0.position }, st.gradient.pins.map { $0.position })
+	}
+
+	func testLogoTemplateLoadSave() throws {
+		let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
+		let logoImage = try XCTUnwrap(CGImage.fromPNGFile(logoURL))
+
+		let path = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
+		let logo = QRCode.LogoTemplate(
+			path: path,
+			inset: 4.5,
+			image: logoImage
+		)
+
+		let settings = logo.settings()
+
+		let loaded = try XCTUnwrap(QRCode.LogoTemplate(settings: settings))
+
+		//XCTAssertTrue(path == loaded.path)  // Fails with fractional amount comparison
+		if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
+			XCTAssertTrue(path.subtracting(loaded.path).boundingBoxOfPath.isEmpty)
+		}
+		XCTAssertEqual(4.5, loaded.inset, accuracy: 0.01)
+		XCTAssertNotNil(loaded.image)
 	}
 }

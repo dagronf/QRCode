@@ -47,6 +47,18 @@ extension NSImage {
 		}
 		return tiffData.representation(using: .jpeg, properties: [.compressionFactor: compression])
 	}
+
+	func cgImage() -> CGImage? {
+		self.cgImage(forProposedRect: nil, context: nil, hints: nil)
+	}
+}
+
+#else
+
+import UIKit.UIImage
+
+extension UIImage {
+	func cgImage() -> CGImage? { self.cgImage }
 }
 
 #endif

@@ -18,7 +18,7 @@
 	// Do any additional setup after loading the view.
 
 	QRCodeDocument* document = [[QRCodeDocument alloc] init];
-	[document setData:[@"This message" dataUsingEncoding: NSUTF8StringEncoding]];
+	[document setData:[@"This message is something really exciting in objective-c" dataUsingEncoding: NSUTF8StringEncoding]];
 	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 
 	// Set the foreground color to a solid red
@@ -27,6 +27,10 @@
 
 	// Use the leaf style
 	document.design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
+
+	CGPathRef path = CGPathCreateWithRect(CGRectMake(0.3, 0.4, 0.4, 0.2), nil);
+	id templ = [[QRCodeLogoTemplate alloc] initWithPath:path inset:0 image: nil];
+	[document setLogoTemplate:templ];
 
 	// Generate the image (with a 216dpi resolution)
 	CGImageRef image = [document cgImage: CGSizeMake(900, 900)];

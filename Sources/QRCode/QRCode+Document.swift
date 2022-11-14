@@ -58,19 +58,14 @@ public extension QRCode {
 			didSet { self.regenerate() }
 		}
 
-		/// Make a copy of the document
-		@objc public func copyDocument() -> Document {
-			let c = Document()
-			c.data = self.data
-			c.design = self.design.copyDesign()
-			c.errorCorrection = self.errorCorrection
-			return c
-		}
+		/// A logo template
+		@objc public var logoTemplate: QRCode.LogoTemplate?
 
+		/// Create a QR code
 		@objc override public init() {
 			self.data = Data()
 			self.errorCorrection = .default
-			self.qrcode = QRCode(data, errorCorrection: errorCorrection, generator: nil)
+			self.qrcode = QRCode(self.data, errorCorrection: self.errorCorrection, generator: nil)
 			super.init()
 		}
 
@@ -121,7 +116,7 @@ public extension QRCode {
 			self.data = utf8String.data(using: .utf8) ?? Data()
 			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
-				data,
+				self.data,
 				errorCorrection: errorCorrection,
 				generator: generator
 			)
@@ -166,11 +161,7 @@ public extension QRCode.Document {
 	///   - allowLossyConversion: Allow losing characters during conversion
 	/// - Returns: true if the conversion succeeded and the data was set, false otherwise
 	@discardableResult
-	func setString(
-		_ string: String,
-		encoding: String.Encoding = .utf8,
-		allowLossyConversion: Bool = false
-	) -> Bool {
+	func setString(_ string: String, encoding: String.Encoding = .utf8, allowLossyConversion: Bool = false) -> Bool {
 		if let d = string.data(
 			using: encoding,
 			allowLossyConversion: allowLossyConversion
@@ -185,12 +176,15 @@ public extension QRCode.Document {
 	@objc func setMessage(_ message: QRCodeMessageFormatter) {
 		self.data = message.data
 	}
-}
 
-private extension QRCode.Document {
-	// Build up the qr representation
-	private func regenerate() {
-		self.qrcode.update(self.data, errorCorrection: self.errorCorrection)
+	/// Make a copy of the document
+	@objc func copyDocument() -> QRCode.Document {
+		let c = QRCode.Document()
+		c.data = self.data
+		c.design = self.design.copyDesign()
+		c.logoTemplate = self.logoTemplate?.copyLogoTemplate()
+		c.errorCorrection = self.errorCorrection
+		return c
 	}
 }
 
@@ -201,17 +195,14 @@ public extension QRCode.Document {
 	/// - Parameters:
 	///   - jsonData: The data to display (json format)
 	///   - generator: The generator to use when creating the QR code. Defaults to Core Image
-	@objc convenience init(
-		jsonData: Data,
-		generator: QRCodeEngine? = nil
-	) throws {
+	@objc convenience init(jsonData: Data, generator: QRCodeEngine? = nil) throws {
 		self.init(generator: generator)
 		try self.load(jsonData: jsonData)
 	}
 
 	/// Create a QRCode document using the QRCode settings defined in `dictionary`
-	@objc convenience init(dictionary: [String: Any]) throws {
-		self.init()
+	@objc convenience init(dictionary: [String: Any], generator: QRCodeEngine? = nil) throws {
+		self.init(generator: generator)
 		try self.load(settings: dictionary)
 	}
 
@@ -255,18 +246,34 @@ public extension QRCode.Document {
 			self.design = d
 		}
 
+		// Restore the mask
+
+		if let maskSettings = settings["logoTemplate"] as? [String: Any],
+			let l = QRCode.LogoTemplate(settings: maskSettings)
+		{
+			self.logoTemplate = l
+		}
+
 		self.regenerate()
 	}
 
 	/// Create a QRCode.Document object from the specified settings
-	@objc static func Create(settings: [String: Any]) throws -> QRCode.Document {
-		let doc = QRCode.Document()
+	/// - Parameters:
+	///   - jsonData: The qr code settings
+	///   - generator: The generator to use, or nil to use the default (watchOS requires QRCode
+	/// - Returns: A QRCode document
+	@objc static func Create(settings: [String: Any], generator: QRCodeEngine? = nil) throws -> QRCode.Document {
+		let doc = QRCode.Document(generator: generator)
 		try doc.load(settings: settings)
 		return doc
 	}
 
 	/// Create a QRCode document from the provided json formatted data
-	@objc static func Create(jsonData: Data) throws -> QRCode.Document {
+	/// - Parameters:
+	///   - jsonData: The json formatted qr code to load
+	///   - generator: The generator to use, or nil to use the default (watchOS requires QRCode
+	/// - Returns: A QRCode document
+	@objc static func Create(jsonData: Data, generator: QRCodeEngine? = nil) throws -> QRCode.Document {
 		let s = try JSONSerialization.jsonObject(with: jsonData, options: [])
 
 		guard let settings = s as? [String: Any] else {
@@ -274,7 +281,7 @@ public extension QRCode.Document {
 				NSLocalizedDescriptionKey: "Unable to decode object",
 			])
 		}
-		return try QRCode.Document.Create(settings: settings)
+		return try QRCode.Document.Create(settings: settings, generator: generator)
 	}
 }
 
@@ -283,11 +290,15 @@ public extension QRCode.Document {
 public extension QRCode.Document {
 	/// The current settings for the data, shape and design for the QRCode
 	@objc func settings() -> [String: Any] {
-		return [
+		var settings: [String: Any] = [
 			"correction": errorCorrection.ECLevel,
 			"data": data.base64EncodedString(),
 			"design": self.design.settings(),
 		]
+		if let l = self.logoTemplate {
+			settings["logoTemplate"] = l.settings()
+		}
+		return settings
 	}
 
 	/// Generate a JSON string representation of the document.
@@ -340,7 +351,12 @@ public extension QRCode.Document {
 	///   - ctx: The drawing context to draw into
 	///   - rect: The bounds within the context to draw into
 	@objc func draw(ctx: CGContext, rect: CGRect) {
-		self.qrcode.draw(ctx: ctx, rect: rect, design: self.design)
+		self.qrcode.draw(
+			ctx: ctx,
+			rect: rect,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 }
 
@@ -349,34 +365,42 @@ public extension QRCode.Document {
 public extension QRCode.Document {
 	/// Generate a path containing the QR Code components for the current QRCode shape
 	/// - Parameters:
-	///   - size: The dimensions of the generated path
+	///   - size: The size of the generated path
 	///   - components: The components of the QR code to include in the path
 	/// - Returns: A path containing the components
-	@objc func path(
-		_ size: CGSize,
-		components: QRCode.Components = .all
-	) -> CGPath {
+	@objc func path(_ size: CGSize, components: QRCode.Components = .all) -> CGPath {
 		return self.qrcode.path(size, components: components, shape: self.design.shape)
 	}
 
+	/// Generate a path containing the QR Code components for the current QRCode shape
+	/// - Parameters:
+	///   - dimension: The dimension of the generated path
+	///   - components: The components of the QR code to include in the path
+	/// - Returns: A path containing the components
+	@objc func path(dimension: CGFloat, components: QRCode.Components = .all) -> CGPath {
+		return self.qrcode.path(
+			CGSize(dimension: dimension),
+			components: components,
+			shape: self.design.shape
+		)
+	}
+}
+
+// MARK: SVG
+
+public extension QRCode.Document {
 	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
 	/// - Parameters:
-	///   - outputDimension: The dimension of the output svg
-	///   - border: The number of pixels for the border to the svg qrcode
-	///   - foreground: The foreground color
-	///   - background: The background color
+	///   - dimension: The dimension of the output svg
 	/// - Returns: An SVG representation of the QR code
 	///
-	/// Currently doesn't support any of the design formatting other than foreground and background colors.
-	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
-	@objc func svg(
-		outputDimension: UInt = 0,
-		border: UInt = 1,
-		foreground: CGColor = CGColor(gray: 0, alpha: 1),
-		background: CGColor? = nil
-	) -> String {
-		self.qrcode.svg(outputDimension: outputDimension, border: border, foreground: foreground, background: background)
+	@objc func svg(dimension: Int) -> String {
+		self.qrcode.svg(
+			dimension: dimension,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 }
 
@@ -387,20 +411,24 @@ public extension QRCode.Document {
 	/// - Parameters:
 	///   - dimension: The dimension of the image to create
 	/// - Returns: The image, or nil if an error occurred
-	@objc func cgImage(
-		dimension: CGFloat
-	) -> CGImage? {
-		self.qrcode.cgImage(CGSize(dimension: dimension), design: self.design)
+	@objc func cgImage(dimension: Int) -> CGImage? {
+		self.qrcode.cgImage(
+			CGSize(dimension: dimension),
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 
 	/// Returns a CGImage representation of the qr code
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
 	/// - Returns: The image, or nil if an error occurred
-	@objc func cgImage(
-		_ size: CGSize
-	) -> CGImage? {
-		self.qrcode.cgImage(size, design: self.design)
+	@objc func cgImage(_ size: CGSize) -> CGImage? {
+		self.qrcode.cgImage(
+			size,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 }
 
@@ -412,7 +440,7 @@ public extension QRCode.Document {
 	///   - dimension: The dimension of the generated PDF
 	///   - pdfResolution: The resolution of the pdf output
 	/// - Returns: A data object containing the PDF representation of the QR code
-	@objc func pdfData(dimension: CGFloat, pdfResolution: CGFloat = 72.0) -> Data? {
+	@objc func pdfData(dimension: Int, pdfResolution: CGFloat = 72.0) -> Data? {
 		self.pdfData(CGSize(dimension: dimension), pdfResolution: pdfResolution)
 	}
 
@@ -422,14 +450,24 @@ public extension QRCode.Document {
 	///   - pdfResolution: The resolution of the pdf output
 	/// - Returns: A data object containing the PDF representation of the QR code
 	@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat = 72.0) -> Data? {
-		self.qrcode.pdfData(size, pdfResolution: pdfResolution, design: self.design)
+		self.qrcode.pdfData(
+			size,
+			pdfResolution: pdfResolution,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 
 	/// Returns a PNG representation of the QRCode
-	/// - Parameter dimension: The size of the QR code
+	/// - Parameters:
+	///   - dimension: The size of the QR code
 	/// - Returns: The PNG data
-	func pngData(dimension: CGFloat) -> Data? {
-		return self.qrcode.pngData(dimension: dimension, design: self.design)
+	func pngData(dimension: Int) -> Data? {
+		return self.qrcode.pngData(
+			dimension: dimension,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 
 	/// Returns a JPEG representation of the QRCode
@@ -437,25 +475,42 @@ public extension QRCode.Document {
 	///   - dimension: The size of the QR code
 	///   - compression: The compression level to use when generating the JPEG (0.0 -> 1.0)
 	/// - Returns: The PNG data
-	func jpegData(dimension: CGFloat, compression: Double = 0.9) -> Data? {
+	func jpegData(dimension: Int, compression: Double = 0.9) -> Data? {
 		return self.qrcode.jpegData(
 			dimension: dimension,
 			design: self.design,
+			logoTemplate: self.logoTemplate,
 			compression: compression.clamped(to: 0.0 ... 1.0)
 		)
 	}
 
 #if os(macOS)
+	/// Returns a platform specific representation of the qr code document
+	/// - Parameters:
+	///   - dimension: The pixel dimension of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func platformImage(dimension: CGFloat, scale: CGFloat = 1) -> DSFImage? {
+		return self.qrcode.nsImage(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
+	}
+
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func nsImage(
-		dimension: CGFloat,
-		scale: CGFloat = 1
-	) -> NSImage? {
-		return self.qrcode.nsImage(CGSize(dimension: dimension), scale: scale, design: self.design)
+	@objc func nsImage(dimension: CGFloat, scale: CGFloat = 1) -> NSImage? {
+		return self.qrcode.nsImage(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
 
 	/// Returns an NSImage representation of the qr code document
@@ -463,22 +518,36 @@ public extension QRCode.Document {
 	///   - size: The pixel size of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func nsImage(
-		_ size: CGSize,
-		scale: CGFloat = 1
-	) -> NSImage? {
-		return self.qrcode.nsImage(size, scale: scale, design: self.design)
+	@objc func nsImage(_ size: CGSize, scale: CGFloat = 1) -> NSImage? {
+		return self.qrcode.nsImage(
+			size,
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
 	}
+
 #elseif os(iOS) || os(tvOS) || os(watchOS)
+	/// Returns a platform specific representation of the qr code document
+	/// - Parameters:
+	///   - dimension: The pixel dimension of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func platformImage(dimension: CGFloat, scale: CGFloat = 1) -> DSFImage? {
+		return self.qrcode.uiImage(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate
+		)
+	}
+
 	/// Returns a UIImage representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(
-		dimension: CGFloat,
-		scale: CGFloat = 1
-	) -> UIImage? {
+	@objc func uiImage(dimension: CGFloat, scale: CGFloat = 1) -> UIImage? {
 		self.uiImage(CGSize(dimension: dimension), scale: scale)
 	}
 
@@ -487,12 +556,16 @@ public extension QRCode.Document {
 	///   - size: The pixel size of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(
-		_ size: CGSize,
-		scale: CGFloat = 1
-	) -> UIImage? {
-		let coreSize = size * scale
-		guard let qrImage = self.qrcode.cgImage(coreSize, design: self.design) else { return nil }
+	@objc func uiImage(_ size: CGSize, scale: CGFloat = 1) -> UIImage? {
+		guard
+			let qrImage = self.qrcode.cgImage(
+				size * scale,
+				design: self.design,
+				logoTemplate: self.logoTemplate
+			)
+		else {
+			return nil
+		}
 		return UIImage(cgImage: qrImage, scale: scale, orientation: .up)
 	}
 #endif
@@ -505,12 +578,14 @@ public extension QRCode.Document {
 	///   - label: The label associated with the image. SwiftUI uses the label for accessibility.
 	/// - Returns: An image, or nil if an error occurred
 	@available(macOS 11, iOS 13, tvOS 13, *)
-	func imageUI(
-		_ size: CGSize,
-		scale: CGFloat = 1,
-		label: Text
-	) -> SwiftUI.Image? {
-		return self.qrcode.imageUI(size, scale: scale, design: self.design, label: label)
+	func imageUI(_ size: CGSize, scale: CGFloat = 1, label: Text) -> SwiftUI.Image? {
+		return self.qrcode.imageUI(
+			size,
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate,
+			label: label
+		)
 	}
 #endif
 }
@@ -578,21 +653,14 @@ public extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// Return a new document using the style and design supplied by the template data with the specified text
-	@objc static func UsingTemplate(
-		templateJSONData: Data,
-		utf8String: String
-	) throws -> QRCode.Document {
+	@objc static func UsingTemplate(templateJSONData: Data, utf8String: String) throws -> QRCode.Document {
 		let doc = try QRCode.Document(jsonData: templateJSONData)
 		doc.utf8String = utf8String
 		return doc
 	}
 
 	/// Return an image using the style and design supplied by the template data with the specified text
-	@objc @inlinable static func PNGUsingTemplate(
-		templateJSONData: Data,
-		utf8String: String,
-		dimension: CGFloat
-	) -> Data? {
+	@objc @inlinable static func PNGUsingTemplate(templateJSONData: Data, utf8String: String, dimension: Int) -> Data? {
 		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
 			return doc.pngData(dimension: dimension)
 		}
@@ -603,7 +671,7 @@ public extension QRCode.Document {
 	@objc @inlinable static func PDFUsingTemplate(
 		templateJSONData: Data,
 		utf8String: String,
-		dimension: CGFloat,
+		dimension: Int,
 		resolution: CGFloat = 72.0
 	) -> Data? {
 		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
@@ -631,3 +699,10 @@ extension QRCode.Document: ObservableObject {
 }
 
 #endif
+
+extension QRCode.Document {
+	// Build up the qr representation
+	private func regenerate() {
+		self.qrcode.update(self.data, errorCorrection: self.errorCorrection)
+	}
+}

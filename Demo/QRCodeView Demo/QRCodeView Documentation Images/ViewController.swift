@@ -179,10 +179,111 @@ class ViewController: NSViewController {
 			}
 		}
 
+		do {
+			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
+			doc.design.backgroundColor(CGColor(srgbRed: 0.149, green: 0.137, blue: 0.208, alpha: 1.000))
+			doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(1.000, 0.733, 0.424, alpha: 1.000)
+
+			doc.design.style.eye   = QRCode.FillStyle.Solid(0.831, 0.537, 0.416, alpha: 1.000)
+			doc.design.style.pupil = QRCode.FillStyle.Solid(0.624, 0.424, 0.400, alpha: 1.000)
+
+			doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
+
+			let image = NSImage(named: "square-logo")!
+
+			// Centered square logo
+			doc.logoTemplate = QRCode.LogoTemplate(
+				path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
+				inset: 2,
+				image: image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+			)
+
+			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			if let tiff = logoQRCode.tiffRepresentation,
+				let tiffData = NSBitmapImageRep(data: tiff)
+			{
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("qrcode-with-logo.png"))
+			}
+
+			let pdfData = doc.pdfData(dimension: 300)!
+			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-logo.pdf"))
+
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo center square", errorCorrection: .high)
+
+			// Create a logo 'template'
+			doc.logoTemplate = QRCode.LogoTemplate(
+				path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
+				inset: 3,
+				image: NSImage(named: "square-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+			)
+
+			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			if let tiff = logoQRCode.tiffRepresentation,
+				let tiffData = NSBitmapImageRep(data: tiff)
+			{
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("qrcode-with-logo-example.png"))
+			}
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo bottom right circular", errorCorrection: .high)
+
+			// Create a logo 'template'
+			doc.logoTemplate = QRCode.LogoTemplate(
+				path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.30, height: 0.30), transform: nil),
+				inset: 8,
+				image: NSImage(named: "instagram-icon")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+			)
+
+			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			if let tiff = logoQRCode.tiffRepresentation,
+				let tiffData = NSBitmapImageRep(data: tiff)
+			{
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("qrcode-with-logo-example-bottom-right.png"))
+			}
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
+
+			doc.design.shape.eye = QRCode.EyeShape.Squircle()
+			doc.design.style.eye = QRCode.FillStyle.Solid(108.0 / 255.0, 76.0 / 255.0, 191.0 / 255.0)
+			doc.design.style.pupil = QRCode.FillStyle.Solid(168.0 / 255.0, 33.0 / 255.0, 107.0 / 255.0)
+
+			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
+
+			let c = QRCode.FillStyle.RadialGradient(
+				DSFGradient(pins: [
+					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.75, alpha: 1), 1),
+					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.95, alpha: 1), 0),
+					]
+				)!,
+				centerPoint: CGPoint(x: 0.5, y: 0.5))
+
+			doc.design.style.background = c
+
+			// Create a logo 'template'
+			doc.logoTemplate = QRCode.LogoTemplate(
+				path: CGPath(rect: CGRect(x: 0.49, y: 0.4, width: 0.45, height: 0.22), transform: nil),
+				inset: 4,
+				image: NSImage(named: "apple-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+			)
+
+			let svg = doc.svg(dimension: 200)
+			try! svg.write(to: tempURL.appendingPathComponent("qrcode-with-basic-logo.svg"), atomically: true, encoding: .ascii)
+
+			let pdfData = doc.pdfData(dimension: 200)!
+			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-basic-logo.pdf"))
+		}
+
 		NSWorkspace.shared.open(tempURL)
-
 	}
-
-
 }
 

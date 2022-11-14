@@ -42,7 +42,7 @@ public extension QRCode {
 		public static let eyeBackground = Components(rawValue: 1 << 4)
 
 		/// The entire qrcode without offPixels (default presentation)
-		public static let all: Components = [Components.eyeOuter, Components.eyeBackground, Components.eyePupil, Components.onPixels]
+		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
 
 		/// Every component of the QR code, including the off pixels
 		public static let everything: Components = [
@@ -74,14 +74,19 @@ public extension QRCode {
 	@objc func path(
 		_ size: CGSize,
 		components: Components = .all,
-		shape: QRCode.Shape = QRCode.Shape()
+		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: LogoTemplate? = nil
 	) -> CGPath {
 		if self.pixelSize == 0 {
 			// There is no data in the qrcode
 			return CGPath(rect: .zero, transform: nil)
 		}
-		let dx = size.width / CGFloat(self.pixelSize)
-		let dy = size.height / CGFloat(self.pixelSize)
+
+		// The qrcode size is the smallest dimension of the rect
+		let sz = min(size.width, size.height)
+
+		let dx = sz / CGFloat(self.pixelSize)
+		let dy = sz / CGFloat(self.pixelSize)
 
 		let dm = min(dx, dy)
 
@@ -197,12 +202,23 @@ public extension QRCode {
 		// 'off' pixels
 		if components.contains(.offPixels) {
 			let offPixelShape = shape.offPixels ?? QRCode.PixelShape.Square()
-			path.addPath(offPixelShape.offPath(size: size, data: self, isTemplate: false))
+
+			var masked = self.current.inverted()
+			masked = masked.maskingQREyes(inverted: false)
+			if let template = logoTemplate {
+				masked = template.applyingMask(matrix: masked, dimension: sz)
+			}
+			path.addPath(offPixelShape.generatePath(from: masked, size: size))
 		}
 
 		// 'on' content
 		if components.contains(.onPixels) {
-			path.addPath(shape.onPixels.onPath(size: size, data: self, isTemplate: false))
+			// Mask out the eyes
+			var masked = self.current.maskingQREyes(inverted: false)
+			if let template = logoTemplate {
+				masked = template.applyingMask(matrix: masked, dimension: sz)
+			}
+			path.addPath(shape.onPixels.generatePath(from: masked, size: size))
 		}
 
 		return path

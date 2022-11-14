@@ -46,13 +46,14 @@ public extension QRCode.PixelShape {
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Squircle(insetFraction: self.common.insetFraction)
 		}
-		
-		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			self.common.onPath(size: size, data: data, isTemplate: isTemplate)
-		}
-		
-		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath {
-			self.common.offPath(size: size, data: data, isTemplate: isTemplate)
+
+		/// Generate a CGPath from the matrix contents
+		/// - Parameters:
+		///   - matrix: The matrix to generate
+		///   - size: The size of the resulting CGPath
+		/// - Returns: A path
+		public func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
+			common.generatePath(from: matrix, size: size)
 		}
 
 		/// The fractional inset for the pixel

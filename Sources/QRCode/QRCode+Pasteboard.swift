@@ -33,21 +33,45 @@ public extension QRCode {
 #if os(macOS)
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
 	///   - pasteboard: The pasteboard to receive the representations
-	///   - size: The size of the QRCode to generate
 	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
 	@objc func addToPasteboard(
-		pasteboard: NSPasteboard = NSPasteboard.general,
+		dimension: Int,
+		scale: CGFloat = 2,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		pasteboard: NSPasteboard = NSPasteboard.general
+	) {
+		self.addToPasteboard(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: design,
+			logoTemplate: logoTemplate,
+			pasteboard: pasteboard
+		)
+	}
+
+	/// Add QRCode representations to the specified pasteboard
+	/// - Parameters:
+	///   - size: The size of the QRCode to generate
+	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
+	///   - design: The design for the QR code
+	///   - logoTemplate: The logo to overlay on the qr code
+	///   - pasteboard: The pasteboard to receive the representations
+	@objc func addToPasteboard(
 		_ size: CGSize,
 		scale: CGFloat = 2,
-		design: QRCode.Design = QRCode.Design()
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		pasteboard: NSPasteboard = NSPasteboard.general
 	) {
 		pasteboard.clearContents()
-		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale, design: design) {
+		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale, design: design, logoTemplate: logoTemplate) {
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
 
-		guard let image = self.nsImage(size, scale: scale) else {
+		guard let image = self.nsImage(size, scale: scale, logoTemplate: logoTemplate) else {
 			return
 		}
 
@@ -63,21 +87,43 @@ public extension QRCode {
 #elseif os(iOS)
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
 	///   - pasteboard: The pasteboard to receive the representations
-	///   - size: The size of the QRCode to generate
 	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
 	@objc func addToPasteboard(
-		pasteboard: UIPasteboard = UIPasteboard.general,
+		dimension: Int,
+		scale: CGFloat = 2,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		pasteboard: UIPasteboard = UIPasteboard.general
+	) {
+		self.addToPasteboard(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: design,
+			logoTemplate: logoTemplate,
+			pasteboard: pasteboard
+		)
+	}
+
+	/// Add QRCode representations to the specified pasteboard
+	/// - Parameters:
+	///   - size: The size of the QRCode to generate
+	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
+	///   - pasteboard: The pasteboard to receive the representations
+	@objc func addToPasteboard(
 		_ size: CGSize,
 		scale: CGFloat = 2,
-		design: QRCode.Design = QRCode.Design()
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		pasteboard: UIPasteboard = UIPasteboard.general
 	) {
 		pasteboard.items = []
 		if let pdfData = self.pdfData(size, pdfResolution: 72.0 * scale, design: design) {
 			pasteboard.setData(pdfData, forPasteboardType: String("com.adobe.pdf"))
 		}
 
-		guard let image = self.uiImage(size, scale: scale, design: design) else {
+		guard let image = self.uiImage(size, scale: scale, design: design, logoTemplate: logoTemplate) else {
 			return
 		}
 
@@ -98,11 +144,36 @@ public extension QRCode.Document {
 	///   - size: The size of the QRCode to generate
 	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
 	@objc func addToPasteboard(
-		pasteboard: NSPasteboard = NSPasteboard.general,
-		_ size: CGSize,
-		scale: CGFloat = 2
+		dimension: Int,
+		scale: CGFloat = 2,
+		pasteboard: NSPasteboard = NSPasteboard.general
 	) {
-		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale, design: self.design)
+		self.qrcode.addToPasteboard(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate,
+			pasteboard: pasteboard
+		)
+	}
+
+	/// Add QRCode representations to the specified pasteboard
+	/// - Parameters:
+	///   - size: The size of the QRCode to generate
+	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
+	///   - pasteboard: The pasteboard to receive the representations
+	@objc func addToPasteboard(
+		_ size: CGSize,
+		scale: CGFloat = 2,
+		pasteboard: NSPasteboard = NSPasteboard.general
+	) {
+		self.qrcode.addToPasteboard(
+			size,
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate,
+			pasteboard: pasteboard
+		)
 	}
 
 #elseif os(iOS)
@@ -112,11 +183,17 @@ public extension QRCode.Document {
 	///   - size: The size of the QRCode to generate
 	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
 	@objc func addToPasteboard(
-		pasteboard: UIPasteboard = UIPasteboard.general,
 		_ size: CGSize,
-		scale: CGFloat = 2
+		scale: CGFloat = 2,
+		pasteboard: UIPasteboard = UIPasteboard.general
 	) {
-		self.qrcode.addToPasteboard(pasteboard: pasteboard, size, scale: scale, design: self.design)
+		self.qrcode.addToPasteboard(
+			size,
+			scale: scale,
+			design: self.design,
+			logoTemplate: self.logoTemplate,
+			pasteboard: pasteboard
+		)
 	}
 #endif
 }

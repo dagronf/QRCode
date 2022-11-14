@@ -21,68 +21,136 @@
 
 import Foundation
 import CoreGraphics
+import ImageIO
 
 // QRCode SVG representation
 
 public extension QRCode {
 	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
 	/// - Parameters:
-	///   - outputDimension: The dimension of the output svg
-	///   - border: The number of pixels for the border to the svg qrcode
-	///   - foreground: The foreground color
-	///   - background: The background color
+	///   - dimension: The dimension of the output svg
+	///   - design: The design for the QR Code
 	/// - Returns: An SVG representation of the QR code
-	///
-	/// Currently doesn't support any of the design formatting other than foreground and background colors.
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svg(
-		outputDimension: UInt = 0,
-		border: UInt = 0,
-		foreground: CGColor = CGColor(gray: 0, alpha: 1),
-		background: CGColor? = nil
+		dimension: Int,
+		design: QRCode.Design,
+		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> String {
-		let border = Int(border)
+		let sz = CGSize(dimension: dimension)
+		var svg = ""
 
-		let size = self.boolMatrix.dimension
-		let dimension = size + (border * 2)
+		// SVG Header
+		svg += "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" height=\"\(dimension)\" width=\"\(dimension)\">\n"
 
-		let scale: Double = {
-			if outputDimension > 0 {
-				return CGFloat(outputDimension) / CGFloat(dimension)
+		var pathDefinitions: [String] = []
+
+		// The background color for the qr code
+
+		if let background = design.style.background,
+			let backgroundFill = background.svgRepresentation(styleIdentifier: "background")
+		{
+			svg += "   <rect \(backgroundFill.styleAttribute) x=\"0\" y=\"0\" width=\"\(dimension)\" height=\"\(dimension)\" />\n"
+
+			if let def = backgroundFill.styleDefinition {
+				pathDefinitions.append(def)
 			}
-			return 1.0
-		}()
+		}
 
-		let od = (outputDimension > 0) ? Int(outputDimension) : dimension
+		// Eye background color
 
-		// Colors
+		if let eyeBackgroundColor = design.style.eyeBackground,
+			let hexEyeBackgroundColor = design.style.eyeBackground?.hexRGBCode()
+		{
+			let eyeBackgroundPath = self.path(sz, components: .eyeBackground, shape: design.shape)
+			svg += "   <path fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(eyeBackgroundColor.alpha)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
+		}
 
-		let fc = foreground.hexCode() ?? "#000000"
-		let bc = background?.hexCode()
+		// Pupil
 
-		let backgroundRect: String = {
-			if let bc = bc {
-				return "<rect width=\"100%\" height=\"100%\" fill=\"\(bc)\"/>"
+		do {
+			let eyePupilPath = self.path(sz, components: .eyePupil, shape: design.shape)
+			if let pupilFill = design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill") {
+				svg += "   <path \(pupilFill.styleAttribute) d=\"\(eyePupilPath.svgDataPath())\" />\n"
+				if let def = pupilFill.styleDefinition {
+					pathDefinitions.append(def)
+				}
 			}
-			return ""
-		}()
+		}
 
-		let path = (0..<size).map { y in
-			(0..<size).map { x in
-				self.boolMatrix[x, y]
-				? "\(x != 0 || y != 0 ? " " : "")M\((Double(x) + Double(border))*scale),\((Double(y) + Double(border))*scale)h\(scale)v\(scale)h-\(scale)z"
-				: ""
-			}.joined()
-		}.joined()
+		// Eye
 
-		return """
-			<?xml version="1.0" encoding="UTF-8"?>
-			<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 \(od) \(od)" stroke="none">
-			\(backgroundRect)
-			<path d="\(path)" fill="\(fc)"/>
-			</svg>
-			"""
+		do {
+			let eyeOuterPath = self.path(sz, components: .eyeOuter, shape: design.shape)
+			if let eyeOuterFill = design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill") {
+				svg += "   <path \(eyeOuterFill.styleAttribute) d=\"\(eyeOuterPath.svgDataPath())\" />\n"
+				if let def = eyeOuterFill.styleDefinition {
+					pathDefinitions.append(def)
+				}
+			}
+		}
+
+		// Off pixels
+
+		do {
+			if let _ = design.shape.offPixels {
+				let offPixelsPath = self.path(sz, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
+				if let offPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "off-pixels") {
+					svg += "   <path \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
+					if let def = offPixels.styleDefinition {
+						pathDefinitions.append(def)
+					}
+				}
+			}
+		}
+
+		// On pixels
+
+		do {
+			let onPixelsPath = self.path(sz, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
+			if let onPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels") {
+				svg += "   <path \(onPixels.styleAttribute) d=\"\(onPixelsPath.svgDataPath())\" />\n"
+				if let def = onPixels.styleDefinition {
+					pathDefinitions.append(def)
+				}
+			}
+		}
+
+		if let logoTemplate = logoTemplate, let logo = logoTemplate.image,
+			let pngData = logo.pngRepresentation()
+		{
+			// Store the image in the SVG as a base64 string
+
+			let abspath = logoTemplate.absolutePathForMaskPath(dimension: CGFloat(dimension))
+			let bounds = abspath.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset)
+
+			let imageb64d = pngData.base64EncodedData(options: [.lineLength64Characters, .endLineWithLineFeed])
+			let strImage = String(data: imageb64d, encoding: .ascii)!
+
+			let dp = abspath.svgDataPath()
+			var clipPath = "   <clipPath id=\"logo-mask\">\n"
+			clipPath += "      <path d=\"\(dp)\" />\n"
+			clipPath += "   </clipPath>\n"
+			pathDefinitions.append(clipPath)
+
+			svg += " <image clip-path=\"url(#logo-mask)\" x=\"\(bounds.origin.x)\" y=\"\(bounds.origin.y)\" width=\"\(bounds.size.width)\" height=\"\(bounds.size.height)\" "
+
+			svg += "xlink:href=\"data:image/png;base64,"
+			svg += strImage
+			svg += "\" />"
+		}
+
+		if pathDefinitions.count > 0 {
+			svg += "<defs>\n"
+			for def in pathDefinitions {
+				svg.append(def)
+			}
+			svg += "</defs>\n"
+		}
+
+		svg += "</svg>\n"
+
+		return svg
 	}
 }

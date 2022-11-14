@@ -52,36 +52,20 @@ internal extension QRCode.PixelShape {
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 		}
 
-		private func path(size: CGSize, data: QRCode, isOn: Bool, isTemplate: Bool) -> CGPath {
-			let dx = size.width / CGFloat(data.pixelSize)
-			let dy = size.height / CGFloat(data.pixelSize)
+		func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
+			let dx = size.width / CGFloat(matrix.dimension)
+			let dy = size.height / CGFloat(matrix.dimension)
 			let dm = min(dx, dy)
 
-			let xoff = (size.width - (CGFloat(data.pixelSize) * dm)) / 2.0
-			let yoff = (size.height - (CGFloat(data.pixelSize) * dm)) / 2.0
+			let xoff = (size.width - (CGFloat(matrix.dimension) * dm)) / 2.0
+			let yoff = (size.height - (CGFloat(matrix.dimension) * dm)) / 2.0
 
 			let path = CGMutablePath()
 
-			for row in 0 ..< data.pixelSize {
-				for col in 0 ..< data.pixelSize {
-					if data.current[row, col] != isOn {
-						continue
-					}
-
-					if !isTemplate && !isOn {
-						if row == 0 || col == 0 || row == data.pixelSize - 1 || col == data.pixelSize - 1 {
-							continue
-						}
-					}
-
-					if data.isEyePixel(row, col), !isTemplate {
-						// skip it
-						continue
-					}
-
-					if let mask = data.currentMask, mask[row, col] == false {
-						continue
-					}
+			for row in 0 ..< matrix.dimension {
+				for col in 0 ..< matrix.dimension {
+					// If the pixel is 'off' then we move on to the next
+					guard matrix[row, col] == true else { continue }
 
 					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
 					let insetValue = self.insetFraction * (r.height / 2.0)
@@ -120,14 +104,6 @@ internal extension QRCode.PixelShape {
 				}
 			}
 			return path
-		}
-
-		public func onPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.path(size: size, data: data, isOn: true, isTemplate: isTemplate)
-		}
-
-		public func offPath(size: CGSize, data: QRCode, isTemplate: Bool = false) -> CGPath {
-			return self.path(size: size, data: data, isOn: false, isTemplate: isTemplate)
 		}
 	}
 }

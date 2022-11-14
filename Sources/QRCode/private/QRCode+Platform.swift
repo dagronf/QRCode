@@ -25,8 +25,9 @@ import Foundation
 
 #if os(macOS)
 import AppKit
+public typealias PlatformImage = NSImage
 #else
-import UIKit
+public typealias PlatformImage = UIImage
 #endif
 
 #if canImport(SwiftUI)
@@ -44,10 +45,11 @@ public extension QRCode {
 	@objc func nsImage(
 		_ size: CGSize,
 		scale: CGFloat = 1,
-		design: QRCode.Design = QRCode.Design()) -> NSImage?
-	{
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> NSImage? {
 		let coreSize = size * scale
-		guard let qrImage = self.cgImage(coreSize, design: design) else { return nil }
+		guard let qrImage = self.cgImage(coreSize, design: design, logoTemplate: logoTemplate) else { return nil }
 		let image = NSImage(cgImage: qrImage, size: size)
 		return image
 	}
@@ -65,10 +67,11 @@ public extension QRCode {
 	@objc func uiImage(
 		_ size: CGSize,
 		scale: CGFloat = 1,
-		design: QRCode.Design = QRCode.Design()) -> UIImage?
-	{
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> UIImage? {
 		let coreSize = size * scale
-		guard let qrImage = self.cgImage(coreSize, design: design) else { return nil }
+		guard let qrImage = self.cgImage(coreSize, design: design, logoTemplate: logoTemplate) else { return nil }
 		let im = UIImage(cgImage: qrImage, scale: scale, orientation: .up)
 		return im
 	}
@@ -89,9 +92,10 @@ public extension QRCode {
 		_ size: CGSize,
 		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
 		label: Text) -> SwiftUI.Image?
 	{
-		guard let qrImage = self.cgImage(size, design: design) else { return nil }
+		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
 		return SwiftUI.Image(qrImage, scale: scale, label: label)
 	}
 }

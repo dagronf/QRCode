@@ -40,21 +40,12 @@ public extension QRCode {
 	/// Make a copy of the shape object
 	@objc func copyShape() -> QRCodePixelShapeGenerator
 
-	/// Generate a path representing the 'on' _data_ pixels within the specified QRCode data (ie. no eyes etc)
+	/// Generate a path representing the 'on' pixels within the specified matrix
 	/// - Parameters:
+	///   - matrix: The matrix
 	///   - size: The dimensions of the path to generate
-	///   - data: The data to represent
-	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
-	/// - Returns: A path representing the specified QRCode data
-	func onPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath
-
-	/// Generate a path representing the 'off' _data_ pixels within the specified QRCode data (ie. no eyes etc)
-	/// - Parameters:
-	///   - size: The dimensions of the path to generate
-	///   - data: The data to represent
-	///   - isTemplate: If true, ignores eyes and any other QRCode concepts (purely for displaying raw data)
-	/// - Returns: A path representing the specified QRCode data
-	func offPath(size: CGSize, data: QRCode, isTemplate: Bool) -> CGPath
+	/// - Returns: A path representing the specified matrix data
+	@objc func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath
 
 	/// Returns a storable representation of the shape handler
 	func settings() -> [String: Any]

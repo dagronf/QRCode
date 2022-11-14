@@ -24,12 +24,23 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 <p align="center">
    <a href="./Art/screenshot.png">
-      <img src="./Art/screenshot.png" width="500"/>
+      <img src="./Art/screenshot.png" width="375"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">
-      <img src="./Art/watchOS.png" width="140"/>
+      <img src="./Art/watchOS.png" width="160"/>
    </a>
+   &nbsp;
+   <a href="./Art/qrcode-with-logo.pdf">
+      <img src="./Art/qrcode-with-logo.pdf" width="200"/>
+   </a>   
+   &nbsp;
+   <a href="./Art/qrcode-with-basic-logo.svg">
+      <img src="./Art/qrcode-with-basic-logo.svg" width="200"/>
+   </a>   
+   <a href="./Art/qrcode-apple-watch.pdf">
+      <img src="./Art/qrcode-apple-watch.pdf" width="200"/>
+   </a>   
 </p>
 
 ## Why?
@@ -45,8 +56,9 @@ This also contains a command-line application for generating a qrcode from the c
 * Supports all error correction levels.
 * Load/Save support
 * Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS).
-* Generate images, scalable PDFs and `CGPath` paths.
+* Generate images, scalable PDFs, scalable SVGs and `CGPath` paths.
 * Configurable designs.
+* Add a logo to a QR code.
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 
@@ -398,6 +410,103 @@ let cgImage = doc3.cgImage(CGSize(width: 300, height: 300))
 
 </details>
 
+## Adding a logo to a QR code
+
+### WARNING
+
+Adding a logo can heavily adversely affect the ability to recognise the content of the QR code. If you add a logo it's highly recommended to set the errorCorrection levels to `.high`.
+
+After adding an image its important to verify that the qr code can be read (Most phone cameras can read qr codes).
+
+If the logo ends up covering more that 25% of the data, its highly likely your QR code will have trouble being read.
+
+Before reporting a bug about the qr code failing to be read, remove the image and retry. If the code can be read without the image it means your logo is too big.
+
+### Logo templates (QRCode.LogoTemplate)
+
+The logo template defines an image and a _relative_ path in the QRCode in which to draw the image.
+
+The relative path represents the section in the QR code 'data' where the image is drawn. It represents a _relative_
+path (ie. x=0.0, y=0.0, width=1.0, height=1.0) within the bounds of the QR code.
+
+x=0.0, y=0.0 represents the **top left** of the qr code.
+
+For example, if you wanted to put a circle logo in the center of your qr code where the circle is 
+exactly 1/3 of the size of the QR code, then the path is defined as :-
+
+<a href="./Art/logo-template-path-center.png">
+  <img src="./Art/logo-template-path-center.png" width="200"/>
+</a>  
+
+```swift
+let path = CGPath(ellipseIn: CGRect(x: 0.35, y: 0.30, width: 0.3, height: 0.3), transform: nil)
+```
+
+(note that a 1/3 mask will most likely render the qr code unreadable :-). 
+
+A 1/4 size rectangular logo in the lower right of the qr code would be :- 
+
+<a href="./Art/logo-template-path-lower-right.png">
+  <img src="./Art/logo-template-path-lower-right.png" width="200"/>
+</a>
+
+```swift
+let path = CGPath(rect: CGRect(x: 0.75, y: 0.75, width: 0.25, height: 0.25), transform: nil)
+```
+
+The mask path only affects the `onPixels` and `offPixels` within the QR code. Defining a logo that falls within the eye boundaries will be clipped. 
+
+### Example 1
+
+```swift
+// Define a rectangle mask within the bounds of the QR code. A centered square, 30% of the qr code size.
+let doc = QRCode.Document(...)
+
+doc.logoTemplate = QRCode.LogoTemplate(
+   path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil), 
+   inset: 3,
+   image: UIImage(named: "square-logo")?.cgImage
+)
+
+let qrCodeWithLogo = doc.nsImage(dimension: 300)
+```
+
+generates
+
+<a href="./Art/images/qrcode-with-logo-example.png"><img src="./Art/images/qrcode-with-logo-example.png" width="100"/></a>
+
+### Example 2
+
+A round logo in the lower right of the qr code
+
+```swift
+let doc = QRCode.Document(...)
+doc.logoTemplate = QRCode.LogoTemplate(
+   path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.30, height: 0.30), transform: nil),
+   inset: 8
+)
+let image = NSImage(named: "instagram-icon")!
+let qrCodeWithLogo = doc.uiImage(dimension: 300, image: image)
+```
+
+generates
+
+<a href="./Art/images/qrcode-with-logo-example-bottom-right.png"><img src="./Art/images/qrcode-with-logo-example-bottom-right.png" width="100"/></a>
+
+
+## Message Formatters
+
+There are a number of QRCode data formats that are somewhat common with QR code readers, such as QR codes 
+containing phone numbers or contact details.
+
+There are a number of built-in formatters for generating some common QR Code types. These can be found in the `messages` subfolder.
+
+* URLs (Link)
+* Generate an email (Mail)
+* A phone number (Phone)
+* Contact Details (Contact)
+* A UTF-8 formatted string (Text)
+
 ## Generating output
 
 ### Generate a path
@@ -421,7 +530,7 @@ The components allow the caller to generate individual paths for the QR code com
 ### Generating a styled image
 
 ```swift
-@objc func image(_ size: CGSize, scale: CGFloat = 1) -> CGImage?
+@objc func cgImage(_ size: CGSize, scale: CGFloat = 1) -> CGImage?
 ```
 
 Generate an CGImage from the QR Code, using an (optional) design object for styling the QR code
@@ -446,13 +555,13 @@ Generate an CGImage from the QR Code, using an (optional) design object for styl
 
 Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution
 
-### Generate a basic scalable SVG representation of the QR Code
+### Generate a SVG representation of the QR Code
 
 ```swift
-@objc func svg(border: UInt = 0, foreground: CGColor = .black, background: CGColor? = nil) -> String
+@objc func svg(dimension: Int) -> String
 ```
 
-The SVG renderer currently doesn't support design formatting beyond setting the foreground and background colors.
+Generate an SVG representation of the QR code.
 
 ### Add a QR Code to the pasteboard (macOS/iOS)
 
@@ -485,19 +594,6 @@ Only makes sense if presented using a fixed-width font.
 Returns an small ASCII representation of the QR code (about 1/2 the regular size) using the extended ASCII code set
 
 Only makes sense if presented using a fixed-width font.
-
-## Message Formatters
-
-There are a number of QRCode data formats that are somewhat common with QR code readers, such as QR codes 
-containing phone numbers or contact details.
-
-There are a number of built-in formatters for some common QR Code types. These can be found in the `messages` subfolder.
-
-* URLs (Link)
-* Generate an email (Mail)
-* A phone number (Phone)
-* Contact Details (Contact)
-* A UTF-8 formatted string (Text)
 
 ## Presentation
 
@@ -593,6 +689,12 @@ func offPixelShape(_ pixelShape: QRCodePixelShape) -> QRCodeShape
 ```
 
 Set the shape of the 'off' pixels in the QR code
+
+```swift
+func relativeMaskPath(_ maskPath: CGPath) -> QRCodeShape
+```
+
+Set the masking path
 
 <details>
 <summary>Example</summary> 

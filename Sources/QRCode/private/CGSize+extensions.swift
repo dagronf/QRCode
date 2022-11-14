@@ -34,4 +34,10 @@ extension CGSize {
 	init(dimension: CGFloat) {
 		self.init(width: dimension, height: dimension)
 	}
+
+	// Create a CGSize object with equal dimensions
+	@inlinable @inline(__always)
+	init(dimension: Int) {
+		self.init(width: dimension, height: dimension)
+	}
 }

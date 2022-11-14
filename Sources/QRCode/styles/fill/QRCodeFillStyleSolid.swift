@@ -79,6 +79,18 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - SVG Representation
+
+public extension QRCode.FillStyle.Solid {
+	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+		guard let fill = self.color.hexRGBCode() else { return nil }
+		return QRCode.FillStyle.SVGDefinition(
+			styleAttribute: "fill=\"\(fill)\" fill-opacity=\"\(self.color.alpha)\"",
+			styleDefinition: nil
+		)
+	}
+}
+
 // MARK: - SwiftUI conformances
 
 #if canImport(SwiftUI)

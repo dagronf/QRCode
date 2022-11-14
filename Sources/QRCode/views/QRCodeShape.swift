@@ -38,12 +38,14 @@ public struct QRCodeShape: Shape {
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
 		generator: QRCodeEngine? = nil
 	) {
 		self.data__ = data
 		self.errorCorrection__ = errorCorrection
 		self.components__ = components
 		self.shape__ = shape
+		self.logoTemplate__ = logoTemplate
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
@@ -62,6 +64,7 @@ public struct QRCodeShape: Shape {
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
 		generator: QRCodeEngine? = nil
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
@@ -69,6 +72,7 @@ public struct QRCodeShape: Shape {
 		self.errorCorrection__ = errorCorrection
 		self.components__ = components
 		self.shape__ = shape
+		self.logoTemplate__ = logoTemplate
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
@@ -81,18 +85,21 @@ public struct QRCodeShape: Shape {
 	///   - errorCorrection: The error correction level
 	///   - components: The components of the QR Code to include within the Shape path
 	///   - shape: The shape object to describle the style of the generated path
+	///   - logoTemplate: The logo to apply to the QR code
 	///   - generator: The generator to use when creating the Shape path
 	public init(
 		message: QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
 		generator: QRCodeEngine? = nil
 	) {
 		self.data__ = message.data
 		self.errorCorrection__ = errorCorrection
 		self.components__ = components
 		self.shape__ = shape
+		self.logoTemplate__ = logoTemplate
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
@@ -104,6 +111,7 @@ public struct QRCodeShape: Shape {
 	private let shape__: QRCode.Shape
 	private let components__: QRCode.Components
 	private let errorCorrection__: QRCode.ErrorCorrection
+	private let logoTemplate__: QRCode.LogoTemplate?
 	private let qrCodeGenerator__ = QRCode()
 }
 
@@ -118,6 +126,7 @@ public extension QRCodeShape {
 			errorCorrection: errorCorrection,
 			components: self.components__,
 			shape: self.shape__.copyShape(),
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -129,6 +138,7 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: components,
 			shape: self.shape__.copyShape(),
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -140,6 +150,7 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape.copyShape(),
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -153,6 +164,7 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -166,6 +178,7 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -179,6 +192,7 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -192,6 +206,19 @@ public extension QRCodeShape {
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
+			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
+			generator: self.qrCodeGenerator__.generator
+		)
+	}
+
+	/// Set the logo template for the shape
+	func logoTemplate(_ logoTemplate: QRCode.LogoTemplate) -> QRCodeShape {
+		return QRCodeShape(
+			data: self.data__,
+			errorCorrection: self.errorCorrection__,
+			components: self.components__,
+			shape: self.shape__.copyShape(),
+			logoTemplate: logoTemplate,
 			generator: self.qrCodeGenerator__.generator
 		)
 	}
@@ -226,7 +253,7 @@ public extension QRCodeShape {
 public extension QRCodeShape {
 	/// Returns the path for the qr code
 	func path(in rect: CGRect) -> Path {
-		let path = self.qrCodeGenerator__.path(rect.size, components: self.components__, shape: self.shape__)
+		let path = self.qrCodeGenerator__.path(rect.size, components: self.components__, shape: self.shape__, logoTemplate: self.logoTemplate__)
 		return Path(path)
 	}
 }
@@ -244,6 +271,7 @@ let DemoContent2 = "Harness the power of Quartz technology to perform lightweigh
 struct QRCodeShape_Previews: PreviewProvider {
 	static var previews: some View {
 		VStack {
+			Text("QRCode").font(.headline).bold()
 			HStack {
 				QRCodeShape(text: DemoContent, errorCorrection: .low)!
 					.components(.all)
@@ -251,35 +279,115 @@ struct QRCodeShape_Previews: PreviewProvider {
 				QRCodeShape(text: DemoContent2, errorCorrection: .medium)!
 			}
 
-			Text("Components")
-
 			VStack {
+				Divider()
+				Text("Components").font(.headline).bold()
 				HStack {
 					VStack {
-						QRCodeShape(text: "Hello there how are you", errorCorrection: .low)!
+						ZStack {
+							QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyeBackground)
+								.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
+							QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyePupil)
+								.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
+							QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyeOuter)
+								.fill(Color(hue: 0.4, saturation: 1, brightness: 1))
+							QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+								.components(.onPixels)
+								.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
+							QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+								.components(.offPixels)
+								.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
+						}
+						Text("components")
+					}
+					VStack {
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
 							.components(.onPixels)
+							.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
 						Text("'on' pixels only")
 					}
 					VStack {
-						QRCodeShape(text: "Hello there how are you", errorCorrection: .low)!
-							.offPixelShape(QRCode.PixelShape.Square())
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
 							.components(.offPixels)
+							.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
 						Text("'off' pixels only")
 					}
 				}
 				HStack {
 					VStack {
-						QRCodeShape(text: "Hello there how are you", errorCorrection: .low)!
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+							.eyeShape(QRCode.EyeShape.RoundedOuter())
 							.components(.eyeOuter)
+							.fill(Color(hue: 0.4, saturation: 1, brightness: 1))
 						Text("eye outer only")
 					}
 					VStack {
-						QRCodeShape(text: "Hello there how are you", errorCorrection: .low)!
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+							.eyeShape(QRCode.EyeShape.RoundedOuter())
 							.components(.eyePupil)
+							.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
 						Text("pupil only")
+					}
+					VStack {
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+							.eyeShape(QRCode.EyeShape.RoundedOuter())
+							.components(.eyeBackground)
+							.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
+						Text("eye components")
+					}
+				}
+			}
+
+			VStack {
+
+				let logoTemplate1: QRCode.LogoTemplate = {
+					QRCode.LogoTemplate(
+						path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
+						inset: 0
+					)
+				}()
+
+				let logoTemplate2: QRCode.LogoTemplate = {
+					QRCode.LogoTemplate(
+						path: CGPath(rect: CGRect(x: 0.40, y: 0.60, width: 0.55, height: 0.30), transform: nil),
+						inset: 0
+					)
+				}()
+
+				Divider()
+				Text("Masking").font(.headline).bold()
+				HStack {
+					ZStack {
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+							.logoTemplate(logoTemplate1)
+							.components([.onPixels, .eyeAll])
+							.onPixelShape(QRCode.PixelShape.CurvePixel())
+							.frame(width: 200, height: 200)
+						Circle()
+							.fill(.green)
+							.frame(width: 60, height: 60)
+					}
+					ZStack {
+						QRCodeShape(text: "Hello there how are you", errorCorrection: .high)!
+							.logoTemplate(logoTemplate2)
+							.components([.onPixels, .eyeAll])
+							.onPixelShape(QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1))
+							.eyeShape(QRCode.EyeShape.Squircle())
+							.frame(width: 200, height: 200)
+						Rectangle()
+							.fill(.red)
+							.position(x: 82, y: 77)
+							.frame(width: 100, height: 50)
 					}
 				}
 			}
 		}
+		.frame(height: 800)
 	}
 }

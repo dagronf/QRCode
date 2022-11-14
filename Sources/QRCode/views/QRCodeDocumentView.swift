@@ -49,6 +49,11 @@ import UIKit
 			self.setNeedsDisplay()
 		}
 	}
+
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		self.setNeedsDisplay()
+	}
 }
 
 public extension QRCodeDocumentView {
