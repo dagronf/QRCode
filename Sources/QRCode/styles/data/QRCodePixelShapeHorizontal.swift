@@ -73,7 +73,10 @@ public extension QRCode.PixelShape {
 			let path = CGMutablePath()
 
 			// Mask out the QR patterns
-			let currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+			var currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+			if let mask = data.currentMask {
+				currentData = currentData.applyingMask(mask)
+			}
 
 			for row in 1 ..< data.pixelSize - 1 {
 				var activeRect: CGRect?

@@ -73,6 +73,11 @@ public extension QRCode {
 			c.pupil = self.pupil?.copyShape()
 			return c
 		}
+
+		/// A masking path defined within 0,0 -> 100, 100
+		///
+		/// The mask represents the part of the on/off pixels that are NOT drawn
+		@objc public var maskPath: CGPath?
 	}
 }
 
@@ -105,6 +110,11 @@ public extension QRCode.Shape {
 
 		if let pupil = pupil {
 			result["pupil"] = pupil.coreSettings()
+		}
+
+		if let mask = maskPath,
+			let b64 = encodeCGPathBase64(path: mask) {
+			result["mask"] = b64
 		}
 
 		return result
@@ -153,6 +163,10 @@ public extension QRCode.Shape {
 			let pupil = QRCodePupilShapeFactory.shared.create(settings: data)
 		{
 			result.pupil = pupil
+		}
+
+		if let maskb64 = settings["mask"] as? String {
+			result.maskPath = try? decodeCGPathBase64(string: maskb64)
 		}
 
 		return result

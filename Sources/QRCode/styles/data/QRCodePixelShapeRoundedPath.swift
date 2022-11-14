@@ -114,7 +114,10 @@ extension QRCode.PixelShape.RoundedPath {
 		let path = CGMutablePath()
 
 		// Mask out the QR patterns (if we're not a template image)
-		let currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+		var currentData = isTemplate ? data.current : data.current.maskingQREyes(inverted: !isOn)
+		if let mask = data.currentMask {
+			currentData = currentData.applyingMask(mask)
+		}
 
 		for row in 1 ..< data.pixelSize - 1 {
 			for col in 1 ..< data.pixelSize - 1 {

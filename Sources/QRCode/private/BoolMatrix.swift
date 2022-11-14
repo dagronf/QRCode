@@ -80,6 +80,17 @@ import Foundation
 		}
 	}
 
+	public override var description: String {
+		var str = ""
+		for y in 0 ..< dimension {
+			for x in 0 ..< dimension {
+				str.append(self[y, x] ? "#" : ".")
+			}
+			str.append("\n")
+		}
+		return str
+	}
+
 	private var content: Array2D<Bool> = Array2D(rows: 0, columns: 0, initialValue: false)
 }
 
@@ -107,5 +118,18 @@ extension BoolMatrix {
 			}
 		}
 		return maskedResult
+	}
+
+	func applyingMask(_ mask: BoolMatrix) -> BoolMatrix {
+		assert(mask.dimension == self.dimension)
+		let result = BoolMatrix(dimension: self.dimension)
+		for row in 0 ..< mask.dimension {
+			for col in 0 ..< mask.dimension {
+				if mask[row, col] == true {
+					result[row, col] = self[row, col]
+				}
+			}
+		}
+		return result
 	}
 }

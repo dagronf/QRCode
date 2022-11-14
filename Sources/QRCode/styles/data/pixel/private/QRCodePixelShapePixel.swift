@@ -79,6 +79,10 @@ internal extension QRCode.PixelShape {
 						continue
 					}
 
+					if let mask = data.currentMask, mask[row, col] == false {
+						continue
+					}
+
 					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
 					let insetValue = self.insetFraction * (r.height / 2.0)
 					let ri = r.insetBy(dx: insetValue, dy: insetValue)
