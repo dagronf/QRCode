@@ -19,16 +19,16 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-extension QRCode {
+public extension QRCode {
 	/// A QRCode logo template
-	@objc(QRCodeLogoTemplate) public class LogoTemplate: NSObject {
+	@objc(QRCodeLogoTemplate) class LogoTemplate: NSObject {
 		/// A CGPath with the bounds x=0, y=0, width=1, height=1 in which to draw the image
 		@objc public var path: CGPath {
 			didSet {
-				let bounds = path.boundingBoxOfPath
+				let bounds = self.path.boundingBoxOfPath
 				assert(bounds.minX >= 0 && bounds.maxX <= 1)
 				assert(bounds.minY >= 0 || bounds.maxY <= 1)
 			}
@@ -82,14 +82,14 @@ extension QRCode {
 
 		/// Make a copy of the logo template
 		@objc public func copyLogoTemplate() -> QRCode.LogoTemplate {
-			QRCode.LogoTemplate(path: path, inset: inset, image: image?.copy())
+			QRCode.LogoTemplate(path: self.path, inset: self.inset, image: self.image?.copy())
 		}
 
 		/// Return a dictionary representation of the logo template
 		@objc public func settings() -> [String: Any] {
 			var settings: [String: Any] = [
 				"relativeMaskPath": CGPathCoder.encodeBase64(self.path)!,
-				"inset": self.inset
+				"inset": self.inset,
 			]
 
 			if let image = image,
@@ -129,7 +129,7 @@ extension QRCode {
 }
 
 extension QRCode.LogoTemplate {
-	internal func applyingMask(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
+	func applyingMask(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
 		let absoluteMask = self.absolutePathForMaskPath(dimension: dimension)
 
 		// The size of each pixel in the output
@@ -143,5 +143,45 @@ extension QRCode.LogoTemplate {
 			}
 		}
 		return maskMatrix
+	}
+}
+
+// MARK: - Pre-built logo template shapes
+
+public extension QRCode.LogoTemplate {
+	/// Generate a pre-built circle logo template in the center of the qr code
+	@objc static func CircleCenter(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
+		return QRCode.LogoTemplate(
+			path: CGPath(ellipseIn: CGRect(x: 0.375, y: 0.375, width: 0.25, height: 0.25), transform: nil),
+			inset: inset,
+			image: image
+		)
+	}
+
+	/// Generate a pre-built circle logo template in the bottom-right of the qr code
+	@objc static func CircleBottomRight(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
+		return QRCode.LogoTemplate(
+			path: CGPath(ellipseIn: CGRect(x: 0.70, y: 0.70, width: 0.25, height: 0.25), transform: nil),
+			inset: inset,
+			image: image
+		)
+	}
+
+	/// Generate a pre-built square logo template in the center of the qr code
+	@objc static func SquareCenter(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
+		return QRCode.LogoTemplate(
+			path: CGPath(rect: CGRect(x: 0.375, y: 0.375, width: 0.25, height: 0.25), transform: nil),
+			inset: inset,
+			image: image
+		)
+	}
+
+	/// Generate a pre-built square logo template in the bottom-right of the qr code
+	@objc static func SquareBottomRight(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
+		return QRCode.LogoTemplate(
+			path: CGPath(rect: CGRect(x: 0.70, y: 0.70, width: 0.25, height: 0.25), transform: nil),
+			inset: inset,
+			image: image
+		)
 	}
 }

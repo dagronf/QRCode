@@ -456,6 +456,13 @@ let path = CGPath(rect: CGRect(x: 0.75, y: 0.75, width: 0.25, height: 0.25), tra
 
 The mask path only affects the `onPixels` and `offPixels` within the QR code. Defining a logo that falls within the eye boundaries will be clipped. 
 
+There are a number of pre-built `LogoTemplate` creators for the 'standard' logo positions.
+
+* circle center (`QRCode.LogoTemplate.CircleCenter`)
+* circle bottom right (`QRCode.LogoTemplate.CircleBottomRight`)
+* square center (`QRCode.LogoTemplate.SquareCenter`)
+* square bottom right (`QRCode.LogoTemplate.SquareBottomRight`) 
+
 ### Example 1
 
 ```swift

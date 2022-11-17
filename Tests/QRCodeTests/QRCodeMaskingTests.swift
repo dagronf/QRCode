@@ -149,5 +149,57 @@ final class QRCodeMaskingTests: XCTestCase {
 			try str.writeToTempFile(named: "logo-rectangular-non-centered-large.svg")
 		}
 	}
+
+	func testFixedTemplates() throws {
+		let code = QRCode.Document(
+			utf8String: "Verifying that pre-built logo templates work as expected",
+			errorCorrection: .high,
+			generator: __testGenerator
+		)
+
+		do {
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+
+			code.logoTemplate = QRCode.LogoTemplate.CircleCenter(image: logoImage.cgImage()!)
+
+			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
+			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			try data2.writeToTempFile(named: "fixed-template-circle-center.png")
+		}
+
+		do {
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+
+			code.logoTemplate = QRCode.LogoTemplate.CircleBottomRight(image: logoImage.cgImage()!)
+
+			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
+			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			try data2.writeToTempFile(named: "fixed-template-circle-bottom-right.png")
+		}
+
+		do {
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "square-logo", withExtension: "png"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+
+			code.logoTemplate = QRCode.LogoTemplate.SquareCenter(image: logoImage.cgImage()!)
+
+			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
+			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			try data2.writeToTempFile(named: "fixed-template-square-center.png")
+		}
+
+		do {
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "square-logo", withExtension: "png"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+
+			code.logoTemplate = QRCode.LogoTemplate.SquareBottomRight(image: logoImage.cgImage()!)
+
+			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
+			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			try data2.writeToTempFile(named: "fixed-template-square-bottom-right.png")
+		}
+	}
 }
 
