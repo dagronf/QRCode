@@ -32,14 +32,14 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    </a>
    &nbsp;
    <a href="./Art/qrcode-with-logo.pdf">
-      <img src="./Art/qrcode-with-logo.pdf" width="200"/>
+      <img src="./Art/qrcode-with-logo.png" width="200"/>
    </a>   
    &nbsp;
    <a href="./Art/qrcode-with-basic-logo.svg">
       <img src="./Art/qrcode-with-basic-logo.svg" width="200"/>
    </a>   
    <a href="./Art/qrcode-apple-watch.pdf">
-      <img src="./Art/qrcode-apple-watch.pdf" width="200"/>
+      <img src="./Art/qrcode-apple-watch.png" width="200"/>
    </a>   
 </p>
 
