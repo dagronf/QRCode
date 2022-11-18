@@ -29,31 +29,24 @@ public extension QRCode {
 		/// Convenience initializer for objc
 		@objc public static func create() -> Style { return Style() }
 
+		/// Set the foreground color for all the components of the qr code
+		@inlinable @objc public func setForegroundStyle(_ style: QRCodeFillStyleGenerator) {
+			onPixels = style
+			eye = nil
+			pupil = nil
+		}
+
 		/// The style for the data component for the QR code. Defaults to black
 		@objc public var onPixels: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor(gray: 0.0, alpha: 1.0))
 
 		/// The background color for the 'on' pixels
 		@objc public var onPixelsBackground: CGColor?
 		
-		/// Deprecated. Use `onPixels` instead
-		@available(*, deprecated, renamed: "onPixels")
-		@objc public var data: QRCodeFillStyleGenerator {
-			get { onPixels }
-			set { onPixels = newValue }
-		}
-		
 		/// The style for drawing the non-drawn sections for the qr code.
 		@objc public var offPixels: QRCodeFillStyleGenerator?
 
 		/// The background color for the 'off' pixels
 		@objc public var offPixelsBackground: CGColor?
-
-		/// Deprecated. Use `offPixels` instead
-		@available(*, deprecated, renamed: "offPixels")
-		@objc public var dataInverted: QRCodeFillStyleGenerator? {
-			get { offPixels }
-			set { offPixels = newValue }
-		}
 
 		/// The border around the eye. By default, this is the same color as the data
 		@objc public var eye: QRCodeFillStyleGenerator?

@@ -23,7 +23,7 @@ import Foundation
 
 public extension QRCode {
 	/// The error correction level
-	@objc(QRCodeErrorCorrection) enum ErrorCorrection: Int {
+	@objc(QRCodeErrorCorrection) enum ErrorCorrection: Int, CaseIterable {
 		/// Lowest error correction (L - Recovers 7% of data)
 		case low = 0
 		/// Medium error correction (M - Recovers 15% of data)
@@ -32,9 +32,10 @@ public extension QRCode {
 		case quantize = 2
 		/// High error correction (H - Recovers 30% of data)
 		case high = 3
+
 		/// The default error correction level if it is not specified by the user
 		public static let `default` = ErrorCorrection.quantize
-		
+
 		/// Returns the EC Level identifier for the error correction type (L, M, Q, H)
 		public var ECLevel: String {
 			switch self {

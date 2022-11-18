@@ -135,7 +135,7 @@ public extension QRCode.FillStyle.LinearGradient {
 		svg += "id=\"\(styleIdentifier)\" "
 		svg += "x1=\"\(self.startPoint.x)\" "
 		svg += "y1=\"\(self.startPoint.y)\" "
-		svg += "x2=\"\(self.endPoint.y)\" "
+		svg += "x2=\"\(self.endPoint.x)\" "
 		svg += "y2=\"\(self.endPoint.y)\">\n"
 
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })

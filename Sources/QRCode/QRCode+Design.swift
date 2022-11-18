@@ -117,7 +117,16 @@ public extension QRCode.Design {
 	/// - Returns: This design object
 	@discardableResult
 	@objc func foregroundColor(_ color: CGColor) -> QRCode.Design {
-		self.style.onPixels = QRCode.FillStyle.Solid(color)
+		self.style.setForegroundStyle(QRCode.FillStyle.Solid(color))
+		return self
+	}
+
+	/// Set the foreground style for the design
+	/// - Parameter fillStyle: The fill style generator
+	/// - Returns: This design object
+	@discardableResult
+	@objc func foregroundStyle(_ fillStyle: QRCodeFillStyleGenerator) -> QRCode.Design {
+		self.style.setForegroundStyle(fillStyle)
 		return self
 	}
 
