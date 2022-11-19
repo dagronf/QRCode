@@ -377,7 +377,7 @@ public extension QRCode.Document {
 	///   - dimension: The dimension of the generated path
 	///   - components: The components of the QR code to include in the path
 	/// - Returns: A path containing the components
-	@objc func path(dimension: CGFloat, components: QRCode.Components = .all) -> CGPath {
+	@objc func path(dimension: Int, components: QRCode.Components = .all) -> CGPath {
 		return self.qrcode.path(
 			CGSize(dimension: dimension),
 			components: components,
@@ -389,7 +389,7 @@ public extension QRCode.Document {
 // MARK: SVG
 
 public extension QRCode.Document {
-	/// Returns a string of SVG code for an image depicting this QR Code, with the given number of border modules.
+	/// Returns an SVG utf8 string representation of the QR code
 	/// - Parameters:
 	///   - dimension: The dimension of the output svg
 	/// - Returns: An SVG representation of the QR code
@@ -401,6 +401,17 @@ public extension QRCode.Document {
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
+	}
+
+	/// Returns an SVG data representation of the QR Code.
+	/// - Parameters:
+	///   - dimension: The dimension of the output svg
+	/// - Returns: A UTF8 encoded SVG representation of the QR code
+	///
+	/// The string always uses Unix newlines (\n), regardless of the platform.
+	@objc func svgData(dimension: Int) -> Data? {
+		let str = self.svg(dimension: dimension)
+		return str.data(using: .utf8, allowLossyConversion: false)
 	}
 }
 
@@ -429,6 +440,48 @@ public extension QRCode.Document {
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
+	}
+}
+
+public extension QRCode.Document {
+	/// The supported exportable image types
+	enum ExportType {
+		/// PNG export. Scale parameter represents the DPI (eg. scale==2 -> 144 dpi)
+		case png(scale: CGFloat = 1)
+		/// JPEG export. Default compression value is 0.75
+		case jpg(compression: CGFloat = 0.75)
+		/// PDF export
+		case pdf(pdfResolution: CGFloat = 72.0)
+		/// Binary representation of an SVG file
+		case svg
+
+		/// Returns the extension for the export type
+		var fileExtension: String {
+			switch self {
+			case .png(_): return "png"
+			case .jpg(_): return "jpg"
+			case .pdf(_): return "pdf"
+			case .svg: return "svg"
+			}
+		}
+	}
+
+	/// Returns the QRCode document as an image
+	/// - Parameters:
+	///   - type: The type of image
+	///   - dimension: The size of the resulting image
+	/// - Returns: Data representation of the image
+	@inlinable func imageData(_ type: ExportType, dimension: Int) -> Data? {
+		switch type {
+		case .png(let scale):
+			return self.pngData(dimension: dimension, scale: scale)
+		case .jpg(let compression):
+			return self.jpegData(dimension: dimension, compression: compression)
+		case .pdf(let resolution):
+			return self.pdfData(dimension: dimension, pdfResolution: resolution)
+		case .svg:
+			return self.svgData(dimension: dimension)
+		}
 	}
 }
 
@@ -462,9 +515,10 @@ public extension QRCode.Document {
 	/// - Parameters:
 	///   - dimension: The size of the QR code
 	/// - Returns: The PNG data
-	func pngData(dimension: Int) -> Data? {
+	func pngData(dimension: Int, scale: CGFloat = 1) -> Data? {
 		return self.qrcode.pngData(
 			dimension: dimension,
+			scale: scale,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)

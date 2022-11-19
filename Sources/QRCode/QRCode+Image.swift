@@ -126,16 +126,29 @@ public extension QRCode {
 	/// - Returns: The PNG data
 	@objc func pngData(
 		dimension: Int,
+		scale: CGFloat = 1,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> Data? {
 #if os(macOS)
-		guard let image = self.nsImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate) else {
+		guard
+			let image = self.nsImage(
+			CGSize(dimension: dimension),
+			scale: scale,
+			design: design,
+			logoTemplate: logoTemplate)
+		else {
 			return nil
 		}
 		return image.pngRepresentation()
 #else
-		guard let image = self.uiImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate) else {
+		guard
+			let image = self.uiImage(
+				CGSize(dimension: dimension),
+				scale: scale,
+				design: design,
+				logoTemplate: logoTemplate)
+		else {
 			return nil
 		}
 		return image.pngData()

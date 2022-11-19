@@ -1,8 +1,8 @@
 import XCTest
 
-import AppKit
+#if os(macOS)
 
-#if !os(watchOS)
+import AppKit
 
 @testable import QRCode
 @testable import QRCodeExternal
@@ -19,7 +19,29 @@ let __genFolder: URL = {
 	return u
 }()
 
+class ImageOutput {
+
+	let _imagesFolder = __genFolder.appendingPathComponent("images")
+
+	init() {
+		try! FileManager.default.createDirectory(at: _imagesFolder, withIntermediateDirectories: true)
+	}
+
+	func store(_ data: Data, filename: String) throws -> String {
+		try data.write(to: _imagesFolder.appendingPathComponent(filename))
+		return "./images/\(filename)"
+	}
+
+	func store(_ string: String, filename: String) throws -> String {
+		try string.write(to: _imagesFolder.appendingPathComponent(filename), atomically: false, encoding: .utf8)
+		return "./images/\(filename)"
+	}
+}
+
+
 final class QRCodeDocGeneratorTests: XCTestCase {
+
+	// Generate a markdown document with generated test images
 	func disabled_testGeneration() throws {
 
 		let settings: [String: Any] = [
@@ -28,10 +50,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			QRCode.SettingsKey.hasInnerCorners: true
 		]
 
+		// The dimension for all the generated images
+		let dimension: Int = 400
+
 		NSWorkspace.shared.activateFileViewerSelecting([__genFolder])
 
-		let imagesFolder = __genFolder.appendingPathComponent("images")
-		try! FileManager.default.createDirectory(at: imagesFolder, withIntermediateDirectories: true)
+		let imageStore = ImageOutput()
 
 		var markdownText = ""
 
@@ -40,8 +64,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			let doc = QRCode.Document(utf8String: text, errorCorrection: .high)
 
 			markdownText += "## Pixel Shapes (CoreImage)\n\n"
+
 			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
+
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(0.6, 0, 0)
+			doc.design.style.eye = QRCode.FillStyle.Solid(0, 0, 0)
 
 			let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
 			for name in names {
@@ -51,20 +79,20 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.errorCorrection = enc
 					doc.design.shape.onPixels = generator
 
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: 600))
+					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == text
 					let detect = detected ? "✅" : "❌"
 					let name = "pixelint - \(name) - \(enc.ECLevel).png"
-					try cgImage.pngRepresentation()!.write(to: imagesFolder.appendingPathComponent(name))
-					markdownText += "<a href=\"./images/\(name)\"><img src=\"./images/\(name)\" width=\"125\" /></a><br/>\(detect)|"
+					let link = try imageStore.store(cgImage.pngRepresentation()!, filename: name)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>\(detect)|"
 				}
 
 				do {
-					let svgImage = doc.svg(dimension: 600)
+					let svgImage = doc.svg(dimension: dimension)
 					let filename = "pixelint - \(name).svg"
-					try svgImage.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>⚖️|"
+					let link = try imageStore.store(svgImage, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
 				}
 
 				markdownText += "\n"
@@ -74,8 +102,11 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		do {
 			let doc = QRCode.Document(utf8String: text, errorCorrection: .high, generator: QRCodeGenerator_External())
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(0.6, 0, 0)
+			doc.design.style.eye = QRCode.FillStyle.Solid(0, 0, 0)
 
 			markdownText += "## Pixel Shapes (3rd party Generator)\n\n"
+
 			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
 
@@ -87,19 +118,19 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.errorCorrection = enc
 					doc.design.shape.onPixels = generator
 
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: 600))
+					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == text
 					let detect = detected ? "✅" : "❌"
-					let name = "pixelext - \(name) - \(enc.ECLevel).png"
-					try cgImage.pngRepresentation()!.write(to: imagesFolder.appendingPathComponent(name))
-					markdownText += "<a href=\"./images/\(name)\"><img src=\"./images/\(name)\" width=\"125\" /></a><br/>\(detect)|"
+					let filename = "pixelext - \(name) - \(enc.ECLevel).png"
+					let link = try imageStore.store(cgImage.pngRepresentation()!, filename: filename)
+					markdownText += "<a href=\"./images/\(name)\"><img src=\"\(link)\" width=\"125\" /></a><br/>\(detect)|"
 				}
 				do {
-					let svgImage = doc.svg(dimension: 600)
+					let svgImage = doc.svg(dimension: dimension)
 					let filename = "pixelext - \(name).svg"
-					try svgImage.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>⚖️|"
+					let link = try imageStore.store(svgImage, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
 				}
 				markdownText += "\n"
 			}
@@ -121,33 +152,34 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				markdownText += "| \(name) |"
 
-				let generator = QRCodePupilShapeFactory.shared.named(name)!
-				doc.design.shape.pupil = generator
+				let generator = QRCodeEyeShapeFactory.shared.named(name)!
+				doc.design.shape.eye = generator
+				doc.design.style.eye = QRCode.FillStyle.Solid(0.6, 0, 0)
 
 				do {
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: 600))
+					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == "QR Code generation test"
 					let detect = detected ? "✅" : "❌"
 
 					let filename = "eye - \(name).png"
 					let content = try XCTUnwrap(cgImage.pngRepresentation())
-					try content.write(to: imagesFolder.appendingPathComponent(filename))
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>png \(detect)|"
+					let link = try imageStore.store(content, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>png \(detect)|"
 				}
 
 				do {
 					let filename = "eye - \(name).svg"
-					let svg = doc.svg(dimension: 600)
-					try svg.write(to: imagesFolder.appendingPathComponent(filename), atomically: false, encoding: .utf8)
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>svg|"
+					let svgImage = doc.svg(dimension: dimension)
+					let link = try imageStore.store(svgImage, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>svg|"
 				}
 
 				do {
 					let filename = "eye - \(name).pdf"
-					let pdf = try XCTUnwrap(doc.pdfData(dimension: 600))
-					try pdf.write(to: imagesFolder.appendingPathComponent(filename))
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>pdf|"
+					let pdf = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let link = try imageStore.store(pdf, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>pdf|"
 				}
 				markdownText += "\n"
 			}
@@ -171,31 +203,32 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				let generator = QRCodePupilShapeFactory.shared.named(name)!
 				doc.design.shape.pupil = generator
+				doc.design.style.pupil = QRCode.FillStyle.Solid(0.6, 0, 0)
 
 				do {
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: 600))
+					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == "QR Code generation test"
 					let detect = detected ? "✅" : "❌"
 
 					let filename = "pupil - \(name).png"
 					let content = try XCTUnwrap(cgImage.pngRepresentation())
-					try content.write(to: imagesFolder.appendingPathComponent(filename))
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>png \(detect)|"
+					let link = try imageStore.store(content, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>png \(detect)|"
 				}
 
 				do {
 					let filename = "pupil - \(name).svg"
-					let svg = doc.svg(dimension: 600)
-					try svg.write(to: imagesFolder.appendingPathComponent(filename), atomically: false, encoding: .utf8)
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>svg|"
+					let svg = doc.svg(dimension: dimension)
+					let link = try imageStore.store(svg, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>svg|"
 				}
 
 				do {
 					let filename = "pupil - \(name).pdf"
-					let pdf = try XCTUnwrap(doc.pdfData(dimension: 600))
-					try pdf.write(to: imagesFolder.appendingPathComponent(filename))
-					markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>pdf|"
+					let pdf = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let link = try imageStore.store(pdf, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>pdf|"
 				}
 				markdownText += "\n"
 			}
@@ -228,31 +261,31 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " png |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let cgImage = try XCTUnwrap(doc.cgImage(dimension: 600))
+				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
 				let content = try XCTUnwrap(cgImage.pngRepresentation())
 				let filename = "fillstyle-solid-\(item.offset).png"
-				try content.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
 			markdownText += " svg |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let svgImage = doc.svg(dimension: 600)
+				let svgImage = doc.svg(dimension: dimension)
 				let filename = "fillstyle-solid-\(item.offset).svg"
-				try svgImage.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(svgImage, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
 			markdownText += " pdf |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let image = try XCTUnwrap(doc.pdfData(dimension: 600))
+				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
 				let filename = "fillstyle-solid-\(item.offset).pdf"
-				try image.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(image, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 		}
@@ -289,11 +322,11 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " png |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let cgImage1 = try XCTUnwrap(doc.cgImage(dimension: 600))
-				let content1 = try XCTUnwrap(cgImage1.pngRepresentation())
-				let filename1 = "fillstyle-linear-\(item.offset).png"
-				try content1.write(to: imagesFolder.appendingPathComponent(filename1))
-				markdownText += "<a href=\"./images/\(filename1)\"><img src=\"./images/\(filename1)\" width=\"125\" /></a>|"
+				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+				let content = try XCTUnwrap(cgImage.pngRepresentation())
+				let filename = "fillstyle-linear-\(item.offset).png"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 
 			markdownText += "\n"
@@ -301,10 +334,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " svg |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let svgImage = doc.svg(dimension: 600)
+				let svgImage = doc.svg(dimension: dimension)
 				let filename = "fillstyle-linear-\(item.offset).svg"
-				try svgImage.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(svgImage, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 
 			markdownText += "\n"
@@ -312,10 +345,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " pdf |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let image = try XCTUnwrap(doc.pdfData(dimension: 600))
+				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
 				let filename = "fillstyle-linear-\(item.offset).pdf"
-				try image.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(image, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 
 			markdownText += "\n"
@@ -354,31 +387,31 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " png |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let image = try XCTUnwrap(doc.cgImage(dimension: 600))
+				let image = try XCTUnwrap(doc.cgImage(dimension: dimension))
 				let content = try XCTUnwrap(image.pngRepresentation())
 				let filename = "fillstyle-radial-\(item.offset).png"
-				try content.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
 			markdownText += " svg |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let svgcontent = doc.svg(dimension: 600)
+				let svgcontent = doc.svg(dimension: dimension)
 				let filename = "fillstyle-radial-\(item.offset).svg"
-				try svgcontent.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(svgcontent, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
 			markdownText += " pdf |"
 			for item in items.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let image = try XCTUnwrap(doc.pdfData(dimension: 600))
+				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
 				let filename = "fillstyle-radial-\(item.offset).pdf"
-				try image.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(image, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 		}
@@ -417,21 +450,21 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "| png |"
 			for item in items.enumerated() {
 				doc.logoTemplate = item.element
-				let image = try XCTUnwrap(doc.cgImage(dimension: 600))
+				let image = try XCTUnwrap(doc.cgImage(dimension: dimension))
 				let content = try XCTUnwrap(image.pngRepresentation())
 				let filename = "logo-\(item.offset).png"
-				try content.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
 			markdownText += "| svg |"
 			for item in items.enumerated() {
 				doc.logoTemplate = item.element
-				let svgcontent = doc.svg(dimension: 600)
+				let svgcontent = doc.svg(dimension: dimension)
 				let filename = "logo-\(item.offset).svg"
-				try svgcontent.write(to: imagesFolder.appendingPathComponent(filename), atomically: true, encoding: .utf8)
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(svgcontent, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 			markdownText += "\n"
 
@@ -439,10 +472,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			for item in items.enumerated() {
 				doc.logoTemplate = item.element
-				let image = try XCTUnwrap(doc.pdfData(dimension: 600))
+				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
 				let filename = "logo-\(item.offset).pdf"
-				try image.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(image, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 		}
 		markdownText += "\n"
@@ -471,7 +504,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			// Do all first
 
 			do {
-				let image = NSImage(size: CGSize(dimension: 600), flipped: true) { rect in
+				let image = NSImage(size: CGSize(dimension: dimension), flipped: true) { rect in
 					let ctx = NSGraphicsContext.current!.cgContext
 
 					ctx.saveGState()
@@ -483,24 +516,25 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					ctx.restoreGState()
 
 					for item in items {
-						let path = doc.path(dimension: 600, components: item.0)
+						let path = doc.path(dimension: dimension, components: item.0)
 						ctx.addPath(path)
 						ctx.setFillColor(item.2.cgColor)
 						ctx.fillPath()
 					}
-
 					return true
 				}
+
+				let content = try XCTUnwrap(image.pngRepresentation())
 				let filename = "components-all.png"
-				try image.pngRepresentation()!.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a><br/>|"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
 			}
 
 			// Now each individually
 
 			for item in items.enumerated() {
-				let path = doc.path(dimension: 600, components: item.element.0)
-				let image = NSImage(size: CGSize(dimension: 600), flipped: true) { rect in
+				let path = doc.path(dimension: dimension, components: item.element.0)
+				let image = NSImage(size: CGSize(dimension: dimension), flipped: true) { rect in
 					let ctx = NSGraphicsContext.current!.cgContext
 
 					ctx.saveGState()
@@ -516,18 +550,245 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					ctx.fillPath()
 					return true
 				}
+
+				let content = try XCTUnwrap(image.pngRepresentation())
 				let filename = "components-\(item.offset).png"
-				try image.pngRepresentation()!.write(to: imagesFolder.appendingPathComponent(filename))
-				markdownText += "<a href=\"./images/\(filename)\"><img src=\"./images/\(filename)\" width=\"125\" /></a>|"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
 		}
 		markdownText += "\n"
 
+		// On path, off path check
+
+		do {
+			let doc = QRCode.Document(utf8String: "Checking on/off paths", errorCorrection: .low)
+
+			markdownText += "## On path/Off Path\n\n"
+
+			markdownText += "|       |  on/off  |  on  |  off  |\n"
+			markdownText += "|:-----:|:-----:|:-----:|:-----:|\n"
+
+			let items = [
+				("on/off", [QRCode.Components.onPixels, QRCode.Components.offPixels]),
+				("on", QRCode.Components.onPixels),
+				("on", QRCode.Components.offPixels),
+			]
+
+			let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
+			for name in names {
+
+				let generator = QRCodePixelShapeFactory.shared.named(name, settings: settings)!
+				doc.design.shape.onPixels = generator
+				doc.design.shape.offPixels = generator
+
+				markdownText += "|\(name)|"
+
+				for item in items.enumerated() {
+					let image = NSImage(size: CGSize(dimension: dimension), flipped: true) { rect in
+						let ctx = NSGraphicsContext.current!.cgContext
+						ctx.saveGState()
+						ctx.setFillColor(CGColor(gray: 0, alpha: 0.05))
+						ctx.fill([rect])
+						ctx.setStrokeColor(CGColor(gray: 0, alpha: 0.8))
+						ctx.setLineWidth(0.5)
+						ctx.stroke(rect)
+						ctx.restoreGState()
+
+						if item.element.1.contains(QRCode.Components.onPixels) {
+							ctx.saveGState()
+							let path = doc.path(dimension: dimension, components: .onPixels)
+							ctx.addPath(path)
+							ctx.setFillColor(CGColor(red: 0.8, green: 0, blue: 0, alpha: 1))
+							ctx.fillPath()
+							ctx.restoreGState()
+						}
+
+						if item.element.1.contains(QRCode.Components.offPixels) {
+							ctx.saveGState()
+							let path = doc.path(dimension: dimension, components: .offPixels)
+							ctx.addPath(path)
+							ctx.setFillColor(CGColor(red: 0, green: 0, blue: 0.8, alpha: 1))
+							ctx.fillPath()
+							ctx.restoreGState()
+						}
+
+						ctx.saveGState()
+						let path = doc.path(dimension: dimension, components: .eyeAll)
+						ctx.addPath(path)
+						ctx.setFillColor(CGColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1))
+						ctx.fillPath()
+						ctx.restoreGState()
+
+						return true
+					}
+
+					let content = try XCTUnwrap(image.pngRepresentation())
+					let filename = "onpathcheck-\(name)-\(item.offset).png"
+					let link = try imageStore.store(content, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a>|"
+				}
+				markdownText += "\n"
+			}
+			markdownText += "\n"
+		}
+
+		markdownText += "## Style export equivalence checks \n\n"
+
+		do {
+
+			let items: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
+
+			do {
+
+				markdownText += "|       |       |       |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QRCode stylish design - Blue wavy", errorCorrection: .medium)
+				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
+				doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true)
+				doc.design.style.onPixels = QRCode.FillStyle.LinearGradient(
+					DSFGradient(pins: [
+						DSFGradient.Pin(CGColor(red:0, green:0.589, blue:1, alpha:1), 0),
+						DSFGradient.Pin(CGColor(red:0.016, green:0.198, blue:1, alpha:1), 1),
+					])!
+				)
+				doc.design.shape.offPixels = QRCode.PixelShape.Circle(insetFraction: 0.1)
+				doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1)
+
+				for item in items {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "design-funky-blue.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>\(item.fileExtension) |"
+				}
+				markdownText += "\n\n"
+			}
+
+			do {
+				markdownText += "|       |       |       |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QRCode stylish design - Speck highlights", errorCorrection: .quantize)
+				doc.design.style.background = QRCode.FillStyle.Solid(0.937, 0.714, 0.502)
+				doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+
+				doc.design.style.eyeBackground = CGColor.white
+
+				doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.3)
+				doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 0.0)
+				doc.design.style.onPixelsBackground = CGColor(gray: 0, alpha: 0.2)
+
+				doc.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.75)
+				doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 1.0)
+				doc.design.style.offPixelsBackground = CGColor(gray: 1, alpha: 0.1)
+
+				for item in items {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "design-speck.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>\(item.fileExtension) |"
+				}
+				markdownText += "\n\n"
+			}
+
+			do {
+				markdownText += "|       |       |       |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let msg = QRCode.Message.Link(URL(string: "https://github.com/dagronf/QRCode")!)
+				let doc = QRCode.Document(message: msg, errorCorrection: .quantize)
+				doc.design.style.background = QRCode.FillStyle.Solid(.clear)
+
+				doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(insetFraction: 0.1, cornerRadiusFraction: 0.5)
+				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
+				doc.design.style.setForegroundStyle(
+					QRCode.FillStyle.LinearGradient(
+						DSFGradient(pins: [
+							DSFGradient.Pin(CGColor(red:0.556, green:0.979, blue:0, alpha:1), 0),
+							DSFGradient.Pin(CGColor(red:0.016, green:0.444, blue:0.018, alpha:1), 1),
+						])!,
+						startPoint: CGPoint(x: 0, y: 0),
+						endPoint: CGPoint(x: 0.5, y: 1)
+					)
+				)
+
+				doc.design.style.eye = QRCode.FillStyle.Solid(0.116, 0.544, 0.118)
+				doc.design.style.pupil = QRCode.FillStyle.Solid(0.556, 0.979, 0)
+
+				for item in items {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "design-github.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>\(item.fileExtension) |"
+				}
+				markdownText += "\n\n"
+			}
+
+			do {
+				markdownText += "|       |       |       |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QRCode stylish design - landscape", errorCorrection: .quantize)
+				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
+				doc.design.style.setForegroundStyle(
+					QRCode.FillStyle.LinearGradient(
+						DSFGradient(pins: [
+							DSFGradient.Pin(CGColor(red:0.004, green:0.096, blue:0.574, alpha:1), 0),
+							DSFGradient.Pin(CGColor(red:0, green:0.903, blue:0.997, alpha:1), 0.55),
+							DSFGradient.Pin(CGColor(red:0, green:0.154, blue:0, alpha:1), 0.556),
+							DSFGradient.Pin(CGColor(red:0, green:0.586, blue:0, alpha:1), 1),
+						])!,
+						startPoint: CGPoint(x: 0, y: 0),
+						endPoint: CGPoint(x: 0, y: 1)
+					)
+				)
+
+				doc.design.shape.offPixels = QRCode.PixelShape.Vertical(insetFraction: 0.8, cornerRadiusFraction: 1)
+				doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0, alpha: 0.1)
+
+				for item in items {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "design-landscape.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>\(item.fileExtension) |"
+				}
+				markdownText += "\n\n"
+			}
+
+			do {
+				markdownText += "|       |       |       |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QRCode stylish design - radial sepia", errorCorrection: .medium)
+
+				doc.design.foregroundStyle(QRCode.FillStyle.Solid(CGColor(red:0.356, green:0.209, blue:0.014, alpha:1)))
+				doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.05)
+				doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
+				doc.design.style.background = QRCode.FillStyle.RadialGradient(
+					DSFGradient(pins: [
+						DSFGradient.Pin(CGColor(red:0.999, green:1, blue:1, alpha:1), 0),
+						DSFGradient.Pin(CGColor(red:0.907, green:0.765, blue:0.428, alpha:1), 1),
+					])!
+				)
+
+				for item in items {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "design-radialsepia.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>\(item.fileExtension) |"
+				}
+				markdownText += "\n\n"
+			}
+		}
+
 		// Write out the markdown
 
 		let mdt = __genFolder.appendingPathComponent("styles.md")
-		try markdownText.write(to: mdt, atomically: true, encoding: .utf8)
+		try markdownText.write(to: mdt, atomically: false, encoding: .utf8)
 	}
 }
+
+
 
 #endif

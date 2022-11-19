@@ -55,7 +55,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a color from gray values
-		@objc public convenience init(_ gray: CGFloat, alpha: CGFloat = 1.0) {
+		@objc public convenience init(gray: CGFloat, alpha: CGFloat = 1.0) {
 			self.init(CGColor(gray: gray, alpha: alpha))
 		}
 

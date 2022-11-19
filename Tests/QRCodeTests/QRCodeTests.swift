@@ -100,7 +100,7 @@ final class QRCodeTests: XCTestCase {
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 
 		doc.design.shape.offPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1)
-		doc.design.style.offPixels = QRCode.FillStyle.Solid(0.9)
+		doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0.9)
 
 		let cgi = doc.cgImage(dimension: 600)!
 		Swift.print(cgi)
