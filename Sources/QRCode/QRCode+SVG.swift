@@ -96,7 +96,7 @@ public extension QRCode {
 		do {
 			if let _ = design.shape.offPixels {
 				let offPixelsPath = self.path(sz, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
-				if let offPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "off-pixels") {
+				if let offPixels = design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels") {
 					svg += "   <path \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
 					if let def = offPixels.styleDefinition {
 						pathDefinitions.append(def)
