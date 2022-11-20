@@ -213,58 +213,70 @@ public extension QRCode {
 			backgroundStyle.fill(ctx: context, rect: finalRect)
 		}
 
-		// Draw the background color behind the eyes
-		if let eColor = design.style.eyeBackground {
-			let eyeBackgroundPath = self.path(rect.size, components: .eyeBackground, shape: design.shape)
+		if design.shape.negatedOnPixelsOnly {
+			var negatedMatrix = self.boolMatrix.inverted()
+			if let logoTemplate = logoTemplate {
+				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: sz)
+			}
+			let negatedPath = design.shape.onPixels.generatePath(from: negatedMatrix, size: CGSize(dimension: sz))
 			ctx.usingGState { context in
-				ctx.setFillColor(eColor)
-				ctx.addPath(eyeBackgroundPath)
-				ctx.fillPath()
+				style.onPixels.fill(ctx: context, rect: rect, path: negatedPath)
 			}
 		}
-
-		// Draw the outer eye
-		let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
-		ctx.usingGState { context in
-			style.actualEyeStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
-		}
-
-		// Draw the eye 'pupil'
-		let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
-		ctx.usingGState { context in
-			style.actualPupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
-		}
-
-		// Now, the 'on' pixels background
-		if let c = design.style.onPixelsBackground {
-			onPixelBackgroundDesign.style.onPixels = QRCode.FillStyle.Solid(c)
-			let qrPath2 = self.path(rect.size, components: .onPixels, shape: onPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
-			ctx.usingGState { context in
-				onPixelBackgroundDesign.style.onPixels.fill(ctx: context, rect: rect, path: qrPath2)
-			}
-		}
-
-		// Now, the 'on' pixels
-		let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
-		ctx.usingGState { context in
-			style.onPixels.fill(ctx: context, rect: rect, path: qrPath)
-		}
-
-		// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
-		if let s = style.offPixels, let _ = design.shape.offPixels {
-
-			// Draw the 'off' pixels background IF the caller has set a color
-			if let c = design.style.offPixelsBackground {
-				offPixelBackgroundDesign.style.offPixels = QRCode.FillStyle.Solid(c)
-				let qrPath2 = self.path(rect.size, components: .offPixels, shape: offPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
+		else {
+			// Draw the background color behind the eyes
+			if let eColor = design.style.eyeBackground {
+				let eyeBackgroundPath = self.path(rect.size, components: .eyeBackground, shape: design.shape)
 				ctx.usingGState { context in
-					offPixelBackgroundDesign.style.offPixels?.fill(ctx: context, rect: rect, path: qrPath2)
+					ctx.setFillColor(eColor)
+					ctx.addPath(eyeBackgroundPath)
+					ctx.fillPath()
 				}
 			}
 
-			let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
+			// Draw the outer eye
+			let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
 			ctx.usingGState { context in
-				s.fill(ctx: context, rect: rect, path: qrPath)
+				style.actualEyeStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
+			}
+
+			// Draw the eye 'pupil'
+			let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
+			ctx.usingGState { context in
+				style.actualPupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
+			}
+
+			// Now, the 'on' pixels background
+			if let c = design.style.onPixelsBackground {
+				onPixelBackgroundDesign.style.onPixels = QRCode.FillStyle.Solid(c)
+				let qrPath2 = self.path(rect.size, components: .onPixels, shape: onPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
+				ctx.usingGState { context in
+					onPixelBackgroundDesign.style.onPixels.fill(ctx: context, rect: rect, path: qrPath2)
+				}
+			}
+
+			// Now, the 'on' pixels
+			let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
+			ctx.usingGState { context in
+				style.onPixels.fill(ctx: context, rect: rect, path: qrPath)
+			}
+
+			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
+			if let s = style.offPixels, let _ = design.shape.offPixels {
+
+				// Draw the 'off' pixels background IF the caller has set a color
+				if let c = design.style.offPixelsBackground {
+					offPixelBackgroundDesign.style.offPixels = QRCode.FillStyle.Solid(c)
+					let qrPath2 = self.path(rect.size, components: .offPixels, shape: offPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
+					ctx.usingGState { context in
+						offPixelBackgroundDesign.style.offPixels?.fill(ctx: context, rect: rect, path: qrPath2)
+					}
+				}
+
+				let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
+				ctx.usingGState { context in
+					s.fill(ctx: context, rect: rect, path: qrPath)
+				}
 			}
 		}
 

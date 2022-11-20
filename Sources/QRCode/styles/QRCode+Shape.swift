@@ -34,22 +34,14 @@ public extension QRCode {
 		/// The shape of the 'on' pixels. Defaults to simple square 'pixels'
 		@objc public var onPixels: QRCodePixelShapeGenerator = QRCode.PixelShape.Square()
 
-		/// Deprecated. Use `onPixels` instead.
-		@available(*, deprecated, renamed: "onPixels")
-		@objc public var data: QRCodePixelShapeGenerator {
-			get { onPixels }
-			set { onPixels = newValue }
-		}
-
 		/// The shape for drawing the non-drawn sections of the qr code.
 		@objc public var offPixels: QRCodePixelShapeGenerator?
 
-		/// Deprecated. Use `offPixels` instead.
-		@available(*, deprecated, renamed: "offPixels")
-		@objc public var dataInverted: QRCodePixelShapeGenerator? {
-			get { offPixels }
-			set { offPixels = newValue }
-		}
+		/// If set, the QR code draws the cells that AREN'T set within the QR code using the
+		/// `onPixel` generator and style. All other styles (offPixels, eye, pupil) are ignored.
+		///
+		/// A negative path shape is filled using the 'onPixels' style
+		@objc public var negatedOnPixelsOnly: Bool = false
 
 		/// The style of eyes to display
 		///
@@ -71,6 +63,7 @@ public extension QRCode {
 			c.offPixels = self.offPixels?.copyShape()
 			c.eye = self.eye.copyShape()
 			c.pupil = self.pupil?.copyShape()
+			c.negatedOnPixelsOnly = self.negatedOnPixelsOnly
 			return c
 		}
 	}
@@ -106,6 +99,8 @@ public extension QRCode.Shape {
 		if let pupil = pupil {
 			result["pupil"] = pupil.coreSettings()
 		}
+
+		result["negatedOnPixelsOnly"] = negatedOnPixelsOnly
 
 		return result
 	}
@@ -153,6 +148,10 @@ public extension QRCode.Shape {
 			let pupil = QRCodePupilShapeFactory.shared.create(settings: data)
 		{
 			result.pupil = pupil
+		}
+
+		if let negatedOnPixelsOnly = settings["negatedOnPixelsOnly"] as? Bool {
+			result.negatedOnPixelsOnly = negatedOnPixelsOnly
 		}
 
 		return result

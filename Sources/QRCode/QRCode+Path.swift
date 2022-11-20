@@ -41,6 +41,9 @@ public extension QRCode {
 		/// The background of the eye
 		public static let eyeBackground = Components(rawValue: 1 << 4)
 
+		/// The
+		public static let negative = Components(rawValue: 1 << 5)
+
 		/// The entire qrcode without offPixels (default presentation)
 		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
 
@@ -99,6 +102,15 @@ public extension QRCode {
 		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
 
 		let path = CGMutablePath()
+
+		if components.contains(.negative) {
+			var current = self.current.inverted()
+			if let template = logoTemplate {
+				current = template.applyingMask(matrix: current, dimension: sz)
+			}
+			path.addPath(shape.onPixels.generatePath(from: current, size: size))
+			return path
+		}
 
 		// The outer part of the eye
 		let eyeShape = shape.eye

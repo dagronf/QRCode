@@ -58,61 +58,78 @@ public extension QRCode {
 			}
 		}
 
-		// Eye background color
-
-		if let eyeBackgroundColor = design.style.eyeBackground,
-			let hexEyeBackgroundColor = design.style.eyeBackground?.hexRGBCode()
-		{
-			let eyeBackgroundPath = self.path(sz, components: .eyeBackground, shape: design.shape)
-			svg += "   <path fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(eyeBackgroundColor.alpha)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
-		}
-
-		// Pupil
-
-		do {
-			let eyePupilPath = self.path(sz, components: .eyePupil, shape: design.shape)
-			if let pupilFill = design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill") {
-				svg += "   <path \(pupilFill.styleAttribute) d=\"\(eyePupilPath.svgDataPath())\" />\n"
-				if let def = pupilFill.styleDefinition {
+		// If negatedOnPixelsOnly, superceed all other styles and display settings
+		if design.shape.negatedOnPixelsOnly {
+			var negatedMatrix = self.boolMatrix.inverted()
+			if let logoTemplate = logoTemplate {
+				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: CGFloat(dimension))
+			}
+			let negatedPath = design.shape.onPixels.generatePath(from: negatedMatrix, size: sz)
+			if let onPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels") {
+				svg += "   <path \(onPixels.styleAttribute) d=\"\(negatedPath.svgDataPath())\" />\n"
+				if let def = onPixels.styleDefinition {
 					pathDefinitions.append(def)
 				}
 			}
 		}
+		else {
 
-		// Eye
+			// Eye background color
 
-		do {
-			let eyeOuterPath = self.path(sz, components: .eyeOuter, shape: design.shape)
-			if let eyeOuterFill = design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill") {
-				svg += "   <path \(eyeOuterFill.styleAttribute) d=\"\(eyeOuterPath.svgDataPath())\" />\n"
-				if let def = eyeOuterFill.styleDefinition {
-					pathDefinitions.append(def)
-				}
+			if let eyeBackgroundColor = design.style.eyeBackground,
+				let hexEyeBackgroundColor = design.style.eyeBackground?.hexRGBCode()
+			{
+				let eyeBackgroundPath = self.path(sz, components: .eyeBackground, shape: design.shape)
+				svg += "   <path fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(eyeBackgroundColor.alpha)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
 			}
-		}
 
-		// Off pixels
+			// Pupil
 
-		do {
-			if let _ = design.shape.offPixels {
-				let offPixelsPath = self.path(sz, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
-				if let offPixels = design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels") {
-					svg += "   <path \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
-					if let def = offPixels.styleDefinition {
+			do {
+				let eyePupilPath = self.path(sz, components: .eyePupil, shape: design.shape)
+				if let pupilFill = design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill") {
+					svg += "   <path \(pupilFill.styleAttribute) d=\"\(eyePupilPath.svgDataPath())\" />\n"
+					if let def = pupilFill.styleDefinition {
 						pathDefinitions.append(def)
 					}
 				}
 			}
-		}
 
-		// On pixels
+			// Eye
 
-		do {
-			let onPixelsPath = self.path(sz, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
-			if let onPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels") {
-				svg += "   <path \(onPixels.styleAttribute) d=\"\(onPixelsPath.svgDataPath())\" />\n"
-				if let def = onPixels.styleDefinition {
-					pathDefinitions.append(def)
+			do {
+				let eyeOuterPath = self.path(sz, components: .eyeOuter, shape: design.shape)
+				if let eyeOuterFill = design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill") {
+					svg += "   <path \(eyeOuterFill.styleAttribute) d=\"\(eyeOuterPath.svgDataPath())\" />\n"
+					if let def = eyeOuterFill.styleDefinition {
+						pathDefinitions.append(def)
+					}
+				}
+			}
+
+			// Off pixels
+
+			do {
+				if let _ = design.shape.offPixels {
+					let offPixelsPath = self.path(sz, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
+					if let offPixels = design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels") {
+						svg += "   <path \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
+						if let def = offPixels.styleDefinition {
+							pathDefinitions.append(def)
+						}
+					}
+				}
+			}
+
+			// On pixels
+
+			do {
+				let onPixelsPath = self.path(sz, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
+				if let onPixels = design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels") {
+					svg += "   <path \(onPixels.styleAttribute) d=\"\(onPixelsPath.svgDataPath())\" />\n"
+					if let def = onPixels.styleDefinition {
+						pathDefinitions.append(def)
+					}
 				}
 			}
 		}

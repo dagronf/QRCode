@@ -19,6 +19,9 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+// Some helpful links
+// - https://digitash.com/technology/how-does-qr-code-technology-work/
+
 // QR Code Generator
 
 import CoreGraphics
@@ -123,7 +126,7 @@ public extension QRCode {
 
 	/// The dimension for an individual cell for the given image dimension
 	@objc func cellSize(forImageDimension dimension: Int) -> CGFloat {
-		CGFloat(dimension) / CGFloat(cellDimension)
+		CGFloat(dimension) / CGFloat(self.cellDimension)
 	}
 }
 

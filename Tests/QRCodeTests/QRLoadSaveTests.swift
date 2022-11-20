@@ -158,4 +158,19 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		XCTAssertEqual(4.5, loaded.inset, accuracy: 0.01)
 		XCTAssertNotNil(loaded.image)
 	}
+
+	func testLoadSaveNegatedOnPixelsOnly() throws {
+		let doc = QRCode.Document(utf8String: "checking negative value set")
+		doc.design.shape.negatedOnPixelsOnly = true
+
+		let settings = doc.settings()
+
+		let doc2 = try QRCode.Document(dictionary: settings)
+		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
+
+		doc2.design.shape.negatedOnPixelsOnly = false
+		let settings3 = doc2.settings()
+		let doc3 = try QRCode.Document(dictionary: settings3)
+		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
+	}
 }

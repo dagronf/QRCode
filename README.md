@@ -40,6 +40,9 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    </a>   
    <a href="./Art/qrcode-apple-watch.pdf">
       <img src="./Art/qrcode-apple-watch.png" width="200"/>
+   </a>
+   <a href="./Art/qrcode-design-negated.pdf">
+      <img src="./Art/qrcode-design-negated.png" width="200"/>
    </a>   
 </p>
 
@@ -295,10 +298,10 @@ doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 
 </details>
 
-### Data shape
+### 'OnPixels' shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
-however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for
+however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for a variety of styles.
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
