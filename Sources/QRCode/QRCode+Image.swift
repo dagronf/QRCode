@@ -194,13 +194,13 @@ public extension QRCode {
 		// Only works with a 1:1 rect
 		let sz = min(rect.width, rect.height)
 
-		let dx = sz / CGFloat(self.pixelSize)
-		let dy = sz / CGFloat(self.pixelSize)
+		let dx = sz / CGFloat(self.cellDimension)
+		let dy = sz / CGFloat(self.cellDimension)
 
 		let dm = min(dx, dy)
 
-		let xoff = (rect.width - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let yoff = (rect.height - (CGFloat(self.pixelSize) * dm)) / 2.0
+		let xoff = (rect.width - (CGFloat(self.cellDimension) * dm)) / 2.0
+		let yoff = (rect.height - (CGFloat(self.cellDimension) * dm)) / 2.0
 
 		// This is the final position for the generated qr code
 		let finalRect = CGRect(x: xoff, y: yoff, width: sz, height: sz)

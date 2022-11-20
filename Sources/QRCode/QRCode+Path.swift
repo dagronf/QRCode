@@ -77,7 +77,7 @@ public extension QRCode {
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: LogoTemplate? = nil
 	) -> CGPath {
-		if self.pixelSize == 0 {
+		if self.cellDimension == 0 {
 			// There is no data in the qrcode
 			return CGPath(rect: .zero, transform: nil)
 		}
@@ -85,13 +85,13 @@ public extension QRCode {
 		// The qrcode size is the smallest dimension of the rect
 		let sz = min(size.width, size.height)
 
-		let dx = sz / CGFloat(self.pixelSize)
-		let dy = sz / CGFloat(self.pixelSize)
+		let dx = sz / CGFloat(self.cellDimension)
+		let dy = sz / CGFloat(self.cellDimension)
 
 		let dm = min(dx, dy)
 
-		let xoff = (size.width - (CGFloat(self.pixelSize) * dm)) / 2.0
-		let yoff = (size.height - (CGFloat(self.pixelSize) * dm)) / 2.0
+		let xoff = (size.width - (CGFloat(self.cellDimension) * dm)) / 2.0
+		let yoff = (size.height - (CGFloat(self.cellDimension) * dm)) / 2.0
 		let posTransform = CGAffineTransform(translationX: xoff, y: yoff)
 
 		let fitScale = (dm * 9) / 90
@@ -123,7 +123,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var bl = p.copy(using: &blt)!
-			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
@@ -133,7 +133,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var br = p.copy(using: &tlt)!
-			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
 			path.addPath(br)
 		}
@@ -152,7 +152,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var bl = p.copy(using: &blt)!
-			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
@@ -162,7 +162,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var br = p.copy(using: &tlt)!
-			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
 			path.addPath(br)
 		}
@@ -184,7 +184,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var bl = p.copy(using: &blt)!
-			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.pixelSize)) - (9 * dm))
+			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
@@ -194,7 +194,7 @@ public extension QRCode {
 				.concatenating(scaledTopLeft)
 
 			var br = p.copy(using: &tlt)!
-			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.pixelSize)) - (9 * dm), y: 0)
+			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
 			path.addPath(br)
 		}

@@ -69,8 +69,14 @@ import UIKit
 		set { self._document.logoTemplate = newValue; self.rebuildQRCode() }
 	}
 
-	/// This is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
-	@objc public var pixelSize: Int { self._document.pixelSize }
+	/// Returns the number of cells for a dimension in the QR code is the pixel dimension for the QR Code.  You shouldn't make the view smaller than this
+	@objc public var cellDimension: Int { self._document.cellDimension }
+
+	/// The dimension for an individual cell for the given image dimension
+	@objc public var cellSize: CGFloat {
+		let dimension = min(self.bounds.width, self.bounds.height)
+		return self._document.cellSize(forImageDimension: Int(dimension))
+	}
 
 	/// Create a QRCodeView with default settings
 	@objc public convenience init() {

@@ -90,11 +90,6 @@ import Foundation
 	/// The QR code content as a 2D array of bool values
 	public internal(set) var current = BoolMatrix()
 
-	/// This is the pixel dimension for the QR Code.
-	@objc public var pixelSize: Int {
-		return self.current.dimension
-	}
-
 	/// Returns a copy of the boolean matrix representation of the current QR code data
 	@objc var boolMatrix: BoolMatrix { self.current }
 
@@ -118,6 +113,18 @@ import Foundation
 	// The mask represents the pixels that are NOT drawn
 	internal var currentMask: BoolMatrix? = nil
 	internal var currentErrorCorrection: ErrorCorrection = .default
+}
+
+// MARK: - Cell information
+
+public extension QRCode {
+	/// This is the number of cells along any edge of the qr code
+	@objc var cellDimension: Int { return self.current.dimension }
+
+	/// The dimension for an individual cell for the given image dimension
+	@objc func cellSize(forImageDimension dimension: Int) -> CGFloat {
+		CGFloat(dimension) / CGFloat(cellDimension)
+	}
 }
 
 // MARK: - Copying
@@ -162,11 +169,11 @@ internal extension QRCode {
 			if col < 9 {
 				return true
 			}
-			if col >= (self.pixelSize - 9) {
+			if col >= (self.cellDimension - 9) {
 				return true
 			}
 		}
-		else if row >= (self.pixelSize - 9), col < 9 {
+		else if row >= (self.cellDimension - 9), col < 9 {
 			return true
 		}
 		return false

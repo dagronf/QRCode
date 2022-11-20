@@ -145,11 +145,20 @@ public extension QRCode {
 			self.regenerate()
 		}
 
-		/// This is the pixel dimension for the current QR Code.
-		@objc public var pixelSize: Int { self.qrcode.pixelSize }
-
 		// The qrcode content.
 		internal let qrcode: QRCode
+	}
+}
+
+// MARK: - Cell information
+
+public extension QRCode.Document {
+	/// This is the number of cells along any edge of the qr code
+	@objc var cellDimension: Int { self.qrcode.cellDimension }
+
+	/// The dimension for an individual cell for the given image dimension
+	@objc func cellSize(forImageDimension dimension: Int) -> CGFloat {
+		self.qrcode.cellSize(forImageDimension: dimension)
 	}
 }
 

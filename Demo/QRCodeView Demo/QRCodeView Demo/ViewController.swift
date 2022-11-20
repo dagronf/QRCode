@@ -39,7 +39,7 @@ class ViewController: NSViewController {
 		q4.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
 
 		q4.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.1, cornerRadiusFraction: 0.8)
-		q4.design.style.offPixels = QRCode.FillStyle.Solid(1, alpha: 0.1)
+		q4.design.style.offPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.1)
 
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
