@@ -22,7 +22,9 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - Imaging
+import ImageIO
+
+// MARK: - CGImage
 
 public extension QRCode {
 	/// Returns a CGImage representation of the qr code using the specified style
@@ -74,7 +76,11 @@ public extension QRCode {
 		let im = context.makeImage()
 		return im
 	}
+}
 
+// MARK: - PDF
+
+public extension QRCode {
 	/// Returns an pdf representation of the qr code using the specified style
 	/// - Parameters:
 	///   - size: The page size of the generated PDF
@@ -100,6 +106,7 @@ public extension QRCode {
 	///   - size: The page size of the generated PDF
 	///   - pdfResolution: The resolution of the pdf output
 	///   - design: The design to use when generating the pdf output
+	///   - logoTemplate: The logo template to apply to the qr code
 	/// - Returns: A data object containing the PDF representation of the QR code
 	@objc func pdfData(
 		_ size: CGSize,
@@ -118,185 +125,171 @@ public extension QRCode {
 			self.draw(ctx: ctx, rect: drawRect, design: design, logoTemplate: logoTemplate)
 		}
 	}
+}
 
+// MARK: - PNG
+
+public extension QRCode {
 	/// Return a PNG representation of the QR code
 	/// - Parameters:
 	///   - dimension: The dimensions of the image to create
+	///   - dpi: The dpi for the resulting images
 	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
 	/// - Returns: The PNG data
 	@objc func pngData(
 		dimension: Int,
-		scale: CGFloat = 1,
+		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> Data? {
-#if os(macOS)
-		guard
-			let image = self.nsImage(
+		return self.pngData(
 			CGSize(dimension: dimension),
-			scale: scale,
+			dpi: dpi,
 			design: design,
-			logoTemplate: logoTemplate)
-		else {
-			return nil
-		}
-		return image.pngRepresentation()
-#else
-		guard
-			let image = self.uiImage(
-				CGSize(dimension: dimension),
-				scale: scale,
-				design: design,
-				logoTemplate: logoTemplate)
-		else {
-			return nil
-		}
-		return image.pngData()
-#endif
+			logoTemplate: logoTemplate
+		)
 	}
 
+	/// Return a PNG representation of the QR code
+	/// - Parameters:
+	///   - size: The size of the resulting image
+	///   - dpi: The dpi for the resulting images
+	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
+	/// - Returns: The PNG data
+	@objc func pngData(
+		_ size: CGSize,
+		dpi: CGFloat = 72,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> Data? {
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
+			let mutableData = CFDataCreateMutable(nil, 0),
+			let destination = CGImageDestinationCreateWithData(mutableData, "public.png" as CFString, 1, nil)
+		{
+			let options = optionsForScale(size: size, dpi: dpi)
+			CGImageDestinationAddImage(destination, image, options)
+			CGImageDestinationFinalize(destination)
+			return mutableData as Data
+		}
+		return nil
+	}
+}
+
+// MARK: - TIFF
+
+public extension QRCode {
+	/// Return a TIFF representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
+	///   - dpi: The dpi for the resulting images
+	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
+	/// - Returns: The TIFF data
+	@objc func tiffData(
+		dimension: Int,
+		dpi: CGFloat = 72,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> Data? {
+		return self.tiffData(
+			CGSize(dimension: dimension),
+			dpi: dpi,
+			design: design,
+			logoTemplate: logoTemplate
+		)
+	}
+
+	/// Return a TIFF representation of the QR code
+	/// - Parameters:
+	///   - size: The size of the resulting image
+	///   - dpi: The dpi for the resultant image
+	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
+	/// - Returns: The TIFF data
+	@objc func tiffData(
+		_ size: CGSize,
+		dpi: CGFloat = 72,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> Data? {
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
+			let mutableData = CFDataCreateMutable(nil, 0),
+			let destination = CGImageDestinationCreateWithData(mutableData, "public.tiff" as CFString, 1, nil)
+		{
+			let options = optionsForScale(size: size, dpi: dpi)
+			CGImageDestinationAddImage(destination, image, options)
+			CGImageDestinationFinalize(destination)
+			return mutableData as Data
+		}
+		return nil
+	}
+}
+
+// MARK: - JPEG
+
+public extension QRCode {
 	/// Return a JPEG representation of the QR code
 	/// - Parameters:
 	///   - dimension: The dimensions of the image to create
+	///   - dpi: The dpi for the resulting images
 	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
 	///   - compression: The compression level when generating the JPEG file (0.0 ... 1.0)
 	/// - Returns: The JPEG data
 	@objc func jpegData(
 		dimension: Int,
+		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		logo: CGImage? = nil,
+		compression: Double = 0.9
+	) -> Data? {
+		return self.jpegData(
+			CGSize(dimension: dimension),
+			dpi: dpi,
+			design: design,
+			logoTemplate: logoTemplate,
+			compression: compression
+		)
+	}
+
+	@objc func jpegData(
+		_ size: CGSize,
+		dpi: CGFloat = 72,
+		design: QRCode.Design = QRCode.Design(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
 		compression: Double = 0.9
 	) -> Data? {
 		guard (0.0 ... 1.0).contains(compression) else {
 			return nil
 		}
-#if os(macOS)
-		guard let image = self.nsImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate) else {
-			return nil
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
+			let mutableData = CFDataCreateMutable(nil, 0),
+			let destination = CGImageDestinationCreateWithData(mutableData, "public.jpeg" as CFString, 1, nil)
+		{
+			let options = optionsForScale(size: size, dpi: dpi, compression: compression)
+			CGImageDestinationAddImage(destination, image, options)
+			CGImageDestinationFinalize(destination)
+			return mutableData as Data
 		}
-		return image.jpegRepresentation(compression: compression)
-#else
-		guard let image = self.uiImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate) else {
-			return nil
-		}
-		return image.jpegData(compressionQuality: compression)
-#endif
+		return nil
 	}
+}
 
-	/// Draw the current qrcode into the context using the specified style
-	@objc func draw(
-		ctx: CGContext,
-		rect: CGRect,
-		design: QRCode.Design,
-		logoTemplate: QRCode.LogoTemplate? = nil
-	) {
-		// Only works with a 1:1 rect
-		let sz = min(rect.width, rect.height)
+// MARK: - Private
 
-		let dx = sz / CGFloat(self.cellDimension)
-		let dy = sz / CGFloat(self.cellDimension)
-
-		let dm = min(dx, dy)
-
-		let xoff = (rect.width - (CGFloat(self.cellDimension) * dm)) / 2.0
-		let yoff = (rect.height - (CGFloat(self.cellDimension) * dm)) / 2.0
-
-		// This is the final position for the generated qr code
-		let finalRect = CGRect(x: xoff, y: yoff, width: sz, height: sz)
-
-		let style = design.style
-
-		// Fill the background first
-		let backgroundStyle = style.background ?? QRCode.FillStyle.clear
-		ctx.usingGState { context in
-			backgroundStyle.fill(ctx: context, rect: finalRect)
-		}
-
-		if design.shape.negatedOnPixelsOnly {
-			var negatedMatrix = self.boolMatrix.inverted()
-			if let logoTemplate = logoTemplate {
-				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: sz)
-			}
-			let negatedPath = design.shape.onPixels.generatePath(from: negatedMatrix, size: CGSize(dimension: sz))
-			ctx.usingGState { context in
-				style.onPixels.fill(ctx: context, rect: rect, path: negatedPath)
-			}
-		}
-		else {
-			// Draw the background color behind the eyes
-			if let eColor = design.style.eyeBackground {
-				let eyeBackgroundPath = self.path(rect.size, components: .eyeBackground, shape: design.shape)
-				ctx.usingGState { context in
-					ctx.setFillColor(eColor)
-					ctx.addPath(eyeBackgroundPath)
-					ctx.fillPath()
-				}
-			}
-
-			// Draw the outer eye
-			let eyeOuterPath = self.path(rect.size, components: .eyeOuter, shape: design.shape)
-			ctx.usingGState { context in
-				style.actualEyeStyle.fill(ctx: context, rect: rect, path: eyeOuterPath)
-			}
-
-			// Draw the eye 'pupil'
-			let eyePupilPath = self.path(rect.size, components: .eyePupil, shape: design.shape)
-			ctx.usingGState { context in
-				style.actualPupilStyle.fill(ctx: context, rect: rect, path: eyePupilPath)
-			}
-
-			// Now, the 'on' pixels background
-			if let c = design.style.onPixelsBackground {
-				onPixelBackgroundDesign.style.onPixels = QRCode.FillStyle.Solid(c)
-				let qrPath2 = self.path(rect.size, components: .onPixels, shape: onPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
-				ctx.usingGState { context in
-					onPixelBackgroundDesign.style.onPixels.fill(ctx: context, rect: rect, path: qrPath2)
-				}
-			}
-
-			// Now, the 'on' pixels
-			let qrPath = self.path(rect.size, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate)
-			ctx.usingGState { context in
-				style.onPixels.fill(ctx: context, rect: rect, path: qrPath)
-			}
-
-			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
-			if let s = style.offPixels, let _ = design.shape.offPixels {
-
-				// Draw the 'off' pixels background IF the caller has set a color
-				if let c = design.style.offPixelsBackground {
-					offPixelBackgroundDesign.style.offPixels = QRCode.FillStyle.Solid(c)
-					let qrPath2 = self.path(rect.size, components: .offPixels, shape: offPixelBackgroundDesign.shape, logoTemplate: logoTemplate)
-					ctx.usingGState { context in
-						offPixelBackgroundDesign.style.offPixels?.fill(ctx: context, rect: rect, path: qrPath2)
-					}
-				}
-
-				let qrPath = self.path(rect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate)
-				ctx.usingGState { context in
-					s.fill(ctx: context, rect: rect, path: qrPath)
-				}
-			}
-		}
-
-		if let logoTemplate = logoTemplate, let logo = logoTemplate.image {
-			ctx.saveGState()
-			// Get the absolute rect within the generated image of the mask path
-			let absMask = logoTemplate.absolutePathForMaskPath(dimension: sz, flipped: true)
-
-			// logo drawing is flipped.
-			ctx.scaleBy(x: 1, y: -1)
-			ctx.translateBy(x: xoff, y: yoff-sz)
-
-			// Clip to the mask path.
-			ctx.addPath(absMask)
-			ctx.clip()
-
-			// Draw the logo image into the mask bounds
-			ctx.draw(logo, in: absMask.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset))
-			ctx.restoreGState()
-		}
-
+private func optionsForScale(size: CGSize, dpi: CGFloat? = nil, compression: CGFloat? = nil) -> CFDictionary? {
+	var opts: [CFString: Any] = [:]
+	if let dpi = dpi {
+		opts[kCGImagePropertyPixelWidth] = size.width
+		opts[kCGImagePropertyPixelHeight] = size.height
+		opts[kCGImagePropertyDPIWidth] = dpi
+		opts[kCGImagePropertyDPIHeight] = dpi
 	}
+	if let compression = compression {
+		opts[kCGImageDestinationLossyCompressionQuality] = compression
+	}
+	if opts.count > 0 { return opts as CFDictionary }
+	return nil
 }

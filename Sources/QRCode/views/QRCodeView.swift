@@ -274,7 +274,7 @@ extension QRCodeView {
 
 			// Generate drag representation
 			let sz = CGSize(width: 128, height: 128)
-			let image = self._document.nsImage(sz, scale: 2)
+			let image = self._document.nsImage(sz, dpi: 144)
 
 			draggingItem.setDraggingFrame(CGRect(origin: .zero, size: sz), contents: image)
 
@@ -304,11 +304,11 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
 		else if type == .tiff,
-			let imageData = self._document.nsImage(self.dragImageSize, scale: 2)?.tiffRepresentation {
+			let imageData = self._document.nsImage(self.dragImageSize, dpi: 144)?.tiffRepresentation {
 			pasteboard.setData(imageData, forType: .tiff)
 		}
 		else if type == .png,
-			let pngdata = self._document.nsImage(self.dragImageSize, scale: 2)?.pngRepresentation() {
+			let pngdata = self._document.nsImage(self.dragImageSize, dpi: 144)?.pngRepresentation() {
 			pasteboard.setData(pngdata, forType: .png)
 		}
 		else if type == PasteboardFilePromiseContent {

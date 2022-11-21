@@ -279,7 +279,7 @@ Examples:
 		case .clipboard:
 			qrCode.addToPasteboard(outputSize, design: design, logoTemplate: logoTemplate)
 		case .png:
-			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design, logoTemplate: logoTemplate) else {
+			guard let nsImage = qrCode.nsImage(outputSize, design: design, logoTemplate: logoTemplate) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}
@@ -297,7 +297,7 @@ Examples:
 			}
 
 		case .jpg:
-			guard let nsImage = qrCode.nsImage(outputSize, scale: 1, design: design, logoTemplate: logoTemplate) else {
+			guard let nsImage = qrCode.nsImage(outputSize, design: design, logoTemplate: logoTemplate) else {
 				Swift.print("Unable to generate image from qrcode")
 				QRCodeGen.exit(withError: ExitCode(-6))
 			}

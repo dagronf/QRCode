@@ -199,7 +199,7 @@ class ViewController: NSViewController {
 				image: image.cgImage(forProposedRect: nil, context: nil, hints: nil)
 			)
 
-			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
 			if let tiff = logoQRCode.tiffRepresentation,
 				let tiffData = NSBitmapImageRep(data: tiff)
 			{
@@ -222,7 +222,7 @@ class ViewController: NSViewController {
 				image: NSImage(named: "square-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!
 			)
 
-			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
 			if let tiff = logoQRCode.tiffRepresentation,
 				let tiffData = NSBitmapImageRep(data: tiff)
 			{
@@ -241,7 +241,7 @@ class ViewController: NSViewController {
 				image: NSImage(named: "instagram-icon")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
 			)
 
-			let logoQRCode = doc.platformImage(dimension: 300, scale: 2)!
+			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
 			if let tiff = logoQRCode.tiffRepresentation,
 				let tiffData = NSBitmapImageRep(data: tiff)
 			{
@@ -281,6 +281,17 @@ class ViewController: NSViewController {
 
 			let pdfData = doc.pdfData(dimension: 200)!
 			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-basic-logo.pdf"))
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
+			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
+			doc.design.shape.negatedOnPixelsOnly = true
+			doc.design.style.background = QRCode.FillStyle.Solid(gray: 0)
+			doc.design.foregroundStyle(QRCode.FillStyle.Solid(gray: 1))
+
+			let pdfData = doc.pngData(dimension: 600, dpi: 144)!
+			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-negated.png"))
 		}
 
 		NSWorkspace.shared.open(tempURL)

@@ -108,6 +108,76 @@ final class QRCodeTests: XCTestCase {
 		let nsi = NSImage(cgImage: cgi, size: CGSize(dimension: 300))
 		Swift.print(nsi)
 		#endif
-
 	}
+
+	func testGenerateImagesAtDifferentResolutions() throws {
+		let doc = QRCode.Document(utf8String: "Generate content QR", errorCorrection: .high, generator: __testGenerator)
+		doc.design.shape.onPixels = QRCode.PixelShape.Circle()
+
+		let dpis = [(300, 72.0, "", 300), (600, 144.0, "@2x", 300), (900, 216.0, "@3x", 300)]
+#if os(macOS)
+		do {
+			for dpi in dpis {
+				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
+				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).png")
+				let im = try XCTUnwrap(NSImage(contentsOf: url))
+				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsHigh)
+			}
+		}
+
+		do {
+			for dpi in dpis {
+				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
+				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).tiff")
+				let im = try XCTUnwrap(NSImage(contentsOf: url))
+				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsHigh)
+			}
+		}
+
+		do {
+			for dpi in dpis {
+				let data = try XCTUnwrap(doc.jpegData(dimension: dpi.0, dpi: dpi.1, compression: 0.4))
+				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).jpg")
+				let im = try XCTUnwrap(NSImage(contentsOf: url))
+				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
+				XCTAssertEqual(dpi.0, im.representations[0].pixelsHigh)
+			}
+		}
+#else
+		do {
+			for dpi in dpis {
+				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
+				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).png")
+				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
+				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
+			}
+		}
+
+		do {
+			for dpi in dpis {
+				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
+				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).tiff")
+				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
+				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
+			}
+		}
+
+#endif
+
+		do {
+			let data = try XCTUnwrap(doc.pdfData(dimension: 300))
+			try data.writeToTempFile(named: "dpi-test-output.pdf")
+		}
+
+		do {
+			let data = try XCTUnwrap(doc.svgData(dimension: 300))
+			try data.writeToTempFile(named: "dpi-test-output.svg")
+		}
+	}
+
 }

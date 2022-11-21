@@ -82,7 +82,7 @@ public struct QRCodeDocumentUIView: View {
 
 	public init(document: QRCode.Document, cachedImageSize: Int = 300) {
 		self.document = document
-		self._image = document.uiImage(dimension: cachedImageSize, scale: 1)!
+		self._image = document.uiImage(dimension: cachedImageSize)!
 	}
 
 	public var body: some View {

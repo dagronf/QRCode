@@ -18,7 +18,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let svg = code.svg(dimension: 600)
 			try svg.writeToTempFile(named: "testBasicMask1.svg")
 
-			let image = code.platformImage(dimension: 300, scale: 2)!
+			let image = code.platformImage(dimension: 300, dpi: 144)!
 			let data = image.pngRepresentation()!
 			try data.writeToTempFile(named: "testBasicMask1.png")
 		}
@@ -31,7 +31,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let svg = code.svg(dimension: 600)
 			try svg.writeToTempFile(named: "testBasicMask2.svg")
 
-			let image = code.platformImage(dimension: 300, scale: 2)!
+			let image = code.platformImage(dimension: 300, dpi: 144)!
 			let data = image.pngRepresentation()!
 			try data.writeToTempFile(named: "testBasicMask2.png")
 		}
@@ -49,7 +49,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		code.logoTemplate = t
 		#if os(macOS)
-		let image = try XCTUnwrap(code.nsImage(dimension: 300, scale: 1))
+		let image = try XCTUnwrap(code.nsImage(dimension: 300))
 		_ = image
 		#endif
 

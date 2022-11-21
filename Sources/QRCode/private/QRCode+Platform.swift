@@ -39,18 +39,18 @@ public extension QRCode {
 	/// Returns an NSImage representation of the qr code using the specified style
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale
+	///   - dpi: The dpi for the resulting image
 	///   - design: The design for the qr code
 	/// - Returns: The image, or nil if an error occurred
 	@objc func nsImage(
 		_ size: CGSize,
-		scale: CGFloat = 1,
+		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> NSImage? {
-		let coreSize = size * scale
-		guard let qrImage = self.cgImage(coreSize, design: design, logoTemplate: logoTemplate) else { return nil }
-		let image = NSImage(cgImage: qrImage, size: size)
+		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
+		let dpid = size * (72.0 / dpi)
+		let image = NSImage(cgImage: qrImage, size: dpid)
 		return image
 	}
 }
@@ -66,13 +66,12 @@ public extension QRCode {
 	/// - Returns: The image, or nil if an error occurred
 	@objc func uiImage(
 		_ size: CGSize,
-		scale: CGFloat = 1,
+		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> UIImage? {
-		let coreSize = size * scale
-		guard let qrImage = self.cgImage(coreSize, design: design, logoTemplate: logoTemplate) else { return nil }
-		let im = UIImage(cgImage: qrImage, scale: scale, orientation: .up)
+		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
+		let im = UIImage(cgImage: qrImage, scale: (dpi / 72.0), orientation: .up)
 		return im
 	}
 }
@@ -84,19 +83,19 @@ public extension QRCode {
 	/// Create a SwiftUI Image object for the QR code
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	///   - design: The design for the qr code
 	///   - label: The label associated with the image. SwiftUI uses the label for accessibility.
 	/// - Returns: An image, or nil if an error occurred
 	func imageUI(
 		_ size: CGSize,
-		scale: CGFloat = 1,
+		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		label: Text) -> SwiftUI.Image?
 	{
 		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
-		return SwiftUI.Image(qrImage, scale: scale, label: label)
+		return SwiftUI.Image(qrImage, scale: dpi / 72.0, label: label)
 	}
 }
 #endif

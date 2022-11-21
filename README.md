@@ -102,7 +102,7 @@ doc.design.foregroundColor(CGColor.blue)
 let path = doc.path(CGSize(width: 400, height: 400))
 
 // Generate an image using the default styling (square, black foreground, white background) with 3x resolution
-let image = doc.uiImage(CGSize(width: 400, height: 400), scale: 3)
+let image = doc.uiImage(CGSize(width: 400, height: 400), dpi: 216)
 
 // Generate pdf data containing the qr code
 let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
@@ -540,19 +540,19 @@ The components allow the caller to generate individual paths for the QR code com
 ### Generating a styled image
 
 ```swift
-@objc func cgImage(_ size: CGSize, scale: CGFloat = 1) -> CGImage?
+@objc func cgImage(_ size: CGSize, dpi: CGFloat = 72.0) -> CGImage?
 ```
 
 Generate an CGImage from the QR Code, using an (optional) design object for styling the QR code
 
 ```swift
-@objc func nsImage(_ size: CGSize, scale: CGFloat = 1) -> NSImage?
+@objc func nsImage(_ size: CGSize, dpi: CGFloat = 72.0) -> NSImage?
 ```
 
 *(macOS only)* Generate an NSImage from the QR Code, using an (optional) design object for styling the QR code
 
 ```swift
-@objc func uiImage(_ size: CGSize, scale: CGFloat = 1) -> UIImage?
+@objc func uiImage(_ size: CGSize, dpi: CGFloat = 72.0) -> UIImage?
 ```
 
 *(iOS/tvOS/watchOS/macCatalyst only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
@@ -583,8 +583,8 @@ Adds multiple representations of the QRCode to the specified pasteboard
 | iOS      | `PDF`/`PNG`        |
 
 ```swift
-@objc func addToPasteboard(pasteboard: NSPasteboard = NSPasteboard.general, _ size: CGSize, scale: CGFloat = 2)
-@objc func addToPasteboard(pasteboard: UIPasteboard = UIPasteboard.general, _ size: CGSize, scale: CGFloat = 2)
+@objc func addToPasteboard(pasteboard: NSPasteboard = NSPasteboard.general, _ size: CGSize, dpi: CGFloat = 72.0)
+@objc func addToPasteboard(pasteboard: UIPasteboard = UIPasteboard.general, _ size: CGSize, dpi: CGFloat = 72.0)
 ```
 
 ### Generate a text representation of the QR Code

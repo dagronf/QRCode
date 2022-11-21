@@ -454,10 +454,12 @@ public extension QRCode.Document {
 public extension QRCode.Document {
 	/// The supported exportable image types
 	enum ExportType {
-		/// PNG export. Scale parameter represents the DPI (eg. scale==2 -> 144 dpi)
-		case png(scale: CGFloat = 1)
+		/// PNG export
+		case png(dpi: CGFloat = 72.0)
 		/// JPEG export. Default compression value is 0.75
-		case jpg(compression: CGFloat = 0.75)
+		case jpg(dpi: CGFloat = 72.0, compression: CGFloat = 0.75)
+		/// TIFF export
+		case tiff(dpi: CGFloat = 72.0)
 		/// PDF export
 		case pdf(pdfResolution: CGFloat = 72.0)
 		/// Binary representation of an SVG file
@@ -467,7 +469,8 @@ public extension QRCode.Document {
 		var fileExtension: String {
 			switch self {
 			case .png(_): return "png"
-			case .jpg(_): return "jpg"
+			case .jpg(_,_): return "jpg"
+			case .tiff(_): return "tiff"
 			case .pdf(_): return "pdf"
 			case .svg: return "svg"
 			}
@@ -481,14 +484,16 @@ public extension QRCode.Document {
 	/// - Returns: Data representation of the image
 	@inlinable func imageData(_ type: ExportType, dimension: Int) -> Data? {
 		switch type {
-		case .png(let scale):
-			return self.pngData(dimension: dimension, scale: scale)
-		case .jpg(let compression):
-			return self.jpegData(dimension: dimension, compression: compression)
+		case .png(let dpi):
+			return self.pngData(dimension: dimension, dpi: dpi)
+		case .jpg(let dpi, let compression):
+			return self.jpegData(dimension: dimension, dpi: dpi, compression: compression)
 		case .pdf(let resolution):
 			return self.pdfData(dimension: dimension, pdfResolution: resolution)
 		case .svg:
 			return self.svgData(dimension: dimension)
+		case .tiff(let dpi):
+			return self.tiffData(dimension: dimension, dpi: dpi)
 		}
 	}
 }
@@ -523,10 +528,10 @@ public extension QRCode.Document {
 	/// - Parameters:
 	///   - dimension: The size of the QR code
 	/// - Returns: The PNG data
-	func pngData(dimension: Int, scale: CGFloat = 1) -> Data? {
+	@objc func pngData(dimension: Int, dpi: CGFloat = 72.0) -> Data? {
 		return self.qrcode.pngData(
 			dimension: dimension,
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
@@ -535,14 +540,30 @@ public extension QRCode.Document {
 	/// Returns a JPEG representation of the QRCode
 	/// - Parameter
 	///   - dimension: The size of the QR code
+	///   - dpi: The DPI of the resulting image
 	///   - compression: The compression level to use when generating the JPEG (0.0 -> 1.0)
 	/// - Returns: The PNG data
-	func jpegData(dimension: Int, compression: Double = 0.9) -> Data? {
+	@objc func jpegData(dimension: Int, dpi: CGFloat = 72.0, compression: Double = 0.9) -> Data? {
 		return self.qrcode.jpegData(
 			dimension: dimension,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate,
 			compression: compression.clamped(to: 0.0 ... 1.0)
+		)
+	}
+
+	/// Return a TIFF representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimensions of the image to create
+	///   - dpi: The DPI of the resulting image
+	/// - Returns: The TIFF data
+	@objc func tiffData(dimension: Int, dpi: CGFloat = 72.0) -> Data? {
+		return self.qrcode.tiffData(
+			dimension: dimension,
+			dpi: dpi,
+			design: self.design,
+			logoTemplate: self.logoTemplate
 		)
 	}
 
@@ -550,12 +571,12 @@ public extension QRCode.Document {
 	/// Returns a platform specific representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func platformImage(dimension: Int, scale: CGFloat = 1) -> DSFImage? {
+	@objc func platformImage(dimension: Int, dpi: CGFloat = 72.0) -> DSFImage? {
 		return self.qrcode.nsImage(
 			CGSize(dimension: dimension),
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
@@ -564,12 +585,12 @@ public extension QRCode.Document {
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func nsImage(dimension: Int, scale: CGFloat = 1) -> NSImage? {
+	@objc func nsImage(dimension: Int, dpi: CGFloat = 72.0) -> NSImage? {
 		return self.qrcode.nsImage(
 			CGSize(dimension: dimension),
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
@@ -578,12 +599,12 @@ public extension QRCode.Document {
 	/// Returns an NSImage representation of the qr code document
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func nsImage(_ size: CGSize, scale: CGFloat = 1) -> NSImage? {
+	@objc func nsImage(_ size: CGSize, dpi: CGFloat = 72.0) -> NSImage? {
 		return self.qrcode.nsImage(
 			size,
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
@@ -593,12 +614,12 @@ public extension QRCode.Document {
 	/// Returns a platform specific representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func platformImage(dimension: Int, scale: CGFloat = 1) -> DSFImage? {
+	@objc func platformImage(dimension: Int, dpi: CGFloat = 72.0) -> DSFImage? {
 		return self.qrcode.uiImage(
 			CGSize(dimension: dimension),
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate
 		)
@@ -607,28 +628,28 @@ public extension QRCode.Document {
 	/// Returns a UIImage representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(dimension: Int, scale: CGFloat = 1) -> UIImage? {
-		self.uiImage(CGSize(dimension: dimension), scale: scale)
+	@objc func uiImage(dimension: Int, dpi: CGFloat = 72.0) -> UIImage? {
+		self.uiImage(CGSize(dimension: dimension), dpi: dpi)
 	}
 
 	/// Returns a UIImage representation of the qr code document
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(_ size: CGSize, scale: CGFloat = 1) -> UIImage? {
+	@objc func uiImage(_ size: CGSize, dpi: CGFloat = 72.0) -> UIImage? {
 		guard
 			let qrImage = self.qrcode.cgImage(
-				size * scale,
+				size,
 				design: self.design,
 				logoTemplate: self.logoTemplate
 			)
 		else {
 			return nil
 		}
-		return UIImage(cgImage: qrImage, scale: scale, orientation: .up)
+		return UIImage(cgImage: qrImage, scale: dpi / 72.0, orientation: .up)
 	}
 #endif
 
@@ -636,14 +657,14 @@ public extension QRCode.Document {
 	/// Create a SwiftUI Image object for the QR code
 	/// - Parameters:
 	///   - size: The pixel size of the image to generate
-	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	///   - dpi: The DPI of the resulting image
 	///   - label: The label associated with the image. SwiftUI uses the label for accessibility.
 	/// - Returns: An image, or nil if an error occurred
 	@available(macOS 11, iOS 13, tvOS 13, *)
-	func imageUI(_ size: CGSize, scale: CGFloat = 1, label: Text) -> SwiftUI.Image? {
+	func imageUI(_ size: CGSize, dpi: CGFloat = 72.0, label: Text) -> SwiftUI.Image? {
 		return self.qrcode.imageUI(
 			size,
-			scale: scale,
+			dpi: dpi,
 			design: self.design,
 			logoTemplate: self.logoTemplate,
 			label: label
