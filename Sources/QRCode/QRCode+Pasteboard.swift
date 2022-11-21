@@ -82,6 +82,14 @@ public extension QRCode {
 		if let pngData = image.pngRepresentation() {
 			pasteboard.setData(pngData, forType: .png)
 		}
+
+		if let svgData = self.svgData(
+			dimension: Int(size.width.rounded(.towardZero)),
+			design: design,
+			logoTemplate: logoTemplate)
+		{
+			pasteboard.setData(svgData, forType: NSPasteboard.PasteboardType(rawValue: "public.svg-image"))
+		}
 	}
 
 #elseif os(iOS)

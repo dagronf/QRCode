@@ -30,6 +30,7 @@ public extension QRCode {
 	/// - Parameters:
 	///   - dimension: The dimension of the output svg
 	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to use when generating the svg data
 	/// - Returns: An SVG representation of the QR code
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
@@ -169,5 +170,22 @@ public extension QRCode {
 		svg += "</svg>\n"
 
 		return svg
+	}
+
+	/// Returns utf8-encoded SVG data for this qr code
+	/// - Parameters:
+	///   - dimension: The dimension of the output svg
+	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to use when generating the svg data
+	/// - Returns: An SVG representation of the QR code
+	///
+	/// The string always uses Unix newlines (\n), regardless of the platform.
+	@objc func svgData(
+		dimension: Int,
+		design: QRCode.Design,
+		logoTemplate: QRCode.LogoTemplate? = nil
+	) -> Data? {
+		let str = self.svg(dimension: dimension, design: design, logoTemplate: logoTemplate)
+		return str.data(using: .utf8, allowLossyConversion: false)
 	}
 }

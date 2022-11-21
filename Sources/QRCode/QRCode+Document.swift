@@ -419,8 +419,7 @@ public extension QRCode.Document {
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svgData(dimension: Int) -> Data? {
-		let str = self.svg(dimension: dimension)
-		return str.data(using: .utf8, allowLossyConversion: false)
+		self.qrcode.svgData(dimension: dimension, design: design, logoTemplate: logoTemplate)
 	}
 }
 
@@ -553,7 +552,7 @@ public extension QRCode.Document {
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func platformImage(dimension: CGFloat, scale: CGFloat = 1) -> DSFImage? {
+	@objc func platformImage(dimension: Int, scale: CGFloat = 1) -> DSFImage? {
 		return self.qrcode.nsImage(
 			CGSize(dimension: dimension),
 			scale: scale,
@@ -567,7 +566,7 @@ public extension QRCode.Document {
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func nsImage(dimension: CGFloat, scale: CGFloat = 1) -> NSImage? {
+	@objc func nsImage(dimension: Int, scale: CGFloat = 1) -> NSImage? {
 		return self.qrcode.nsImage(
 			CGSize(dimension: dimension),
 			scale: scale,
@@ -596,7 +595,7 @@ public extension QRCode.Document {
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func platformImage(dimension: CGFloat, scale: CGFloat = 1) -> DSFImage? {
+	@objc func platformImage(dimension: Int, scale: CGFloat = 1) -> DSFImage? {
 		return self.qrcode.uiImage(
 			CGSize(dimension: dimension),
 			scale: scale,
@@ -610,7 +609,7 @@ public extension QRCode.Document {
 	///   - dimension: The pixel dimension of the image to generate
 	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(dimension: CGFloat, scale: CGFloat = 1) -> UIImage? {
+	@objc func uiImage(dimension: Int, scale: CGFloat = 1) -> UIImage? {
 		self.uiImage(CGSize(dimension: dimension), scale: scale)
 	}
 
