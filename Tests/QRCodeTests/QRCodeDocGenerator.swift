@@ -42,8 +42,8 @@ class ImageOutput {
 final class QRCodeDocGeneratorTests: XCTestCase {
 
 	// Generate a markdown document with generated test images
-	func disabled_testGeneration() throws {
-	//func testGeneration() throws {
+	//func disabled_testGeneration() throws {
+	func testGeneration() throws {
 
 		let settings: [String: Any] = [
 			QRCode.SettingsKey.cornerRadiusFraction: 0.8,
@@ -743,8 +743,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					return ("design-radialsepia", doc)
 				}(),
 				// -------------------
-				{
+				try {
 					let doc = QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking", errorCorrection: .high)
+
+					let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "corner-heart", withExtension: "png"))
+					let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+
 					doc.design.backgroundColor(.black)
 					doc.design.foregroundStyle(
 						QRCode.FillStyle.LinearGradient(
@@ -767,7 +771,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					path.line(to: CGPoint(x: 1, y: 0.5))
 					path.line(to: CGPoint(x: 1, y: 1))
 					path.close()
-					doc.logoTemplate = QRCode.LogoTemplate(path: path)
+					doc.logoTemplate = QRCode.LogoTemplate(path: path, inset: 0, image: logoImage)
 					return ("design-bottomright-masked", doc)
 				}(),
 				// -------------------
