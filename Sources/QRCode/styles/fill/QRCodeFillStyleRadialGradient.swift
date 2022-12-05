@@ -115,7 +115,7 @@ public extension QRCode.FillStyle.RadialGradient {
 		svg += "id=\"\(styleIdentifier)\" "
 
 		let center = self.centerPoint
-		svg += "cx=\"\(center.x)\" cy=\"\(center.x)\" r=\"0.5\">\n"
+		svg += "cx=\"\(center.x)\" cy=\"\(center.y)\" r=\"0.5\">\n"
 
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
 		for pin in sorted {

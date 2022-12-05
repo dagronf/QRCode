@@ -384,8 +384,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.shape.eye = QRCode.EyeShape.BarsHorizontal()
 			doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
 
-			markdownText += "|        |        |        |        |        |        |\n"
-			markdownText += "|:------:|:------:|:------:|:------:|:------:|:------:|\n"
+			markdownText += "|     | (0.5,0.5) | (0,0) | (1,0) | (1,1) | (0,1) |\n"
+			markdownText += "|:---:|:---------:|:-----:|:-----:|:-----:|:-----:|\n"
 
 			markdownText += "|"
 
@@ -397,20 +397,20 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				]
 			)!
 
-			let items = [
-				QRCode.FillStyle.RadialGradient(gradient),
-				QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.1, y: 0.1)),
-				QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.9, y: 0.9)),
-				QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.9, y: 0.1)),
-				QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.1, y: 0.9)),
+			let items: [(String, QRCodeFillStyleGenerator)] = [
+				("(0.5,0.5)", QRCode.FillStyle.RadialGradient(gradient)),
+				("(0,0)", QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.1, y: 0.1))),
+				("(1,0)", QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.9, y: 0.1))),
+				("(1,1)", QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.9, y: 0.9))),
+				("(0,1)", QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.1, y: 0.9))),
 			]
 
 			markdownText += " png |"
 			for item in items.enumerated() {
-				doc.design.style.setForegroundStyle(item.element)
+				doc.design.style.setForegroundStyle(item.element.1)
 				let image = try XCTUnwrap(doc.cgImage(dimension: dimension))
 				let content = try XCTUnwrap(image.pngRepresentation())
-				let filename = "fillstyle-radial-\(item.offset).png"
+				let filename = "fillstyle-radial-\(item.offset)-\(item.element.0).png"
 				let link = try imageStore.store(content, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
@@ -418,9 +418,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += " svg |"
 			for item in items.enumerated() {
-				doc.design.style.setForegroundStyle(item.element)
+				doc.design.style.setForegroundStyle(item.element.1)
 				let svgcontent = doc.svg(dimension: dimension)
-				let filename = "fillstyle-radial-\(item.offset).svg"
+				let filename = "fillstyle-radial-\(item.offset)-\(item.element.0).svg"
 				let link = try imageStore.store(svgcontent, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
@@ -428,9 +428,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += " pdf |"
 			for item in items.enumerated() {
-				doc.design.style.setForegroundStyle(item.element)
+				doc.design.style.setForegroundStyle(item.element.1)
 				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
-				let filename = "fillstyle-radial-\(item.offset).pdf"
+				let filename = "fillstyle-radial-\(item.offset)-\(item.element.0).pdf"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
 			}
