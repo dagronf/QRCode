@@ -320,8 +320,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.shape.eye = QRCode.EyeShape.Leaf()
 			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
 
-			markdownText += "|        |        |        |        |        |\n"
-			markdownText += "|:-------|:------:|:------:|:------:|:------:|\n"
+			markdownText += "|        | (0,0->1,1) | (0,1->1,0) | (0,0->1,0) | (0,0->0,1) |\n"
+			markdownText += "|:-------|:-----:|:-----:|:-----:|:-----:|\n"
 
 			markdownText += "|"
 
