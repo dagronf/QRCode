@@ -624,9 +624,23 @@ This library provides drop-in components for presenting a styled QR code.
 
 ### SwiftUI
 
+#### `QRCodeViewUI`
+
+The simplest way to add a stylish QR code to your SwiftUI app. `QRCodeViewUI` is a SwiftUI view for displaying a qrcode with just the basic styling elements.
+
+```swift
+QRCodeViewUI(
+   content: "This is a test",
+   foregroundColor: CGColor(srgbRed: 1, green: 0.8, blue: 0.6, alpha: 1.0),
+   backgroundColor: CGColor(srgbRed: 0.2, green: 0.2, blue: 0.8, alpha: 1.0),
+   pixelStyle: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true),
+   eyeStyle: QRCode.EyeShape.RoundedRect()
+)
+```
+
 #### `QRCodeDocumentViewUI`
 
-`QRCodeDocumentViewUI` is a `SwiftUI` View that displays a `QRCode.Document` object. 
+If you need more control over the styling and content of your QR code, `QRCodeDocumentViewUI` is a `SwiftUI` view that displays a `QRCode.Document` object. 
 
 #### `QRCodeShape`
 
