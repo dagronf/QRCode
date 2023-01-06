@@ -136,6 +136,67 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		XCTAssertEqual(c.gradient.pins.map { $0.position }, st.gradient.pins.map { $0.position })
 	}
 
+	func testCGPathEncodeDecode() throws {
+		do {
+			// Basic rect
+			let path1 = CGPath(rect: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
+			let data = try XCTUnwrap(CGPathCoder.encode(path1))
+			let path2 = try CGPathCoder.decode(data)
+			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
+				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
+			}
+			else {
+				Swift.print("WARNING: Cannot validate testCGPathEncodeDecode returns equal path on older OS versions")
+			}
+		}
+		do {
+			// Ellipse
+			let path1 = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
+			let data = try XCTUnwrap(CGPathCoder.encode(path1))
+			let path2 = try CGPathCoder.decode(data)
+			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
+				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
+			}
+			else {
+				Swift.print("WARNING: Cannot validate testCGPathEncodeDecode returns equal path on older OS versions")
+			}
+		}
+
+		do {
+			// Rounded rectangle
+			let path1 = CGPath(roundedRect: CGRect(x: 0, y: 0, width: 200, height: 150), cornerWidth: 8, cornerHeight: 100, transform: nil)
+			let data = try XCTUnwrap(CGPathCoder.encode(path1))
+			let path2 = try CGPathCoder.decode(data)
+			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
+				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
+			}
+			else {
+				Swift.print("WARNING: Cannot validate testCGPathEncodeDecode returns equal path on older OS versions")
+			}
+		}
+
+		if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
+
+			// Check we can encode/decode all the possible eye shapes
+			for name in QRCodeEyeShapeFactory.shared.availableGeneratorNames {
+				if let path1 = QRCodeEyeShapeFactory.shared.named(name)?.eyePath() {
+					let data = try XCTUnwrap(CGPathCoder.encode(path1))
+					let path2 = try CGPathCoder.decode(data)
+					XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
+				}
+			}
+
+			// Check we can encode/decode all the possible pupil shapes
+			for name in QRCodePupilShapeFactory.shared.availableGeneratorNames {
+				if let path1 = QRCodePupilShapeFactory.shared.named(name)?.pupilPath() {
+					let data = try XCTUnwrap(CGPathCoder.encode(path1))
+					let path2 = try CGPathCoder.decode(data)
+					XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
+				}
+			}
+		}
+	}
+
 	func testLogoTemplateLoadSave() throws {
 		let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
 		let logoImage = try XCTUnwrap(CGImage.fromPNGFile(logoURL))

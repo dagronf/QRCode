@@ -26,22 +26,59 @@ import Foundation
 class CGPathCoder {
 	/// Encode a CGPath to a data representation
 	static func encode(_ path: CGPath) -> Data {
-		var elements = [_PathElement]()
+		class ResultData {
+			var elements = [_PathElement]()
+		}
 
-		path.applyWithBlock { elem in
-			let elementType = elem.pointee.type
-			let n = CGPathCoder._numPoints(forType: elementType)
-			var points: [CGPoint]?
-			if n > 0 {
-				points = Array(UnsafeBufferPointer(start: elem.pointee.points, count: n))
+		let resultData = ResultData()
+
+		if #available(macOS 10.13, *) {
+			path.applyWithBlock { elem in
+				let elementType = elem.pointee.type
+				let n = CGPathCoder._numPoints(forType: elementType)
+				var points: [CGPoint]?
+				if n > 0 {
+					points = Array(UnsafeBufferPointer(start: elem.pointee.points, count: n))
+				}
+				resultData.elements.append(_PathElement(type: Int(elementType.rawValue), points: points))
 			}
-			elements.append(_PathElement(type: Int(elementType.rawValue), points: points))
+		}
+		else {
+			var results = resultData
+			withUnsafeMutablePointer(to: &results) { results in
+				path.apply(info: results) { (results, elementPointer) in
+					let element = elementPointer.pointee
+					let pointCount: Int
+					switch element.type {
+					case .moveToPoint:          // command = "moveTo"
+						pointCount = 1
+					case .addLineToPoint:       // command = "lineTo"
+						pointCount = 1
+					case .addQuadCurveToPoint:  // command = "quadCurveTo"
+						pointCount = 2
+					case .addCurveToPoint:      // command = "curveTo"
+						pointCount = 3
+					case .closeSubpath:         // command = "close"
+						pointCount = 0
+					default:
+						pointCount = 0
+					}
+					var points: [CGPoint]?
+					if pointCount > 0 {
+						points = Array(UnsafeBufferPointer(start: element.points, count: pointCount))
+					}
+
+					if let results = results?.assumingMemoryBound(to: ResultData.self).pointee {
+						results.elements.append(_PathElement(type: Int(element.type.rawValue), points: points))
+					}
+				}
+			}
 		}
 
 		do {
 			let encoder = JSONEncoder()
 			encoder.outputFormatting = .prettyPrinted
-			return try encoder.encode(elements)
+			return try encoder.encode(resultData.elements)
 		}
 		catch {
 			return Data()

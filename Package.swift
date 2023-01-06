@@ -71,7 +71,7 @@ let package = Package(
 			name: "QRCodeTests",
 			dependencies: ["QRCode", "QRCodeExternal"],
 			resources: [
-				.process("resources"),
+				.process("Resources"),
 			]
 		),
 	]
