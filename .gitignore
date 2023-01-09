@@ -8,3 +8,4 @@ DerivedData/
 .swiftpm/xcode/xcshareddata
 Demo/QRCodeView Demo/QRCodeView Demo.xcodeproj/project.xcworkspace/xcshareddata
 docs
+Package.resolved
