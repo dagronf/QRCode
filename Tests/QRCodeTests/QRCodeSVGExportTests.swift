@@ -1,4 +1,6 @@
 @testable import QRCode
+@testable import QRCodeExternal
+
 import XCTest
 
 final class QRCodeSVGTests: XCTestCase {
@@ -129,7 +131,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 	func testExportSVGWithBackgroundPixelColors() throws {
 
-		let d = QRCode.Document()
+		let d = QRCode.Document(generator: QRCodeGenerator_External())
 		d.utf8String = "https://www.swift.org"
 
 		d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
@@ -144,7 +146,6 @@ final class QRCodeSVGTests: XCTestCase {
 		d.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
 		d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
 		d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
-
 
 		let svg1 = d.svg(dimension: 600)
 		try svg1.writeToTempFile(named: "svgExportPixelBackgroundColors.svg")

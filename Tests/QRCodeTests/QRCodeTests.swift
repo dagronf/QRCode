@@ -179,5 +179,4 @@ final class QRCodeTests: XCTestCase {
 			try data.writeToTempFile(named: "dpi-test-output.svg")
 		}
 	}
-
 }

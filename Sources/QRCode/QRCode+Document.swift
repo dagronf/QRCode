@@ -654,8 +654,17 @@ public extension QRCode.Document {
 	///   - dimension: The pixel dimension of the image to generate
 	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
-	@objc func uiImage(dimension: Int, dpi: CGFloat = 72.0) -> UIImage? {
+	@objc func uiImage(dimension: Int, dpi: CGFloat) -> UIImage? {
 		self.uiImage(CGSize(dimension: dimension), dpi: dpi)
+	}
+
+	/// Returns a UIImage representation of the qr code document
+	/// - Parameters:
+	///   - dimension: The size of the image to generate
+	///   - scale: The scale factor for the image, with a value like 1.0, 2.0, or 3.0.
+	/// - Returns: The image, or nil if an error occurred
+	@objc func uiImage(dimension: Int, scale: CGFloat = 1) -> UIImage? {
+		self.uiImage(CGSize(dimension: dimension), dpi: scale * 72.0)
 	}
 
 	/// Returns a UIImage representation of the qr code document
@@ -664,17 +673,19 @@ public extension QRCode.Document {
 	///   - dpi: The DPI of the resulting image
 	/// - Returns: The image, or nil if an error occurred
 	@objc func uiImage(_ size: CGSize, dpi: CGFloat = 72.0) -> UIImage? {
+		let scale = dpi / 72.0
 		guard
 			let qrImage = self.qrcode.cgImage(
-				size,
+				size * scale,
 				design: self.design,
 				logoTemplate: self.logoTemplate
 			)
 		else {
 			return nil
 		}
-		return UIImage(cgImage: qrImage, scale: dpi / 72.0, orientation: .up)
+		return UIImage(cgImage: qrImage, scale: scale, orientation: .up)
 	}
+
 #endif
 
 #if canImport(SwiftUI)
