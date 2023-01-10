@@ -840,7 +840,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			for item in exporters {
 				let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
-				let filename = "pixel_background_colors.\(item.fileExtension)"
+				let filename = "pixel-background-colors.\(item.fileExtension)"
 				let link = try imageStore.store(data, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
 			}
@@ -875,11 +875,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			for item in exporters {
 				let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
-				let filename = "pixel_image_colors.\(item.fileExtension)"
+				let filename = "fillstyle-image-components.\(item.fileExtension)"
 				let link = try imageStore.store(data, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
 			}
 			markdownText += "\n"
+
 			do {
 				let logoImage =  resourceImage(for: "swift-logo", extension: "png")
 				let backgroundImage = QRCode.FillStyle.Image(logoImage)
@@ -889,7 +890,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				for item in exporters {
 					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
-					let filename = "bacground_image_colors.\(item.fileExtension)"
+					let filename = "fillstyle-image-background.\(item.fileExtension)"
 					let link = try imageStore.store(data, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
 				}

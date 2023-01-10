@@ -113,28 +113,28 @@ public extension QRCode.FillStyle {
 
 public extension QRCode.FillStyle.Image {
 	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
-
-		if let pngData = image?.pngRepresentation() {
+		if let image = self.image,
+			let pngData = image.jpgRepresentation() {
 			let imageb64d = pngData.base64EncodedData(options: [.lineLength64Characters, .endLineWithLineFeed])
 			let strImage = String(data: imageb64d, encoding: .ascii)!
 
-			// TODO: Fix this
+			var def = "<pattern id=\"\(styleIdentifier)\" "
+			def += " x=\"0\" y=\"0\" width=\"1\" height=\"1\" "
+			def += " viewBox=\"0 0 \(image.width) \(image.height)\" "
+			def += " preserveAspectRatio=\"xMidYMid slice\">\n"
 
-//			<pattern id="imgpattern"  x="0" y="0" width="1" height="1" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-//			  <image width="400" height="400" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QCARXhpZgAATU0AKgAAAAgABAESAAMAAAABAAEAAAEaAAUA
-//
-//			return QRCode.FillStyle.SVGDefinition(
-//				styleAttribute: "fill=\"\(fill)\" fill-opacity=\"\(self.color.alpha)\"",
-//				styleDefinition: nil
-//			)
+			var imagedef = "<image width=\"\(image.width)\" height=\"\(image.height)\" "
+			imagedef += " xlink:href=\"data:image/jpeg;base64,"
+			imagedef += strImage
+			imagedef += "\" x=\"0\" y=\"0\" />"
 
+			def += imagedef + "</pattern>"
+
+			return QRCode.FillStyle.SVGDefinition(
+				styleAttribute: "fill=\"url(#\(styleIdentifier))\" fill-opacity=\"1\"",
+				styleDefinition: def
+			)
 		}
-
-//		guard let fill = self.color.hexRGBCode() else { return nil }
-//		return QRCode.FillStyle.SVGDefinition(
-//			styleAttribute: "fill=\"\(fill)\" fill-opacity=\"\(self.color.alpha)\"",
-//			styleDefinition: nil
-//		)
 		return nil
 	}
 }

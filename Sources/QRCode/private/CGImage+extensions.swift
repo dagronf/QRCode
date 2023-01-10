@@ -40,6 +40,35 @@ extension CGImage {
 		return mutableData as Data
 	}
 
+	/// Create a JPG representation for the CGImage
+	/// - Parameters:
+	///   - dpi: (optional) the dpi for the resulting image (default 72)
+	///   - compression: (optional) the compression level to use (0 ... 1)
+	/// - Returns: JPEG data for the image
+	func jpgRepresentation(dpi: CGFloat? = nil, compression: CGFloat? = nil) -> Data? {
+		var opts: [CFString: Any] = [:]
+		if let dpi = dpi {
+			opts[kCGImagePropertyPixelWidth] = self.width
+			opts[kCGImagePropertyPixelHeight] = self.height
+			opts[kCGImagePropertyDPIWidth] = dpi
+			opts[kCGImagePropertyDPIHeight] = dpi
+		}
+		if let compression = compression {
+			opts[kCGImageDestinationLossyCompressionQuality] = compression
+		}
+		guard
+			let mutableData = CFDataCreateMutable(nil, 0),
+			let destination = CGImageDestinationCreateWithData(mutableData, "public.jpeg" as CFString, 1, opts as CFDictionary)
+		else {
+			return nil
+		}
+
+		CGImageDestinationAddImage(destination, self, nil)
+		CGImageDestinationFinalize(destination)
+
+		return mutableData as Data
+	}
+
 	/// Create a CGImage from a png data representation
 	static func fromPNGData(_ data: Data) -> CGImage? {
 		guard let provider = CGDataProvider(data: data as CFData) else { return nil }
