@@ -1,7 +1,7 @@
 //
 //  QRCode+SVG.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -108,6 +108,17 @@ public extension QRCode {
 				}
 			}
 
+			// The background for the off pixels (if set)
+			
+			do {
+				if let color = design.style.offPixelsBackground,
+					let offPixelsBackground = QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "off-pixels-background-color")
+				{
+					let offPixelsBackgroundPath = self.path(sz, components: .offPixelsBackground, shape: design.shape, logoTemplate: logoTemplate)
+					svg += "   <path \(offPixelsBackground.styleAttribute) d=\"\(offPixelsBackgroundPath.svgDataPath())\" />\n"
+				}
+			}
+
 			// Off pixels
 
 			do {
@@ -119,6 +130,17 @@ public extension QRCode {
 							pathDefinitions.append(def)
 						}
 					}
+				}
+			}
+
+			// The background for the on pixels (if set)
+
+			do {
+				if let color = design.style.onPixelsBackground,
+					let onPixelsBackground = QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "on-pixels-background-color")
+				{
+					let onPixelsBackgroundPath = self.path(sz, components: .onPixelsBackground, shape: design.shape, logoTemplate: logoTemplate)
+					svg += "   <path \(onPixelsBackground.styleAttribute) d=\"\(onPixelsBackgroundPath.svgDataPath())\" />\n"
 				}
 			}
 

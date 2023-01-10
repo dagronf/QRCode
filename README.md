@@ -624,7 +624,7 @@ This library provides drop-in components for presenting a styled QR code.
 
 #### `QRCodeView`
 
-`QRCodeView` is a view implementation for displaying a QR Code . This view supports :-
+`QRCodeView` is a view implementation for displaying a QR Code. This view supports :-
 
 * `@IBDesignable` via Interface Builder so you can design and style your QR code completely within Interface Builder without having a `QRCode.Document` object.
 * (Optional) drag support for dragging a QR code out of the view.
@@ -648,6 +648,16 @@ QRCodeViewUI(
 #### `QRCodeDocumentViewUI`
 
 If you need more control over the styling and content of your QR code, `QRCodeDocumentViewUI` is a `SwiftUI` view that displays a `QRCode.Document` object. 
+
+```swift
+   var body: some View {
+         VStack {
+            QRCodeDocumentUIView(document: doc)
+         }
+         .padding()
+   }
+```
+
 
 #### `QRCodeShape`
 
@@ -922,7 +932,7 @@ watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/Q
 ```
 MIT License
 
-Copyright (c) 2022 Darren Ford
+Copyright (c) 2023 Darren Ford
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

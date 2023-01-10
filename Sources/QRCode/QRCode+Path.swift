@@ -1,7 +1,7 @@
 //
 //  QRCode+Path.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -41,8 +41,13 @@ public extension QRCode {
 		/// The background of the eye
 		public static let eyeBackground = Components(rawValue: 1 << 4)
 
-		/// The
+		/// The path representing the 'negative' component of the qr code (ie. the off and on components are swapped)
 		public static let negative = Components(rawValue: 1 << 5)
+
+		/// The path for the background of the ON pixels in the QR Code
+		public static let onPixelsBackground = Components(rawValue: 1 << 6)
+		/// The path for the background of the OFF pixels in the QR Code
+		public static let offPixelsBackground = Components(rawValue: 1 << 7)
 
 		/// The entire qrcode without offPixels (default presentation)
 		public static let all: Components = [Components.eyeOuter, Components.eyePupil, Components.onPixels]
@@ -211,6 +216,16 @@ public extension QRCode {
 			path.addPath(br)
 		}
 
+		// The background squares for the 'off' pixels
+		if components.contains(.offPixelsBackground) {
+			var masked = self.current.inverted()
+			masked = masked.maskingQREyes(inverted: false)
+			if let template = logoTemplate {
+				masked = template.applyingMask(matrix: masked, dimension: sz)
+			}
+			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size))
+		}
+
 		// 'off' pixels
 		if components.contains(.offPixels) {
 			let offPixelShape = shape.offPixels ?? QRCode.PixelShape.Square()
@@ -221,6 +236,15 @@ public extension QRCode {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
 			path.addPath(offPixelShape.generatePath(from: masked, size: size))
+		}
+
+		// The background squares for the 'on' pixels
+		if components.contains(.onPixelsBackground) {
+			var masked = self.current.maskingQREyes(inverted: false)
+			if let template = logoTemplate {
+				masked = template.applyingMask(matrix: masked, dimension: sz)
+			}
+			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size))
 		}
 
 		// 'on' content

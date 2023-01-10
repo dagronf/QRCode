@@ -126,4 +126,27 @@ final class QRCodeSVGTests: XCTestCase {
 		let data = image.pngRepresentation()!
 		try data.writeToTempFile(named: "svgExportRadialFill.png")
 	}
+
+	func testExportSVGWithBackgroundPixelColors() throws {
+
+		let d = QRCode.Document()
+		d.utf8String = "https://www.swift.org"
+
+		d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
+
+		d.design.style.eye = QRCode.FillStyle.Solid(gray: 1)
+		d.design.style.eyeBackground = CGColor(gray: 0, alpha: 0.2)
+
+		d.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+		d.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1)
+		d.design.style.onPixelsBackground = CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 0.2)
+
+		d.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+		d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
+		d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
+
+
+		let svg1 = d.svg(dimension: 600)
+		try svg1.writeToTempFile(named: "svgExportPixelBackgroundColors.svg")
+	}
 }

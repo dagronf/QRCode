@@ -1,7 +1,7 @@
 //
 //  QRCodeEyeShape.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -29,7 +29,9 @@ internal let EyeShapeSettingsName_ = "settings"
 
 public extension QRCode {
 	/// The shape of an 'eye' within the qr code
-	@objc(QRCodeEyeShape) class EyeShape: NSObject {}
+	@objc(QRCodeEyeShape) class EyeShape: NSObject {
+		private override init() { super.init() }
+	}
 }
 
 /// A protocol for wrapping generating the eye shapes for a path
@@ -64,7 +66,9 @@ internal let PupilShapeSettingsName_ = "settings"
 
 public extension QRCode {
 	/// The shape of an 'eye' within the qr code
-	@objc(QRCodePupilShape) class PupilShape: NSObject {}
+	@objc(QRCodePupilShape) class PupilShape: NSObject {
+		private override init() { fatalError() }
+	}
 }
 
 @objc public protocol QRCodePupilShapeGenerator {

@@ -1,7 +1,7 @@
 //
 //  QRCodeFillStyle.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -26,6 +26,9 @@ import Foundation
 
 public extension QRCode {
 	@objc(QRCodeFillStyle) class FillStyle: NSObject {
+
+		private override init() { super.init() }
+
 		/// Simple convenience for a clear fill
 		@objc public static let clear = FillStyle.Solid(.clear)
 
@@ -79,6 +82,7 @@ public class QRCodeFillStyleFactory {
 		QRCode.FillStyle.Solid.self,
 		QRCode.FillStyle.LinearGradient.self,
 		QRCode.FillStyle.RadialGradient.self,
+		QRCode.FillStyle.Image.self
 	]
 
 	@objc public var knownTypes: [String] {

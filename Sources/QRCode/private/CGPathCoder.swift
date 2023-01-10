@@ -1,7 +1,7 @@
 //
 //  CGPathCoder.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -19,73 +19,34 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if canImport(CoreGraphics)
+
 import CoreGraphics
 import Foundation
 
-/// A class for supporting encoding and decoding CGPath instances
+/// Functions for supporting encoding and decoding CGPath instances
 class CGPathCoder {
 	/// Encode a CGPath to a data representation
 	static func encode(_ path: CGPath) -> Data {
-		class ResultData {
-			var elements = [_PathElement]()
-		}
-
-		let resultData = ResultData()
-
+		let elements: [_PathElement]
 		if #available(macOS 10.13, *) {
-			path.applyWithBlock { elem in
-				let elementType = elem.pointee.type
-				let n = CGPathCoder._numPoints(forType: elementType)
-				var points: [CGPoint]?
-				if n > 0 {
-					points = Array(UnsafeBufferPointer(start: elem.pointee.points, count: n))
-				}
-				resultData.elements.append(_PathElement(type: Int(elementType.rawValue), points: points))
-			}
+			elements = Self.elements(for: path)
 		}
 		else {
-			var results = resultData
-			withUnsafeMutablePointer(to: &results) { results in
-				path.apply(info: results) { (results, elementPointer) in
-					let element = elementPointer.pointee
-					let pointCount: Int
-					switch element.type {
-					case .moveToPoint:          // command = "moveTo"
-						pointCount = 1
-					case .addLineToPoint:       // command = "lineTo"
-						pointCount = 1
-					case .addQuadCurveToPoint:  // command = "quadCurveTo"
-						pointCount = 2
-					case .addCurveToPoint:      // command = "curveTo"
-						pointCount = 3
-					case .closeSubpath:         // command = "close"
-						pointCount = 0
-					default:
-						pointCount = 0
-					}
-					var points: [CGPoint]?
-					if pointCount > 0 {
-						points = Array(UnsafeBufferPointer(start: element.points, count: pointCount))
-					}
-
-					if let results = results?.assumingMemoryBound(to: ResultData.self).pointee {
-						results.elements.append(_PathElement(type: Int(element.type.rawValue), points: points))
-					}
-				}
-			}
+			elements = Self.elementsLegacy(for: path)
 		}
 
 		do {
 			let encoder = JSONEncoder()
 			encoder.outputFormatting = .prettyPrinted
-			return try encoder.encode(resultData.elements)
+			return try encoder.encode(elements)
 		}
 		catch {
 			return Data()
 		}
 	}
 
-	// Encode a CGPath into a base-64-encoded string representation
+	/// Encode a CGPath into a base-64-encoded string representation
 	static func encodeBase64(_ path: CGPath) -> String? {
 		let data = CGPathCoder.encode(path)
 		return String(data: data.base64EncodedData(), encoding: .ascii)
@@ -147,3 +108,60 @@ private extension CGPathCoder {
 		}
 	}
 }
+
+private extension CGPathCoder {
+	// Return the path elements for the path
+	private static func elements(for path: CGPath) -> [_PathElement] {
+		var elements:  [_PathElement] = []
+		path.applyWithBlock { elem in
+			let elementType = elem.pointee.type
+			let n = CGPathCoder._numPoints(forType: elementType)
+			var points: [CGPoint]?
+			if n > 0 {
+				points = Array(UnsafeBufferPointer(start: elem.pointee.points, count: n))
+			}
+			elements.append(_PathElement(type: Int(elementType.rawValue), points: points))
+		}
+		return elements
+	}
+
+	// Return the path elements for the path using the legacy C api for macOS 10.12 and earlier
+	private static func elementsLegacy(for path: CGPath) -> [_PathElement] {
+		class ResultData {
+			var elements = [_PathElement]()
+		}
+
+		var resultData = ResultData()
+		withUnsafeMutablePointer(to: &resultData) { results in
+			path.apply(info: results) { (results, elementPointer) in
+				let element = elementPointer.pointee
+				let pointCount: Int
+				switch element.type {
+				case .moveToPoint:          // command = "moveTo"
+					pointCount = 1
+				case .addLineToPoint:       // command = "lineTo"
+					pointCount = 1
+				case .addQuadCurveToPoint:  // command = "quadCurveTo"
+					pointCount = 2
+				case .addCurveToPoint:      // command = "curveTo"
+					pointCount = 3
+				case .closeSubpath:         // command = "close"
+					pointCount = 0
+				default:
+					pointCount = 0
+				}
+				var points: [CGPoint]?
+				if pointCount > 0 {
+					points = Array(UnsafeBufferPointer(start: element.points, count: pointCount))
+				}
+
+				if let results = results?.assumingMemoryBound(to: ResultData.self).pointee {
+					results.elements.append(_PathElement(type: Int(element.type.rawValue), points: points))
+				}
+			}
+		}
+		return resultData.elements
+	}
+}
+
+#endif
