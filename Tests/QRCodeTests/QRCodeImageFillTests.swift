@@ -39,6 +39,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		XCTAssertEqual(fillStyle.image?.height, logoImage.height)
 
 		let im2 = try XCTUnwrap(doc2.platformImage(dimension: 600))
+		Swift.print(im2)
 
 		let svgData2 = doc2.svg(dimension: 300)
 		XCTAssertEqual(svgData, svgData2)
