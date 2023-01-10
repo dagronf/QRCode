@@ -154,6 +154,13 @@ tvOS if you need consistent QR codes across multiple platforms including watchOS
 2. Import both `QRCode` and `QRCodeExternal` in your source file(s)
 3. When creating your `QRCode()` or `QRCode.Document()`, provide `QRCodeGenerator_External()` as the generator. 
 
+The external code generator supports some optimizations when using text :-
+
+1. All characters are numeric, or
+2. All characters in `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:` (all uppercase)
+
+Constraining your text to match these rules will reduce the size of the resulting QR code. 
+
 <details>
 <summary>Click here to see a watchOS code example</summary>
 
