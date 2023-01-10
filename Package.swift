@@ -50,11 +50,11 @@ let package = Package(
 		.target(
 			name: "QRCodeExternal",
 			dependencies: [
+				"QRCode",
 				.product(
 					name: "QRCodeGenerator",
 					package: "swift-qrcode-generator"
 				),
-				.byNameItem(name: "QRCode", condition: nil)
 			]
 		),
 
@@ -62,8 +62,8 @@ let package = Package(
 		.executableTarget(
 			 name: "qrcodegen",
 			 dependencies: [
+				"QRCode",
 				.product(name: "ArgumentParser", package: "swift-argument-parser"),
-				.byNameItem(name: "QRCode", condition: nil)
 			 ]),
 
 		// testing target
