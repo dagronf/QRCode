@@ -114,7 +114,8 @@ public extension QRCode.FillStyle {
 public extension QRCode.FillStyle.Image {
 	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
 		if let image = self.image,
-			let pngData = image.jpgRepresentation() {
+			let pngData = image.jpgRepresentation()
+		{
 			let imageb64d = pngData.base64EncodedData(options: [.lineLength64Characters, .endLineWithLineFeed])
 			let strImage = String(data: imageb64d, encoding: .ascii)!
 

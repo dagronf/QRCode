@@ -1089,6 +1089,85 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "\n\n"
 		}
 
+		do {
+			markdownText += "## Background styles \n\n"
+			let exporters: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
+
+			do {
+				markdownText += "### Linear \n\n"
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let gradient = DSFGradient(
+					pins: [
+						DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.9, alpha: 1.0), 0.1),
+						DSFGradient.Pin(CGColor(red: 0.778, green: 0.635, blue: 0.492, alpha: 1.0), 0.9),
+					]
+				)!
+
+				let radial = QRCode.FillStyle.LinearGradient(gradient)
+				let doc = QRCode.Document(utf8String: "QR Code with a linear background")
+				doc.design.style.background = radial
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-linear.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
+			markdownText += "\n\n"
+
+			do {
+				markdownText += "### Radial \n\n"
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let gradient = DSFGradient(
+					pins: [
+						DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.9, alpha: 1.0), 0.1),
+						DSFGradient.Pin(CGColor(red: 0.778, green: 0.635, blue: 0.492, alpha: 1.0), 0.9),
+					]
+				)!
+
+				let radial = QRCode.FillStyle.RadialGradient(gradient)
+				let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+				doc.design.style.background = radial
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-radial.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
+			markdownText += "\n\n"
+
+			do {
+				markdownText += "### Image \n\n"
+
+				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
+				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+				doc.design.style.background = QRCode.FillStyle.Image(logoImage)
+				doc.design.foregroundColor(.white.copy(alpha: 0.6)!)
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-image.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
+			markdownText += "\n\n"
+		}
+
 		// Write out the markdown
 
 		let mdt = __genFolder.appendingPathComponent("styles.md")
