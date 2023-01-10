@@ -745,4 +745,7 @@
             <point key="canvasLocation" x="75" y="655"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="square-format-01" width="600" height="600"/>
+    </resources>
 </document>

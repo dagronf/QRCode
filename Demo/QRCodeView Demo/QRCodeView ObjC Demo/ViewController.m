@@ -21,8 +21,11 @@
 	[document setUtf8String: @"This message is something really exciting in objective-c"];
 	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 
+	NSImage* backgroundImage = [NSImage imageNamed:@"square-format-01"];
+	document.design.style.background = [[QRCodeFillStyleImage alloc] init: [backgroundImage CGImageForProposedRect:nil context:nil hints:nil]];
+
 	// Set the foreground color to a solid red
-	document.design.style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+	document.design.style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0.2, 0.2, 1, 1)];
 	document.design.style.eye = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(0, 1, 0, 1)];
 
 	// Use the leaf style
