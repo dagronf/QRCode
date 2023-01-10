@@ -50,7 +50,7 @@ import Foundation
 	@objc public init(generator: QRCodeEngine) {
 		self.generator = generator
 		super.init()
-		self.update(Data(), errorCorrection: .default)
+		self.update(data: Data(), errorCorrection: .default)
 	}
 
 	/// Create a QRCode with the given data and error correction
@@ -65,18 +65,18 @@ import Foundation
 	) {
 		if let g = generator { self.generator = g }
 		super.init()
-		self.update(data, errorCorrection: errorCorrection)
+		self.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode with the given text and error correction
 	@objc public init(
-		text: String,
+		utf8String: String,
 		errorCorrection: ErrorCorrection = .default,
 		generator: QRCodeEngine? = nil
 	) {
 		if let g = generator { self.generator = g }
 		super.init()
-		self.update(text: text, errorCorrection: errorCorrection)
+		self.update(text: utf8String, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode with the given message and error correction
@@ -145,21 +145,24 @@ extension QRCode: NSCopying {
 
 public extension QRCode {
 	/// Build the QR Code using the given data and error correction
-	@objc func update(_ data: Data, errorCorrection: ErrorCorrection) {
+	@objc func update(data: Data, errorCorrection: ErrorCorrection) {
 		self.currentErrorCorrection = errorCorrection
-		if let result = self.generator.generate(data, errorCorrection: errorCorrection) {
+		if let result = self.generator.generate(data: data, errorCorrection: errorCorrection) {
 			self.current = result
 		}
 	}
 
-	/// Build the QR Code using the given text and error correction
-	@objc func update(text: String, errorCorrection: ErrorCorrection = .default) {
-		self.update(text.data(using: .utf8) ?? Data(), errorCorrection: errorCorrection)
-	}
-
 	/// Build the QR Code using the given message formatter and error correction
 	@objc func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
-		self.update(message.data, errorCorrection: errorCorrection)
+		self.update(data: message.data, errorCorrection: errorCorrection)
+	}
+
+	/// Build the QR Code using the given text and error correction
+	@objc func update(text: String, errorCorrection: ErrorCorrection = .default) {
+		self.currentErrorCorrection = errorCorrection
+		if let result = self.generator.generate(text: text, errorCorrection: errorCorrection) {
+			self.current = result
+		}
 	}
 }
 

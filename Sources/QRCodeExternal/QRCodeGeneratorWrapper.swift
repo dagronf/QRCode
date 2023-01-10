@@ -26,24 +26,41 @@ import QRCodeGenerator
 // and the QRCodeGenerator module's class type.
 
 internal func _generate(_ data: Data, errorCorrection: String) -> [[Bool]]? {
-	let mappedECC: QRCodeECC
+	guard
+		let mappedECC = mapECC(errorCorrection),
+		let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC)
+	else {
+		return nil
+	}
+	return mapResult(qrCode)
+}
+
+
+internal func _generate(_ text: String, errorCorrection: String) -> [[Bool]]? {
+	guard
+		let mappedECC = mapECC(errorCorrection),
+		let qrCode = try? QRCodeGenerator.QRCode.encode(text: text, ecl: mappedECC)
+	else {
+		return nil
+	}
+	return mapResult(qrCode)
+}
+
+// - Private
+
+fileprivate func mapECC(_ errorCorrection: String) -> QRCodeECC? {
 	switch errorCorrection {
-	case "L": mappedECC = QRCodeECC.low
-	case "M": mappedECC = QRCodeECC.medium
-	case "Q": mappedECC = QRCodeECC.quartile
-	case "H": mappedECC = QRCodeECC.high
+	case "L": return QRCodeECC.low
+	case "M": return QRCodeECC.medium
+	case "Q": return QRCodeECC.quartile
+	case "H": return QRCodeECC.high
 	default:
 		assert(false)
 		return nil
 	}
+}
 
-	guard let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC) else {
-		return nil
-	}
-
-	// Map the QRCodeGenerator result type to a generic 2d array of bool
-	// We can't use Array2D here due to the namespace clash
-
+fileprivate func mapResult(_ qrCode: QRCodeGenerator.QRCode) -> [[Bool]]? {
 	var result = Array<[Bool]>(
 		repeating: Array<Bool>(repeating: false, count: qrCode.size + 2),
 		count: qrCode.size + 2)

@@ -23,15 +23,23 @@ import Foundation
 
 /// A protocol for qr code generation
 @objc public protocol QRCodeEngine {
-	/// Generator a 2D QR Code
-	@objc func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
+	/// Generate QR Code matrix from the specified data
+	@objc func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
+
+	/// Generate QR Code matrix from the specified string
+	@objc func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
 }
 
 // An 'empty' qr code generator which does nothing
 internal class QRCodeGenerator_None: QRCodeEngine {
 	/// Generate the QR code using the custom generator
-	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
-		Swift.print("Warning: QRCode generator is not set...")
+	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		assert(false, "Warning: QRCode generator is not set...")
+		return nil
+	}
+
+	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		assert(false, "Warning: QRCode generator is not set...")
 		return nil
 	}
 }

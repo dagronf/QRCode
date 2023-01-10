@@ -27,8 +27,38 @@ import SwiftUI
 #endif
 
 public extension QRCode {
+
+	class Content {
+		var rawData: Data? {
+			didSet {
+				if self.rawData != nil {
+					self.text = nil
+				}
+			}
+		}
+		var text: String? {
+			didSet {
+				if self.text != nil {
+					self.rawData = nil
+				}
+			}
+		}
+		convenience init() {
+			self.init(Data())
+		}
+		init(_ data: Data) {
+			self.rawData = data
+			self.text = nil
+		}
+		init(_ text: String) {
+			self.text = text
+			self.rawData = nil
+		}
+	}
+
 	/// A QR Code document
 	@objc(QRCodeDocument) class Document: NSObject {
+
 		/// The correction level to use when generating the QR code
 		@objc public var errorCorrection: QRCode.ErrorCorrection = .quantize {
 			didSet {
@@ -36,20 +66,30 @@ public extension QRCode {
 			}
 		}
 
+		let content: Content
+
+
 		/// Binary data to display in the QR code
-		@objc public var data: Data {
-			didSet {
+		@objc public var data: Data? {
+			get {
+				content.rawData
+			}
+			set {
+				content.rawData = newValue
 				self.regenerate()
 			}
 		}
 
-		/// A UTF8 string to display in the QR code
+		/// Text (utf8 encoded) to display in the QR code.
+		///
+		/// If you need string content using a different encoding, use the `data` property instead
 		@objc public var utf8String: String? {
 			get {
-				String(data: self.data, encoding: .utf8)
+				content.text
 			}
 			set {
-				self.data = newValue?.data(using: .utf8) ?? Data()
+				content.text = newValue
+				self.regenerate()
 			}
 		}
 
@@ -63,23 +103,18 @@ public extension QRCode {
 
 		/// Create a QR code
 		@objc override public init() {
-			self.data = Data()
+			self.content = Content()
 			self.errorCorrection = .default
-			self.qrcode = QRCode(self.data, errorCorrection: self.errorCorrection, generator: nil)
+			self.qrcode = QRCode(Data(), errorCorrection: self.errorCorrection, generator: nil)
 			super.init()
 		}
 
 		/// Create a QRCode document with default settings
 		@objc public init(generator: QRCodeEngine?) {
-			self.data = Data()
+			self.content = Content()
 			self.errorCorrection = .default
-			self.qrcode = QRCode(
-				self.data,
-				errorCorrection: self.errorCorrection,
-				generator: generator
-			)
+			self.qrcode = QRCode(Data(), errorCorrection: self.errorCorrection, generator: generator)
 			super.init()
-			self.regenerate()
 		}
 
 		/// Create a QRCode document
@@ -92,7 +127,7 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
-			self.data = data
+			self.content = Content(data)
 			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
 				data,
@@ -100,12 +135,11 @@ public extension QRCode {
 				generator: generator
 			)
 			super.init()
-			self.regenerate()
 		}
 
-		/// Create a QRCode document containing `utf8String`
+		/// Create a QRCode document containing `text`
 		/// - Parameters:
-		///   - utf8String: The UTF8 string to encode
+		///   - utf8String: The utf8 string to encode
 		///   - errorCorrection: The error correction level
 		///   - generator: The generator to use when creating the QR code. Defaults to Core Image
 		@objc public init(
@@ -113,15 +147,14 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
-			self.data = utf8String.data(using: .utf8) ?? Data()
+			self.content = Content(utf8String)
 			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
-				self.data,
+				utf8String: utf8String,
 				errorCorrection: errorCorrection,
 				generator: generator
 			)
 			super.init()
-			self.regenerate()
 		}
 
 		/// Create a QRCode document containing the contents of a message formatter
@@ -134,7 +167,9 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			generator: QRCodeEngine? = nil
 		) {
-			self.data = message.data
+			self.content = Content(message.data)
+//			self.rawData = message.data
+//			self.text = nil
 			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
 				message.data,
@@ -142,7 +177,6 @@ public extension QRCode {
 				generator: generator
 			)
 			super.init()
-			self.regenerate()
 		}
 
 		// The qrcode content.
@@ -163,24 +197,6 @@ public extension QRCode.Document {
 }
 
 public extension QRCode.Document {
-	/// Convenience for setting a string
-	/// - Parameters:
-	///   - string: The string to store in the qr code
-	///   - encoding: The encoding to use
-	///   - allowLossyConversion: Allow losing characters during conversion
-	/// - Returns: true if the conversion succeeded and the data was set, false otherwise
-	@discardableResult
-	func setString(_ string: String, encoding: String.Encoding = .utf8, allowLossyConversion: Bool = false) -> Bool {
-		if let d = string.data(
-			using: encoding,
-			allowLossyConversion: allowLossyConversion
-		) {
-			self.data = d
-			return true
-		}
-		return false
-	}
-
 	/// Set the QR code data using a message formatter
 	@objc func setMessage(_ message: QRCodeMessageFormatter) {
 		self.data = message.data
@@ -190,6 +206,7 @@ public extension QRCode.Document {
 	@objc func copyDocument() -> QRCode.Document {
 		let c = QRCode.Document()
 		c.data = self.data
+		c.utf8String = self.utf8String
 		c.design = self.design.copyDesign()
 		c.logoTemplate = self.logoTemplate?.copyLogoTemplate()
 		c.errorCorrection = self.errorCorrection
@@ -228,15 +245,17 @@ public extension QRCode.Document {
 
 	/// Load the QRCode content from the specified dictionary
 	@objc func load(settings: [String: Any]) throws {
-		let data: Data = {
-			if let value = settings["data"] as? String,
-				let data = Data(base64Encoded: value)
-			{
-				return data
-			}
-			return Data()
-		}()
-		self.data = data
+		if let value = settings["data"] as? String,
+			let data = Data(base64Encoded: value)
+		{
+			self.data = data
+		}
+		else if let text = settings["text"] as? String {
+			self.utf8String = text
+		}
+		else {
+			self.data = Data()
+		}
 
 		let ec: QRCode.ErrorCorrection = {
 			if let value = settings["correction"] as? String,
@@ -301,9 +320,14 @@ public extension QRCode.Document {
 	@objc func settings() -> [String: Any] {
 		var settings: [String: Any] = [
 			"correction": errorCorrection.ECLevel,
-			"data": data.base64EncodedString(),
 			"design": self.design.settings(),
 		]
+		if let data = self.data {
+			settings["data"] = data.base64EncodedString()
+		}
+		else if let text = self.utf8String {
+			settings["text"] = text
+		}
 		if let l = self.logoTemplate {
 			settings["logoTemplate"] = l.settings()
 		}
@@ -337,8 +361,8 @@ public extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// Build the QR Code using the given data and error correction
-	@objc func update(_ data: Data, errorCorrection: QRCode.ErrorCorrection) {
-		self.qrcode.update(data, errorCorrection: errorCorrection)
+	@objc func update(data: Data, errorCorrection: QRCode.ErrorCorrection) {
+		self.qrcode.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Build the QR Code using the given text and error correction
@@ -736,15 +760,15 @@ public extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// Return a new document using the style and design supplied by the template data with the specified text
-	@objc static func UsingTemplate(templateJSONData: Data, utf8String: String) throws -> QRCode.Document {
+	@objc static func UsingTemplate(templateJSONData: Data, text: String) throws -> QRCode.Document {
 		let doc = try QRCode.Document(jsonData: templateJSONData)
-		doc.utf8String = utf8String
+		doc.utf8String = text
 		return doc
 	}
 
 	/// Return an image using the style and design supplied by the template data with the specified text
-	@objc @inlinable static func PNGUsingTemplate(templateJSONData: Data, utf8String: String, dimension: Int) -> Data? {
-		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
+	@objc @inlinable static func PNGUsingTemplate(templateJSONData: Data, text: String, dimension: Int) -> Data? {
+		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, text: text) {
 			return doc.pngData(dimension: dimension)
 		}
 		return nil
@@ -753,11 +777,11 @@ public extension QRCode.Document {
 	/// Return a pdf using the style and design supplied by the template data with the specified text
 	@objc @inlinable static func PDFUsingTemplate(
 		templateJSONData: Data,
-		utf8String: String,
+		text: String,
 		dimension: Int,
 		resolution: CGFloat = 72.0
 	) -> Data? {
-		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, utf8String: utf8String) {
+		if let doc = try? Self.UsingTemplate(templateJSONData: templateJSONData, text: text) {
 			return doc.pdfData(dimension: dimension, pdfResolution: resolution)
 		}
 		return nil
@@ -786,6 +810,14 @@ extension QRCode.Document: ObservableObject {
 extension QRCode.Document {
 	// Build up the qr representation
 	private func regenerate() {
-		self.qrcode.update(self.data, errorCorrection: self.errorCorrection)
+		if let data = self.data {
+			self.qrcode.update(data: data, errorCorrection: self.errorCorrection)
+		}
+		else if let text = self.utf8String {
+			self.qrcode.update(text: text, errorCorrection: self.errorCorrection)
+		}
+		else {
+			Swift.print("QRCode.Document: No data specified")
+		}
 	}
 }

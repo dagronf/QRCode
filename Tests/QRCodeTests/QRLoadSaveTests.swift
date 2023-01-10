@@ -1,5 +1,6 @@
 import XCTest
 @testable import QRCode
+@testable import QRCodeExternal
 
 final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasic() throws {
@@ -70,7 +71,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let data = json.data(using: .utf8)!
 		let doc = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
 
-		let msg = try XCTUnwrap(String(data: doc.data, encoding: .utf8))
+		let msg = try XCTUnwrap(String(data: try XCTUnwrap(doc.data), encoding: .utf8))
 		XCTAssertEqual("this is a test", msg)
 		XCTAssertEqual(doc.errorCorrection, .high)
 		XCTAssertNotEqual(doc.errorCorrection, .low)
@@ -221,17 +222,26 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	}
 
 	func testLoadSaveNegatedOnPixelsOnly() throws {
-		let doc = QRCode.Document(utf8String: "checking negative value set")
+		#if os(watchOS)
+		let generator = QRCodeGenerator_External()
+		#else
+		let generator: QRCodeEngine? = nil
+		#endif
+
+		let doc = QRCode.Document(utf8String: "checking negative value set", generator: generator)
 		doc.design.shape.negatedOnPixelsOnly = true
 
 		let settings = doc.settings()
 
-		let doc2 = try QRCode.Document(dictionary: settings)
+		let doc2 = try QRCode.Document(dictionary: settings, generator: generator)
 		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
+		try doc2.imageData(.jpg(compression: 0.2), dimension: 300)?.writeToTempFile(named: "NegatedQRCodeTestFile-on.jpg")
 
 		doc2.design.shape.negatedOnPixelsOnly = false
 		let settings3 = doc2.settings()
-		let doc3 = try QRCode.Document(dictionary: settings3)
+		let doc3 = try QRCode.Document(dictionary: settings3, generator: generator)
 		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
+
+		try doc3.imageData(.jpg(compression: 0.5), dimension: 300)?.writeToTempFile(named: "NegatedQRCodeTestFile-off.jpg")
 	}
 }

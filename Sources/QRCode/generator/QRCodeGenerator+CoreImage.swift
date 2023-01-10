@@ -30,7 +30,12 @@ internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 
-	func generate(_ data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		guard let data = text.data(using: .utf8) else { return nil }
+		return self.generate(data: data, errorCorrection: errorCorrection)
+	}
+
+	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
 

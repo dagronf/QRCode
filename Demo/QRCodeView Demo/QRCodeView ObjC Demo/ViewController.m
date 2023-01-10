@@ -18,7 +18,7 @@
 	// Do any additional setup after loading the view.
 
 	QRCodeDocument* document = [[QRCodeDocument alloc] init];
-	[document setData:[@"This message is something really exciting in objective-c" dataUsingEncoding: NSUTF8StringEncoding]];
+	[document setUtf8String: @"This message is something really exciting in objective-c"];
 	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 
 	// Set the foreground color to a solid red
