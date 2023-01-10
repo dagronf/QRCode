@@ -24,25 +24,32 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 <p align="center">
    <a href="./Art/screenshot.png">
-      <img src="./Art/screenshot.png" width="375"/>
+      <img src="./Art/screenshot.png" width="300"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">
-      <img src="./Art/watchOS.png" width="160"/>
+      <img src="./Art/watchOS.png" width="120"/>
    </a>
    &nbsp;
    <a href="./Art/qrcode-with-logo.pdf">
-      <img src="./Art/qrcode-with-logo.png" width="200"/>
+      <img src="./Art/qrcode-with-logo.png" width="150"/>
    </a>   
    &nbsp;
    <a href="./Art/qrcode-with-basic-logo.svg">
-      <img src="./Art/qrcode-with-basic-logo.svg" width="200"/>
+      <img src="./Art/qrcode-with-basic-logo.svg" width="150"/>
    </a>   
    <a href="./Art/qrcode-apple-watch.pdf">
-      <img src="./Art/qrcode-apple-watch.png" width="200"/>
+      <img src="./Art/qrcode-apple-watch.png" width="150"/>
    </a>
    <a href="./Art/qrcode-design-negated.pdf">
-      <img src="./Art/qrcode-design-negated.png" width="200"/>
+      <img src="./Art/qrcode-design-negated.png" width="150"/>
+   </a>
+   <a href="./Art/pixel-background-colors.png">
+      <img src="./Art/pixel-background-colors.png" width="150"/>
+   </a>
+
+   <a href="./Art/background-fill-image.jpg">
+      <img src="./Art/background-fill-image.jpg" width="150"/>
    </a>   
 </p>
 
@@ -390,6 +397,7 @@ This library supports the current fill types.
 * solid fill (`QRCode.FillStyle.Solid`)
 * linear gradient (`QRCode.FillStyle.LinearGradient`)
 * radial gradient (`QRCode.FillStyle.RadialGradient`)
+* image (`QRCode.FillStyle.Image`)
 
 #### Style examples
 
