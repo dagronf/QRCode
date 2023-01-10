@@ -1,7 +1,7 @@
 //
 //  Utils.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //

@@ -1,7 +1,7 @@
 //
 //  QRCodeViewUI.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -88,7 +88,8 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 				QRCodeViewUI(
 					content: "This is a test",
 					foregroundColor: CGColor(srgbRed: 0.990, green: 0.849, blue: 0.844, alpha: 1.0),
-					backgroundColor: CGColor(srgbRed: 0.294, green: 0.382, blue: 0.454, alpha: 1.0)
+					backgroundColor: CGColor(srgbRed: 0.294, green: 0.382, blue: 0.454, alpha: 1.0),
+					eyeStyle: QRCode.EyeShape.Leaf()
 				)
 			}
 			HStack {
@@ -112,6 +113,38 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 					backgroundColor: CGColor(red: 0.931, green: 0.398, blue: 0.134, alpha: 1.0),
 					pixelStyle: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8),
 					eyeStyle: QRCode.EyeShape.CorneredPixels()
+				)
+			}
+			HStack {
+				QRCodeViewUI(
+					content: "This is a test",
+					foregroundColor: CGColor(srgbRed: 0.2, green: 0.5, blue: 0.1, alpha: 1.0),
+					backgroundColor: CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 1.0),
+					pixelStyle: QRCode.PixelShape.Square(insetFraction: 0.1),
+					eyeStyle: QRCode.EyeShape.RoundedOuter(),
+					logoTemplate: QRCode.LogoTemplate(
+						path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil)
+					)
+				)
+				QRCodeViewUI(
+					content: "This is a test",
+					foregroundColor: CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 1.0),
+					backgroundColor: CGColor(srgbRed: 1, green: 0, blue: 1, alpha: 1.0),
+					pixelStyle: QRCode.PixelShape.Sharp(),
+					eyeStyle: QRCode.EyeShape.BarsVertical(),
+					logoTemplate: QRCode.LogoTemplate(
+						path: CGPath(rect: CGRect(x: 0.2, y: 0.4, width: 0.6, height: 0.2), transform: nil)
+					)
+				)
+				QRCodeViewUI(
+					content: "This is a test",
+					foregroundColor: CGColor(red: 1.000, green: 0.989, blue: 0.474, alpha: 1.0),
+					backgroundColor: CGColor(red: 0.579, green: 0.091, blue: 0.317, alpha: 1.0),
+					pixelStyle: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8),
+					eyeStyle: QRCode.EyeShape.Squircle(),
+					logoTemplate: QRCode.LogoTemplate(
+						path: CGPath(ellipseIn: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
+					)
 				)
 			}
 		}

@@ -52,7 +52,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		// The dimension for all the generated images
 		let dimension: Int = 400
 
-		NSWorkspace.shared.activateFileViewerSelecting([__genFolder])
+		//NSWorkspace.shared.activateFileViewerSelecting([__genFolder])
 
 		let imageStore = ImageOutput()
 
@@ -816,7 +816,90 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		}
 
 		do {
+			let exporters: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
+			let doc = QRCode.Document()
+			doc.utf8String = "https://www.swift.org"
 
+			doc.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
+
+			doc.design.style.eye = QRCode.FillStyle.Solid(gray: 1)
+			doc.design.style.eyeBackground = CGColor(gray: 0, alpha: 0.2)
+
+			doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1)
+			doc.design.style.onPixelsBackground = CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 0.2)
+
+			doc.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+			doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
+			doc.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
+
+			markdownText += "\n\n"
+			markdownText += "### Exporting with pixel background colors \n\n"
+			markdownText += "|  png  |  pdf  |  svg  |\n"
+			markdownText += "|:-----:|:-----:|:-----:|\n"
+
+			for item in exporters {
+				let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+				let filename = "pixel-background-colors.\(item.fileExtension)"
+				let link = try imageStore.store(data, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
+			}
+			markdownText += "\n\n"
+		}
+
+		do {
+			let exporters: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
+			let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
+
+			doc.design.backgroundColor(CGColor(gray: 0, alpha: 1))
+			doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
+
+			let logoImage =  resourceImage(for: "colored-fill", extension: "jpg")
+			let fillImage = QRCode.FillStyle.Image(logoImage)
+			doc.design.style.onPixels = fillImage
+
+			let logoImage2 = resourceImage(for: "colored-fill-invert", extension: "jpg")
+			let eyeImage = QRCode.FillStyle.Image(logoImage2)
+			doc.design.style.eye = eyeImage
+			doc.design.shape.eye = QRCode.EyeShape.Squircle()
+
+			let logoImage3 = resourceImage(for: "colored-fill-bw", extension: "jpg")
+			let pupilImage = QRCode.FillStyle.Image(logoImage3)
+			doc.design.style.pupil = pupilImage
+			doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+
+			markdownText += "\n\n"
+			markdownText += "### Exporting with image background colors \n\n"
+			markdownText += "|  png  |  pdf  |  svg  |\n"
+			markdownText += "|:-----:|:-----:|:-----:|\n"
+
+			for item in exporters {
+				let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+				let filename = "fillstyle-image-components.\(item.fileExtension)"
+				let link = try imageStore.store(data, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
+			}
+			markdownText += "\n"
+
+			do {
+				let logoImage =  resourceImage(for: "swift-logo", extension: "png")
+				let backgroundImage = QRCode.FillStyle.Image(logoImage)
+
+				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", generator: QRCodeGenerator_External())
+				doc.design.style.background = backgroundImage
+
+				for item in exporters {
+					let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "fillstyle-image-background.\(item.fileExtension)"
+					let link = try imageStore.store(data, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
+				}
+			}
+
+			markdownText += "\n\n"
+		}
+
+		do {
 			markdownText += "## External generator text optimizations \n\n"
 
 			let externalColor = CGColor(srgbRed: 0.3, green: 0.4, blue: 0.8, alpha: 1)
@@ -1003,7 +1086,85 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				markdownText += " | "
 			}
+			markdownText += "\n\n"
+		}
 
+		do {
+			markdownText += "## Background styles \n\n"
+			let exporters: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
+
+			do {
+				markdownText += "### Linear \n\n"
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let gradient = DSFGradient(
+					pins: [
+						DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.9, alpha: 1.0), 0.1),
+						DSFGradient.Pin(CGColor(red: 0.778, green: 0.635, blue: 0.492, alpha: 1.0), 0.9),
+					]
+				)!
+
+				let radial = QRCode.FillStyle.LinearGradient(gradient)
+				let doc = QRCode.Document(utf8String: "QR Code with a linear background")
+				doc.design.style.background = radial
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-linear.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
+			markdownText += "\n\n"
+
+			do {
+				markdownText += "### Radial \n\n"
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let gradient = DSFGradient(
+					pins: [
+						DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.9, alpha: 1.0), 0.1),
+						DSFGradient.Pin(CGColor(red: 0.778, green: 0.635, blue: 0.492, alpha: 1.0), 0.9),
+					]
+				)!
+
+				let radial = QRCode.FillStyle.RadialGradient(gradient)
+				let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+				doc.design.style.background = radial
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-radial.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
+			markdownText += "\n\n"
+
+			do {
+				markdownText += "### Image \n\n"
+
+				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
+				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+
+				markdownText += "|  png  |  pdf  |  svg  |\n"
+				markdownText += "|:-----:|:-----:|:-----:|\n"
+
+				let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+				doc.design.style.background = QRCode.FillStyle.Image(logoImage)
+				doc.design.foregroundColor(.white.copy(alpha: 0.6)!)
+
+				for item in exporters {
+					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let filename = "background-fill-image.\(item.fileExtension)"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
+				}
+			}
 			markdownText += "\n\n"
 		}
 

@@ -1,7 +1,7 @@
 //
 //  QRCodePixelShape.swift
 //
-//  Copyright © 2022 Darren Ford. All rights reserved.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -29,7 +29,9 @@ internal let PixelShapeSettingsName_ = "settings"
 
 public extension QRCode {
 	/// The shape of the data within the qr code.
-	@objc(QRCodePixelShape) class PixelShape: NSObject {}
+	@objc(QRCodePixelShape) class PixelShape: NSObject {
+		private override init() { fatalError() }
+	}
 }
 
 /// A protocol for wrapping generating the data shape for a path

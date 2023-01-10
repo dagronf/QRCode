@@ -24,25 +24,32 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 <p align="center">
    <a href="./Art/screenshot.png">
-      <img src="./Art/screenshot.png" width="375"/>
+      <img src="./Art/screenshot.png" width="300"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">
-      <img src="./Art/watchOS.png" width="160"/>
+      <img src="./Art/watchOS.png" width="120"/>
    </a>
    &nbsp;
    <a href="./Art/qrcode-with-logo.pdf">
-      <img src="./Art/qrcode-with-logo.png" width="200"/>
+      <img src="./Art/qrcode-with-logo.png" width="150"/>
    </a>   
    &nbsp;
    <a href="./Art/qrcode-with-basic-logo.svg">
-      <img src="./Art/qrcode-with-basic-logo.svg" width="200"/>
+      <img src="./Art/qrcode-with-basic-logo.svg" width="150"/>
    </a>   
    <a href="./Art/qrcode-apple-watch.pdf">
-      <img src="./Art/qrcode-apple-watch.png" width="200"/>
+      <img src="./Art/qrcode-apple-watch.png" width="150"/>
    </a>
    <a href="./Art/qrcode-design-negated.pdf">
-      <img src="./Art/qrcode-design-negated.png" width="200"/>
+      <img src="./Art/qrcode-design-negated.png" width="150"/>
+   </a>
+   <a href="./Art/pixel-background-colors.png">
+      <img src="./Art/pixel-background-colors.png" width="150"/>
+   </a>
+
+   <a href="./Art/background-fill-image.jpg">
+      <img src="./Art/background-fill-image.jpg" width="150"/>
    </a>   
 </p>
 
@@ -390,6 +397,7 @@ This library supports the current fill types.
 * solid fill (`QRCode.FillStyle.Solid`)
 * linear gradient (`QRCode.FillStyle.LinearGradient`)
 * radial gradient (`QRCode.FillStyle.RadialGradient`)
+* image (`QRCode.FillStyle.Image`)
 
 #### Style examples
 
@@ -624,7 +632,7 @@ This library provides drop-in components for presenting a styled QR code.
 
 #### `QRCodeView`
 
-`QRCodeView` is a view implementation for displaying a QR Code . This view supports :-
+`QRCodeView` is a view implementation for displaying a QR Code. This view supports :-
 
 * `@IBDesignable` via Interface Builder so you can design and style your QR code completely within Interface Builder without having a `QRCode.Document` object.
 * (Optional) drag support for dragging a QR code out of the view.
@@ -648,6 +656,16 @@ QRCodeViewUI(
 #### `QRCodeDocumentViewUI`
 
 If you need more control over the styling and content of your QR code, `QRCodeDocumentViewUI` is a `SwiftUI` view that displays a `QRCode.Document` object. 
+
+```swift
+   var body: some View {
+         VStack {
+            QRCodeDocumentUIView(document: doc)
+         }
+         .padding()
+   }
+```
+
 
 #### `QRCodeShape`
 
@@ -922,7 +940,7 @@ watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/Q
 ```
 MIT License
 
-Copyright (c) 2022 Darren Ford
+Copyright (c) 2023 Darren Ford
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

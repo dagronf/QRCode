@@ -4,8 +4,8 @@
 /*.xcodeproj
 xcuserdata/
 DerivedData/
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-.swiftpm/xcode/xcshareddata
+.swiftpm/
 Demo/QRCodeView Demo/QRCodeView Demo.xcodeproj/project.xcworkspace/xcshareddata
 docs
 Package.resolved
+Demo/SwiftUI Demos/SwiftUI Demos.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
