@@ -16,20 +16,20 @@ final class QRCodeDetectionTests: XCTestCase {
 		// Make sure the third party generator can generate a qr code
 		let doc = QRCode.Document(generator: QRCodeGenerator_External())
 
-		_ = doc.setString("This is a test")
+		doc.utf8String = "This is a test"
 
 		var matr = doc.boolMatrix
 		doc.errorCorrection = .low
 		XCTAssertEqual(matr.dimension, 27)
 
-		_ = doc.setString("This is higher quality")
+		doc.utf8String = "This is higher quality"
 		doc.errorCorrection = .high
 		matr = doc.boolMatrix
 		XCTAssertEqual(matr.dimension, 31)
 
 		// Create a QR code from the doc, then detect it back in and check that
 		// the strings match
-		_ = doc.setString(_msg)
+		doc.utf8String = _msg
 		let imaged = try XCTUnwrap(doc.cgImage(CGSize(width: 600, height: 600)))
 
 		// ... now attempt to detect the text from the generated image
@@ -45,20 +45,19 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		// Make sure the default generator can generate a qr code that we can read back
 		let doc = QRCode.Document()
-
-		_ = doc.setString("This is a test")
+		doc.utf8String = "This is a test"
 
 		var matr = doc.boolMatrix
 		doc.errorCorrection = .low
 		XCTAssertEqual(matr.dimension, 27)
 
-		_ = doc.setString("This is higher quality")
+		doc.utf8String = "This is higher quality"
 		doc.errorCorrection = .high
 		matr = doc.boolMatrix
 		XCTAssertEqual(matr.dimension, 31)
 
 		// Create a QR code from the doc, then detect it back in and check that the strings match.
-		_ = doc.setString(_msg)
+		doc.utf8String = _msg
 
 		// Generate a basic QR code image
 		let imaged = try XCTUnwrap(doc.cgImage(CGSize(width: 600, height: 600)))

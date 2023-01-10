@@ -49,7 +49,7 @@ public struct QRCodeShape: Shape {
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator__.update(data, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified text
@@ -76,7 +76,7 @@ public struct QRCodeShape: Shape {
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator__.update(data, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode shape using the specified message formatter
@@ -103,7 +103,7 @@ public struct QRCodeShape: Shape {
 		if let g = generator {
 			self.qrCodeGenerator__.generator = g
 		}
-		self.qrCodeGenerator__.update(self.data__, errorCorrection: errorCorrection)
+		self.qrCodeGenerator__.update(data: self.data__, errorCorrection: errorCorrection)
 	}
 
 	// Private

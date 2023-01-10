@@ -8,10 +8,8 @@ import AppKit
 @testable import QRCodeExternal
 
 let __genFolder: URL = {
-	let u = FileManager.default
-		.temporaryDirectory
-		.appendingPathComponent("qrcodeTests")
-		.appendingPathComponent("generated")
+	let u = __tmpFolder
+		.appendingPathComponent("markdown-generated")
 
 	try? FileManager.default.removeItem(at: u)
 	try! FileManager.default.createDirectory(at: u, withIntermediateDirectories: true)
@@ -815,6 +813,198 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				}
 				markdownText += "\n\n"
 			}
+		}
+
+		do {
+
+			markdownText += "## External generator text optimizations \n\n"
+
+			let externalColor = CGColor(srgbRed: 0.3, green: 0.4, blue: 0.8, alpha: 1)
+
+			do {
+				markdownText += "### Basic alphanum optimisation \n\n"
+
+				let r1 = "THIS IS A TEST"
+				markdownText += "Message is: `\(r1)`\n\n"
+
+				markdownText += "| Core Image | External <br/> (no optimization) | External |\n"
+				markdownText += "|:----------:|:--------:|:------------:|\n"
+				markdownText += "| "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-basictext-default.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let data = r1.data(using: .ascii)!
+					let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-basictext-external-noopt.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-basictext-external.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+				markdownText += " | "
+			}
+
+			markdownText += "\n\n"
+
+
+			do {
+				markdownText += "### Basic numeric optimisation \n\n"
+
+				let r1 = "0123456789012345678901234567890123456789"
+				markdownText += "Message is: `\(r1)`\n\n"
+
+				markdownText += "| Core Image | External <br/> (no optimization) | External |\n"
+				markdownText += "|:----------:|:--------:|:------------:|\n"
+				markdownText += "| "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-numerics-default.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let data = r1.data(using: .ascii)!
+					let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-numerics-external-noopt.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-numerics-external.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+			}
+
+			markdownText += "\n"
+
+			do {
+				markdownText += "### Basic alphanum optimisation \n\n"
+
+				let r1 = "0123456789ABCDEFGHIJKLMNOP 0123456789ABCDEFGHIJKLMNOP"
+				markdownText += "Message is: `\(r1)`\n\n"
+
+				markdownText += "| Core Image | External <br/> (no optimization) | External |\n"
+				markdownText += "|:----------:|:--------:|:------------:|\n"
+				markdownText += "| "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-default.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let data = r1.data(using: .ascii)!
+					let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-external-noopt.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-external.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				markdownText += "\n"
+			}
+
+			do {
+				markdownText += "### Unable to optimize \n\n"
+
+				let r1 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYz $%*+-./:"
+				markdownText += "Message is: `\(r1)`\n\n"
+				markdownText += "(external generator is unable to optimize this due to lower-case z)\n\n"
+
+				markdownText += "| Core Image | External <br/> (no optimization) | External |\n"
+				markdownText += "|:----------:|:--------:|:------------:|\n"
+				markdownText += "| "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-default.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let data = r1.data(using: .ascii)!
+					let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-external-noopt.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+
+				do {
+					let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+					doc1.design.foregroundColor(externalColor)
+					let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+					let filename = "generator-alphanum-external.jpg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
+				}
+
+				markdownText += " | "
+			}
+
+			markdownText += "\n\n"
 		}
 
 		// Write out the markdown

@@ -17,11 +17,20 @@ import UIKit
 typealias CommonImage = UIImage
 #endif
 
+// Note:  DateFormatter is thread safe
+// See https://developer.apple.com/documentation/foundation/dateformatter#1680059
+internal let iso8601Formatter: DateFormatter = {
+	let dateFormatter = DateFormatter()
+	dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX ISO8601
+	dateFormatter.dateFormat = "yyyy-MM-dd'T'HHmmssZ"
+	return dateFormatter
+}()
+
 let __tmpFolder: URL = {
 	let u = FileManager.default
 		.temporaryDirectory
 		.appendingPathComponent("qrcodeTests")
-		.appendingPathComponent(UUID().uuidString)
+		.appendingPathComponent(iso8601Formatter.string(from: Date()))
 	try! FileManager.default.createDirectory(at: u, withIntermediateDirectories: true)
 	Swift.print("Temp files at: \(u)")
 	return u

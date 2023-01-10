@@ -43,7 +43,7 @@ import UIKit
 
 	/// Binary data to display in the QR code
 	@objc public var data: Data {
-		get { return self._document.data }
+		get { return self._document.data ?? Data() }
 		set { self._document.data = newValue; self.rebuildQRCode() }
 	}
 
@@ -242,7 +242,7 @@ public extension QRCodeView {
 extension QRCodeView {
 	// Build up the qr representation
 	private func rebuildDocumentUsingStoredProperties() {
-		self._document.update(self.data, errorCorrection: self.errorCorrection)
+		self._document.update(data: self.data, errorCorrection: self.errorCorrection)
 		self._document.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
 		self._document.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
 		self._document.design.shape.pupil = (_pupilShape.count > 0) ? QRCodePupilShapeFactory.shared.named(_pupilShape) : nil
