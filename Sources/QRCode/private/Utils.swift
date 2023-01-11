@@ -21,6 +21,14 @@
 
 import Foundation
 
+/// Attempt to convert an opaque type to a CGFloat value.
+@inlinable @inline(__always) internal func CGFloatValue(_ opaque: Any?) -> CGFloat? {
+	if let value = DoubleValue(opaque) {
+		return CGFloat(value)
+	}
+	return nil
+}
+
 /// Attempt to convert an opaque type to a double value.
 @inlinable @inline(__always) internal func DoubleValue(_ opaque: Any?) -> Double? {
 	return (opaque as? NSNumber)?.doubleValue

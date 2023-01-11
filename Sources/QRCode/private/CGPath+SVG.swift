@@ -42,7 +42,7 @@ extension CGPath {
 	func svgDataPath() -> String {
 		var svg = ""
 
-		self.applyWithBlock { elem in
+		self.applyWithBlockSafe { elem in
 			let elementType = elem.pointee.type
 
 			let command: String = {

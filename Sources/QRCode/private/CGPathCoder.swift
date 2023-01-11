@@ -111,6 +111,7 @@ private extension CGPathCoder {
 
 private extension CGPathCoder {
 	// Return the path elements for the path
+	@available(macOS 10.13, *)
 	private static func elements(for path: CGPath) -> [_PathElement] {
 		var elements:  [_PathElement] = []
 		path.applyWithBlock { elem in
