@@ -1,5 +1,5 @@
 //
-//  BezierTools.swift
+//  NSBezierPath+extensions.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -19,72 +19,16 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if canImport(CoreGraphics)
-
-import Foundation
-import CoreGraphics
-
-// MARK: - CGPath/CGMutablePath
-
-extension CGPath {
-	/// Convenience for creating a CGPath
-	static func make(_ block: (CGMutablePath) -> Void) -> CGPath {
-		let pth = CGMutablePath()
-		block(pth)
-		return pth
-	}
-
-	/// Convenience for creating a CGMutablePath
-	static func makeMutable(_ block: (CGMutablePath) -> Void) -> CGMutablePath {
-		let pth = CGMutablePath()
-		block(pth)
-		return pth
-	}
-}
-
-extension CGPath {
-	/// A safe wrapper around applyWithBlock and applyWithBlockLegacy
-	func applyWithBlockSafe(_ block: @escaping (UnsafePointer<CGPathElement>) -> Void) {
-		if #available(macOS 10.13, iOS 11, tvOS 11, watchOS 4, *) {
-			self.applyWithBlock(block)
-		}
-		else {
-			self.applyWithBlockLegacy(block)
-		}
-	}
-
-	/// A backwards compatible version of `applyWithBlock` for use before macOS 10.13
-	func applyWithBlockLegacy(_ block: @escaping (UnsafePointer<CGPathElement>) -> Void) {
-		class BlockWrapper {
-			let block: (UnsafePointer<CGPathElement>) -> Void
-			init(block: @escaping (UnsafePointer<CGPathElement>) -> Void) {
-				self.block = block
-			}
-		}
-
-		var resultData = BlockWrapper(block: block)
-		withUnsafeMutablePointer(to: &resultData) { results in
-			self.apply(info: results) { (results, elementPointer) in
-				guard let results = results?.assumingMemoryBound(to: BlockWrapper.self).pointee else {
-					fatalError()
-				}
-				results.block(elementPointer)
-			}
-		}
-	}
-}
-
-
-// MARK: - macOS
+//  Conversion routines for NSBezierPath <--> CGPath
 
 #if os(macOS)
 
+import Foundation
 import AppKit
 
 extension NSBezierPath {
-
 	/// Create a CGPath
-	public var cgPath: CGPath {
+	var cgPath: CGPath {
 		let path = CGMutablePath()
 		var points = [CGPoint](repeating: .zero, count: 3)
 		for i in 0 ..< self.elementCount {
@@ -147,7 +91,5 @@ extension NSBezierPath {
 		}
 	}
 }
-
-#endif
 
 #endif
