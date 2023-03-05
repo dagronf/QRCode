@@ -56,9 +56,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 ## Why?
 
-It's nice to have a simple, quick drop-in component for displaying a QR code when you need one :-).
-
-This also contains a command-line application for generating a qrcode from the command line (`qrcodegen`).
+It's nice to have a simple, quick drop-in component for displaying a QR code when you need it!
 
 ## Features
 
@@ -73,6 +71,14 @@ This also contains a command-line application for generating a qrcode from the c
 * Add a logo to a QR code.
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
+
+## NOTES for v13+
+
+When you upgrade your code to 13 any code you may have used (especially for watchOS) may need some minor updates to compile for v13.0.0.
+
+The library has combined the two distinct targets (`QRCode` and `QRCodeExternal`) into a single target (`QRCode`). As a result, the `QRCodeExternal` target (and `import QRCodeExternal` in your code) is no longer required - you can simply link against `QRCode` to get all the functionality - even for watchOS! 
+
+v13.0.0 has also added support for CocoaPods.
 
 ## Installing
 
@@ -89,7 +95,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'QRCode', git => 'https://github.com/dagronf/qrcode.git', :tag => '~> 13'
+pod 'QRCode', git => 'https://github.com/dagronf/qrcode.git', :tag => '~> 13.0'
 ```
 
 ### In your source
@@ -914,8 +920,7 @@ QR Code is a registered trademark of DENSO WAVE.
 
 ### swift-qrcode-generator
 
-Since watchOS doesn't support Core Image filters, I defer to using an (optional) 3rd party for generating QR Codes for
-watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/QR-Code-generator) code.
+Since watchOS doesn't support Core Image filters, I defer to using an (optional) 3rd party for generating QR Codes for watchOS. It is based on [Nayuki's QR Code generator](https://github.com/nayuki/QR-Code-generator) code.
 
 [swift-qrcode-generator](https://github.com/dagronf/swift-qrcode-generator)
 
