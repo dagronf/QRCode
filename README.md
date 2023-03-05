@@ -7,7 +7,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
     <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
-    <img src="https://img.shields.io/cocoapods/v/:spec" />
+    <img src="https://img.shields.io/badge/pod-compatible-red" />
     </a>
 </p>
 <p align="center">
