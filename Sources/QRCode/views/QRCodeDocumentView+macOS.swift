@@ -111,6 +111,7 @@ private extension QRCodeDocumentView {
 	}
 
 	func _documentDidChange(document: QRCode.Document?) {
+
 		if displayProgressDelayTimer == nil {
 			displayProgressDelayTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false)
 		}
@@ -121,18 +122,25 @@ private extension QRCodeDocumentView {
 				let data = document?.pdfData(dimension: 512),
 				let image = NSImage(data: data)
 			{
-				DispatchQueue.main.async { [weak self] in
-					guard let `self` = self else { return }
-					self.displayProgressDelayTimer?.invalidate()
-					self.displayProgressDelayTimer = nil
-					self.imageLayer.contents = image
-					self.imageLayer.opacity = 1.0
-					self.progressView.stopAnimation(self)
-				}
+				self?.updateDisplay(with: image)
+			}
+			else {
+				self?.updateDisplay(with: nil)
 			}
 		}
 
 		DispatchQueue.global(qos: .background).async(execute: workItem)
+	}
+
+	private func updateDisplay(with image: NSImage?) {
+		DispatchQueue.main.async { [weak self ] in
+			guard let `self` = self else { return }
+			self.displayProgressDelayTimer?.invalidate()
+			self.displayProgressDelayTimer = nil
+			self.imageLayer.contents = image
+			self.imageLayer.opacity = 1.0
+			self.progressView.stopAnimation(self)
+		}
 	}
 
 	@objc func timerFired() {

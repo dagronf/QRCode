@@ -65,23 +65,25 @@ func UsingSinglePagePDFContext(
 	let pageHeight = size.height * (72.0 / pdfResolution)
 	var mediaBox = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
 
-	let pdfFile = NSMutableData()
-	let pdfConsumer = CGDataConsumer(data: pdfFile as CFMutableData)!
-	guard let pdfContext = CGContext(consumer: pdfConsumer, mediaBox: &mediaBox, nil) else {
+	guard
+		let data = CFDataCreateMutable(nil, 0),
+		let pdfConsumer = CGDataConsumer(data: data),
+		let pdfContext = CGContext(consumer: pdfConsumer, mediaBox: &mediaBox, nil)
+	else {
 		return nil
 	}
 
 	// Start a new page of the required size
 	pdfContext.beginPage(mediaBox: &mediaBox)
-	
+
 	// Perform the context drawing
 	try drawBlock(pdfContext, mediaBox)
 
 	// And end the page
-	pdfContext.endPage()
+	pdfContext.endPDFPage()
 
 	// Close the pdf to make sure all data is written to the consumer
 	pdfContext.closePDF()
 
-	return Data(pdfFile)
+	return data as Data
 }
