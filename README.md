@@ -95,7 +95,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'QRCode', git => 'https://github.com/dagronf/qrcode.git', :tag => '~> 13.0'
+pod 'QRCode', :git => 'https://github.com/dagronf/qrcode.git', :tag => '13.0.0'
 ```
 
 ### In your source
