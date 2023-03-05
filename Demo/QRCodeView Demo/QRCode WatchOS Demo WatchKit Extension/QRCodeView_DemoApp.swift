@@ -7,7 +7,6 @@
 
 import SwiftUI
 import QRCode
-import QRCodeExternal
 
 class testing {
 	init() {

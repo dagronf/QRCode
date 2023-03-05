@@ -20,29 +20,23 @@
 //
 
 import Foundation
-import QRCode
 
 /// A qr code generator that uses QRCodeGenerator (https://github.com/dagronf/swift-qrcode-generator) as its generator.
 /// This is primarily used for WatchOS, which doesn't support CoreImage filters.
-///
-/// The generator library (https://github.com/fwcd/swift-qrcode-generator) is not automatically imported into the
-/// core QRCode module as some projects may not want to link against a 3rd party library for their
-/// macOS/iOS or tvOS application.
-///
-/// By wrapping the 3rd party library in a separate Swift module it provides the flexibility to ignore it if you
-/// don't need it.
-public class QRCodeGenerator_External: QRCodeEngine {
-
-	public init() {}
+@objc public class QRCodeGenerator_External: NSObject, QRCodeEngine {
+	/// Create an engine
+	@objc public override init() {
+		super.init()
+	}
 
 	/// Generate the QR code using the custom generator
-	public func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
-		let qrCode = _generate(data, errorCorrection: errorCorrection.ECLevel)
+	@objc public func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		let qrCode = self._generate(data, errorCorrection: errorCorrection.ECLevel)
 		return mapResult(qrCode)
 	}
 
-	public func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
-		let qrCode = _generate(text, errorCorrection: errorCorrection.ECLevel)
+	@objc public func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+		let qrCode = self._generate(text, errorCorrection: errorCorrection.ECLevel)
 		return mapResult(qrCode)
 	}
 

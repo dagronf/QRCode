@@ -1,7 +1,6 @@
 import Foundation
 
 @testable import QRCode
-@testable import QRCodeExternal
 
 #if os(watchOS)
 let __testGenerator = QRCodeGenerator_External()

@@ -112,10 +112,7 @@ private extension QRCodeDocumentView {
 
 	func _documentDidChange(document: QRCode.Document?) {
 		if displayProgressDelayTimer == nil {
-			displayProgressDelayTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] (_) in
-				self?.imageLayer.opacity = 0.2
-				self?.progressView.startAnimation(self)
-			})
+			displayProgressDelayTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false)
 		}
 
 		// Generate the image on a background thread to make the UI more responsive
@@ -136,6 +133,11 @@ private extension QRCodeDocumentView {
 		}
 
 		DispatchQueue.global(qos: .background).async(execute: workItem)
+	}
+
+	@objc func timerFired() {
+		self.imageLayer.opacity = 0.2
+		self.progressView.startAnimation(self)
 	}
 }
 

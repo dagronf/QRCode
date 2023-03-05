@@ -7,6 +7,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
     <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+    <img src="https://img.shields.io/cocoapods/v/:spec" />
     </a>
 </p>
 <p align="center">
@@ -62,6 +63,7 @@ This also contains a command-line application for generating a qrcode from the c
 ## Features
 
 * Supports Swift and Objective-C.
+* Supports Swift Package Manager and CocoaPods
 * Generate a QR code without access to a UI.
 * Supports all error correction levels.
 * Load/Save support
@@ -71,6 +73,30 @@ This also contains a command-line application for generating a qrcode from the c
 * Add a logo to a QR code.
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
+
+## Installing
+
+### Swift Package Manager
+
+To use in your project, add the following dependency to your Package.swift:
+
+```swift
+.package(url: "https://github.com/dagronf/qrcode.git", from: "13.0.0")
+```
+
+### Cocoapods
+
+To install it, simply add the following line to your Podfile
+
+```ruby
+pod 'QRCode', git => 'https://github.com/dagronf/qrcode.git', :tag => '~> 13'
+```
+
+### In your source
+
+Swift: `import QRCode`
+
+Objective-C: `@import QRCode;`
 
 ## Generating a QR Code
 
@@ -127,11 +153,8 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 
 ### QRCode / QRCodeDynamic
 
-This is the base QRCode generator that uses Core Image to generate QR Codes. 
-If you're developing for **macOS, macCatalyst, iOS or tvOS** this is most likely all that you'll need to use.
-
-1. Link against `QRCode` OR `QRCodeDynamic`
-2. Add `import QRCode` to any source files
+1. Link your project against `QRCode`
+2. Add `import QRCode` to any source files that need to generate QR Codes
 
 <details>
 <summary>Click here to see a code example</summary>
@@ -151,15 +174,9 @@ let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
 
 </details>
 
-### QRCodeExternal / QRCodeExternalDynamic
-
 **watchOS** limitations require that a [3rd-party QR code generation library](https://github.com/fwcd/swift-qrcode-generator)
 is required to generate the raw QR code data on-device. These libraries can also be used for macOS, macCatalyst, iOS and 
 tvOS if you need consistent QR codes across multiple platforms including watchOS.
-
-1. Link against `QRCodeExternal` or `QRCodeExternalDynamic`
-2. Import both `QRCode` and `QRCodeExternal` in your source file(s)
-3. When creating your `QRCode()` or `QRCode.Document()`, provide `QRCodeGenerator_External()` as the generator. 
 
 The external code generator supports some optimizations when using text :-
 
@@ -167,37 +184,6 @@ The external code generator supports some optimizations when using text :-
 2. All characters in `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:` (all uppercase)
 
 Constraining your text to match these rules will reduce the size of the resulting QR code. 
-
-<details>
-<summary>Click here to see a watchOS code example</summary>
-
-```swift
-// watchOS generation sample
-
-import QRCode
-import QRCodeExternal
-
-let doc = QRCode.Document(generator: QRCodeGenerator_External())
-
-// Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
-doc.utf8String = "This is a test"
-doc.errorCorrection = .high
-
-// And generate a UIImage from the pdf data
-let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
-```
-
-**Frameworks, Libraries, and Embedded Content**
-
-<img src="./Art/watchos-link-settings.jpg" />
-
-</details>
-
-There is also a very basic example called `WatchQR` in the `Demos` folder
-
-**NOTE:** Including a 3rd party dependency always introduces more risk.
-If you don't need watchOS support, you should probably avoid using either `QRCodeExternal` or `QRCodeExternalDynamic`
-to reduce both your code complexity and risk surface.
 
 ## Settings
 

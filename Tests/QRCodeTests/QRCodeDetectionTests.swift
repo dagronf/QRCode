@@ -3,7 +3,6 @@ import XCTest
 #if !os(watchOS)
 
 @testable import QRCode
-@testable import QRCodeExternal
 
 final class QRCodeDetectionTests: XCTestCase {
 	//let _msg = "DENSO WAVE serves as a leader in developing and manufacturing automatic data capture devices for barcodes, QR codes, and RFID, etc. and industrial robots (FA equipment), etc."

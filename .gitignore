@@ -9,3 +9,4 @@ docs
 Package.resolved
 Demo/SwiftUI Demos/SwiftUI Demos.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 contents.xcworkspacedata
+Demo/Cocoapods Test/Pods

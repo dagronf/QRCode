@@ -8,7 +8,6 @@
 import SwiftUI
 
 import QRCode
-import QRCodeExternal
 
 let qrcode: QRCode.Document = {
 	let d = QRCode.Document(generator: QRCodeGenerator_External())

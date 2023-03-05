@@ -1,7 +1,5 @@
 import XCTest
 @testable import QRCode
-@testable import QRCodeExternal
-
 final class QRCodeTests: XCTestCase {
 	func testBasicQRCode() throws {
 		let doc = QRCode(generator: __testGenerator)

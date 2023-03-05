@@ -1,6 +1,5 @@
 import XCTest
 @testable import QRCode
-@testable import QRCodeExternal
 
 #if canImport(AppKit)
 import AppKit

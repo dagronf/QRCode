@@ -45,7 +45,6 @@
 		2309F8A228ED33F9009666A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A128ED33F9009666A1 /* Assets.xcassets */; };
 		2309F8A528ED33F9009666A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A428ED33F9009666A1 /* Preview Assets.xcassets */; };
 		2309F8AA28ED340C009666A1 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 2309F8A928ED340C009666A1 /* QRCode */; };
-		2309F8AC28ED340C009666A1 /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 2309F8AB28ED340C009666A1 /* QRCodeExternal */; };
 		2322B099276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2322B098276348300085B5EB /* QRCode WatchOS Demo WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2322B09E276348310085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B09D276348310085B5EB /* Assets.xcassets */; };
 		2322B0A4276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -69,6 +68,7 @@
 		2348FBAA273A310A004DB2BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348FB99273A3109004DB2BF /* ContentView.swift */; };
 		2348FBAB273A310A004DB2BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348FB9A273A310A004DB2BF /* Assets.xcassets */; };
 		2348FBAC273A310A004DB2BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348FB9A273A310A004DB2BF /* Assets.xcassets */; };
+		235C9E3D29B2E069002A98D2 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 235C9E3C29B2E069002A98D2 /* QRCode */; };
 		235F82752741F1B300E81D98 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235F82742741F1B300E81D98 /* ContentView.swift */; };
 		236A0506286FE1960019C842 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236A0505286FE1960019C842 /* AppDelegate.swift */; };
 		236A0508286FE1960019C842 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236A0507286FE1960019C842 /* ViewController.swift */; };
@@ -91,7 +91,6 @@
 		23C64A5F282F448D0094E093 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A5E282F448D0094E093 /* ViewController.swift */; };
 		23C64A61282F448E0094E093 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C64A60282F448E0094E093 /* Assets.xcassets */; };
 		23C64A64282F448E0094E093 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23C64A62282F448E0094E093 /* Main.storyboard */; };
-		23C7585C28AC7420007528CE /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7585B28AC7420007528CE /* QRCodeExternal */; };
 		23C7586028AC77E3007528CE /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7585F28AC77E3007528CE /* QRCode */; };
 		23C7586228AC7842007528CE /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586128AC7842007528CE /* QRCode */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
@@ -101,7 +100,6 @@
 		23E66A9F29247CD900236B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E66A9E29247CD900236B80 /* Assets.xcassets */; };
 		23E66AA229247CD900236B80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E66AA029247CD900236B80 /* Main.storyboard */; };
 		23E66AA829247CEA00236B80 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23E66AA729247CEA00236B80 /* QRCode */; };
-		23E66AAA29247CEA00236B80 /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 23E66AA929247CEA00236B80 /* QRCodeExternal */; };
 		23F8AE69273A493B00ED6288 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE68273A493B00ED6288 /* AppDelegate.m */; };
 		23F8AE6C273A493B00ED6288 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F8AE6B273A493B00ED6288 /* ViewController.m */; };
 		23F8AE6E273A493C00ED6288 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F8AE6D273A493C00ED6288 /* Assets.xcassets */; };
@@ -308,7 +306,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2309F8AA28ED340C009666A1 /* QRCode in Frameworks */,
-				2309F8AC28ED340C009666A1 /* QRCodeExternal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +313,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23C7585C28AC7420007528CE /* QRCodeExternal in Frameworks */,
+				235C9E3D29B2E069002A98D2 /* QRCode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +378,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23E66AA829247CEA00236B80 /* QRCode in Frameworks */,
-				23E66AAA29247CEA00236B80 /* QRCodeExternal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,7 +634,6 @@
 			name = "Simple tvOS QRCode";
 			packageProductDependencies = (
 				2309F8A928ED340C009666A1 /* QRCode */,
-				2309F8AB28ED340C009666A1 /* QRCodeExternal */,
 			);
 			productName = "Simple tvOS QRCode";
 			productReference = 2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */;
@@ -692,7 +687,7 @@
 			);
 			name = "QRCode WatchOS Demo WatchKit Extension";
 			packageProductDependencies = (
-				23C7585B28AC7420007528CE /* QRCodeExternal */,
+				235C9E3C29B2E069002A98D2 /* QRCode */,
 			);
 			productName = "QRCode WatchOS Demo WatchKit Extension";
 			productReference = 2322B0A3276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension.appex */;
@@ -854,7 +849,6 @@
 			name = "macOS Logo Image Demo";
 			packageProductDependencies = (
 				23E66AA729247CEA00236B80 /* QRCode */,
-				23E66AA929247CEA00236B80 /* QRCodeExternal */,
 			);
 			productName = "macOS Logo Image Demo";
 			productReference = 23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */;
@@ -2384,9 +2378,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
 		};
-		2309F8AB28ED340C009666A1 /* QRCodeExternal */ = {
+		235C9E3C29B2E069002A98D2 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeExternal;
+			productName = QRCode;
 		};
 		239FBAE028A638C2002F74AC /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -2412,10 +2406,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = qrcodegen;
 		};
-		23C7585B28AC7420007528CE /* QRCodeExternal */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeExternal;
-		};
 		23C7585F28AC77E3007528CE /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
@@ -2431,10 +2421,6 @@
 		23E66AA729247CEA00236B80 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
-		};
-		23E66AA929247CEA00236B80 /* QRCodeExternal */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeExternal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

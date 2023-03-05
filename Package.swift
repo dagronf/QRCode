@@ -1,5 +1,4 @@
-// swift-tools-version:5.4
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 5.4
 
 import PackageDescription
 
@@ -12,18 +11,9 @@ let package = Package(
 		.watchOS(.v6)
 	],
 	products: [
-
-		// Static/Dynamic QRCode libraries
-
 		.library(name: "QRCode", targets: ["QRCode"]),
 		.library(name: "QRCodeStatic", type: .static, targets: ["QRCode"]),
 		.library(name: "QRCodeDynamic", type: .dynamic, targets: ["QRCode"]),
-
-		// watchOS convenience including the 3rd party generator
-
-		.library(name: "QRCodeExternal", targets: ["QRCode", "QRCodeExternal"]),
-		.library(name: "QRCodeExternalStatic", type: .static, targets: ["QRCode", "QRCodeExternal"]),
-		.library(name: "QRCodeExternalDynamic", type: .dynamic, targets: ["QRCode", "QRCodeExternal"]),
 	],
 	dependencies: [
 		// Swift argument parser is used for the command-line application
@@ -40,17 +30,10 @@ let package = Package(
 		)
 	],
 	targets: [
-		// The core qr code library
+		// The qr code library
 		.target(
 			name: "QRCode",
-			dependencies: []
-		),
-
-		// The wrapper library for the 3rd party qr code generator
-		.target(
-			name: "QRCodeExternal",
 			dependencies: [
-				"QRCode",
 				.product(
 					name: "QRCodeGenerator",
 					package: "swift-qrcode-generator"
@@ -69,7 +52,7 @@ let package = Package(
 		// testing target
 		.testTarget(
 			name: "QRCodeTests",
-			dependencies: ["QRCode", "QRCodeExternal"],
+			dependencies: ["QRCode"],
 			resources: [
 				.process("Resources"),
 			]

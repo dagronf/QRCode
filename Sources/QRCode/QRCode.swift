@@ -31,11 +31,11 @@ import Foundation
 @objc public class QRCode: NSObject {
 	/// The generator to use when generating the QR code.
 	///
-	/// Defaults to CoreImage on macOS/iOS/tvOS, or none on watchOS (import QRCodeExternal for watchOS)
+	/// Defaults to CoreImage on macOS/iOS/tvOS, or the external 3rd party library for watchOS
 	@objc public var generator: QRCodeEngine = {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
-		return QRCodeGenerator_None()
+		return QRCodeGenerator_External()
 #else
 		return QRCodeGenerator_CoreImage()
 #endif

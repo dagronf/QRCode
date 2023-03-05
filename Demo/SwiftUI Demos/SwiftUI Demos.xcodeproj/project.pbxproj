@@ -11,7 +11,6 @@
 		23C952E9296B812D0020B18D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C952E8296B812D0020B18D /* ContentView.swift */; };
 		23C952EB296B812E0020B18D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C952EA296B812E0020B18D /* Assets.xcassets */; };
 		23C952EF296B812E0020B18D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C952EE296B812E0020B18D /* Preview Assets.xcassets */; };
-		23C952F8296B815A0020B18D /* QRCodeExternalStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C952F7296B815A0020B18D /* QRCodeExternalStatic */; };
 		23C952FA296B815A0020B18D /* QRCodeStatic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C952F9296B815A0020B18D /* QRCodeStatic */; };
 /* End PBXBuildFile section */
 
@@ -31,7 +30,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23C952FA296B815A0020B18D /* QRCodeStatic in Frameworks */,
-				23C952F8296B815A0020B18D /* QRCodeExternalStatic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +98,6 @@
 			);
 			name = "SwiftUI Demos";
 			packageProductDependencies = (
-				23C952F7296B815A0020B18D /* QRCodeExternalStatic */,
 				23C952F9296B815A0020B18D /* QRCodeStatic */,
 			);
 			productName = "SwiftUI Demos";
@@ -374,10 +371,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		23C952F7296B815A0020B18D /* QRCodeExternalStatic */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeExternalStatic;
-		};
 		23C952F9296B815A0020B18D /* QRCodeStatic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeStatic;

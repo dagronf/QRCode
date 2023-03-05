@@ -7,7 +7,17 @@
 
 import SwiftUI
 import QRCode
-import QRCodeExternal
+
+extension CGImage {
+	/// Load a CGImage from an image resource
+	@inlinable static func named(_ name: String) -> CGImage? {
+		#if os(macOS)
+		NSImage(named: name)?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+		#else
+		UIImage(named: name)?.cgImage
+		#endif
+	}
+}
 
 let doc1: QRCode.Document = {
 	let d = QRCode.Document(generator: QRCodeGenerator_External())
@@ -27,6 +37,8 @@ let doc1: QRCode.Document = {
 	d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
 	d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.3)
 
+	d.design.style.background = QRCode.FillStyle.Image(CGImage.named("Apple_Swift_Logo"))
+
 	return d
 }()
 
@@ -36,6 +48,7 @@ struct ContentView: View {
 			VStack {
 				PixelBackgroundColorsView()
 			}
+			.frame(maxWidth: 100000)
 		}
 	}
 }
@@ -53,13 +66,8 @@ struct PixelBackgroundColorsView: View {
 		VStack {
 			Text("A logo with an overlaid QRCode.")
 			Text("Note: The Eye color must match the on pixel color")
-			ZStack {
-				Image("Apple_Swift_Logo")
-					.resizable()
-					.scaledToFill()
-				QRCodeDocumentUIView(document: doc1)
-			}
-			.frame(width: 300, height: 300)
+			QRCodeDocumentUIView(document: doc1)
+				.frame(width: 300, height: 300)
 		}
 	}
 }

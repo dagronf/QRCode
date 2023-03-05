@@ -5,7 +5,6 @@ import XCTest
 import AppKit
 
 @testable import QRCode
-@testable import QRCodeExternal
 
 let __genFolder: URL = {
 	let u = __tmpFolder

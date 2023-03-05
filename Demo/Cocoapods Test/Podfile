@@ -1,0 +1,14 @@
+
+target 'Cocoapods Test' do
+	# use_frameworks!
+	platform :ios, '13.0'
+
+	pod 'QRCode', :path => '../../', :tag => '~> 13'
+end
+
+target 'Cocoapods Mac Test' do
+	# use_frameworks!
+	platform :macos, '10.11'
+
+	pod 'QRCode', :path => '../../', :tag => '~> 13'
+end

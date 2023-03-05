@@ -1,5 +1,4 @@
 @testable import QRCode
-@testable import QRCodeExternal
 
 import XCTest
 

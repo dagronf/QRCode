@@ -25,50 +25,53 @@ import QRCodeGenerator
 // We have to separate this out as there is a namespace clash between our QRCode module
 // and the QRCodeGenerator module's class type.
 
-internal func _generate(_ data: Data, errorCorrection: String) -> [[Bool]]? {
-	guard
-		let mappedECC = mapECC(errorCorrection),
-		let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC)
-	else {
-		return nil
+extension QRCodeGenerator_External {
+
+	func _generate(_ data: Data, errorCorrection: String) -> [[Bool]]? {
+		guard
+			let mappedECC = mapECC(errorCorrection),
+			let qrCode = try? QRCodeGenerator.QRCode.encode(binary: [UInt8](data), ecl: mappedECC)
+		else {
+			return nil
+		}
+		return mapResult(qrCode)
 	}
-	return mapResult(qrCode)
-}
 
 
-internal func _generate(_ text: String, errorCorrection: String) -> [[Bool]]? {
-	guard
-		let mappedECC = mapECC(errorCorrection),
-		let qrCode = try? QRCodeGenerator.QRCode.encode(text: text, ecl: mappedECC)
-	else {
-		return nil
+	func _generate(_ text: String, errorCorrection: String) -> [[Bool]]? {
+		guard
+			let mappedECC = mapECC(errorCorrection),
+			let qrCode = try? QRCodeGenerator.QRCode.encode(text: text, ecl: mappedECC)
+		else {
+			return nil
+		}
+		return mapResult(qrCode)
 	}
-	return mapResult(qrCode)
-}
 
-// - Private
+	// - Private
 
-fileprivate func mapECC(_ errorCorrection: String) -> QRCodeECC? {
-	switch errorCorrection {
-	case "L": return QRCodeECC.low
-	case "M": return QRCodeECC.medium
-	case "Q": return QRCodeECC.quartile
-	case "H": return QRCodeECC.high
-	default:
-		assert(false)
-		return nil
-	}
-}
-
-fileprivate func mapResult(_ qrCode: QRCodeGenerator.QRCode) -> [[Bool]]? {
-	var result = Array<[Bool]>(
-		repeating: Array<Bool>(repeating: false, count: qrCode.size + 2),
-		count: qrCode.size + 2)
-
-	for row in 0 ..< qrCode.size {
-		for col in 0 ..< qrCode.size {
-			result[row + 1][col + 1] = qrCode.getModule(x: col, y: row)
+	fileprivate func mapECC(_ errorCorrection: String) -> QRCodeECC? {
+		switch errorCorrection {
+		case "L": return QRCodeECC.low
+		case "M": return QRCodeECC.medium
+		case "Q": return QRCodeECC.quartile
+		case "H": return QRCodeECC.high
+		default:
+			assert(false)
+			return nil
 		}
 	}
-	return result
+
+	fileprivate func mapResult(_ qrCode: QRCodeGenerator.QRCode) -> [[Bool]]? {
+		var result = Array<[Bool]>(
+			repeating: Array<Bool>(repeating: false, count: qrCode.size + 2),
+			count: qrCode.size + 2)
+
+		for row in 0 ..< qrCode.size {
+			for col in 0 ..< qrCode.size {
+				result[row + 1][col + 1] = qrCode.getModule(x: col, y: row)
+			}
+		}
+		return result
+	}
 }

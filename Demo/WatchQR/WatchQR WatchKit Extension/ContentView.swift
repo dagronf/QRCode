@@ -8,7 +8,6 @@
 import SwiftUI
 
 import QRCode
-import QRCodeExternal
 
 let savedDocument: QRCode.Document = {
 	let data = NSDataAsset(name: "saved-document")!

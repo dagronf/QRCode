@@ -1,6 +1,5 @@
 import XCTest
 @testable import QRCode
-@testable import QRCodeExternal
 
 final class QRCodeMaskingTests: XCTestCase {
 	func testBasicMask() throws {

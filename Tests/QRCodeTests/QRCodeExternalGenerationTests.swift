@@ -1,7 +1,6 @@
 import XCTest
 
 @testable import QRCode
-@testable import QRCodeExternal
 
 // The external QR Code generator has some optimizations that be triggered
 // when the provided text has the following characteristics...

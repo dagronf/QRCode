@@ -8,7 +8,6 @@
 import SwiftUI
 
 import QRCode
-import QRCodeExternal
 
 struct ContentView: View {
 	let fixedCode = QRCodeShape(

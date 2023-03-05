@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		235C9E3F29B2E23C002A98D2 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 235C9E3E29B2E23C002A98D2 /* QRCode */; };
 		239FBAF628A63DB5002F74AC /* WatchQR WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 239FBAF528A63DB5002F74AC /* WatchQR WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		239FBAFB28A63DB6002F74AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 239FBAFA28A63DB6002F74AC /* Assets.xcassets */; };
 		239FBB0128A63DB6002F74AC /* WatchQR WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 239FBB0028A63DB6002F74AC /* WatchQR WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -20,7 +21,6 @@
 		239FBB1F28A63DB7002F74AC /* WatchQRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB1E28A63DB7002F74AC /* WatchQRTests.swift */; };
 		239FBB2928A63DB7002F74AC /* WatchQRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB2828A63DB7002F74AC /* WatchQRUITests.swift */; };
 		239FBB2B28A63DB7002F74AC /* WatchQRUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239FBB2A28A63DB7002F74AC /* WatchQRUITestsLaunchTests.swift */; };
-		23C7585E28AC760A007528CE /* QRCodeExternal in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7585D28AC760A007528CE /* QRCodeExternal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23C7585E28AC760A007528CE /* QRCodeExternal in Frameworks */,
+				235C9E3F29B2E23C002A98D2 /* QRCode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +259,7 @@
 			);
 			name = "WatchQR WatchKit Extension";
 			packageProductDependencies = (
-				23C7585D28AC760A007528CE /* QRCodeExternal */,
+				235C9E3E29B2E23C002A98D2 /* QRCode */,
 			);
 			productName = "WatchQR WatchKit Extension";
 			productReference = 239FBB0028A63DB6002F74AC /* WatchQR WatchKit Extension.appex */;
@@ -841,9 +841,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		23C7585D28AC760A007528CE /* QRCodeExternal */ = {
+		235C9E3E29B2E23C002A98D2 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = QRCodeExternal;
+			productName = QRCode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

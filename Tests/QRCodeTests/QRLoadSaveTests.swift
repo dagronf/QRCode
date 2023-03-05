@@ -1,6 +1,5 @@
 import XCTest
 @testable import QRCode
-@testable import QRCodeExternal
 
 final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasic() throws {

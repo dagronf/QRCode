@@ -1,0 +1,24 @@
+PODS:
+  - QRCode (13.0.0):
+    - SwiftQRCodeGenerator
+  - SwiftQRCodeGenerator (1.0.3)
+
+DEPENDENCIES:
+  - QRCode (from `../../`)
+
+SPEC REPOS:
+  trunk:
+    - SwiftQRCodeGenerator
+
+EXTERNAL SOURCES:
+  QRCode:
+    :path: "../../"
+    :tag: "~> 13"
+
+SPEC CHECKSUMS:
+  QRCode: 8114ae7604aa11d498d8899f88fd4bf17b2c66c7
+  SwiftQRCodeGenerator: c5cdef1603699784b07af0fd3cc1c2f45ac26ada
+
+PODFILE CHECKSUM: bb9f9e21455b2ee188f5511c1fe8ffe9a7a90969
+
+COCOAPODS: 1.12.0

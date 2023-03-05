@@ -17,7 +17,9 @@
 
 	// Do any additional setup after loading the view.
 
-	QRCodeDocument* document = [[QRCodeDocument alloc] init];
+	id generator = [QRCodeGenerator_External new];
+
+	QRCodeDocument* document = [[QRCodeDocument alloc] initWithGenerator: generator];
 	[document setUtf8String: @"This message is something really exciting in objective-c"];
 	[document setErrorCorrection: QRCodeErrorCorrectionHigh];
 

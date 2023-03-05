@@ -1,7 +1,6 @@
 import XCTest
 
 @testable import QRCode
-@testable import QRCodeExternal
 
 func resourceImage(for resource: String, extension extn: String) -> CGImage {
 	let url = Bundle.module.url(forResource: resource, withExtension: extn)!
