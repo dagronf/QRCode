@@ -19,30 +19,23 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public extension QRCode.FillStyle {
-
-	/// A simple single-color solid fill style
+	/// A image, scaled proportionally to fill the qr code content
 	@objc(QRCodeFillStyleImage) class Image: NSObject, QRCodeFillStyleGenerator {
-
 		@objc public static var Name: String { "image" }
 
-		// Base64 PNG representation of the image
-		private var imageBase64: String?
+		/// The image to use for the fill
+		@objc public var image: CGImage?
 
-		/// The fill color
-		@objc public var image: CGImage? {
-			didSet {
-				self.updateBase64()
-			}
-		}
-
+		/// Return the save settings for the fill style
 		@objc public func settings() -> [String: Any] {
-			[ "imagePNGbase64": self.imageBase64 ?? "" ]
+			return ["imagePNGbase64": getPngImageBase64() ?? ""]
 		}
 
+		/// Create the fill style from the specified settings
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 			if let c = settings["imagePNGbase64"] as? String,
 				let d = Data(base64Encoded: c),
@@ -57,18 +50,6 @@ public extension QRCode.FillStyle {
 		@objc public init(_ image: CGImage?) {
 			self.image = image
 			super.init()
-			self.updateBase64()
-		}
-
-		private func updateBase64() {
-			if let pngData = image?.pngRepresentation() {
-				let b64Data = pngData.base64EncodedData()
-				let strImage = String(data: b64Data, encoding: .ascii)!
-				self.imageBase64 = strImage
-			}
-			else {
-				self.imageBase64 = nil
-			}
 		}
 
 		/// Returns a new copy of the fill style
@@ -105,6 +86,15 @@ public extension QRCode.FillStyle {
 					ctx.draw(image, in: rect)
 				}
 			}
+		}
+
+		// Return a PNG base64 representation for the image
+		private func getPngImageBase64() -> String? {
+			if let pngData = self.image?.pngRepresentation() {
+				let b64Data = pngData.base64EncodedData()
+				return String(data: b64Data, encoding: .ascii)
+			}
+			return nil
 		}
 	}
 }
@@ -156,5 +146,3 @@ public extension QRCode.FillStyle.Image {
 	}
 }
 #endif
-
-

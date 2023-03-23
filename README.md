@@ -98,6 +98,10 @@ To install it, simply add the following line to your Podfile
 pod 'QRCode', :git => 'https://github.com/dagronf/qrcode.git', :tag => '13.0.0'
 ```
 
+### Linking
+
+Make sure you link your project against `QRCode`
+
 ### In your source
 
 Swift: `import QRCode`
@@ -155,45 +159,11 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 
 </details>
 
-## Using `QRCode` in your project
-
-### QRCode / QRCodeDynamic
-
-1. Link your project against `QRCode`
-2. Add `import QRCode` to any source files that need to generate QR Codes
-
-<details>
-<summary>Click here to see a code example</summary>
-
-```swift
-import QRCode
-
-let doc = QRCode.Document()
-
-// Create a qr code containing "Example Text" and set the error correction to high ('H') with the default design
-doc.utf8String = "This is a test"
-doc.errorCorrection = .high
-
-// And generate a UIImage from the pdf data
-let generatedImage = doc.uiImage(CGSize(width: 400, height: 400))
-```
-
-</details>
-
-**watchOS** limitations require that a [3rd-party QR code generation library](https://github.com/fwcd/swift-qrcode-generator)
-is required to generate the raw QR code data on-device. These libraries can also be used for macOS, macCatalyst, iOS and 
-tvOS if you need consistent QR codes across multiple platforms including watchOS.
-
-The external code generator supports some optimizations when using text :-
-
-1. All characters are numeric, or
-2. All characters in `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:` (all uppercase)
-
-Constraining your text to match these rules will reduce the size of the resulting QR code. 
-
 ## Settings
 
 ### Set the data content
+
+
 
 ```swift
 /// Set raw data
