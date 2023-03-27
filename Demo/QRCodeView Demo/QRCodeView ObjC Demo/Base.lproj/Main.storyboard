@@ -721,7 +721,7 @@
                                         <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="supportsDrag" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="ibEyeShape" value="roundedOuter"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibEyeShape" value="edges"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="ibPupilShape" value="barsVertical"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibPupilColor">
                                         <color key="value" red="0.28442225017357087" green="0.091292767255581511" blue="0.30587278375971505" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

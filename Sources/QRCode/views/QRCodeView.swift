@@ -132,9 +132,24 @@ import UIKit
 	/// The size of the QRCode image when dragged out of the view
 	@IBInspectable var dragImageSize: CGSize = CGSize(width: 512, height: 512)
 
-	private var _eyeShape: String = ""
-	private var _pixelShape: String = ""
-	private var _pupilShape: String = ""
+	private var _eyeShape: String = "" {
+		didSet {
+			self.design.shape.eye = QRCodeEyeShapeFactory.shared.named(_eyeShape) ?? QRCode.EyeShape.Square()
+			self.rebuildQRCode()
+		}
+	}
+	private var _pixelShape: String = "" {
+		didSet {
+			self.design.shape.onPixels = QRCodePixelShapeFactory.shared.named(_pixelShape) ?? QRCode.PixelShape.Square()
+			self.rebuildQRCode()
+		}
+	}
+	private var _pupilShape: String = "" {
+		didSet {
+			self.design.shape.pupil = QRCodePupilShapeFactory.shared.named(_pupilShape) ?? QRCode.PupilShape.Square()
+			self.rebuildQRCode()
+		}
+	}
 
 	/// The internal document.
 	private var _document = QRCode.Document() {
