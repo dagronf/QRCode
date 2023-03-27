@@ -31,6 +31,7 @@ import Foundation
 	@objc override public init() {
 		self.registeredTypes = [
 			QRCode.EyeShape.Circle.self,
+			QRCode.EyeShape.Edges.self,
 			QRCode.EyeShape.RoundedRect.self,
 			QRCode.EyeShape.RoundedPointingIn.self,
 			QRCode.EyeShape.Squircle.self,

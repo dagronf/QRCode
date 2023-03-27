@@ -98,3 +98,11 @@ public extension ExpressibleByIntegerLiteral where Self: Comparable {
 		self = self.clamped(to: range)
 	}
 }
+
+public extension ExpressibleByFloatLiteral where Self: Comparable {
+	/// Clamp the float literal to a 0 ... 1 bounds
+	@inlinable @inline(__always) func unitClamped() -> Self { min(max(self, 0.0), 1.0) }
+
+	/// Clamp the float literal to a 0 ... 1 bounds
+	@inlinable @inline(__always) mutating func unitClamping() { self = self.unitClamped() }
+}

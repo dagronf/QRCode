@@ -235,6 +235,8 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_barsVertical.png" width="60"/>      |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 |<img src="./Art/images/eye_pixels.png" width="60"/>            |"pixels"|`QRCode.EyeShape.Pixels`| A simple collection of pixels with configurable corner radius for each pixel|
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    |"corneredPixels"|`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
+|<img src="./Art/images/eye_edges.png" width="60"/>    |"edges"|`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
+
 
 ### Custom Pupil shape (optional)
 

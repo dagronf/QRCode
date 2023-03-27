@@ -1108,6 +1108,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let radial = QRCode.FillStyle.LinearGradient(gradient)
 				let doc = QRCode.Document(utf8String: "QR Code with a linear background")
 				doc.design.style.background = radial
+				doc.design.shape.eye = QRCode.EyeShape.Edges()
 
 				for item in exporters {
 					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
