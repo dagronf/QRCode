@@ -23,6 +23,7 @@ struct ContentView: View {
 
 	@State var dataInset: Double = 0
 	@State var cornerRadiusFraction: Double = 0.5
+	@State var rotationFraction: Double = 0.0
 
 	let gradient = Gradient(colors: [.black, .pink])
 
@@ -35,7 +36,9 @@ struct ContentView: View {
 		let pixelShape = pixelShapeHandler(
 			self.pixelShape,
 			insetFraction: dataInset,
-			cornerRadiusFraction: cornerRadiusFraction)
+			cornerRadiusFraction: cornerRadiusFraction,
+			rotationFraction: rotationFraction
+		)
 		let _eyeStyle = eyeShapeHandler(self.eyeStyle)
 		let _pupilStyle = pupilShapeHandler(self.pupilStyle)
 
@@ -59,14 +62,17 @@ struct ContentView: View {
 							Text("Round Rect").tag(PixelShapeType.roundedrect)
 							Text("Circle").tag(PixelShapeType.circle)
 							Text("Squircle").tag(PixelShapeType.squircle)
+							Text("Sharp").tag(PixelShapeType.sharp)
 							Text("Horizontal").tag(PixelShapeType.horizontal)
 							Text("Vertical").tag(PixelShapeType.vertical)
 							Text("Rounded Path").tag(PixelShapeType.roundedpath)
 							Text("Pointy").tag(PixelShapeType.pointy)
+							Text("Curve Pixel").tag(PixelShapeType.curvePixel)
 						}.pickerStyle(WheelPickerStyle())
 					}
 					Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
 					Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
+					Slider(value: $rotationFraction, in: 0.0 ... 1.0, label: { Text("Rotation") })
 
 					HStack {
 						Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {

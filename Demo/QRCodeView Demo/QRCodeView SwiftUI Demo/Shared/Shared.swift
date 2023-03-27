@@ -13,10 +13,12 @@ enum PixelShapeType {
 	case roundedrect
 	case circle
 	case squircle
+	case sharp
 	case horizontal
 	case vertical
 	case roundedpath
 	case pointy
+	case curvePixel
 }
 
 enum EyeShapeType: Int {
@@ -45,16 +47,16 @@ enum PupilShapeType: Int {
 	case pixels = 9
 }
 
-func pixelShapeHandler(_ pixelShape: PixelShapeType, insetFraction: Double = 0, cornerRadiusFraction: Double = 0) -> QRCodePixelShapeGenerator {
+func pixelShapeHandler(_ pixelShape: PixelShapeType, insetFraction: Double = 0, cornerRadiusFraction: Double = 0, rotationFraction: Double = 0) -> QRCodePixelShapeGenerator {
 	switch pixelShape {
 	case .square:
-		return QRCode.PixelShape.Square(insetFraction: insetFraction)
+		return QRCode.PixelShape.Square(insetFraction: insetFraction, rotationFraction: rotationFraction)
 	case .roundedrect:
-		return QRCode.PixelShape.RoundedRect(insetFraction: insetFraction, cornerRadiusFraction: cornerRadiusFraction)
+		return QRCode.PixelShape.RoundedRect(insetFraction: insetFraction, cornerRadiusFraction: cornerRadiusFraction, rotationFraction: rotationFraction)
 	case .circle:
 		return QRCode.PixelShape.Circle(insetFraction: insetFraction)
 	case .squircle:
-		return QRCode.PixelShape.Squircle(insetFraction: insetFraction)
+		return QRCode.PixelShape.Squircle(insetFraction: insetFraction, rotationFraction: rotationFraction)
 	case .horizontal:
 		return QRCode.PixelShape.Horizontal(insetFraction: insetFraction, cornerRadiusFraction: cornerRadiusFraction)
 	case .vertical:
@@ -63,6 +65,10 @@ func pixelShapeHandler(_ pixelShape: PixelShapeType, insetFraction: Double = 0, 
 		return QRCode.PixelShape.RoundedPath(cornerRadiusFraction: cornerRadiusFraction)
 	case .pointy:
 		return QRCode.PixelShape.Pointy()
+	case .sharp:
+		return QRCode.PixelShape.Sharp(insetFraction: insetFraction, rotationFraction: rotationFraction)
+	case .curvePixel:
+		return QRCode.PixelShape.CurvePixel(cornerRadiusFraction: cornerRadiusFraction)
 	}
 }
 

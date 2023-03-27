@@ -31,9 +31,22 @@ public extension QRCode.PixelShape {
 		/// Create
 		/// - Parameters:
 		///   - insetFraction: The inset between each pixel
-		///   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
-		@objc public init(insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
-			self.common = CommonPixelGenerator(pixelType: .roundedRect, insetFraction: insetFraction, cornerRadiusFraction: cornerRadiusFraction)
+		///   - cornerRadiusFraction: The corner radius (0.0 -> 1.0)
+		///   - randomInsetSizing: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
+		///   - rotationFraction: The rotation to apply to each pixel (0.0 -> 1.0)
+		@objc public init(
+			insetFraction: CGFloat = 0,
+			cornerRadiusFraction: CGFloat = 0,
+			randomInsetSizing: Bool = false,
+			rotationFraction: CGFloat = 0
+		) {
+			self.common = CommonPixelGenerator(
+				pixelType: .roundedRect,
+				insetFraction: insetFraction,
+				cornerRadiusFraction: cornerRadiusFraction,
+				randomInsetSizing: randomInsetSizing,
+				rotationFraction: rotationFraction
+			)
 			super.init()
 		}
 
@@ -41,12 +54,24 @@ public extension QRCode.PixelShape {
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
-			return RoundedRect(insetFraction: insetFraction, cornerRadiusFraction: radius)
+			let randomInsetSizing = BoolValue(settings?[QRCode.SettingsKey.randomInset]) ?? false
+			let rotationFraction = CGFloatValue(settings?[QRCode.SettingsKey.rotationFraction]) ?? 0.0
+			return RoundedRect(
+				insetFraction: insetFraction,
+				cornerRadiusFraction: radius,
+				randomInsetSizing: randomInsetSizing,
+				rotationFraction: rotationFraction
+				)
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			return RoundedRect(insetFraction: self.common.insetFraction, cornerRadiusFraction: self.common.cornerRadiusFraction)
+			return RoundedRect(
+				insetFraction: self.common.insetFraction,
+				cornerRadiusFraction: self.common.cornerRadiusFraction,
+				randomInsetSizing: self.common.randomInsetSizing,
+				rotationFraction: self.common.rotationFraction
+			)
 		}
 
 		/// Generate a CGPath from the matrix contents
@@ -74,7 +99,9 @@ public extension QRCode.PixelShape.RoundedRect {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
-			 || key == QRCode.SettingsKey.cornerRadiusFraction
+			|| key == QRCode.SettingsKey.cornerRadiusFraction
+			|| key == QRCode.SettingsKey.randomInset
+			|| key == QRCode.SettingsKey.rotationFraction
 	}
 	
 	/// Returns the current settings for the shape
@@ -82,6 +109,8 @@ public extension QRCode.PixelShape.RoundedRect {
 		return [
 			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
 			QRCode.SettingsKey.cornerRadiusFraction: self.common.cornerRadiusFraction,
+			QRCode.SettingsKey.randomInset: self.common.randomInsetSizing,
+			QRCode.SettingsKey.rotationFraction: self.common.rotationFraction,
 		]
 	}
 	
@@ -101,8 +130,24 @@ public extension QRCode.PixelShape.RoundedRect {
 				self.common.cornerRadiusFraction = 0
 				return true
 			}
-			guard let v = DoubleValue(v) else { return false }
+			guard let v = DoubleValue(v)?.clamped(to: 0...1) else { return false }
 			self.common.cornerRadiusFraction = v
+			return true
+		}
+		else if key == QRCode.SettingsKey.randomInset {
+			guard let v = value, let v = BoolValue(v) else {
+				self.common.randomInsetSizing = false
+				return true
+			}
+			self.common.randomInsetSizing = v
+			return true
+		}
+		else if key == QRCode.SettingsKey.rotationFraction {
+			guard let v = value, let v = CGFloatValue(v) else {
+				self.common.rotationFraction = 0.0
+				return true
+			}
+			self.common.rotationFraction = v
 			return true
 		}
 		return false

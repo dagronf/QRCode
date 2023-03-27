@@ -34,22 +34,34 @@ internal extension QRCode.PixelShape {
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
-		var pixelType: PixelType
+		let pixelType: PixelType
 
 		// The fractional inset for the pixel
 		var insetFraction: CGFloat
 		// The fractional corner radius for the pixel
 		var cornerRadiusFraction: CGFloat
+		// If true, randomly sets the inset to create a "wobble"
+		var randomInsetSizing: Bool = false
+		// The rotation for each pixel (0.0 -> 1.0)
+		var rotationFraction: CGFloat = 0
 
 		// Create
 		// - Parameters:
 		//   - pixelType: The type of pixel to use (eg. square, circle)
 		//   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
 		//   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
-		init(pixelType: PixelType, insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+		init(
+			pixelType: PixelType,
+			insetFraction: CGFloat = 0,
+			cornerRadiusFraction: CGFloat = 0,
+			randomInsetSizing: Bool = false,
+			rotationFraction: CGFloat = 0
+		) {
 			self.pixelType = pixelType
-			self.insetFraction = insetFraction.clamped(to: 0...1)
-			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
+			self.insetFraction = insetFraction.clamped(to: 0 ... 1)
+			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
+			self.randomInsetSizing = randomInsetSizing
+			self.rotationFraction = rotationFraction.clamped(to: 0 ... 1)
 		}
 
 		func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
@@ -62,18 +74,29 @@ internal extension QRCode.PixelShape {
 
 			let path = CGMutablePath()
 
+			let rotationBase = rotationFraction == 0.0 ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: rotationFraction * CGFloat.pi)
+
 			for row in 0 ..< matrix.dimension {
 				for col in 0 ..< matrix.dimension {
 					// If the pixel is 'off' then we move on to the next
 					guard matrix[row, col] == true else { continue }
 
+					let insetFraction = self.randomInsetSizing ? (Double.random(in: -0.1 ... self.insetFraction)) : self.insetFraction
+
+					let origX = xoff + (CGFloat(col) * dm) + (dm / 2)
+					let origY = yoff + (CGFloat(row) * dm) + (dm / 2)
+
 					let r = CGRect(x: xoff + (CGFloat(col) * dm), y: yoff + (CGFloat(row) * dm), width: dm, height: dm)
-					let insetValue = self.insetFraction * (r.height / 2.0)
+					let insetValue = insetFraction * (r.height / 2.0)
 					let ri = r.insetBy(dx: insetValue, dy: insetValue)
+
+					var rotateTransform = CGAffineTransform(translationX: -origX, y: -origY)
+						.concatenating(rotationBase)
+						.concatenating(CGAffineTransform(translationX: origX, y: origY))
 
 					if self.pixelType == .roundedRect {
 						let cr = (ri.height / 2.0) * self.cornerRadiusFraction
-						path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: nil))
+						path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: &rotateTransform))
 					}
 					else if self.pixelType == .circle {
 						path.addPath(CGPath(ellipseIn: ri, transform: nil))
@@ -84,6 +107,7 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm) + insetValue,
 								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
+							.concatenating(rotateTransform)
 
 						let sq = Squircle.squircle10x10()
 						path.addPath(sq, transform: transform)
@@ -94,12 +118,13 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm) + insetValue,
 								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
+							.concatenating(rotateTransform)
 
 						let sq = Sharp.sharp10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else {
-						path.addPath(CGPath(rect: ri, transform: nil))
+						path.addPath(CGPath(rect: ri, transform: &rotateTransform))
 					}
 				}
 			}
