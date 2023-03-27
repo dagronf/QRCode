@@ -813,7 +813,7 @@ There are a number of demo apps which you can find in the `Demo` subfolder.  The
 
 You can build the command line tool by opening a terminal window, `cd` into the QRCode folder and build using
 
-`swift build -c release`
+`swift build -c release --product qrcodegen`
 
 The `qrcodegen` tool can be found in the `.build/release` folder.
 

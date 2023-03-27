@@ -91,22 +91,34 @@ Examples:
 	@Option(name: [.customShort("c"), .long], help: #"The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize), "H" (high)"#)
 	var errorCorrection: String?
 
-	@Option(name: [.customShort("p"), .long], help: "The pupil shape to use. Available shapes are \(QRCodePupilShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
-	var pupilShape: String?
-
-	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
-	var eyeShape: String?
+	// On Pixels
 
 	@Option(name: [.customShort("d"), .long], help: "The onPixels shape to use. Available shapes are \(QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var onPixelShape: String?
 
 	/// Inset for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("n"), .long], help: "The spacing around each individual pixel in the onPixels section")
-	var insetFraction: Double?
+	var onPixelInsetFraction: Double?
 
 	/// The corner radius fraction for the data shape.  Not all data shapes support this
 	@Option(name: [.customShort("r"), .long], help: "The onPixels shape corner radius fractional value (0.0 -> 1.0)")
 	var onPixelShapeCornerRadius: Double?
+
+	// Eye shape
+
+	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
+	var eyeShape: String?
+
+	@Option(name: [.long], help: "The fractional (0 ... 1) corner radius to use for the eye shape IF the eye shape supports it.")
+	var eyeShapeCornerRadius: Double?
+
+	// Pupil shape
+
+	@Option(name: [.customShort("p"), .long], help: "The pupil shape to use. Available shapes are \(QRCodePupilShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
+	var pupilShape: String?
+
+	@Option(name: [.long], help: "The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape supports it.")
+	var pupilShapeCornerRadius: Double?
 
 	@Option(name: [.long], help: "The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0)")
 	var bgColor: String?
@@ -200,7 +212,11 @@ Examples:
 		// The eye shape
 
 		if let name = eyeShape {
-			guard let shape = QRCodeEyeShapeFactory.shared.named(name) else {
+			let cf = eyeShapeCornerRadius ?? 0.0
+			guard let shape = QRCodeEyeShapeFactory.shared.named(
+				name,
+				settings: [ QRCode.SettingsKey.cornerRadiusFraction: cf ]
+			) else {
 				Swift.print("Unknown eye style '\(name)'.")
 				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 				Swift.print("Available eye styles are \(known)")
@@ -208,6 +224,12 @@ Examples:
 			}
 			design.shape.eye = shape
 		}
+
+		if let cf = eyeShapeCornerRadius {
+			_ = design.shape.eye.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+		}
+
+		// Pupil shape
 
 		if let name = pupilShape {
 			guard let shape = QRCodePupilShapeFactory.shared.named(name) else {
@@ -219,11 +241,15 @@ Examples:
 			design.shape.pupil = shape
 		}
 
+		if let cf = pupilShapeCornerRadius {
+			_ = design.shape.actualPupilShape.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+		}
+
 		// The onPixels shape
 
 		let dataShapeName = self.onPixelShape ?? "square"
 		let settings: [String: Any] = [
-			QRCode.SettingsKey.insetFraction: insetFraction ?? 0,
+			QRCode.SettingsKey.insetFraction: onPixelInsetFraction ?? 0,
 			QRCode.SettingsKey.cornerRadiusFraction: onPixelShapeCornerRadius ?? 0
 		]
 

@@ -50,7 +50,8 @@ public extension QRCode.EyeShape {
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
+		/// Create an Edge eye shape with the specified corner radius
+		@objc public init(cornerRadiusFraction: CGFloat = 0.0) {
 			self.cornerRadiusFraction = cornerRadiusFraction
 			self._actualCornerRadius = cornerRadiusFraction * 5.0
 		}
