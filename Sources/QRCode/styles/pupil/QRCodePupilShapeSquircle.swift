@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeSquircle) class Squircle: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "squircle" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.squircle", bundle: .module, comment: "Squircle pupil generator title") }
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.squircle", bundle: .localization, comment: "Squircle pupil generator title") }
 
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Squircle()

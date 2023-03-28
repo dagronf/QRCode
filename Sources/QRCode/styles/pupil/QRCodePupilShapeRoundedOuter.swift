@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeRoundedOuter) class RoundedOuter: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "roundedOuter" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedouter", bundle: .module, comment: "Rounded outer pupil generator title") }
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedouter", bundle: .localization, comment: "Rounded outer pupil generator title") }
 
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			RoundedOuter()

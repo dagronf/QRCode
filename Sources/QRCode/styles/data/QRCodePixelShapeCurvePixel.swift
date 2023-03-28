@@ -27,7 +27,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name = "curvePixel"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.curvepixel", bundle: .module, comment: "Curve pixel generator title") }
+		@objc public static var Title: String { NSLocalizedString("pixelstyle.curvepixel", bundle: .localization, comment: "Curve pixel generator title") }
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {

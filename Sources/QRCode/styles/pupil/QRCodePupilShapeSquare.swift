@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeSquare) class Square: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "square" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.square", bundle: .module, comment: "Square pupil generator title") }
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.square", bundle: .localization, comment: "Square pupil generator title") }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Square()
 		}

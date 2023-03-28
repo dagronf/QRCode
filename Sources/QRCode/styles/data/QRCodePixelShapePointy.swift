@@ -27,7 +27,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "pointy"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.pointy", bundle: .module, comment: "Pointy pixel generator title") }
+		@objc public static var Title: String { NSLocalizedString("pixelstyle.pointy", bundle: .localization, comment: "Pointy pixel generator title") }
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {

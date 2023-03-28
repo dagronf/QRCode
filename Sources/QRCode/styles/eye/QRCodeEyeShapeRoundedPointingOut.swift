@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'rounded rect with a pointy bit facing inwards' style eye design
 	@objc(QRCodeEyeShapeRoundedPointingOut) class RoundedPointingOut: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "roundedPointingOut"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.roundedpointout", bundle: .module, comment: "Rounded pointing out eye generator title") }
+		@objc public static var Title: String { NSLocalizedString("eyestyle.roundedpointout", bundle: .localization, comment: "Rounded pointing out eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedPointingOut()
 		}

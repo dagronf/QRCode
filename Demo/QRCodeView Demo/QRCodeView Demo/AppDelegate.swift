@@ -26,6 +26,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
 	func generateQRCodeImage() {
+		// Simple quick check of localization
+		assert(QRCode.PixelShape.RoundedPath.Title == "Rounded path")
+
 		let gr = DSFGradient(pins: [
 			DSFGradient.Pin(CGColor(red: 1, green: 0, blue: 0, alpha: 1), 0),
 			DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
@@ -39,7 +42,7 @@ extension AppDelegate {
 		design.style = style
 
 		let contentShape = QRCode.Shape()
-		contentShape.onPixels = QRCode.PixelShape.RoundedRect(insetFraction: 0.1, cornerRadiusFraction: 0.8)
+		contentShape.onPixels = QRCode.PixelShape.RoundedRect(cornerRadiusFraction: 0.8, insetFraction: 0.1)
 		contentShape.eye = QRCode.EyeShape.RoundedRect()
 		design.shape = contentShape
 

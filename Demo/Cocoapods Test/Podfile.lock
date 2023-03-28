@@ -1,5 +1,5 @@
 PODS:
-  - QRCode (13.0.0):
+  - QRCode (13.3.1):
     - SwiftQRCodeGenerator
   - SwiftQRCodeGenerator (1.0.3)
 
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
     :tag: "~> 13"
 
 SPEC CHECKSUMS:
-  QRCode: 8114ae7604aa11d498d8899f88fd4bf17b2c66c7
+  QRCode: d65867437b614bd38dff6fdeb0a45ba4b78a0b0d
   SwiftQRCodeGenerator: c5cdef1603699784b07af0fd3cc1c2f45ac26ada
 
 PODFILE CHECKSUM: bb9f9e21455b2ee188f5511c1fe8ffe9a7a90969

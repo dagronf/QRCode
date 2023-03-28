@@ -28,7 +28,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "sharp"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.sharp", bundle: .module, comment: "Sharp pixel generator title") }
+		@objc public static var Title: String { NSLocalizedString("pixelstyle.sharp", bundle: .localization, comment: "Sharp pixel generator title") }
 
 		/// The fractional inset for the pixel
 		@objc public var insetFraction: CGFloat { common.insetFraction }

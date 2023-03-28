@@ -38,3 +38,12 @@ import Foundation
 @inlinable @inline(__always) internal func BoolValue(_ opaque: Any?) -> Bool? {
 	return (opaque as? NSNumber)?.boolValue
 }
+
+/// A common 'localization' bundle that swaps between Cocoapod and SPM as needed
+extension Bundle {
+#if COCOAPODS
+	static let localization = Bundle.main
+#else
+	static let localization = Bundle.module
+#endif
+}
