@@ -33,11 +33,11 @@ public extension QRCode.PixelShape {
 		/// Create
 		/// - Parameters:
 		///   - insetFraction: The inset between each pixel
-		@objc public init(insetFraction: CGFloat = 0, randomInsetSizing: Bool = false) {
+		@objc public init(insetFraction: CGFloat = 0, useRandomInset: Bool = false) {
 			self.common = CommonPixelGenerator(
 				pixelType: .circle,
 				insetFraction: insetFraction,
-				randomInsetSizing: randomInsetSizing
+				useRandomInset: useRandomInset
 			)
 			super.init()
 		}
@@ -45,15 +45,15 @@ public extension QRCode.PixelShape {
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
-			let randomInsetSizing = BoolValue(settings?[QRCode.SettingsKey.randomInset]) ?? false
-			return Circle(insetFraction: insetFraction, randomInsetSizing: randomInsetSizing)
+			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
+			return Circle(insetFraction: insetFraction, useRandomInset: useRandomInset)
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Circle(
 				insetFraction: self.common.insetFraction,
-				randomInsetSizing: self.common.randomInsetSizing
+				useRandomInset: self.common.useRandomInset
 			)
 		}
 
@@ -80,35 +80,24 @@ public extension QRCode.PixelShape.Circle {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
-			|| key == QRCode.SettingsKey.randomInset
+			|| key == QRCode.SettingsKey.useRandomInset
 	}
 
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String : Any] {
 		return [
 			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
-			QRCode.SettingsKey.randomInset: self.common.randomInsetSizing
+			QRCode.SettingsKey.useRandomInset: self.common.useRandomInset
 		]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 		if key == QRCode.SettingsKey.insetFraction {
-			guard let v = value else {
-				self.common.insetFraction = 0
-				return true
-			}
-			guard let v = DoubleValue(v) else { return false }
-			self.common.insetFraction = v
-			return true
+			return self.common.setInsetFractionValue(value)
 		}
-		else if key == QRCode.SettingsKey.randomInset {
-			guard let v = value, let v = BoolValue(v) else {
-				self.common.randomInsetSizing = false
-				return true
-			}
-			self.common.randomInsetSizing = v
-			return true
+		else if key == QRCode.SettingsKey.useRandomInset {
+			return self.common.setUsesRandomInset(value)
 		}
 		return false
 	}

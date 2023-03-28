@@ -36,18 +36,21 @@ public extension QRCode.PixelShape {
 		/// Create
 		/// - Parameters:
 		///   - insetFraction: The inset between each pixel
-		///   - randomInsetSizing: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
-		///   - rotationFraction: The rotation to apply to each pixel (0.0 -> 1.0)
+		///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
+		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
+		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 		@objc public init(
 			insetFraction: CGFloat = 0,
-			randomInsetSizing: Bool = false,
-			rotationFraction: CGFloat = 0
+			useRandomInset: Bool = false,
+			rotationFraction: CGFloat = 0,
+			useRandomRotation: Bool = false
 		) {
 			self.common = CommonPixelGenerator(
 				pixelType: .sharp,
 				insetFraction: insetFraction,
-				randomInsetSizing: randomInsetSizing,
-				rotationFraction: rotationFraction
+				useRandomInset: useRandomInset,
+				rotationFraction: rotationFraction,
+				useRandomRotation: useRandomRotation
 			)
 			super.init()
 		}
@@ -55,12 +58,14 @@ public extension QRCode.PixelShape {
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
-			let randomInsetSizing = BoolValue(settings?[QRCode.SettingsKey.randomInset]) ?? false
+			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
 			let rotationFraction = CGFloatValue(settings?[QRCode.SettingsKey.rotationFraction]) ?? 0.0
+			let useRandomRotation = BoolValue(settings?[QRCode.SettingsKey.useRandomRotation]) ?? false
 			return Sharp(
 				insetFraction: insetFraction,
-				randomInsetSizing: randomInsetSizing,
-				rotationFraction: rotationFraction
+				useRandomInset: useRandomInset,
+				rotationFraction: rotationFraction,
+				useRandomRotation: useRandomRotation
 			)
 		}
 
@@ -68,8 +73,9 @@ public extension QRCode.PixelShape {
 		@objc public func copyShape() -> QRCodePixelShapeGenerator {
 			return Sharp(
 				insetFraction: self.common.insetFraction,
-				randomInsetSizing: self.common.randomInsetSizing,
-				rotationFraction: self.common.rotationFraction
+				useRandomInset: self.common.useRandomInset,
+				rotationFraction: self.common.rotationFraction,
+				useRandomRotation: self.common.useRandomRotation
 			)
 		}
 
@@ -108,45 +114,34 @@ public extension QRCode.PixelShape.Sharp {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
-			|| key == QRCode.SettingsKey.randomInset
+			|| key == QRCode.SettingsKey.useRandomInset
 			|| key == QRCode.SettingsKey.rotationFraction
+			|| key == QRCode.SettingsKey.useRandomRotation
 	}
 
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String : Any] {
 		return [
 			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
-			QRCode.SettingsKey.randomInset: self.common.randomInsetSizing,
-			QRCode.SettingsKey.rotationFraction: self.common.rotationFraction
+			QRCode.SettingsKey.useRandomInset: self.common.useRandomInset,
+			QRCode.SettingsKey.rotationFraction: self.common.rotationFraction,
+			QRCode.SettingsKey.useRandomRotation: self.common.useRandomRotation,
 		]
 	}
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 		if key == QRCode.SettingsKey.insetFraction {
-			guard let v = value else {
-				self.common.insetFraction = 0
-				return true
-			}
-			guard let v = DoubleValue(v) else { return false }
-			self.common.insetFraction = v
-			return true
+			return self.common.setInsetFractionValue(value)
 		}
-		else if key == QRCode.SettingsKey.randomInset {
-			guard let v = value, let v = BoolValue(v) else {
-				self.common.randomInsetSizing = false
-				return true
-			}
-			self.common.randomInsetSizing = v
-			return true
+		else if key == QRCode.SettingsKey.useRandomInset {
+			return self.common.setUsesRandomInset(value)
 		}
 		else if key == QRCode.SettingsKey.rotationFraction {
-			guard let v = value, let v = CGFloatValue(v) else {
-				self.common.rotationFraction = 0.0
-				return true
-			}
-			self.common.rotationFraction = v
-			return true
+			return self.common.setRotationFraction(value)
+		}
+		else if key == QRCode.SettingsKey.useRandomRotation {
+			return self.common.setUsesRandomRotation(value)
 		}
 		return false
 	}

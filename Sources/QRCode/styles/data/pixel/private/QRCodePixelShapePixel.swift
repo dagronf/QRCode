@@ -41,27 +41,34 @@ internal extension QRCode.PixelShape {
 		// The fractional corner radius for the pixel
 		var cornerRadiusFraction: CGFloat
 		// If true, randomly sets the inset to create a "wobble"
-		var randomInsetSizing: Bool = false
+		var useRandomInset: Bool = false
 		// The rotation for each pixel (0.0 -> 1.0)
 		var rotationFraction: CGFloat = 0
+		// If true, randomly chooses a rotation for each pixel
+		var useRandomRotation: Bool = false
 
-		// Create
-		// - Parameters:
-		//   - pixelType: The type of pixel to use (eg. square, circle)
-		//   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
-		//   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
+		/// Create
+		/// - Parameters:
+		///   - pixelType: The type of pixel to use (eg. square, circle)
+		///   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
+		///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
+		///   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
+		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
+		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 		init(
 			pixelType: PixelType,
-			insetFraction: CGFloat = 0,
 			cornerRadiusFraction: CGFloat = 0,
-			randomInsetSizing: Bool = false,
-			rotationFraction: CGFloat = 0
+			insetFraction: CGFloat = 0,
+			useRandomInset: Bool = false,
+			rotationFraction: CGFloat = 0,
+			useRandomRotation: Bool = false
 		) {
 			self.pixelType = pixelType
 			self.insetFraction = insetFraction.clamped(to: 0 ... 1)
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
-			self.randomInsetSizing = randomInsetSizing
+			self.useRandomInset = useRandomInset
 			self.rotationFraction = rotationFraction.clamped(to: 0 ... 1)
+			self.useRandomRotation = useRandomRotation
 		}
 
 		func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
@@ -81,7 +88,7 @@ internal extension QRCode.PixelShape {
 					// If the pixel is 'off' then we move on to the next
 					guard matrix[row, col] == true else { continue }
 
-					let insetFraction = self.randomInsetSizing ? (Double.random(in: -0.1 ... self.insetFraction)) : self.insetFraction
+					let insetFraction = self.useRandomInset ? (Double.random(in: -0.1 ... self.insetFraction)) : self.insetFraction
 
 					let origX = xoff + (CGFloat(col) * dm) + (dm / 2)
 					let origY = yoff + (CGFloat(row) * dm) + (dm / 2)
@@ -90,8 +97,15 @@ internal extension QRCode.PixelShape {
 					let insetValue = insetFraction * (r.height / 2.0)
 					let ri = r.insetBy(dx: insetValue, dy: insetValue)
 
+					let rotatetfm = {
+						if self.useRandomRotation {
+							return CGAffineTransform(rotationAngle: CGFloat.random(in: 0...self.rotationFraction) * CGFloat.pi)
+						}
+						return rotationBase
+					}()
+
 					var rotateTransform = CGAffineTransform(translationX: -origX, y: -origY)
-						.concatenating(rotationBase)
+						.concatenating(rotatetfm)
 						.concatenating(CGAffineTransform(translationX: origX, y: origY))
 
 					if self.pixelType == .roundedRect {
@@ -130,5 +144,55 @@ internal extension QRCode.PixelShape {
 			}
 			return path
 		}
+	}
+}
+
+extension QRCode.PixelShape.CommonPixelGenerator {
+
+	func setInsetFractionValue(_ value: Any?) -> Bool {
+		guard let v = value else {
+			self.insetFraction = 0
+			return true
+		}
+		guard let v = CGFloatValue(v) else { return false }
+		self.insetFraction = v
+		return true
+	}
+
+	func setUsesRandomInset(_ value: Any?) -> Bool {
+		guard let v = value, let v = BoolValue(v) else {
+			self.useRandomInset = false
+			return true
+		}
+		self.useRandomInset = v
+		return true
+	}
+
+	func setRotationFraction(_ value: Any?) -> Bool {
+		guard let v = value, let v = CGFloatValue(v) else {
+			self.rotationFraction = 0.0
+			return true
+		}
+		self.rotationFraction = v
+		return true
+	}
+
+	func setUsesRandomRotation(_ value: Any?) -> Bool {
+		guard let v = value, let v = BoolValue(v) else {
+			self.useRandomRotation = false
+			return true
+		}
+		self.useRandomRotation = v
+		return true
+	}
+
+	func setCornerRadiusFraction(_ value: Any?) -> Bool {
+		guard let v = value else {
+			self.cornerRadiusFraction = 0
+			return true
+		}
+		guard let v = CGFloatValue(v)?.clamped(to: 0...1) else { return false }
+		self.cornerRadiusFraction = v
+		return true
 	}
 }
