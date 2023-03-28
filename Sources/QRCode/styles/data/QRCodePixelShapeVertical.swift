@@ -26,6 +26,8 @@ public extension QRCode.PixelShape {
 	@objc(QRCodePixelShapeVertical) class Vertical: NSObject, QRCodePixelShapeGenerator {
 		/// The generators name
 		@objc static public let Name: String = "vertical"
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pixelstyle.verticalbars", bundle: .module, comment: "Vertical bars pixel generator title") }
 
 		/// Create an instance of this path generator with the specified settings
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {

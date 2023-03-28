@@ -26,6 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "leaf"
+		@objc public static var Title: String { NSLocalizedString("eyestyle.leaf", bundle: .module, comment: "Leaf eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Leaf()
 		}
@@ -86,6 +87,8 @@ public extension QRCode.PupilShape {
 	/// A 'leaf' style pupil design
 	@objc(QRCodePupilShapeLeaf) class Leaf: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "leaf" }
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.leaf", bundle: .module, comment: "Leaf pupil generator title") }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Leaf()
 		}

@@ -801,6 +801,14 @@ There are two basic demos demonstrating the qr code detection in a video stream.
 * `macOS QRCode Detector`: Video qr code detector for macOS targets
 * `iOS QRCode Detector`: Video qr code detector for iOS targets (requires a real device)
 
+## Localizations
+
+This package currently contains a single localization for the `en` language.
+
+A great resource of localizing packages within your app can be found at [Use Your Loaf](https://useyourloaf.com/).
+
+* [Swift Package String Localization](https://web.archive.org/web/20230328035215/https://useyourloaf.com/blog/swift-package-string-localization/)
+
 ## Demo
 
 There are a number of demo apps which you can find in the `Demo` subfolder.  There are simple demo applications for

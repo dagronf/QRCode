@@ -277,6 +277,7 @@
 		236A0526286FE6580019C842 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		236A0528286FE6580019C842 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		237E3FFF274F08AE003E5E24 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "QRCodeView-SwiftUI-Demo--macOS--Info.plist"; sourceTree = "<group>"; };
 		23C64A5A282F448D0094E093 /* QRCodeView Documentation Images.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCodeView Documentation Images.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C64A5C282F448D0094E093 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23C64A5E282F448D0094E093 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -443,6 +444,7 @@
 		2348FB5B273A2DDB004DB2BF = {
 			isa = PBXGroup;
 			children = (
+				2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */,
 				234DE7042745D72D00EC7FD2 /* QRCode */,
 				2348FB66273A2DDB004DB2BF /* QRCodeView Demo */,
 				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,
@@ -1863,6 +1865,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCodeView-SwiftUI-Demo--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1893,6 +1896,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCodeView-SwiftUI-Demo--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

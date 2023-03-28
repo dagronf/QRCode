@@ -26,6 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'squircle' eye style
 	@objc(QRCodeEyeShapeSquircle) class Squircle: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "squircle"
+		@objc public static var Title: String { NSLocalizedString("eyestyle.squircle", bundle: .module, comment: "Squircle eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Squircle()
 		}
@@ -93,6 +94,9 @@ public extension QRCode.PupilShape {
 	/// A 'squircle' pupil style
 	@objc(QRCodePupilShapeSquircle) class Squircle: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "squircle" }
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.squircle", bundle: .module, comment: "Squircle pupil generator title") }
+
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Squircle()
 		}

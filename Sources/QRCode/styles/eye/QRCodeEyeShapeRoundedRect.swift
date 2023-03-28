@@ -26,6 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'rounded rect' style eye design
 	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "roundedRect"
+		@objc public static var Title: String { NSLocalizedString("eyestyle.roundedrect", bundle: .module, comment: "Rounded rectangle eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.RoundedRect()
 		}
@@ -92,6 +93,8 @@ public extension QRCode.PupilShape {
 	/// A 'rounded rect' style pupil design
 	@objc(QRCodePupilShapeRoundedRect) class RoundedRect: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "roundedRect" }
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedrect", bundle: .module, comment: "Rounded rectangle pupil generator title") }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			RoundedRect()
 		}

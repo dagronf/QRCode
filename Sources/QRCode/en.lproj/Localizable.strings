@@ -1,0 +1,78 @@
+
+// Pixel styles
+
+"pixelstyle.circle" = "Circle";
+
+"pixelstyle.roundedrect" = "Rounded rectangle";
+
+"pixelstyle.sharp" = "Sharp";
+
+"pixelstyle.square" = "Square";
+
+"pixelstyle.squircle" = "Squircle";
+
+"pixelstyle.curvepixel" = "Curve pixel";
+
+"pixelstyle.horizontalbars" = "Horizontal bars";
+
+"pixelstyle.verticalbars" = "Vertical bars";
+
+"pixelstyle.pointy" = "Pointy";
+
+"pixelstyle.roundedpath" = "Rounded path";
+
+// Eye styles
+
+"eyestyle.barsHorizontal" = "Horizontal bars";
+
+"eyestyle.barsVertical" = "Vertical bars";
+
+"eyestyle.circle" = "Circle";
+
+"eyestyle.corneredpixels" = "Cornered pixels";
+
+"eyestyle.edges" = "Edges";
+
+"eyestyle.leaf" = "Leaf";
+
+"eyestyle.pixels" = "Pixels";
+
+"eyestyle.roundedouter" = "Rounded outer";
+
+"eyestyle.roundedpointingin" = "Rounded pointing in";
+
+"eyestyle.roundedpointout" = "Rounded pointing out";
+
+"eyestyle.roundedrect" = "Rounded rectangle";
+
+"eyestyle.square" = "Square";
+
+"eyestyle.squircle" = "Squircle";
+
+// Pupil styles
+
+"pupilstyle.barsHorizontal" = "Horizontal bars";
+
+"pupilstyle.barsVertical" = "Vertical bars";
+
+"pupilstyle.circle" = "Circle";
+
+"pupilstyle.corneredpixels" = "Cornered pixels";
+
+"pupilstyle.edges" = "Edges";
+
+"pupilstyle.leaf" = "Leaf";
+
+"pupilstyle.pixels" = "Pixels";
+
+"pupilstyle.roundedouter" = "Rounded outer";
+
+"pupilstyle.roundedpointingin" = "Rounded pointing in";
+
+"pupilstyle.roundedpointout" = "Rounded pointing out";
+
+"pupilstyle.roundedrect" = "Rounded rectangle";
+
+"pupilstyle.square" = "Square";
+
+"pupilstyle.squircle" = "Squircle";

@@ -26,7 +26,9 @@ public extension QRCode.PixelShape {
 	/// A circle pixel shape
 	@objc(QRCodePixelShapeCircle) class Circle: NSObject, QRCodePixelShapeGenerator {
 		/// The generator name
-		@objc static public let Name: String = "circle"
+		@objc public static let Name: String = "circle"
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pixelstyle.circle", bundle: .module, comment: "Circle pixel generator title") }
 
 		/// Create
 		/// - Parameters:

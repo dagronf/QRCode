@@ -26,6 +26,8 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeGenerator {
 
 		@objc public static let Name: String = "circle"
+		@objc public static var Title: String { NSLocalizedString("eyestyle.circle", bundle: .module, comment: "Circle eye generator title") }
+
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Circle()
 		}
@@ -74,6 +76,9 @@ public extension QRCode.PupilShape {
 	/// A circle style pupil design
 	@objc(QRCodePupilShapeCircle) class Circle: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "circle" }
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.circle", bundle: .module, comment: "Circle generator title") }
+
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			Circle()
 		}

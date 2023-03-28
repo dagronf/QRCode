@@ -36,7 +36,10 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the eye shapes for a path
 @objc public protocol QRCodeEyeShapeGenerator {
+	/// The unique string identifier for the eye shape generator
 	@objc static var Name: String { get }
+	/// The user-facing title for the eye shape generator
+	@objc static var Title: String { get }
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
 	@objc func copyShape() -> QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
@@ -53,6 +56,7 @@ public extension QRCode {
 
 public extension QRCodeEyeShapeGenerator {
 	var name: String { return Self.Name }
+	var title: String { return Self.Title }
 
 	internal func coreSettings() -> [String: Any] {
 		var core: [String: Any] = [EyeShapeTypeName_: self.name]
@@ -72,7 +76,11 @@ public extension QRCode {
 }
 
 @objc public protocol QRCodePupilShapeGenerator {
+	/// The unique name for identifying the pupil shape
 	@objc static var Name: String { get }
+	/// The user-facing title for the generator
+	@objc static var Title: String { get }
+	/// Create a pupil shape generator using the provided settings
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator
 	@objc func copyShape() -> QRCodePupilShapeGenerator
 	@objc func pupilPath() -> CGPath
@@ -86,7 +94,8 @@ public extension QRCode {
 }
 
 public extension QRCodePupilShapeGenerator {
-	var name: String { return Self.Name }
+	@inlinable var name: String { return Self.Name }
+	@inlinable var title: String { return Self.Title }
 
 	internal func coreSettings() -> [String: Any] {
 		var core: [String: Any] = [PupilShapeTypeName_: self.name]

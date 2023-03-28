@@ -8,6 +8,32 @@
 import SwiftUI
 import QRCode
 
+struct StyleIdentifier {
+	let identifier: String
+	let title: String
+}
+
+let pixelGenerators: [StyleIdentifier] = {
+	QRCodePixelShapeFactory.shared.availableGeneratorNames.map {
+		let gen = QRCodePixelShapeFactory.shared.named($0)!
+		return StyleIdentifier(identifier: gen.name, title: gen.title)
+	}
+}()
+
+let eyeGenerators: [StyleIdentifier] = {
+	QRCodeEyeShapeFactory.shared.availableGeneratorNames.map {
+		let gen = QRCodeEyeShapeFactory.shared.named($0)!
+		return StyleIdentifier(identifier: gen.name, title: gen.title)
+	}
+}()
+
+let pupilGenerators: [StyleIdentifier] = {
+	QRCodePupilShapeFactory.shared.availableGeneratorNames.map {
+		let gen = QRCodePupilShapeFactory.shared.named($0)!
+		return StyleIdentifier(identifier: gen.name, title: gen.title)
+	}
+}()
+
 struct ContentView: View {
 
 	@State var content: String = "This is a test of the QR code control"
@@ -18,9 +44,9 @@ struct ContentView: View {
 	@State var pupilColor: Color = .primary
 	@State var backgroundColor: Color = .clear
 
-	@State var pixelShape: PixelShapeType = .square
-	@State var eyeStyle: EyeShapeType = .square
-	@State var pupilStyle: PupilShapeType = .square
+	@State var pixelShape: String = "square"
+	@State var eyeStyle: String = "square"
+	@State var pupilStyle: String = "square"
 
 	@State var dataInset: Double = 0
 	@State var cornerRadiusFraction: Double = 0.5
@@ -55,48 +81,27 @@ struct ContentView: View {
 					Text("High (H)").tag(QRCode.ErrorCorrection.high)
 				}.pickerStyle(RadioGroupPickerStyle())
 				Picker(selection: $pixelShape, label: Text("Data Shape:")) {
-					Text("Square").tag(PixelShapeType.square)
-					Text("Round Rect").tag(PixelShapeType.roundedrect)
-					Text("Circle").tag(PixelShapeType.circle)
-					Text("Squircle").tag(PixelShapeType.squircle)
-					Text("Sharp").tag(PixelShapeType.sharp)
-					Text("Horizontal").tag(PixelShapeType.horizontal)
-					Text("Vertical").tag(PixelShapeType.vertical)
-					Text("Rounded Path").tag(PixelShapeType.roundedpath)
-					Text("Pointy").tag(PixelShapeType.pointy)
-					Text("Curve Pixel").tag(PixelShapeType.curvePixel)
+					ForEach(pixelGenerators, id: \.identifier) { gen in
+						Text(gen.title).tag(gen.identifier)
+					}
 				}.pickerStyle(RadioGroupPickerStyle())
 				Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
 				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 				Slider(value: $rotationFraction, in: 0.0 ... 1.0, label: { Text("Rotation") })
 				HStack {
 					Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {
-						Text("Square").tag(EyeShapeType.square)
-						Text("Round Rect").tag(EyeShapeType.roundedRect)
-						Text("Circle").tag(EyeShapeType.circle)
-						Text("Leaf").tag(EyeShapeType.leaf)
-						Text("Rounded Outer").tag(EyeShapeType.roundedOuter)
-						Text("Rounded Pointing In").tag(EyeShapeType.roundedPointingIn)
-						Text("Squircle").tag(EyeShapeType.squircle)
-						Text("Bar Horizontal").tag(EyeShapeType.barHorizontal)
-						Text("Bar Vertical").tag(EyeShapeType.barVertical)
-						Text("Pixels").tag(EyeShapeType.pixels)
+						ForEach(eyeGenerators, id: \.identifier) { gen in
+							Text(gen.title).tag(gen.identifier)
+						}
 					}.pickerStyle(RadioGroupPickerStyle())
 					Picker(selection: $pupilStyle, label: Text("Pupil Shape:")) {
-						Text("Square").tag(PupilShapeType.square)
-						Text("Round Rect").tag(PupilShapeType.roundedRect)
-						Text("Circle").tag(PupilShapeType.circle)
-						Text("Leaf").tag(PupilShapeType.leaf)
-						Text("Rounded Outer").tag(PupilShapeType.roundedOuter)
-						Text("Rounded Pointing In").tag(PupilShapeType.roundedPointingIn)
-						Text("Squircle").tag(PupilShapeType.squircle)
-						Text("Bar Horizontal").tag(PupilShapeType.barHorizontal)
-						Text("Bar Vertical").tag(PupilShapeType.barVertical)
-						Text("Pixels").tag(PupilShapeType.pixels)
+						ForEach(pupilGenerators, id: \.identifier) { gen in
+							Text(gen.title).tag(gen.identifier)
+						}
 					}.pickerStyle(RadioGroupPickerStyle())
 				}
 				.onChange(of: eyeStyle) { newValue in
-					pupilStyle = PupilShapeType(rawValue: newValue.rawValue)!
+					pupilStyle = newValue
 				}
 
 				HStack {
@@ -142,5 +147,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		ContentView()
+		ContentView()
+			.environment(\.locale, Locale(identifier: "en"))
 	}
 }

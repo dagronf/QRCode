@@ -36,7 +36,12 @@ public extension QRCode {
 
 /// A protocol for wrapping generating the data shape for a path
 @objc public protocol QRCodePixelShapeGenerator {
+	/// The unique name for identifying the pixel shape
 	@objc static var Name: String { get }
+	/// The user-facing title for the generator
+	@objc static var Title: String { get }
+
+	/// Create a pixel shape generator using the provided settings
 	@objc static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator
 
 	/// Make a copy of the shape object
@@ -61,6 +66,7 @@ public extension QRCode {
 
 public extension QRCodePixelShapeGenerator {
 	var name: String { return Self.Name }
+	var title: String { return Self.Title }
 
 	internal func coreSettings() -> [String: Any] {
 		var core: [String: Any] = [PixelShapeTypeName_: self.name]

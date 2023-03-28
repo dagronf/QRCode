@@ -26,6 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'square' style eye design
 	@objc(QRCodeEyeShapeEdges) class Edges: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "edges"
+		@objc public static var Title: String { NSLocalizedString("eyestyle.edges", bundle: .module, comment: "Edges eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
 			return Edges(cornerRadiusFraction: radius)
@@ -86,6 +87,9 @@ public extension QRCode.PupilShape {
 	/// A 'rounded rect' style pupil design
 	@objc(QRCodePupilShapeEdges) class Edges: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "edges" }
+		/// The generator title
+		@objc public static var Title: String { NSLocalizedString("pupilstyle.edges", bundle: .module, comment: "Edges pupil generator title") }
+
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
 			return Edges(cornerRadiusFraction: radius)
