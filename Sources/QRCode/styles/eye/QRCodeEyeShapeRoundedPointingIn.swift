@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'rounded rect with a pointy bit facing inwards' style eye design
-	@objc(QRCodeEyeStyleRoundedPointingIn) class RoundedPointingIn: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeRoundedPointingIn) class RoundedPointingIn: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "roundedPointingIn"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.roundedpointingin", bundle: .module, comment: "Rounded pointing in eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -79,35 +79,5 @@ public extension QRCode.EyeShape {
 
 		private static let generator_ = QRCode.PupilShape.RoundedPointingIn()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self.generator_ }
-	}
-}
-
-public extension QRCode.PupilShape {
-	/// A 'rounded rect with a pointy bit facing inwards' style pupil design
-	@objc(QRCodePupilShapeRoundedPointingIn) class RoundedPointingIn: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "roundedPointingIn" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedpointingin", bundle: .module, comment: "Rounded pointing in pupil generator title") }
-
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			RoundedPointingIn()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { RoundedPointingIn() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			let roundedPupil = CGPath.RoundedRect(
-				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-				cornerRadius: 6,
-				byRoundingCorners: [.topLeft, .bottomLeft, .topRight]
-			)
-			return roundedPupil
-		}
 	}
 }

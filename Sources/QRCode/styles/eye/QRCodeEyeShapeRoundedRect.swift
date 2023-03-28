@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'rounded rect' style eye design
-	@objc(QRCodeEyeStyleRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "roundedRect"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.roundedrect", bundle: .module, comment: "Rounded rectangle eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -84,31 +84,5 @@ public extension QRCode.EyeShape {
 
 		private static let _defaultPupil = QRCode.PupilShape.RoundedRect()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
-	}
-}
-
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A 'rounded rect' style pupil design
-	@objc(QRCodePupilShapeRoundedRect) class RoundedRect: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "roundedRect" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedrect", bundle: .module, comment: "Rounded rectangle pupil generator title") }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			RoundedRect()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { RoundedRect() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			return CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
-		}
 	}
 }

@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'square' style eye design
-	@objc(QRCodeEyeStyleSquare) class Square: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeSquare) class Square: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "square"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.square", bundle: .module, comment: "Square eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -64,31 +64,5 @@ public extension QRCode.EyeShape {
 
 		private static let _defaultPupil = QRCode.PupilShape.Square()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
-	}
-}
-
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A 'square' style pupil design
-	@objc(QRCodePupilShapeSquare) class Square: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "square" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.square", bundle: .module, comment: "Square pupil generator title") }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			Square()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { Square() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			return CGPath(rect: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
-		}
 	}
 }

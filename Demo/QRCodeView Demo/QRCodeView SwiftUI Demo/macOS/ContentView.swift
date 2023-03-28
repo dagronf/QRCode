@@ -52,6 +52,8 @@ struct ContentView: View {
 	@State var cornerRadiusFraction: Double = 0.5
 	@State var rotationFraction: Double = 0.0
 
+	@State var randomInset: Bool = false
+
 	var body: some View {
 
 		let qrContent = QRCodeShape(
@@ -63,7 +65,8 @@ struct ContentView: View {
 			self.pixelShape,
 			insetFraction: dataInset,
 			cornerRadiusFraction: cornerRadiusFraction,
-			rotationFraction: rotationFraction
+			rotationFraction: rotationFraction,
+			randomInset: randomInset
 		)
 		let _eyeStyle = eyeShapeHandler(self.eyeStyle)
 		let _pupilStyle = pupilShapeHandler(self.pupilStyle)
@@ -85,7 +88,10 @@ struct ContentView: View {
 						Text(gen.title).tag(gen.identifier)
 					}
 				}.pickerStyle(RadioGroupPickerStyle())
-				Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
+				HStack {
+					Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
+					Toggle("Random", isOn: $randomInset)
+				}
 				Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
 				Slider(value: $rotationFraction, in: 0.0 ... 1.0, label: { Text("Rotation") })
 				HStack {

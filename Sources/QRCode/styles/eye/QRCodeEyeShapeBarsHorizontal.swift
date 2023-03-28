@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// An eye with vertical bars as the pupil
-	@objc(QRCodeEyeStyleBarsHorizontal) class BarsHorizontal: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeBarsHorizontal) class BarsHorizontal: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "barsHorizontal"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.barsHorizontal", bundle: .module, comment: "Horizontal bars generator title") }
 
@@ -89,37 +89,3 @@ public extension QRCode.EyeShape {
 	}
 }
 
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A horizontal bars style pupil design
-	@objc(QRCodePupilShapeBarsHorizontal) class BarsHorizontal: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "barsHorizontal" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.barsHorizontal", bundle: .module, comment: "Horizontal bars generator title") }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			BarsHorizontal()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { BarsHorizontal() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			let rectanglePath = CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
-			let rectangle2Path = CGPath(roundedRect: CGRect(x: 30, y: 40.33, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
-			let rectangle3Path = CGPath(roundedRect: CGRect(x: 30, y: 50.66, width: 30, height: 9.33), cornerWidth: 4, cornerHeight: 4, transform: nil)
-
-			let result = CGMutablePath()
-			result.addPath(rectanglePath)
-			result.addPath(rectangle2Path)
-			result.addPath(rectangle3Path)
-			result.close()
-			return result
-		}
-	}
-}

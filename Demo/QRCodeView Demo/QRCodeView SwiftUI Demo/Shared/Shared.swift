@@ -34,11 +34,18 @@ import QRCode
 //	case pixels = 9
 //}
 
-func pixelShapeHandler(_ pixelShape: String, insetFraction: Double = 0, cornerRadiusFraction: Double = 0, rotationFraction: Double = 0) -> QRCodePixelShapeGenerator {
+func pixelShapeHandler(
+	_ pixelShape: String,
+	insetFraction: Double = 0,
+	cornerRadiusFraction: Double = 0,
+	rotationFraction: Double = 0,
+	randomInset: Bool = false
+) -> QRCodePixelShapeGenerator {
 	QRCodePixelShapeFactory.shared.named(pixelShape, settings: [
 		QRCode.SettingsKey.insetFraction: insetFraction,
 		QRCode.SettingsKey.cornerRadiusFraction: cornerRadiusFraction,
 		QRCode.SettingsKey.rotationFraction: rotationFraction,
+		QRCode.SettingsKey.randomInset: randomInset
 	])!
 }
 

@@ -24,7 +24,6 @@ import CoreGraphics
 
 public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeCircle) class Circle : NSObject, QRCodeEyeShapeGenerator {
-
 		@objc public static let Name: String = "circle"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.circle", bundle: .module, comment: "Circle eye generator title") }
 
@@ -67,32 +66,5 @@ public extension QRCode.EyeShape {
 
 		private static let _defaultPupil = QRCode.PupilShape.Circle()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
-	}
-}
-
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A circle style pupil design
-	@objc(QRCodePupilShapeCircle) class Circle: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "circle" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.circle", bundle: .module, comment: "Circle generator title") }
-
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			Circle()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { Circle() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			return CGPath(ellipseIn: CGRect(x: 30, y: 30, width: 30, height: 30), transform: nil)
-		}
 	}
 }

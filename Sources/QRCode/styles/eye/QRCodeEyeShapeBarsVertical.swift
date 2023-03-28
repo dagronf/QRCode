@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// An eye with vertical bars as the pupil
-	@objc(QRCodeEyeStyleBarsVertical) class BarsVertical: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeBarsVertical) class BarsVertical: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "barsVertical"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.barsVertical", bundle: .module, comment: "Horizontal bars eye generator title") }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
@@ -85,41 +85,6 @@ public extension QRCode.EyeShape {
 		private static let _defaultPupil = QRCode.PupilShape.BarsVertical()
 		public func defaultPupil() -> QRCodePupilShapeGenerator {
 			Self._defaultPupil
-		}
-	}
-}
-
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A vertical bars style pupil design
-	@objc(QRCodePupilShapeBarsVertical) class BarsVertical: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "barsVertical" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.barsVertical", bundle: .module, comment: "Horizontal bars generator title") }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			BarsVertical()
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { BarsVertical() }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			let roundedRectPupilPath = CGPath(roundedRect: CGRect(x: 30, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
-			let roundedRectPupil2Path = CGPath(roundedRect: CGRect(x: 40.33, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
-			let roundedRectPupil3Path = CGPath(roundedRect: CGRect(x: 50.66, y: 30, width: 9.33, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
-
-			let result = CGMutablePath()
-			result.addPath(roundedRectPupilPath)
-			result.addPath(roundedRectPupil2Path)
-			result.addPath(roundedRectPupil3Path)
-			result.close()
-			return result
 		}
 	}
 }

@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'pixel' style eye design which provides corner radius configuration
-	@objc(QRCodeEyeStyleCorneredPixels) class CorneredPixels: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeCorneredPixels) class CorneredPixels: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "corneredPixels"
 		@objc public static var Title: String { NSLocalizedString("eyestyle.corneredpixels", bundle: .module, comment: "Cornered pixels eye generator title") }
 
@@ -101,66 +101,5 @@ public extension QRCode.EyeShape {
 
 		private static let _defaultPupil = QRCode.PupilShape.CorneredPixels()
 		public func defaultPupil() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CorneredPixels(cornerRadiusFraction: self.cornerRadiusFraction) }
-	}
-}
-
-// MARK: - Pupil shape
-
-public extension QRCode.PupilShape {
-	/// A 'square' style pupil design
-	@objc(QRCodePupilShapeCorneredPixels) class CorneredPixels: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "corneredPixels" }
-		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.corneredpixels", bundle: .module, comment: "Cornered pixels generator title") }
-
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
-			return CorneredPixels(cornerRadiusFraction: radius)
-		}
-
-		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator {
-			CorneredPixels(cornerRadiusFraction: self.cornerRadiusFraction)
-		}
-
-		@objc public func settings() -> [String: Any] {
-			[ QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction ]
-		}
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == QRCode.SettingsKey.cornerRadiusFraction }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-			if key == QRCode.SettingsKey.cornerRadiusFraction, let value = DoubleValue(value) {
-				cornerRadiusFraction = max(0, min(1, value))
-				return true
-			}
-			return false
-		}
-
-		private var _actualCornerRadius: CGFloat = 1
-		@objc public var cornerRadiusFraction: CGFloat = 1 {
-			didSet {
-				self._actualCornerRadius = self.cornerRadiusFraction * 5.0
-			}
-		}
-
-		@objc public init(cornerRadiusFraction: CGFloat = 1) {
-			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
-		}
-
-		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			let path = CGMutablePath()
-
-			path.addPath(CGPath.RoundedRect(rect: CGRect(x: 30, y: 30, width: 9, height: 9), topLeftRadius: CGSize(width: self._actualCornerRadius, height: self._actualCornerRadius)))
-			path.addPath(CGPath(rect: CGRect(x: 40, y: 30, width: 9, height: 9), transform: nil))
-			path.addPath(CGPath.RoundedRect(rect: CGRect(x: 50, y: 30, width: 9, height: 9), topRightRadius: CGSize(width: self._actualCornerRadius, height: self._actualCornerRadius)))
-			path.addPath(CGPath(rect: CGRect(x: 30, y: 40, width: 9, height: 9), transform: nil))
-			path.addPath(CGPath(rect: CGRect(x: 40, y: 40, width: 9, height: 9), transform: nil))
-			path.addPath(CGPath(rect: CGRect(x: 50, y: 40, width: 9, height: 9), transform: nil))
-			path.addPath(CGPath.RoundedRect(rect: CGRect(x: 30, y: 50, width: 9, height: 9), bottomLeftRadius: CGSize(width: self._actualCornerRadius, height: self._actualCornerRadius)))
-			path.addPath(CGPath(rect: CGRect(x: 40, y: 50, width: 9, height: 9), transform: nil))
-			path.addPath(CGPath.RoundedRect(rect: CGRect(x: 50, y: 50, width: 9, height: 9), bottomRightRadius: CGSize(width: self._actualCornerRadius, height: self._actualCornerRadius)))
-			return path
-		}
 	}
 }

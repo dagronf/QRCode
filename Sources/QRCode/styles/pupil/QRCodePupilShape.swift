@@ -1,5 +1,5 @@
 //
-//  QRCodeEyeShape.swift
+//  QRCodePupilShape.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -22,31 +22,26 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - Eye shape
-
-internal let EyeShapeTypeName_ = "type"
-internal let EyeShapeSettingsName_ = "settings"
-
 public extension QRCode {
 	/// The shape of an 'eye' within the qr code
-	@objc(QRCodeEyeShape) class EyeShape: NSObject {
-		private override init() { super.init() }
+	@objc(QRCodePupilShape) class PupilShape: NSObject {
+		private override init() { fatalError() }
 	}
 }
 
-/// A protocol for wrapping generating the eye shapes for a path
-@objc public protocol QRCodeEyeShapeGenerator {
-	/// The unique string identifier for the eye shape generator
-	@objc static var Name: String { get }
-	/// The user-facing title for the eye shape generator
-	@objc static var Title: String { get }
-	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
-	@objc func copyShape() -> QRCodeEyeShapeGenerator
-	@objc func eyePath() -> CGPath
-	@objc func eyeBackgroundPath() -> CGPath
-	@objc func defaultPupil() -> QRCodePupilShapeGenerator
+internal let PupilShapeTypeName_ = "type"
+internal let PupilShapeSettingsName_ = "settings"
 
-	/// Returns a storable representation of the shape handler
+@objc public protocol QRCodePupilShapeGenerator {
+	/// The unique name for identifying the pupil shape
+	@objc static var Name: String { get }
+	/// The user-facing title for the generator
+	@objc static var Title: String { get }
+	/// Create a pupil shape generator using the provided settings
+	@objc static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator
+	@objc func copyShape() -> QRCodePupilShapeGenerator
+	@objc func pupilPath() -> CGPath
+
 	@objc func settings() -> [String: Any]
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool
@@ -54,13 +49,13 @@ public extension QRCode {
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool
 }
 
-public extension QRCodeEyeShapeGenerator {
-	var name: String { return Self.Name }
-	var title: String { return Self.Title }
+public extension QRCodePupilShapeGenerator {
+	@inlinable var name: String { return Self.Name }
+	@inlinable var title: String { return Self.Title }
 
 	internal func coreSettings() -> [String: Any] {
-		var core: [String: Any] = [EyeShapeTypeName_: self.name]
-		core[EyeShapeSettingsName_] = self.settings()
+		var core: [String: Any] = [PupilShapeTypeName_: self.name]
+		core[PupilShapeSettingsName_] = self.settings()
 		return core
 	}
 }
