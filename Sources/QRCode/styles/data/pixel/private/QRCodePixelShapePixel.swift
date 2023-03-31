@@ -97,7 +97,7 @@ internal extension QRCode.PixelShape {
 					let insetValue = insetFraction * (r.height / 2.0)
 					let ri = r.insetBy(dx: insetValue, dy: insetValue)
 
-					let rotatetfm = {
+					let rotatetfm: CGAffineTransform = {
 						if self.useRandomRotation {
 							return CGAffineTransform(rotationAngle: CGFloat.random(in: 0...self.rotationFraction) * CGFloat.pi)
 						}
