@@ -799,9 +799,25 @@ public extension QRCode.Document {
 	}
 }
 
+extension QRCode.Document {
+	// Build up the qr representation
+	private func regenerate() {
+		if let data = self.data {
+			self.qrcode.update(data: data, errorCorrection: self.errorCorrection)
+		}
+		else if let text = self.utf8String {
+			self.qrcode.update(text: text, errorCorrection: self.errorCorrection)
+		}
+		else {
+			Swift.print("QRCode.Document: No data specified")
+		}
+	}
+}
+
 // MARK: - SwiftUI extensions
 
-#if canImport(SwiftUI)
+#if canImport(Combine)
+import Combine
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
 extension QRCode.Document: ObservableObject {
@@ -817,18 +833,3 @@ extension QRCode.Document: ObservableObject {
 }
 
 #endif
-
-extension QRCode.Document {
-	// Build up the qr representation
-	private func regenerate() {
-		if let data = self.data {
-			self.qrcode.update(data: data, errorCorrection: self.errorCorrection)
-		}
-		else if let text = self.utf8String {
-			self.qrcode.update(text: text, errorCorrection: self.errorCorrection)
-		}
-		else {
-			Swift.print("QRCode.Document: No data specified")
-		}
-	}
-}

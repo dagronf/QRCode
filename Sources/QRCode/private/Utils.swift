@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 /// Attempt to convert an opaque type to a CGFloat value.
 @inlinable @inline(__always) internal func CGFloatValue(_ opaque: Any?) -> CGFloat? {
