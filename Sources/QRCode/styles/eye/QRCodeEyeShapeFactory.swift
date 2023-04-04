@@ -43,6 +43,7 @@ import Foundation
 			QRCode.EyeShape.Pixels.self,
 			QRCode.EyeShape.CorneredPixels.self,
 			QRCode.EyeShape.RoundedPointingOut.self,
+			QRCode.EyeShape.Shield.self
 		]
 		super.init()
 	}

@@ -1,5 +1,5 @@
 //
-//  QRCode+SettingsKey.swift
+//  QRCode+Types.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -22,21 +22,22 @@
 import Foundation
 
 public extension QRCode {
-	/// Constant Keys
-	@objc class SettingsKey: NSObject {
-		/// Settings key for 'corner radius fraction'
-		@objc public static let cornerRadiusFraction = "cornerRadiusFraction"
-		/// Settings key for 'insetFraction'
-		@objc public static let insetFraction = "insetFraction"
-		/// Settings key for 'has inner corners'
-		@objc public static let hasInnerCorners = "hasInnerCorners"
-		/// Setings key for 'random inset'
-		@objc public static let useRandomInset = "useRandomInset"
-		/// A rotation angle (0 -> 1)
-		@objc public static let rotationFraction = "rotationFraction"
-		/// Setings key for 'random rotation'
-		@objc public static let useRandomRotation = "useRandomRotation"
-		/// Settings key for 'corners'
-		@objc public static let corners = "corners"
+	/// A corners definition
+	struct Corners: OptionSet, Codable {
+		public let rawValue: Int
+		/// Top left
+		public static let tl = Corners(rawValue: 1 << 0)
+		/// Top right
+		public static let tr = Corners(rawValue: 1 << 1)
+		/// Bottom left
+		public static let bl = Corners(rawValue: 1 << 2)
+		/// Bottom right
+		public static let br = Corners(rawValue: 1 << 3)
+		/// All corners
+		public static let all: Corners = [.tl, .tr, .bl, .br]
+		/// All corners
+		public static let none: Corners = []
+		/// Create a Corners struct
+		public init(rawValue: Int) { self.rawValue = rawValue }
 	}
 }

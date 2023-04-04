@@ -689,7 +689,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					let msg = QRCode.Message.Link(URL(string: "https://github.com/dagronf/QRCode")!)
 					let doc = QRCode.Document(message: msg, errorCorrection: .quantize)
 					doc.design.style.background = QRCode.FillStyle.Solid(.clear)
-					doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(insetFraction: 0.1, cornerRadiusFraction: 0.5)
+					doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(cornerRadiusFraction: 0.5, insetFraction: 0.1)
 					doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
 					doc.design.style.setForegroundStyle(
 						QRCode.FillStyle.LinearGradient(

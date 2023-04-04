@@ -3,6 +3,13 @@ import XCTest
 
 #if canImport(CoreGraphics)
 
+//extension CGPath {
+//	public func subtracting(_ other: CGPath, using rule: CGPathFillRule = .winding) -> CGPath {
+//		assert(false)
+//		return other
+//	}
+//}
+
 final class CGPathCoderTests: XCTestCase {
 	func testCGPathEncodeDecode() throws {
 		do {

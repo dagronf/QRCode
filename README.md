@@ -25,7 +25,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 <p align="center">
    <a href="./Art/screenshot.png">
-      <img src="./Art/screenshot.png" width="300"/>
+      <img src="./Art/screenshot.png" width="270"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">
@@ -51,7 +51,11 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
    <a href="./Art/background-fill-image.jpg">
       <img src="./Art/background-fill-image.jpg" width="150"/>
-   </a>   
+   </a>
+   
+   <a href="./Art/qrcode-off-pixels.png">
+      <img src="./Art/qrcode-off-pixels.png" width="150"/>
+   </a>
 </p>
 
 ## Why?
@@ -235,7 +239,9 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_barsVertical.png" width="60"/>      |"barsVertical"|`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 |<img src="./Art/images/eye_pixels.png" width="60"/>            |"pixels"|`QRCode.EyeShape.Pixels`| A simple collection of pixels with configurable corner radius for each pixel|
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    |"corneredPixels"|`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
-|<img src="./Art/images/eye_edges.png" width="60"/>    |"edges"|`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
+|<img src="./Art/images/eye_edges.png" width="60"/>             |"edges"|`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
+|<img src="./Art/images/eye_shield.png" width="60"/>            |"shield"|`QRCode.EyeShape.Shield`| A shield with configurable corners |
+
 
 
 ### Custom Pupil shape (optional)
@@ -258,6 +264,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_barsVertical.png" width="30"/>     |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 |<img src="./Art/images/pupil_pixels.png" width="30"/>           |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius for each pixel |
 |<img src="./Art/images/pupil_corneredPixels.png" width="30"/>   |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |
+|<img src="./Art/images/pupil_shield.png" width="30"/>           |"shield"|`QRCode.PupilShape.Shield`|  A shield with configurable corners |
 
 <details>
 <summary>Example</summary>
@@ -292,6 +299,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_roundedPath.png" width="60"/> |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
 |<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
+|<img src="./Art/images/data_sharp.png" width="60"/>       |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
 
 #### 'offPixels' shape (optional)
 

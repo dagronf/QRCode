@@ -40,6 +40,22 @@ import CoreGraphics
 	return (opaque as? NSNumber)?.boolValue
 }
 
+/// Attempt to convert an opaque type to a int value.
+@inlinable @inline(__always) internal func IntValue(_ opaque: Any?) -> Int? {
+	return (opaque as? NSNumber)?.intValue
+}
+
+/// Attempt to convert an opaque b64 string type to a CGImage.
+internal func CGImageValueFromB64String(_ opaque: Any?) -> CGImage? {
+	if let imageb64 = opaque as? String,
+		let imageb64Data = imageb64.data(using: .ascii, allowLossyConversion: false),
+		let imageData = Data(base64Encoded: imageb64Data)
+	{
+		return CGImage.fromPNGData(imageData)
+	}
+	return nil
+}
+
 /// A common 'localization' bundle that swaps between Cocoapod and SPM as needed
 extension Bundle {
 #if COCOAPODS
