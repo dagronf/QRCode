@@ -3,12 +3,10 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
-DerivedData/
 Demo/QRCodeView Demo/QRCodeView Demo.xcodeproj/project.xcworkspace/xcshareddata
 docs
 Package.resolved
 Demo/SwiftUI Demos/SwiftUI Demos.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 contents.xcworkspacedata
 Demo/Cocoapods Test/Pods
-.dependencies
-.derivedData
+sanitybuild
