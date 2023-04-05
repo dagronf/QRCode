@@ -402,17 +402,62 @@ let cgImage = doc3.cgImage(CGSize(width: 300, height: 300))
 
 ## Adding a logo to a QR code
 
+The `QRCode.LogoTemplate` class is used to define a logo on the QR code. 
+The document has a `logoTemplate` member where this can be set (see the examples below)
+
 ### WARNING
 
 Adding a logo can heavily adversely affect the ability to recognise the content of the QR code. If you add a logo it's highly recommended to set the errorCorrection levels to `.high`.
+Logos that cover more than 25% of the data tend to cause more failures than successes when reading. 
 
 After adding an image its important to verify that the qr code can be read (Most phone cameras can read qr codes).
-
-If the logo ends up covering more that 25% of the data, its highly likely your QR code will have trouble being read.
-
+If the logo ends up covering more that 25% of the data, it is highly likely your QR code will have trouble being read by some readers.
 Before reporting a bug about the qr code failing to be read, remove the image and retry. If the code can be read without the image it means your logo is too big.
 
-### Logo templates (QRCode.LogoTemplate)
+### Method 1: Logo Masking
+
+The simplest method is to provide a logo and an optional transparent image mask. 
+If the mask is not supplied, the library will use the transparency information from the logo image to generate a mask for you.
+
+The image and mask image should be the same size and square for the best results. Both the logo and the mask will be scaled to the final size of the QR code before application.
+
+|  logo  |  mask  |    | result |
+|:------:|:------:|:--:|:------:|
+<img src="./Tests/QRCodeTests/Resources/logo.png" width="100"/> | <img src="./Tests/QRCodeTests/Resources/logo-mask.png" width="100"/> | ➜ | <img src="./Art/images/design-logo-masking.png" width="100"/> |
+
+
+<details>
+<summary>Sample image and mask examples </summary>
+
+#### Logo and mask
+
+```swift
+let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a mask image", errorCorrection: .high)
+let logoImage = ... some logo image ...
+let logoMaskImage = ... some mask image ...
+doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage, maskImage: logoMaskImage)
+```
+
+|  logo  |  mask  | result |
+|:------:|:------:|:------:|
+<img src="./Tests/QRCodeTests/Resources/logo.png" width="150"/> | <img src="./Tests/QRCodeTests/Resources/logo-mask.png" width="150"/> | <img src="./Art/images/design-logo-masking.png" width="150"/> |
+
+#### Logo only
+
+```swift
+let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
+let logoImage = ... some logo image ...
+doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage)
+```
+
+|  logo  | result |
+|:------:|:------:|
+<img src="./Tests/QRCodeTests/Resources/logo.png" width="150"/> | <img src="./Art/images/design-logo-masking-using-transparency.png" width="150"/> |
+
+
+</details>
+
+### Method 2: Logo templates
 
 The logo template defines an image and a _relative_ path in the QRCode in which to draw the image.
 
@@ -453,6 +498,9 @@ There are a number of pre-built `LogoTemplate` creators for the 'standard' logo 
 * square center (`QRCode.LogoTemplate.SquareCenter`)
 * square bottom right (`QRCode.LogoTemplate.SquareBottomRight`) 
 
+<details>
+<summary>Logo Template Examples</summary>
+
 ### Example 1
 
 ```swift
@@ -490,6 +538,7 @@ generates
 
 <a href="./Art/images/qrcode-with-logo-example-bottom-right.png"><img src="./Art/images/qrcode-with-logo-example-bottom-right.png" width="100"/></a>
 
+</details>
 
 ## Message Formatters
 

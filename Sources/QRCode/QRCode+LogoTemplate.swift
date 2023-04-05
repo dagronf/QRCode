@@ -42,6 +42,15 @@ public extension QRCode {
 		/// If no image is provided, the mask is still applied to the QR code when generating.
 		@objc public var image: CGImage?
 
+		/// An image to use as a mask for the logo.
+		@objc public var maskImage: CGImage?
+
+		/// If true, uses a transparent mask image to mask the QRCode when drawing the image
+		///
+		/// 1. If `maskImage` is not nil, masks the QR code using `maskImage` before drawing the logo image
+		/// 2. If `maskImage` is not provided, uses the transparency information in `image` to generate a mask.
+		@objc public var useImageMasking: Bool = false
+
 		/// Create a logo template
 		/// - Parameters:
 		///   - path: The bounds path for the logo (0,0 -> 1, 1)
@@ -60,6 +69,17 @@ public extension QRCode {
 			self.path = path
 			self.inset = inset
 			self.image = image
+		}
+
+		@objc public init(
+			logoImage: CGImage,
+			maskImage: CGImage? = nil
+		) {
+			self.path = CGPath(rect: CGRect(origin: .zero, size: .init(dimension: 1.0)), transform: nil)
+			self.image = logoImage
+			self.maskImage = maskImage
+			self.inset = 0
+			self.useImageMasking = true
 		}
 
 		/// Returns the logo path scaled to fit the specified dimension value
@@ -92,11 +112,22 @@ public extension QRCode {
 				"inset": self.inset,
 			]
 
-			if let image = image,
+			if self.useImageMasking {
+				settings["maskUsingImageTransparency"] = true
+			}
+
+			if let image = self.image,
 				let data = image.pngRepresentation()
 			{
 				let b64 = data.base64EncodedString()
 				settings["image"] = b64
+			}
+
+			if let maskImage = self.maskImage,
+				let data = maskImage.pngRepresentation()
+			{
+				let b64 = data.base64EncodedString()
+				settings["maskImage"] = b64
 			}
 
 			return settings
@@ -113,12 +144,10 @@ public extension QRCode {
 			self.path = path
 			self.inset = DoubleValue(settings["inset"]) ?? 0
 
-			if let imageb64 = settings["image"] as? String,
-				let imageb64Data = imageb64.data(using: .ascii, allowLossyConversion: false),
-				let imageData = Data(base64Encoded: imageb64Data)
-			{
-				self.image = CGImage.fromPNGData(imageData)
-			}
+			self.useImageMasking = BoolValue(settings["maskUsingImageTransparency"]) ?? false
+
+			self.image = CGImageValueFromB64String(settings["image"])
+			self.maskImage = CGImageValueFromB64String(settings["maskImage"])
 		}
 
 		/// Create a LogoTemplate from a dictionary of settings
@@ -129,7 +158,82 @@ public extension QRCode {
 }
 
 extension QRCode.LogoTemplate {
+	// Apply masking via image masking
+	func applyingTransparency(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
+		guard let image = self.image else {
+			return matrix
+		}
+
+		// If the user has supplied a mask image use it, or else use the transparency of the image
+		let masked = self.maskImage ?? image
+
+		let sz = matrix.dimension
+		guard let scaled = CGImage.imageByScalingImageToFill(masked, targetSize: CGSize(dimension: sz)) else {
+			Swift.print("Couldn't scale logo template image")
+			return matrix
+		}
+
+		do {
+			let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+			guard
+				let space = CGColorSpace(name: CGColorSpace.sRGB),
+				let ctx = CGContext(
+					data: nil,
+					width: sz,
+					height: sz,
+					bitsPerComponent: 8,
+					bytesPerRow: 4 * sz,
+					space: space,
+					bitmapInfo: bitmapInfo.rawValue
+				)
+			else {
+				Swift.print("Couldn't get image context")
+				return matrix
+			}
+
+			// Work out the mapping to the path
+			let pbb = self.path.boundingBoxOfPath
+			let szf = CGFloat(sz)
+			let dest = CGRect(
+				x: pbb.minX * szf, y: pbb.minY * szf,
+				width: pbb.width * szf, height: pbb.height * szf
+			)
+
+			ctx.draw(scaled, in: dest)
+
+			guard let rawData = ctx.data else {
+				Swift.print("Couldn't get image context")
+				return matrix
+			}
+			let rawImage = rawData.assumingMemoryBound(to: UInt8.self)
+
+			// Loop through the rows and columns, and if the pixel has transparency it gets masked
+			let mask = BoolMatrix(dimension: sz)
+			for y in 0 ..< sz {
+				for x in 0 ..< sz {
+					let index = ((sz * y) + x) * 4
+//					let r = rawImage[index]
+//					let g = rawImage[index+1]
+//					let b = rawImage[index+2]
+					let a = rawImage[index+3]
+
+					mask[y, x] = (a <= 10)
+				}
+			}
+			return matrix.applyingMask(mask)
+		}
+
+		// Scale the image to the dimension
+		
+
+	}
+
 	func applyingMask(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
+
+		if self.useImageMasking {
+			return self.applyingTransparency(matrix: matrix, dimension: dimension)
+		}
+
 		let absoluteMask = self.absolutePathForMaskPath(dimension: dimension)
 
 		// The size of each pixel in the output

@@ -81,3 +81,90 @@ extension CGImage {
 		return CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
 	}
 }
+
+extension CGImage {
+	static func imageByScalingImageToFill(_ image: CGImage, targetSize: CGSize) -> CGImage? {
+		let origSize = CGSize(width: image.width, height: image.height)
+
+		var destWidth: CGFloat = 0
+		var destHeight: CGFloat = 0
+		let widthRatio = targetSize.width / origSize.width
+		let heightRatio = targetSize.height / origSize.height
+
+		// Keep aspect ratio
+		if heightRatio > widthRatio {
+			destHeight = targetSize.height
+			destWidth = origSize.width * targetSize.height / origSize.height
+		}
+		else {
+			destWidth = targetSize.width
+			destHeight = origSize.height * targetSize.width / origSize.width
+		}
+
+		return Self.Create(size: targetSize) { ctx, targetSize in
+			ctx.draw(
+				image,
+				in: CGRect(
+					x: (targetSize.width - destWidth) / 2,
+					y: (targetSize.height - destHeight) / 2,
+					width: destWidth,
+					height: destHeight
+				)
+			)
+		}
+	}
+
+	/// Create a CGImage with an sRGB colorspace
+	/// - Parameters:
+	///   - size: The size of the resulting image
+	///   - backgroundColor: The color to fill the created image, or nil for no fill
+	///   - drawBlock: A block used to draw content into the new image, or nil for no drawing
+	/// - Returns: The created CGImage
+	static func Create(
+		size: CGSize,
+		backgroundColor: CGColor? = nil,
+		_ drawBlock: ((CGContext, CGSize) -> Void)? = nil
+	) -> CGImage? {
+		// Make the context. For the moment, always work in RGBA (CGColorSpace.sRGB)
+		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+		guard
+			let space = CGColorSpace(name: CGColorSpace.sRGB),
+			let ctx = CGContext(
+				data: nil,
+				width: Int(size.width),
+				height: Int(size.height),
+				bitsPerComponent: 8,
+				bytesPerRow: 0,
+				space: space,
+				bitmapInfo: bitmapInfo.rawValue
+			)
+		else {
+			return nil
+		}
+
+		// Drawing defaults
+		ctx.setShouldAntialias(true)
+		ctx.setAllowsAntialiasing(true)
+		ctx.interpolationQuality = .high
+
+		// If a background color is set, fill it here
+		if let backgroundColor = backgroundColor {
+			ctx.saveGState()
+			ctx.setFillColor(backgroundColor)
+			ctx.fill([CGRect(origin: .zero, size: size)])
+			ctx.restoreGState()
+		}
+
+		// Perform the draw block
+		if let block = drawBlock {
+			ctx.saveGState()
+			block(ctx, size)
+			ctx.restoreGState()
+		}
+
+		guard let result = ctx.makeImage() else {
+			return nil
+		}
+		return result
+	}
+}

@@ -772,6 +772,28 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					return ("design-bottomright-masked", doc)
 				}(),
 				// -------------------
+				try {
+					let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
+					doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
+					let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
+					let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+					doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage)
+					return ("design-logo-masking-using-transparency", doc)
+				}(),
+				// -------------------
+				try {
+					let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image", errorCorrection: .high)
+					doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
+
+					let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
+					let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+
+					let logoMaskURL = try XCTUnwrap(Bundle.module.url(forResource: "logo-mask", withExtension: "png"))
+					let logoMaskImage = try XCTUnwrap(CommonImage(contentsOfFile: logoMaskURL.path)?.cgImage())
+					doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage, maskImage: logoMaskImage)
+					return ("design-logo-masking", doc)
+				}(),
+				// -------------------
 				{
 					let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
 					doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
