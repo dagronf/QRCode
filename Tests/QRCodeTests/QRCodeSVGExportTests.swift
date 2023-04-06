@@ -11,8 +11,11 @@ final class QRCodeSVGTests: XCTestCase {
 		)
 
 		do {
+			let image = try loadImageResource("colored-fill", withExtension: "jpg")
+
 			doc.design.foregroundColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: image,
 				path: CGPath(ellipseIn: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil)
 			)
 			let svg = doc.svg(dimension: 800)

@@ -177,4 +177,33 @@ final class QRCodeTests: XCTestCase {
 			try data.writeToTempFile(named: "dpi-test-output.svg")
 		}
 	}
+
+	func testNSSecureCodingCodable() throws {
+		do {
+			typealias NSURLCodable = NSSecureCodingCodable<NSURL>
+			let v = NSURL(string: "https://www.apple.com.au/")!
+			let x = NSURLCodable(v)
+			let d = try JSONEncoder().encode(x)
+			let n = try JSONDecoder().decode(NSURLCodable.self, from: d)
+			XCTAssertEqual(v, n.object)
+		}
+
+		do {
+			typealias IndexPathCodable = NSSecureCodingCodable<NSIndexPath>
+			let v = NSIndexPath(forItem: 15, inSection: 2)
+			let x = IndexPathCodable(v)
+			let d = try JSONEncoder().encode(x)
+			let n = try JSONDecoder().decode(IndexPathCodable.self, from: d)
+			XCTAssertEqual(v, n.object)
+		}
+
+		do {
+			typealias IndexPathCodable = NSUnsafeCodingCodable<NSIndexPath>
+			let v = NSIndexPath(forItem: 15, inSection: 2)
+			let x = IndexPathCodable(v)
+			let d = try JSONEncoder().encode(x)
+			let n = try JSONDecoder().decode(IndexPathCodable.self, from: d)
+			XCTAssertEqual(v, n.object)
+		}
+	}
 }

@@ -44,6 +44,7 @@ class ViewController: NSViewController {
 		q4.design.shape.eye  = QRCode.EyeShape.Squircle()
 
 		q4.logoTemplate = QRCode.LogoTemplate(
+			image: NSImage(named: "pinksquare")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 			path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
 			inset: 4
 		)

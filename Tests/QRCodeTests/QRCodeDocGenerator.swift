@@ -441,14 +441,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				errorCorrection: .high
 			)
 
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-
-			let logoURL1 = try XCTUnwrap(Bundle.module.url(forResource: "square-logo", withExtension: "png"))
-			let logoImage1 = try XCTUnwrap(CommonImage(contentsOfFile: logoURL1.path)?.cgImage())
-
-			let logoURL2 = try XCTUnwrap(Bundle.module.url(forResource: "apple", withExtension: "png"))
-			let logoImage2 = try XCTUnwrap(CommonImage(contentsOfFile: logoURL2.path))
+			let logoImage = try loadImageResource("instagram-icon", withExtension: "png")
+			let logoImage1 = try loadImageResource("square-logo", withExtension: "png")
+			let logoImage2 = try loadImageResource("apple", withExtension: "png")
 
 			let items = [
 				QRCode.LogoTemplate.CircleCenter(image: logoImage, inset: 8),
@@ -456,9 +451,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				QRCode.LogoTemplate.SquareCenter(image: logoImage1, inset: 8),
 				QRCode.LogoTemplate.SquareBottomRight(image: logoImage1, inset: 8),
 				QRCode.LogoTemplate(
+					image: logoImage2,
 					path: CGPath(rect: CGRect(x: 0.40, y: 0.365, width: 0.55, height: 0.25), transform: nil),
-					inset: 8,
-					image: logoImage2.cgImage()
+					inset: 8
 				)
 			]
 
@@ -768,7 +763,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					path.line(to: CGPoint(x: 1, y: 0.5))
 					path.line(to: CGPoint(x: 1, y: 1))
 					path.close()
-					doc.logoTemplate = QRCode.LogoTemplate(path: path, inset: 0, image: logoImage)
+					doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, path: path, inset: 0)
 					return ("design-bottomright-masked", doc)
 				}(),
 				// -------------------
@@ -777,7 +772,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 					let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
 					let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-					doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage)
+					doc.logoTemplate = QRCode.LogoTemplate(image: logoImage)
 					return ("design-logo-masking-using-transparency", doc)
 				}(),
 				// -------------------
@@ -790,7 +785,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 					let logoMaskURL = try XCTUnwrap(Bundle.module.url(forResource: "logo-mask", withExtension: "png"))
 					let logoMaskImage = try XCTUnwrap(CommonImage(contentsOfFile: logoMaskURL.path)?.cgImage())
-					doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage, maskImage: logoMaskImage)
+					doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, maskImage: logoMaskImage)
 					return ("design-logo-masking", doc)
 				}(),
 				// -------------------
@@ -813,8 +808,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.design.style.background = QRCode.FillStyle.Solid(0.999, 0.988, 0.472, alpha:1)
 					doc.design.foregroundStyle(QRCode.FillStyle.Solid(0.087, 0.015, 0.356, alpha:1))
 					doc.logoTemplate = QRCode.LogoTemplate(
-						path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.28, height: 0.28), transform: nil),
-						image: logoImage
+						image: logoImage,
+						path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.28, height: 0.28), transform: nil)
 					)
 					return ("design-negated-with-path", doc)
 				}()

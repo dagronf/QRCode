@@ -15,8 +15,8 @@ final class CGPathCoderTests: XCTestCase {
 		do {
 			// Basic rect
 			let path1 = CGPath(rect: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
-			let data = try XCTUnwrap(CGPathCoder.encode(path1))
-			let path2 = try CGPathCoder.decode(data)
+			let data = try XCTUnwrap(CGPathCodable.encode(path1))
+			let path2 = try CGPathCodable.decode(data)
 			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
 				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
 			}
@@ -27,8 +27,8 @@ final class CGPathCoderTests: XCTestCase {
 		do {
 			// Ellipse
 			let path1 = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
-			let data = try XCTUnwrap(CGPathCoder.encode(path1))
-			let path2 = try CGPathCoder.decode(data)
+			let data = try XCTUnwrap(CGPathCodable.encode(path1))
+			let path2 = try CGPathCodable.decode(data)
 			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
 				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
 			}
@@ -40,8 +40,8 @@ final class CGPathCoderTests: XCTestCase {
 		do {
 			// Rounded rectangle
 			let path1 = CGPath(roundedRect: CGRect(x: 0, y: 0, width: 200, height: 150), cornerWidth: 8, cornerHeight: 100, transform: nil)
-			let data = try XCTUnwrap(CGPathCoder.encode(path1))
-			let path2 = try CGPathCoder.decode(data)
+			let data = try XCTUnwrap(CGPathCodable.encode(path1))
+			let path2 = try CGPathCodable.decode(data)
 			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
 				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
 			}
@@ -52,8 +52,8 @@ final class CGPathCoderTests: XCTestCase {
 
 		do {
 			let path1 = githubPath()
-			let data = try XCTUnwrap(CGPathCoder.encode(path1))
-			let path2 = try CGPathCoder.decode(data)
+			let data = try XCTUnwrap(CGPathCodable.encode(path1))
+			let path2 = try CGPathCodable.decode(data)
 			if #available(macOS 13.0, iOS 16, tvOS 16, watchOS 9, *) {
 				XCTAssertTrue(path1.subtracting(path2).boundingBoxOfPath.isEmpty)
 			}

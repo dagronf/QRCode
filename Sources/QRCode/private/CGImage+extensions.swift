@@ -168,3 +168,40 @@ extension CGImage {
 		return result
 	}
 }
+
+extension CGImage {
+	/// Create a CGImage and draw onto it
+	static func Create(size: CGSize, _ drawBlock: (CGContext) -> Void) -> CGImage? {
+		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+		guard
+			let space = CGColorSpace(name: CGColorSpace.sRGB),
+			let ctx = CGContext(
+				data: nil,
+				width: Int(size.width),
+				height: Int(size.height),
+				bitsPerComponent: 8,
+				bytesPerRow: Int(size.width) * 4,
+				space: space,
+				bitmapInfo: bitmapInfo.rawValue
+			)
+		else {
+			return nil
+		}
+
+		drawBlock(ctx)
+
+		return ctx.makeImage()
+	}
+}
+
+extension CGColor {
+	/// Create a CGImage containing a color
+	func swatch(size: CGSize = .init(width: 100, height: 100)) -> CGImage? {
+		return CGImage.Create(size: size) { ctx in
+			ctx.saveGState()
+			ctx.setFillColor(self)
+			ctx.fill([CGRect(origin: .zero, size: size)])
+			ctx.restoreGState()
+		}
+	}
+}

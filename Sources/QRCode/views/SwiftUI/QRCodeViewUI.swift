@@ -72,6 +72,8 @@ public struct QRCodeViewUI: View {
 
 #if DEBUG
 
+let __logoTemplate = CGColor(red: 1, green: 0, blue: 0, alpha: 1).swatch()!
+
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6, *)
 struct QRCodeViewUI_Previews: PreviewProvider {
 	static var previews: some View {
@@ -123,6 +125,7 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 					pixelStyle: QRCode.PixelShape.Square(insetFraction: 0.1),
 					eyeStyle: QRCode.EyeShape.RoundedOuter(),
 					logoTemplate: QRCode.LogoTemplate(
+						image: __logoTemplate,
 						path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil)
 					)
 				)
@@ -133,6 +136,7 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 					pixelStyle: QRCode.PixelShape.Sharp(),
 					eyeStyle: QRCode.EyeShape.BarsVertical(),
 					logoTemplate: QRCode.LogoTemplate(
+						image: __logoTemplate,
 						path: CGPath(rect: CGRect(x: 0.2, y: 0.4, width: 0.6, height: 0.2), transform: nil)
 					)
 				)
@@ -143,6 +147,7 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 					pixelStyle: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8),
 					eyeStyle: QRCode.EyeShape.Squircle(),
 					logoTemplate: QRCode.LogoTemplate(
+						image: __logoTemplate,
 						path: CGPath(ellipseIn: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
 					)
 				)

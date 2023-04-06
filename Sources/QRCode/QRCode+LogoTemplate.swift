@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode {
 	/// A QRCode logo template
-	@objc(QRCodeLogoTemplate) class LogoTemplate: NSObject {
+	@objc(QRCodeLogoTemplate) class LogoTemplate: NSObject, Codable {
 		/// A CGPath with the bounds x=0, y=0, width=1, height=1 in which to draw the image
 		@objc public var path: CGPath {
 			didSet {
@@ -40,7 +40,7 @@ public extension QRCode {
 		/// The image to display.
 		///
 		/// If no image is provided, the mask is still applied to the QR code when generating.
-		@objc public var image: CGImage?
+		@objc public var image: CGImage
 
 		/// An image to use as a mask for the logo.
 		@objc public var maskImage: CGImage?
@@ -51,93 +51,48 @@ public extension QRCode {
 		/// 2. If `maskImage` is not provided, uses the transparency information in `image` to generate a mask.
 		@objc public var useImageMasking: Bool = false
 
-		/// Create a logo template
+		/// Create a logo using an image and a drawing path
 		/// - Parameters:
+		///   - image: The image to display in the logo
 		///   - path: The bounds path for the logo (0,0 -> 1, 1)
 		///   - inset: The inset from the path bounds to draw the image
-		///   - image: The default image to display in the logo
 		@objc public init(
+			image: CGImage,
 			path: CGPath,
-			inset: CGFloat = 4,
-			image: CGImage? = nil
+			inset: CGFloat = 4
 		) {
+
+			/// Check that the path bounds are 0,0 -> 1,1
 			let bounds = path.boundingBoxOfPath
 			assert(bounds.minX >= 0 && bounds.maxX <= 1)
 			assert(bounds.minY >= 0 || bounds.maxY <= 1)
-
 			assert(inset >= 0)
+
+			self.image = image
 			self.path = path
 			self.inset = inset
-			self.image = image
 		}
 
+		/// Create a logo using an image and a drawing path
+		/// - Parameters:
+		///   - image: The logo image to display
+		///   - maskImage: The mask to apply when drawing the image
 		@objc public init(
-			logoImage: CGImage,
+			image: CGImage,
 			maskImage: CGImage? = nil
 		) {
 			self.path = CGPath(rect: CGRect(origin: .zero, size: .init(dimension: 1.0)), transform: nil)
-			self.image = logoImage
+			self.image = image
 			self.maskImage = maskImage
 			self.inset = 0
 			self.useImageMasking = true
-		}
-
-		/// Returns the logo path scaled to fit the specified dimension value
-		/// - Parameters:
-		///   - dimension: The dimension for the returned path
-		///   - flipped: If true, flips the returned path
-		/// - Returns: The scaled path
-		@objc public func absolutePathForMaskPath(dimension: CGFloat, flipped: Bool = false) -> CGPath {
-			// Scale the path to fit within the rect
-			var transform = CGAffineTransform(scaleX: dimension, y: dimension)
-			if flipped {
-				transform = CGAffineTransform(scaleX: 1, y: -1)
-					.concatenating(CGAffineTransform(translationX: 0, y: 1))
-					.concatenating(transform)
-			}
-			let m = CGMutablePath()
-			m.addPath(self.path, transform: transform)
-			return m
-		}
-
-		/// Make a copy of the logo template
-		@objc public func copyLogoTemplate() -> QRCode.LogoTemplate {
-			QRCode.LogoTemplate(path: self.path, inset: self.inset, image: self.image?.copy())
-		}
-
-		/// Return a dictionary representation of the logo template
-		@objc public func settings() -> [String: Any] {
-			var settings: [String: Any] = [
-				"relativeMaskPath": CGPathCoder.encodeBase64(self.path)!,
-				"inset": self.inset,
-			]
-
-			if self.useImageMasking {
-				settings["maskUsingImageTransparency"] = true
-			}
-
-			if let image = self.image,
-				let data = image.pngRepresentation()
-			{
-				let b64 = data.base64EncodedString()
-				settings["image"] = b64
-			}
-
-			if let maskImage = self.maskImage,
-				let data = maskImage.pngRepresentation()
-			{
-				let b64 = data.base64EncodedString()
-				settings["maskImage"] = b64
-			}
-
-			return settings
 		}
 
 		/// Create a LogoTemplate from a dictionary of settings
 		@objc public init?(settings: [String: Any]) {
 			guard
 				let pathB64 = settings["relativeMaskPath"] as? String,
-				let path = try? CGPathCoder.decodeBase64(pathB64)
+				let path = try? CGPathCodable.decodeBase64(pathB64)
 			else {
 				return nil
 			}
@@ -146,24 +101,105 @@ public extension QRCode {
 
 			self.useImageMasking = BoolValue(settings["maskUsingImageTransparency"]) ?? false
 
-			self.image = CGImageValueFromB64String(settings["image"])
+			guard let image = CGImageValueFromB64String(settings["image"]) else { return nil }
+			self.image = image
 			self.maskImage = CGImageValueFromB64String(settings["maskImage"])
 		}
 
-		/// Create a LogoTemplate from a dictionary of settings
-		@objc public static func Create(settings: [String: Any]) -> QRCode.LogoTemplate? {
-			return QRCode.LogoTemplate(settings: settings)
+		//// > Codable
+
+		enum CodingKeys: CodingKey {
+			case image
+			case maskImage
+			case path
+			case inset
+			case useImageMasking
 		}
+
+		public required init(from decoder: Decoder) throws {
+			let container = try decoder.container(keyedBy: Self.CodingKeys)
+			self.image = try container.decode(CGImageCodable.self, forKey: .image).image
+			self.maskImage = try container.decodeIfPresent(CGImageCodable.self, forKey: .maskImage)?.image
+			self.path = try container.decode(CGPathCodable.self, forKey: .path).path
+			self.inset = try container.decode(Double.self, forKey: .inset)
+			self.useImageMasking = try container.decode(Bool.self, forKey: .useImageMasking)
+		}
+
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.container(keyedBy: Self.CodingKeys)
+			try container.encode(useImageMasking, forKey: .useImageMasking)
+			try container.encode(inset, forKey: .inset)
+			try container.encode(CGPathCodable(self.path), forKey: .path)
+			try container.encode(CGImageCodable(image), forKey: .image)
+			if let maskImage = self.maskImage {
+				try container.encode(CGImageCodable(maskImage), forKey: .maskImage)
+			}
+		}
+
+		//// < Codable
+	}
+}
+
+public extension QRCode.LogoTemplate {
+	/// Returns the logo path scaled to fit the specified dimension value
+	/// - Parameters:
+	///   - dimension: The dimension for the returned path
+	///   - flipped: If true, flips the returned path
+	/// - Returns: The scaled path
+	@objc func absolutePathForMaskPath(dimension: CGFloat, flipped: Bool = false) -> CGPath {
+		// Scale the path to fit within the rect
+		var transform = CGAffineTransform(scaleX: dimension, y: dimension)
+		if flipped {
+			transform = CGAffineTransform(scaleX: 1, y: -1)
+				.concatenating(CGAffineTransform(translationX: 0, y: 1))
+				.concatenating(transform)
+		}
+		let m = CGMutablePath()
+		m.addPath(self.path, transform: transform)
+		return m
+	}
+
+	/// Make a copy of the logo template
+	@objc func copyLogoTemplate() -> QRCode.LogoTemplate {
+		QRCode.LogoTemplate(image: self.image.copy()!, path: self.path, inset: self.inset)
+	}
+
+	/// Return a dictionary representation of the logo template
+	@objc func settings() -> [String: Any] {
+		var settings: [String: Any] = [
+			"relativeMaskPath": CGPathCodable.encodeBase64Enforced(self.path),
+			"inset": self.inset,
+		]
+
+		if self.useImageMasking {
+			settings["maskUsingImageTransparency"] = true
+		}
+
+		if let data = self.image.pngRepresentation()
+		{
+			let b64 = data.base64EncodedString()
+			settings["image"] = b64
+		}
+
+		if let maskImage = self.maskImage,
+			let data = maskImage.pngRepresentation()
+		{
+			let b64 = data.base64EncodedString()
+			settings["maskImage"] = b64
+		}
+
+		return settings
+	}
+
+	/// Create a LogoTemplate from a dictionary of settings
+	@objc static func Create(settings: [String: Any]) -> QRCode.LogoTemplate? {
+		return QRCode.LogoTemplate(settings: settings)
 	}
 }
 
 extension QRCode.LogoTemplate {
 	// Apply masking via image masking
 	func applyingTransparency(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
-		guard let image = self.image else {
-			return matrix
-		}
-
 		// If the user has supplied a mask image use it, or else use the transparency of the image
 		let masked = self.maskImage ?? image
 
@@ -207,29 +243,21 @@ extension QRCode.LogoTemplate {
 			}
 			let rawImage = rawData.assumingMemoryBound(to: UInt8.self)
 
-			// Loop through the rows and columns, and if the pixel has transparency it gets masked
+			// Loop through the rows and columns, and if the pixel has (mostly) transparency it gets masked
 			let mask = BoolMatrix(dimension: sz)
 			for y in 0 ..< sz {
 				for x in 0 ..< sz {
 					let index = ((sz * y) + x) * 4
-//					let r = rawImage[index]
-//					let g = rawImage[index+1]
-//					let b = rawImage[index+2]
-					let a = rawImage[index+3]
+					let a = rawImage[index + 3]
 
 					mask[y, x] = (a <= 10)
 				}
 			}
 			return matrix.applyingMask(mask)
 		}
-
-		// Scale the image to the dimension
-		
-
 	}
 
 	func applyingMask(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
-
 		if self.useImageMasking {
 			return self.applyingTransparency(matrix: matrix, dimension: dimension)
 		}
@@ -256,36 +284,36 @@ public extension QRCode.LogoTemplate {
 	/// Generate a pre-built circle logo template in the center of the qr code
 	@objc static func CircleCenter(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
 		return QRCode.LogoTemplate(
+			image: image,
 			path: CGPath(ellipseIn: CGRect(x: 0.375, y: 0.375, width: 0.25, height: 0.25), transform: nil),
-			inset: inset,
-			image: image
+			inset: inset
 		)
 	}
 
 	/// Generate a pre-built circle logo template in the bottom-right of the qr code
 	@objc static func CircleBottomRight(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
 		return QRCode.LogoTemplate(
+			image: image,
 			path: CGPath(ellipseIn: CGRect(x: 0.70, y: 0.70, width: 0.25, height: 0.25), transform: nil),
-			inset: inset,
-			image: image
+			inset: inset
 		)
 	}
 
 	/// Generate a pre-built square logo template in the center of the qr code
 	@objc static func SquareCenter(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
 		return QRCode.LogoTemplate(
+			image: image,
 			path: CGPath(rect: CGRect(x: 0.375, y: 0.375, width: 0.25, height: 0.25), transform: nil),
-			inset: inset,
-			image: image
+			inset: inset
 		)
 	}
 
 	/// Generate a pre-built square logo template in the bottom-right of the qr code
 	@objc static func SquareBottomRight(image: CGImage, inset: CGFloat = 2) -> QRCode.LogoTemplate {
 		return QRCode.LogoTemplate(
+			image: image,
 			path: CGPath(rect: CGRect(x: 0.70, y: 0.70, width: 0.25, height: 0.25), transform: nil),
-			inset: inset,
-			image: image
+			inset: inset
 		)
 	}
 }

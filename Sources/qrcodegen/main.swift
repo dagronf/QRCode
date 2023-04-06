@@ -179,9 +179,10 @@ Examples:
 				let template = styleDocument.logoTemplate,
 				let logoImageFile = logoImageFile,
 				let path = Optional(URL(fileURLWithPath: logoImageFile)),
-				let image = NSImage(contentsOf: path)
+				let image = NSImage(contentsOf: path),
+				let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
 			{
-				template.image = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				template.image = cgImage
 				return template
 			}
 			return nil

@@ -34,7 +34,9 @@
 	document.design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
 
 	CGPathRef path = CGPathCreateWithRect(CGRectMake(0.3, 0.4, 0.4, 0.2), nil);
-	id templ = [[QRCodeLogoTemplate alloc] initWithPath:path inset:0 image: nil];
+	//id templ = [[QRCodeLogoTemplate alloc] initWithPath:path inset:0 image: nil];
+	CGImageRef logoImage = [[NSImage imageNamed:@"pinksquare"] CGImageForProposedRect:nil context:nil hints:nil];
+	id templ = [[QRCodeLogoTemplate alloc] initWithImage:logoImage path:path inset:0];
 	[document setLogoTemplate:templ];
 
 	// Generate the image (with a 216dpi resolution)

@@ -194,9 +194,9 @@ class ViewController: NSViewController {
 
 			// Centered square logo
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: image.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
-				inset: 2,
-				image: image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 2
 			)
 
 			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
@@ -217,9 +217,9 @@ class ViewController: NSViewController {
 
 			// Create a logo 'template'
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "square-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
-				inset: 3,
-				image: NSImage(named: "square-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!
+				inset: 3
 			)
 
 			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
@@ -236,9 +236,9 @@ class ViewController: NSViewController {
 
 			// Create a logo 'template'
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "instagram-icon")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.30, height: 0.30), transform: nil),
-				inset: 8,
-				image: NSImage(named: "instagram-icon")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 8
 			)
 
 			let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)!
@@ -271,9 +271,9 @@ class ViewController: NSViewController {
 
 			// Create a logo 'template'
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "apple-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(rect: CGRect(x: 0.49, y: 0.4, width: 0.45, height: 0.22), transform: nil),
-				inset: 4,
-				image: NSImage(named: "apple-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 4
 			)
 
 			let svg = doc.svg(dimension: 200)

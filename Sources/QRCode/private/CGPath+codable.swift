@@ -19,32 +19,69 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+// Codable support for CGImage
+
 #if canImport(CoreGraphics)
 
-import CoreGraphics
+import CoreGraphics.CGPath
 import Foundation
 
-/// Functions for supporting encoding and decoding CGPath instances
-class CGPathCoder {
+/// A codable wrapper for CGPath
+struct CGPathCodable {
+	let path: CGPath
+	init(_ path: CGPath) { self.path = path }
+}
+
+extension CGPathCodable {
+	/// Errors that can be thrown with CGPathCodable
+	enum CGPathCodableError: Error {
+		case cannotConvertDataToBase64
+	}
+}
+
+extension CGPathCodable: Codable {
+	init(from decoder: Decoder) throws {
+		let container = try decoder.singleValueContainer()
+		let pathData = try container.decode(Data.self)
+		self.path = try Self.decode(pathData)
+	}
+
+	func encode(to encoder: Encoder) throws {
+		var container = encoder.singleValueContainer()
+		let s = try Self.encode(self.path)
+		try container.encode(s)
+	}
+}
+
+/// Functions for encoding CGPath instances
+extension CGPathCodable {
 	/// Encode a CGPath to a data representation
-	static func encode(_ path: CGPath) -> Data {
+	static func encode(_ path: CGPath) throws -> Data {
 		let elements = Self.elements(for: path)
-		do {
-			let encoder = JSONEncoder()
-			encoder.outputFormatting = .prettyPrinted
-			return try encoder.encode(elements)
-		}
-		catch {
-			return Data()
-		}
+		let encoder = JSONEncoder()
+		encoder.outputFormatting = .prettyPrinted
+		return try encoder.encode(elements)
 	}
 
 	/// Encode a CGPath into a base-64-encoded string representation
-	static func encodeBase64(_ path: CGPath) -> String? {
-		let data = CGPathCoder.encode(path)
-		return String(data: data.base64EncodedData(), encoding: .ascii)
+	static func encodeBase64(_ path: CGPath) throws -> String {
+		let data = try Self.encode(path)
+		guard let b64 = String(data: data.base64EncodedData(), encoding: .ascii) else {
+			throw CGPathCodableError.cannotConvertDataToBase64
+		}
+		return b64
 	}
 
+	/// Encode a CGPath into a base-64-encoded string representation. Crashes if an error occurs
+	static func encodeBase64Enforced(_ path: CGPath) -> String {
+		let data = try! Self.encode(path)
+		guard let b64 = String(data: data.base64EncodedData(), encoding: .ascii) else { fatalError() }
+		return b64
+	}
+}
+
+/// Functions for decoding CGPath instances
+extension CGPathCodable {
 	/// Decode a CGPath from a data representation
 	static func decode(_ data: Data) throws -> CGPath {
 		let decoder = JSONDecoder()
@@ -76,19 +113,19 @@ class CGPathCoder {
 		guard let pathData = Data(base64Encoded: string) else {
 			return nil
 		}
-		return try CGPathCoder.decode(pathData)
+		return try Self.decode(pathData)
 	}
 }
 
 // MARK: Private
 
-private extension CGPathCoder {
+private extension CGPathCodable {
 	private struct _PathElement: Codable {
 		var type: Int
 		var points: [CGPoint]?
 	}
 
-	static private func _numPoints(forType type: CGPathElementType) -> Int {
+	private static func _numPoints(forType type: CGPathElementType) -> Int {
 		switch type {
 		case .moveToPoint: return 1
 		case .addLineToPoint: return 1
@@ -100,13 +137,13 @@ private extension CGPathCoder {
 	}
 }
 
-private extension CGPathCoder {
+private extension CGPathCodable {
 	// Return the path elements for the path
 	private static func elements(for path: CGPath) -> [_PathElement] {
-		var elements:  [_PathElement] = []
+		var elements: [_PathElement] = []
 		path.applyWithBlockSafe { elem in
 			let elementType = elem.pointee.type
-			let n = CGPathCoder._numPoints(forType: elementType)
+			let n = Self._numPoints(forType: elementType)
 			var points: [CGPoint]?
 			if n > 0 {
 				points = Array(UnsafeBufferPointer(start: elem.pointee.points, count: n))

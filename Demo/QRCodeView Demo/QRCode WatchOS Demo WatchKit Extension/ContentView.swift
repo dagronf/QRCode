@@ -30,9 +30,9 @@ struct ContentView: View {
 
 		let p = CGPath(ellipseIn: CGRect(x: 0.60, y: 0.60, width: 0.40, height: 0.40), transform: nil)
 		let logoTemplate = QRCode.LogoTemplate(
+			image: UIImage(named: "logo")!.cgImage!,
 			path: p,
-			inset: 8,
-			image: UIImage(named: "logo")!.cgImage
+			inset: 8
 		)
 		d.logoTemplate = logoTemplate
 

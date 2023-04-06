@@ -120,7 +120,7 @@ public extension QRCode {
 			}
 		}
 
-		if let logoTemplate = logoTemplate, let logo = logoTemplate.image {
+		if let logoTemplate = logoTemplate {
 			ctx.saveGState()
 			// Get the absolute rect within the generated image of the mask path
 			let absMask = logoTemplate.absolutePathForMaskPath(dimension: sz, flipped: true)
@@ -134,7 +134,7 @@ public extension QRCode {
 			ctx.clip()
 
 			// Draw the logo image into the mask bounds
-			ctx.draw(logo, in: absMask.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset))
+			ctx.draw(logoTemplate.image, in: absMask.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset))
 			ctx.restoreGState()
 		}
 	}

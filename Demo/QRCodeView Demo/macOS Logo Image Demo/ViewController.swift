@@ -38,9 +38,9 @@ class ViewController: NSViewController {
 
 			let p = CGPath(ellipseIn: CGRect(x: 0.60, y: 0.60, width: 0.40, height: 0.40), transform: nil)
 			let logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: p,
-				inset: 16,
-				image: NSImage(named: "logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 16
 			)
 			doc.logoTemplate = logoTemplate
 
@@ -71,9 +71,9 @@ class ViewController: NSViewController {
 
 			// Centered square logo
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "apple")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(rect: CGRect(x: 0.50, y: 0.4, width: 0.45, height: 0.22), transform: nil),
-				inset: 4,
-				image: NSImage(named: "apple")?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 4
 			)
 
 			qrcodeView2.document = doc
@@ -108,9 +108,9 @@ class ViewController: NSViewController {
 
 			// Centered square logo
 			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "instagram-icon")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
 				path: CGPath(ellipseIn: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil),
-				inset: 4,
-				image: NSImage(named: "instagram-icon")?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+				inset: 4
 			)
 
 			qrcodeView3.document = doc

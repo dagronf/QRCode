@@ -61,6 +61,27 @@ extension String {
 	}
 }
 
+enum TestErrors: Error {
+	case invalidURL
+	case invalidImage
+}
+
+func loadImageResource(_ resource: String, withExtension extn: String) throws -> CGImage {
+	guard let logoURL = Bundle.module.url(forResource: resource, withExtension: extn) else {
+		throw TestErrors.invalidURL
+	}
+
+	guard let logoImage = CommonImage(contentsOfFile: logoURL.path)?.cgImage() else {
+		throw TestErrors.invalidImage
+	}
+	return logoImage
+}
+
+func roundTripEncodeDecode<Object: Codable>(_ object: Object) throws -> (data: Data, object: Object) {
+	let data = try JSONEncoder().encode(object)
+	return (data, try JSONDecoder().decode(Object.self, from: data))
+}
+
 #if os(macOS)
 
 import AppKit
