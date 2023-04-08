@@ -56,6 +56,10 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    <a href="./Art/qrcode-off-pixels.png">
       <img src="./Art/qrcode-off-pixels.png" width="150"/>
    </a>
+   
+   <a href="./Art/qrcode-womble.jpg">
+      <img src="./Art/qrcode-womble.jpg" width="150"/>
+   </a>
 </p>
 
 ## Why?
@@ -290,16 +294,17 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
-|<img src="./Art/images/data_square.png" width="60"/>      |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
-|<img src="./Art/images/data_circle.png" width="60"/>      |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
-|<img src="./Art/images/data_curvePixel.png" width="60"/>  |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
-|<img src="./Art/images/data_roundedRect.png" width="60"/> |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
-|<img src="./Art/images/data_horizontal.png" width="60"/>  |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
-|<img src="./Art/images/data_vertical.png" width="60"/>    |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
-|<img src="./Art/images/data_roundedPath.png" width="60"/> |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
-|<img src="./Art/images/data_squircle.png" width="60"/>    |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/data_pointy.png" width="60"/>      |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
-|<img src="./Art/images/data_sharp.png" width="60"/>       |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
+|<img src="./Art/images/data_square.png" width="60"/>           |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
+|<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
+|<img src="./Art/images/data_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
+|<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
+|<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+|<img src="./Art/images/data_roundedPath.png" width="60"/>      |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
+|<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
+|<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
 
 #### 'offPixels' shape (optional)
 

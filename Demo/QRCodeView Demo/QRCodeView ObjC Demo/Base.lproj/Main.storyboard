@@ -729,6 +729,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="ibEyeColor">
                                         <color key="value" red="0.052926726639999998" green="0.16026672719999999" blue="0.6928522587" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="ibPixelShape" value="roundedEndIndent"/>
                                 </userDefinedRuntimeAttributes>
                             </customView>
                         </subviews>

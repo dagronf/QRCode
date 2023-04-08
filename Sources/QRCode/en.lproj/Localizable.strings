@@ -21,6 +21,8 @@
 
 "pixelstyle.roundedpath" = "Rounded path";
 
+"pixelstyle.roundedEndIndent" = "Rounded end indent";
+
 // Eye styles
 
 "eyestyle.barsHorizontal" = "Horizontal bars";
