@@ -91,22 +91,30 @@ import Foundation
 		formatter.minimumFractionDigits = 0
 		return formatter
 	}()
+
+	/// The colorspace used for encoding and decoding.
+	///
+	/// Assumption is that CGColorSpace is thread-safe
+	static private let DefaultColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 }
 
 public extension DSFGradient {
-
-	// Format (all values fractional between 0.0 and 1.0):
-	// red,green,blue,alpha,position|red,green,blue,alpha,position|red,green,blue,alpha,position:...
-	//  0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0
-
 	/// Create a DSFGradient archive format string representation of the gradient
+	///
+	/// Format (all values fractional between 0.0 and 1.0):
+	///
+	///   `red,green,blue,alpha,position|red,green,blue,alpha,position|red,green,blue,alpha,position:...`
+	///
+	/// eg:
+	///
+	///   `0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0`
 	@objc func asRGBAGradientString() -> String? {
 		var result = ""
 		for pin in self.pins {
 			if result.count > 0 { result += "|" }
 			guard
 				let pc = pin.color.converted(
-					to: CGColorSpace(name: CGColorSpace.sRGB)!,
+					to: DSFGradient.DefaultColorSpace,
 					intent: .defaultIntent,
 					options: nil),
 				let comps = pc.components,
@@ -131,7 +139,7 @@ public extension DSFGradient {
 		// Split out the pins
 		let pinsS = content.split(separator: "|")
 
-		// If the number of pins is < 2, then its an invalid gradient
+		// If the number of pins is < 2, then it's an invalid gradient
 		guard pinsS.count > 1 else { return nil }
 
 		var pins: [Pin] = []
@@ -157,8 +165,11 @@ public extension DSFGradient {
 				.map { $0.clamped(to: 0 ... 1) }                    // Clamp the value to 0 -> 1
 			guard comps.count == 4 else { return nil }
 
-			let pin = Pin(CGColor(red: comps[0], green: comps[1], blue: comps[2], alpha: comps[3]), pos)
-			pins.append(pin)
+			// Attempt to create the color in the sRGB colorspace (which it was encoded from)
+			guard let color = CGColor(colorSpace: DSFGradient.DefaultColorSpace, components: comps) else {
+				return nil
+			}
+			pins.append(Pin(color, pos))
 		}
 
 		pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
