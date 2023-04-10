@@ -35,6 +35,7 @@ import Foundation
 			QRCode.PixelShape.RoundedRect.self,
 			QRCode.PixelShape.Squircle.self,
 			QRCode.PixelShape.Vertical.self,
+			QRCode.PixelShape.Flower.self,
 			QRCode.PixelShape.Horizontal.self,
 			QRCode.PixelShape.RoundedPath.self,
 			QRCode.PixelShape.Pointy.self,

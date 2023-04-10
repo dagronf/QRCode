@@ -301,11 +301,12 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
 |<img src="./Art/images/data_roundedPath.png" width="60"/>      |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 |<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
-|<img src="./Art/images/data_star.png" width="60"/>            |"star"|`QRCode.PixelShape.Star`|A 'star' style|
-|<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
+|<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
+|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
 
 #### 'offPixels' shape (optional)
 
