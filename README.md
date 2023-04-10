@@ -304,6 +304,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 |<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
+|<img src="./Art/images/data_star.png" width="60"/>            |"star"|`QRCode.PixelShape.Star`|A 'star' style|
 |<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
 
 #### 'offPixels' shape (optional)

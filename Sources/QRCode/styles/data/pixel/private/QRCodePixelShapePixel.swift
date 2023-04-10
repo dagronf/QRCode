@@ -31,6 +31,7 @@ internal extension QRCode.PixelShape {
 			case roundedRect
 			case squircle
 			case sharp
+			case star
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -135,6 +136,16 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 
 						let sq = Sharp.sharp10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .star {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Star.star10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else {
