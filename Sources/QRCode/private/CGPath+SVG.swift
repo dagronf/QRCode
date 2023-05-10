@@ -22,15 +22,25 @@
 import Foundation
 import CoreGraphics
 
-private let _numFormatter: NumberFormatter = {
+/// Decimal formatter for SVG output
+///
+/// Note that SVG _expects_ the decimal separator to be '.', which means we have to force the separator
+/// so that locales that use ',' as the decimal separator don't produce a garbled SVG
+/// See [Issue 19](https://github.com/dagronf/QRCode/issues/19)
+private let _svgFloatFormatter: NumberFormatter = {
 	let f = NumberFormatter()
+	f.decimalSeparator = "."
+	f.usesGroupingSeparator = false
+	#if os(macOS)
+	f.hasThousandSeparators = false
+	#endif
 	f.maximumFractionDigits = 3
 	f.minimumFractionDigits = 0
 	return f
 }()
 
-private func F(_ val: CGFloat) -> String {
-	_numFormatter.string(from: NSNumber(floatLiteral: val))!
+func _SVGF<ValueType: BinaryFloatingPoint>(_ val: ValueType) -> String {
+	_svgFloatFormatter.string(from: NSNumber(floatLiteral: Double(val)))!
 }
 
 extension CGPath {
@@ -49,19 +59,19 @@ extension CGPath {
 				switch elementType {
 				case .moveToPoint:
 					let xVal = elem.pointee.points[0]
-					return "M\(F(xVal.x)) \(F(xVal.y))"
+					return "M\(_SVGF(xVal.x)) \(_SVGF(xVal.y))"
 				case .addLineToPoint:
 					let xVal = elem.pointee.points[0]
-					return "L\(F(xVal.x)) \(F(xVal.y))"
+					return "L\(_SVGF(xVal.x)) \(_SVGF(xVal.y))"
 				case .addQuadCurveToPoint:
 					let endPoint = elem.pointee.points[1]
 					let controlPoint = elem.pointee.points[0]
-					return "Q\(F(endPoint.x)),\(F(endPoint.y)) \(F(controlPoint.x)),\(F(controlPoint.y))"
+					return "Q\(_SVGF(endPoint.x)),\(_SVGF(endPoint.y)) \(_SVGF(controlPoint.x)),\(_SVGF(controlPoint.y))"
 				case .addCurveToPoint:
 					let toPoint = elem.pointee.points[2]
 					let control1 = elem.pointee.points[0]
 					let control2 = elem.pointee.points[1]
-					return "C\(F(control1.x)),\(F(control1.y)) \(F(control2.x)),\(F(control2.y)) \(F(toPoint.x)),\(F(toPoint.y))"
+					return "C\(_SVGF(control1.x)),\(_SVGF(control1.y)) \(_SVGF(control2.x)),\(_SVGF(control2.y)) \(_SVGF(toPoint.x)),\(_SVGF(toPoint.y))"
 				case .closeSubpath: return "Z"
 				default: return "Z"
 				}
