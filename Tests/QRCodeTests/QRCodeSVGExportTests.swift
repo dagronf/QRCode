@@ -152,4 +152,28 @@ final class QRCodeSVGTests: XCTestCase {
 		let svg1 = d.svg(dimension: 600)
 		try svg1.writeToTempFile(named: "svgExportPixelBackgroundColors.svg")
 	}
+
+	func testIssue19ExportSVGIssue() throws {
+		
+		// You can test this by changing the text locale to French
+		
+		// See [Issue 19](https://github.com/dagronf/QRCode/issues/19)
+		
+		let d = QRCode.Document(utf8String: "Test")
+		d.errorCorrection = .low
+		d.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+		d.design.shape.onPixels = QRCode.PixelShape.Circle()
+		let str = d.svg(dimension: 989)
+		
+		//		try str.write(
+		//			to: URL(fileURLWithPath: "/tmp/qrcode19.svg"),
+		//			atomically: true,
+		//			encoding: .utf8
+		//		)
+		
+		let url = try XCTUnwrap(Bundle.module.url(forResource: "Issue19Generated", withExtension: "svg"))
+		let existing = try String(contentsOf: url)
+		XCTAssertEqual(str, existing)
+	}
+
 }

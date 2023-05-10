@@ -85,8 +85,12 @@ import Foundation
 		self.cgGradient = gr
 	}
 
-	private lazy var numberFormatter: NumberFormatter = {
+	private static let _numberFormatter: NumberFormatter = {
+		// Make sure we force the decimal separator to "."
 		let formatter = NumberFormatter()
+		formatter.usesGroupingSeparator = false
+		formatter.hasThousandSeparators = false
+		formatter.decimalSeparator = "."
 		formatter.maximumFractionDigits = 4
 		formatter.minimumFractionDigits = 0
 		return formatter
@@ -128,7 +132,7 @@ public extension DSFGradient {
 	}
 
 	private func _D(_ value: Double) -> String {
-		return numberFormatter.string(for: value) ?? "0"
+		return Self._numberFormatter.string(for: value) ?? "0"
 	}
 
 	/// Create a DSFGradient from a DSFGradient archive format string
@@ -160,9 +164,10 @@ public extension DSFGradient {
 			// Second component is the RGBA color component
 			let compsS = grPin[1].split(separator: ",")
 			let comps: [CGFloat] = compsS
-				.map { $0.trimmingCharacters(in: .whitespaces) }    // Trim whitespaces
-				.compactMap { CGFloat($0) }                         // Attempt to convert each component to a CGFloat
-				.map { $0.clamped(to: 0 ... 1) }                    // Clamp the value to 0 -> 1
+				.map { $0.trimmingCharacters(in: .whitespaces) }
+				.compactMap { Self._numberFormatter.number(from: $0)?.doubleValue }
+				.compactMap { CGFloat($0) }
+				.map { $0.clamped(to: 0 ... 1) }
 			guard comps.count == 4 else { return nil }
 
 			// Attempt to create the color in the sRGB colorspace (which it was encoded from)

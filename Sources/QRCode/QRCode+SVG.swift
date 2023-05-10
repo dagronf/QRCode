@@ -81,7 +81,8 @@ public extension QRCode {
 				let hexEyeBackgroundColor = design.style.eyeBackground?.hexRGBCode()
 			{
 				let eyeBackgroundPath = self.path(sz, components: .eyeBackground, shape: design.shape)
-				svg += "   <path fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(eyeBackgroundColor.alpha)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
+				let alphaStr = _SVGF(eyeBackgroundColor.alpha)
+				svg += "   <path fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(alphaStr)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
 			}
 
 			// Pupil
@@ -174,7 +175,12 @@ public extension QRCode {
 			clipPath += "   </clipPath>\n"
 			pathDefinitions.append(clipPath)
 
-			svg += " <image clip-path=\"url(#logo-mask)\" x=\"\(bounds.origin.x)\" y=\"\(bounds.origin.y)\" width=\"\(bounds.size.width)\" height=\"\(bounds.size.height)\" "
+			let xPos   = _SVGF(bounds.origin.x)
+			let yPos   = _SVGF(bounds.origin.y)
+			let width  = _SVGF(bounds.size.width)
+			let height = _SVGF(bounds.size.height)
+
+			svg += " <image clip-path=\"url(#logo-mask)\" x=\"\(xPos)\" y=\"\(yPos)\" width=\"\(width)\" height=\"\(height)\" "
 
 			svg += "xlink:href=\"data:image/png;base64,"
 			svg += strImage
