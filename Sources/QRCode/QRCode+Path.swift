@@ -78,12 +78,15 @@ public extension QRCode {
 	///   - size: The dimensions of the generated path
 	///   - components: The components of the QR code to include in the path
 	///   - shape: The shape definitions for genering the path components
+	///   - logoTemplate: The definition for the logo
+	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
 	/// - Returns: A path containing the components
 	@objc func path(
 		_ size: CGSize,
 		components: Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
-		logoTemplate: LogoTemplate? = nil
+		logoTemplate: LogoTemplate? = nil,
+		additionalQuietSpace: CGFloat = 0
 	) -> CGPath {
 		if self.cellDimension == 0 {
 			// There is no data in the qrcode
@@ -92,6 +95,8 @@ public extension QRCode {
 
 		// The qrcode size is the smallest dimension of the rect
 		let sz = min(size.width, size.height)
+
+		let quietspaceTransform = CGAffineTransform(translationX: additionalQuietSpace, y: additionalQuietSpace)
 
 		let dx = sz / CGFloat(self.cellDimension)
 		let dy = sz / CGFloat(self.cellDimension)
@@ -113,7 +118,7 @@ public extension QRCode {
 			if let template = logoTemplate {
 				current = template.applyingMask(matrix: current, dimension: sz)
 			}
-			path.addPath(shape.onPixels.generatePath(from: current, size: size))
+			path.addPath(shape.onPixels.generatePath(from: current, size: size), transform: quietspaceTransform)
 			return path
 		}
 
@@ -128,7 +133,7 @@ public extension QRCode {
 				.concatenating(CGAffineTransform(translationX: 0, y: 90))
 
 			let p = eyeShape.eyeBackgroundPath().copy(using: &plt)!
-			var scaledTopLeft = scaleTransform.concatenating(posTransform)
+			var scaledTopLeft = scaleTransform.concatenating(posTransform).concatenating(quietspaceTransform)
 
 			// top left
 			let tl = p.copy(using: &scaledTopLeft)!
@@ -157,7 +162,7 @@ public extension QRCode {
 
 		if components.contains(.eyeOuter) {
 			let p = eyeShape.eyePath()
-			var scaledTopLeft = scaleTransform.concatenating(posTransform)
+			var scaledTopLeft = scaleTransform.concatenating(posTransform).concatenating(quietspaceTransform)
 
 			// top left
 			let tl = p.copy(using: &scaledTopLeft)!
@@ -189,7 +194,7 @@ public extension QRCode {
 		if components.contains(.eyePupil) {
 			let pupil = shape.actualPupilShape
 			let p = pupil.pupilPath()
-			var scaledTopLeft = scaleTransform.concatenating(posTransform)
+			var scaledTopLeft = scaleTransform.concatenating(posTransform).concatenating(quietspaceTransform)
 
 			// top left
 			let tl = p.copy(using: &scaledTopLeft)!
@@ -223,7 +228,7 @@ public extension QRCode {
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
-			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size))
+			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size), transform: quietspaceTransform)
 		}
 
 		// 'off' pixels
@@ -235,7 +240,7 @@ public extension QRCode {
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
-			path.addPath(offPixelShape.generatePath(from: masked, size: size))
+			path.addPath(offPixelShape.generatePath(from: masked, size: size), transform: quietspaceTransform)
 		}
 
 		// The background squares for the 'on' pixels
@@ -244,7 +249,7 @@ public extension QRCode {
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
-			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size))
+			path.addPath(QRCode.PixelShape.Square().generatePath(from: masked, size: size), transform: quietspaceTransform)
 		}
 
 		// 'on' content
@@ -254,7 +259,7 @@ public extension QRCode {
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
-			path.addPath(shape.onPixels.generatePath(from: masked, size: size))
+			path.addPath(shape.onPixels.generatePath(from: masked, size: size), transform: quietspaceTransform)
 		}
 
 		return path

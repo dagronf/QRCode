@@ -38,5 +38,7 @@ public extension QRCode {
 		@objc public static let useRandomRotation = "useRandomRotation"
 		/// Settings key for 'corners'
 		@objc public static let corners = "corners"
+		/// Settings key for 'additionalQuietSpace'
+		@objc public static let additionalQuietSpace = "additionalQuietSpace"
 	}
 }

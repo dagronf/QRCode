@@ -84,8 +84,8 @@ public extension QRCode.FillStyle {
 		public func fill(ctx: CGContext, rect: CGRect) {
 			ctx.drawLinearGradient(
 				self.gradient.cgGradient,
-				start: self.gradientStartPt(forSize: rect.width),
-				end: self.gradientEndPt(forSize: rect.width),
+				start: self.gradientStartPt(for: rect),
+				end: self.gradientEndPt(for: rect),
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
@@ -95,8 +95,8 @@ public extension QRCode.FillStyle {
 			ctx.clip()
 			ctx.drawLinearGradient(
 				self.gradient.cgGradient,
-				start: self.gradientStartPt(forSize: rect.width),
-				end: self.gradientEndPt(forSize: rect.width),
+				start: self.gradientStartPt(for: rect),
+				end: self.gradientEndPt(for: rect),
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
@@ -108,12 +108,14 @@ public extension QRCode.FillStyle {
 				endPoint: self.endPoint)
 		}
 
-		private func gradientStartPt(forSize: CGFloat) -> CGPoint {
-			return CGPoint(x: self.startPoint.x * forSize, y: self.startPoint.y * forSize)
+		private func gradientStartPt(for rect: CGRect) -> CGPoint {
+			let sz = rect.width
+			return CGPoint(x: rect.minX + (self.startPoint.x * sz), y: rect.minY + (self.startPoint.y * sz))
 		}
 
-		private func gradientEndPt(forSize: CGFloat) -> CGPoint {
-			return CGPoint(x: self.endPoint.x * forSize, y: self.endPoint.y * forSize)
+		private func gradientEndPt(for rect: CGRect) -> CGPoint {
+			let sz = rect.width
+			return CGPoint(x: rect.minX + (self.endPoint.x * sz), y: rect.minY + (self.endPoint.y * sz))
 		}
 	}
 }

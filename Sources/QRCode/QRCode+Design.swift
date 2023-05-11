@@ -39,6 +39,9 @@ public extension QRCode {
 		/// The display style for the qr code.
 		@objc public var style = QRCode.Style()
 
+		/// Any additional quiet space beyond the scope of the QR code
+		@objc public var additionalQuietSpace: CGFloat = 0
+
 		/// Basic initializer for the default style
 		@objc public override init() {
 			super.init()
@@ -59,6 +62,7 @@ public extension QRCode {
 			let c = Design()
 			c.shape = self.shape.copyShape()
 			c.style = self.style.copyStyle()
+			c.additionalQuietSpace = self.additionalQuietSpace
 			return c
 		}
 	}
@@ -68,10 +72,14 @@ public extension QRCode {
 
 public extension QRCode.Design {
 	@objc func settings() -> [String: Any] {
-		return [
+		var result: [String: Any] = [
 			"shape": shape.settings(),
 			"style": style.settings()
 		]
+		if additionalQuietSpace > 0 {
+			result["additionalQuietSpace"] = self.additionalQuietSpace
+		}
+		return result
 	}
 
 	/// Generate a JSON string representation of the document.
@@ -92,6 +100,8 @@ public extension QRCode.Design {
 			let style = QRCode.Style.Create(settings: sh) {
 			design.style = style
 		}
+
+		design.additionalQuietSpace = DoubleValue(settings[QRCode.SettingsKey.additionalQuietSpace, default: 0]) ?? 0
 
 		return design
 	}

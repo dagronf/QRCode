@@ -84,11 +84,12 @@ public extension QRCode.FillStyle {
 			ctx.clip()
 
 			let grCentre = self.gradientCenterPt(forSize: rect.width)
+			let grCentre2 = CGPoint(x: grCentre.x + rect.origin.x, y: grCentre.y + rect.origin.y)
 			let grRadius = rect.width / 1.75
 			ctx.drawRadialGradient(
 				self.gradient.cgGradient,
 				startCenter: self.gradientCenterPt(forSize: rect.width), startRadius: 0,
-				endCenter: grCentre, endRadius: grRadius,
+				endCenter: grCentre2, endRadius: grRadius,
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
