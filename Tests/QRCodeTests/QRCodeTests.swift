@@ -88,7 +88,7 @@ final class QRCodeTests: XCTestCase {
 	func testNewGeneratePath() throws {
 		let g = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 		let image = QRCodePixelShapeFactory.shared.image(
-			pixelShape: g,
+			pixelGenerator: g,
 			dimension: 300,
 			foregroundColor: CGColor.black
 		)

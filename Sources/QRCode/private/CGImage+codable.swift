@@ -40,7 +40,7 @@ extension CGImageCodable {
 	init(from decoder: Decoder) throws {
 		let container = try decoder.singleValueContainer()
 		let imageData = try container.decode(Data.self)
-		guard let image = PlatformImage(data: imageData)?.cgImage() else {
+		guard let image = DSFImage(data: imageData)?.cgImage() else {
 			throw ImageCodingError.InvalidData
 		}
 		self.image = image

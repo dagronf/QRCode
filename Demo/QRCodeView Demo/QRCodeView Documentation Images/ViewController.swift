@@ -44,63 +44,59 @@ class ViewController: NSViewController {
 		.appendingPathComponent(tempFolderName)
 		try! FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true, attributes: nil)
 
-		for name in QRCodeEyeShapeFactory.shared.availableGeneratorNames.sorted() {
-			guard
-				let gen = QRCodeEyeShapeFactory.shared.named(name),
-				let eyeImage = QRCodeEyeShapeFactory.shared.image(
-					eye: gen,
-					dimension: imageSize * 2,
-					foregroundColor: .black,
-					backgroundColor: CGColor(gray: 0.9, alpha: 1))
-			else {
-				fatalError()
-			}
-			let nsImage = NSImage(cgImage: eyeImage, size: CGSize(width: imageSize, height: imageSize))
+		do {
+			// Eye sample images
+			let eyeShapes = QRCodeEyeShapeFactory.shared.generateSampleImages(
+				dimension: imageSize * 2,
+				foregroundColor: .black,
+				backgroundColor: CGColor(gray: 0.9, alpha: 1)
+			)
 
-			if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
-				let pngData = tiffData.representation(using: .png, properties: [:])
-				try! pngData?.write(to: tempURL.appendingPathComponent("eye_" + name).appendingPathExtension("png"))
+			eyeShapes.forEach { sample in
+				let nsImage = NSImage(cgImage: sample.image, size: CGSize(width: imageSize, height: imageSize))
+				if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("eye_" + sample.name).appendingPathExtension("png"))
+				}
 			}
 		}
 
-		for name in QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted() {
-			guard
-				let gen = QRCodePixelShapeFactory.shared.named(name, settings: [
-					QRCode.SettingsKey.insetFraction: 0.1,
-					QRCode.SettingsKey.cornerRadiusFraction: 0.75
-				]),
-				let dataImage = QRCodePixelShapeFactory.shared.image(
-					pixelShape: gen,
-					dimension: imageSize * 2,
-					foregroundColor: .black,
-					backgroundColor: CGColor(gray: 0.9, alpha: 1))
-			else {
-				fatalError()
-			}
-			let nsImage = NSImage(cgImage: dataImage, size: CGSize(width: imageSize, height: imageSize))
+		do {
+			// Pixels sample images
+			let commonPixelSettings: [String: Any] = [
+				QRCode.SettingsKey.insetFraction: 0.1,
+				QRCode.SettingsKey.cornerRadiusFraction: 0.75
+			]
+			let pixelShapes = QRCodePixelShapeFactory.shared.generateSampleImages(
+				dimension: imageSize * 2,
+				foregroundColor: .black,
+				backgroundColor: CGColor(gray: 0.9, alpha: 1),
+				commonSettings: commonPixelSettings
+			)
 
-			if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
-				let pngData = tiffData.representation(using: .png, properties: [:])
-				try! pngData?.write(to: tempURL.appendingPathComponent("data_" + name).appendingPathExtension("png"))
+			pixelShapes.forEach { sample in
+				let nsImage = NSImage(cgImage: sample.image, size: CGSize(width: imageSize, height: imageSize))
+				if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("data_" + sample.name).appendingPathExtension("png"))
+				}
 			}
 		}
 
-		for name in QRCodePupilShapeFactory.shared.availableGeneratorNames.sorted() {
-			guard
-				let gen = QRCodePupilShapeFactory.shared.named(name),
-				let pupilImage = QRCodePupilShapeFactory.shared.image(
-					pupilGenerator: gen,
-					dimension: imageSize * 2,
-					foregroundColor: .black,
-					backgroundColor: CGColor(gray: 0.9, alpha: 1))
-			else {
-				fatalError()
-			}
-			let nsImage = NSImage(cgImage: pupilImage, size: CGSize(width: imageSize, height: imageSize))
+		do {
+			// Pupil sample images
+			let pupilShapes = QRCodePupilShapeFactory.shared.generateSampleImages(
+				dimension: imageSize * 2,
+				foregroundColor: .black,
+				backgroundColor: CGColor(gray: 0.9, alpha: 1)
+			)
 
-			if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
-				let pngData = tiffData.representation(using: .png, properties: [:])
-				try! pngData?.write(to: tempURL.appendingPathComponent("pupil_" + name).appendingPathExtension("png"))
+			pupilShapes.forEach { sample in
+				let nsImage = NSImage(cgImage: sample.image, size: CGSize(width: imageSize, height: imageSize))
+				if let tiff = nsImage.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("pupil_" + sample.name).appendingPathExtension("png"))
+				}
 			}
 		}
 

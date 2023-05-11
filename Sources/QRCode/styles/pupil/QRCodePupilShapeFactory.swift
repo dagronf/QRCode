@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 /// An eye shape factory
 @objc public class QRCodePupilShapeFactory: NSObject {
@@ -70,14 +71,6 @@ import Foundation
 
 	internal var registeredTypes: [QRCodePupilShapeGenerator.Type]
 }
-
-///////////
-
-#if os(macOS)
-import AppKit
-#endif
-
-import CoreGraphics
 
 public extension QRCodePupilShapeFactory {
 	/// Generate an image of the data represented by a specific data generator for a fixed 5x5 data pixel representation
@@ -146,17 +139,33 @@ public extension QRCodePupilShapeFactory {
 }
 
 public extension QRCodePupilShapeFactory {
-	#if os(macOS)
-	/// Create an NSImage representation of a pixel shape
-	func nsImage(
-		pupilGenerator: QRCodePupilShapeGenerator,
+	/// Generate an array of <generator_name>:<sample_image> pairs for each of the pupil generators
+	/// - Parameters:
+	///   - dimension: The dimension of the sample images to generate
+	///   - foregroundColor: The foreground color
+	///   - backgroundColor: The background color (optional)
+	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	/// - Returns: A CGImage representation of the data
+	func generateSampleImages(
 		dimension: CGFloat,
-		foregroundColor: NSColor
-	) -> NSImage? {
-		if let cgi = image(pupilGenerator: pupilGenerator, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
-			return NSImage(cgImage: cgi, size: .zero)
-		}
-		return nil
+		foregroundColor: CGColor,
+		backgroundColor: CGColor? = nil
+	) -> [(name: String, image: CGImage)] {
+		QRCodePupilShapeFactory.shared.availableGeneratorNames
+			.sorted()
+			.compactMap { name in
+				guard
+					let pupilGenerator = QRCodePupilShapeFactory.shared.named(name),
+					let pupilImage = QRCodePupilShapeFactory.shared.image(
+						pupilGenerator: pupilGenerator,
+						dimension: dimension,
+						foregroundColor: foregroundColor,
+						backgroundColor: backgroundColor
+					)
+				else {
+					return nil
+				}
+				return (name: name, image: pupilImage)
+			}
 	}
-	#endif
 }

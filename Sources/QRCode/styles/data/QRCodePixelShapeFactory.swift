@@ -75,18 +75,18 @@ import Foundation
 public extension QRCodePixelShapeFactory {
 	/// Generate an image of the data represented by a specific data generator for a fixed 5x5 data pixel representation
 	/// - Parameters:
-	///   - pixelShape: The pixel generator to use
-	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	///   - pixelGenerator: The pixel generator to use
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
+	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
 	/// - Returns: A CGImage representation of the data
 	@objc func image(
-		pixelShape: QRCodePixelShapeGenerator,
-		isOn: Bool = true,
+		pixelGenerator: QRCodePixelShapeGenerator,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
-		backgroundColor: CGColor? = nil
+		backgroundColor: CGColor? = nil,
+		isOn: Bool = true
 	) -> CGImage? {
 		let width = Int(dimension)
 		let height = Int(dimension)
@@ -134,11 +134,11 @@ public extension QRCodePixelShapeFactory {
 		let path = CGMutablePath()
 		let p2: CGPath = {
 			if isOn {
-				return pixelShape.generatePath(from: qr.current, size: CGSize(dimension: dimension))
+				return pixelGenerator.generatePath(from: qr.current, size: CGSize(dimension: dimension))
 			}
 			else {
 				let inverted = qr.current.inverted()
-				return pixelShape.generatePath(from: inverted, size: CGSize(dimension: dimension))
+				return pixelGenerator.generatePath(from: inverted, size: CGSize(dimension: dimension))
 			}
 		}()
 		path.addPath(p2)
@@ -151,24 +151,37 @@ public extension QRCodePixelShapeFactory {
 	}
 }
 
-#if os(macOS)
-import AppKit
-#else
-import UIKit
-#endif
-
 public extension QRCodePixelShapeFactory {
-#if os(macOS)
-	/// Create an NSImage representation of a pixel shape
-	func nsImage(
-		pixelShape: QRCodePixelShapeGenerator,
+	/// Generate an array of <generator_name>:<sample_image> pairs of the pixel representation for each of the generators
+	/// - Parameters:
+	///   - dimension: The dimension of the sample images to generate
+	///   - foregroundColor: The foreground color
+	///   - backgroundColor: The background color (optional)
+	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	///   - commonSettings: QRCode settings to apply to each generator
+	/// - Returns: A CGImage representation of the data
+	func generateSampleImages(
 		dimension: CGFloat,
-		foregroundColor: NSColor
-	) -> NSImage? {
-		if let cgi = image(pixelShape: pixelShape, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
-			return NSImage(cgImage: cgi, size: .zero)
-		}
-		return nil
+		foregroundColor: CGColor,
+		backgroundColor: CGColor? = nil,
+		isOn: Bool = true,
+		commonSettings: [String: Any]? = nil
+	) -> [(name: String, image: CGImage)] {
+		QRCodePixelShapeFactory.shared.availableGeneratorNames
+			.sorted()
+			.compactMap { name in
+				guard
+					let gen = QRCodePixelShapeFactory.shared.named(name, settings: commonSettings),
+					let pixelImage = QRCodePixelShapeFactory.shared.image(
+						pixelGenerator: gen,
+						dimension: dimension,
+						foregroundColor: foregroundColor,
+						backgroundColor: backgroundColor
+					)
+				else {
+					return nil
+				}
+				return (name: name, image: pixelImage)
+			}
 	}
-#endif
 }

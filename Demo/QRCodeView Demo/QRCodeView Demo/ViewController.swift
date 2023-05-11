@@ -45,7 +45,7 @@ class ViewController: NSViewController {
 
 		q4.logoTemplate = QRCode.LogoTemplate(
 			image: NSImage(named: "pinksquare")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
-			path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
+			path: CGPath(ellipseIn: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
 			inset: 4
 		)
 		//q4.design.shape.relativeMaskPath = mask

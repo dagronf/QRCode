@@ -25,14 +25,57 @@ import Foundation
 
 #if os(macOS)
 import AppKit
-public typealias PlatformImage = NSImage
 #else
-public typealias PlatformImage = UIImage
+import UIKit
 #endif
 
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
+
+// MARK: - Cross-platform framework view
+
+#if os(macOS)
+public typealias DSFView = NSView
+@available(macOS 10.15, *)
+typealias DSFViewRepresentable = NSViewRepresentable
+extension NSView {
+	@inlinable func setNeedsDisplay() { self.needsDisplay = true }
+}
+#else
+public typealias DSFView = UIView
+@available(iOS 13.0, tvOS 13.0, *)
+typealias DSFViewRepresentable = UIViewRepresentable
+#endif
+
+// MARK: - Cross-platform framework image
+
+#if os(macOS)
+import AppKit
+public typealias DSFImage = NSImage
+
+extension NSImage {
+	/// Create an NSImage from a CGImage
+	@inlinable convenience init(cgImage: CGImage) {
+		self.init(cgImage: cgImage, size: .zero)
+	}
+}
+
+#else
+public typealias DSFImage = UIImage
+extension UIImage {
+	func pngRepresentation() -> Data? { self.pngData() }
+}
+#endif
+
+extension CGImage {
+	/// Generate an platform-specific image
+	func platformImage() -> DSFImage? {
+		DSFImage(cgImage: self)
+	}
+}
+
+// MARK :- Conveniences for platform-specific image types
 
 #if os(macOS)
 public extension QRCode {

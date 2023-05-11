@@ -63,6 +63,27 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "## Pixel Shapes (CoreImage)\n\n"
 
+			do {
+				markdownText += "### Generators\n\n"
+
+				// Generate sample images for each type
+				let samples = QRCodePixelShapeFactory.shared.generateSampleImages(
+					dimension: 200, foregroundColor: .black, backgroundColor: .white)
+
+				markdownText += "| Generator Name | Sample Image   |\n"
+				markdownText += "|:------|:-----:|\n"
+
+				try samples.forEach { sample in
+					let filename = "shape-pixel - \(sample.name).png"
+					let link = try imageStore.store(sample.image.pngRepresentation()!, filename: filename)
+					markdownText += "| \(sample.name) | <a href=\"\(link)\"><img src=\"\(link)\" width=\"36\" /></a> |\n"
+				}
+
+				markdownText += "\n"
+			}
+
+			markdownText += "### Samples\n\n"
+
 			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  neg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
 
@@ -160,6 +181,28 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 0, alpha: 0.3)
 
 			markdownText += "## Eye Shapes\n\n"
+
+			do {
+				markdownText += "### Generators\n\n"
+
+				// Generate sample images for each type
+				let samples = QRCodeEyeShapeFactory.shared.generateSampleImages(
+					dimension: 200, foregroundColor: .black, backgroundColor: .white)
+
+				markdownText += "| Generator Name | Sample Image   |\n"
+				markdownText += "|:------|:-----:|\n"
+
+				try samples.forEach { sample in
+					let filename = "shape-eye - \(sample.name).png"
+					let link = try imageStore.store(sample.image.pngRepresentation()!, filename: filename)
+					markdownText += "| \(sample.name) | <a href=\"\(link)\"><img src=\"\(link)\" width=\"36\" /></a> |\n"
+				}
+
+				markdownText += "\n"
+			}
+
+			markdownText += "### Samples\n\n"
+
 			markdownText += "|      |      |      |      |\n"
 			markdownText += "|:----:|:----:|:----:|:----:|\n"
 
@@ -211,6 +254,28 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 0, alpha: 0.3)
 
 			markdownText += "## Pupil Shapes\n\n"
+
+			do {
+				markdownText += "### Generators\n\n"
+
+				// Generate sample images for each type
+				let samples = QRCodePupilShapeFactory.shared.generateSampleImages(
+					dimension: 200, foregroundColor: .black, backgroundColor: .white)
+
+				markdownText += "| Generator Name | Sample Image   |\n"
+				markdownText += "|:------|:-----:|\n"
+
+				try samples.forEach { sample in
+					let filename = "shape-pupil - \(sample.name).png"
+					let link = try imageStore.store(sample.image.pngRepresentation()!, filename: filename)
+					markdownText += "| \(sample.name) | <a href=\"\(link)\"><img src=\"\(link)\" width=\"36\" /></a> |\n"
+				}
+
+				markdownText += "\n"
+			}
+
+			markdownText += "### Samples\n\n"
+
 			markdownText += "|       |        |        |        |\n"
 			markdownText += "|:------|:------:|:------:|:------:|\n"
 

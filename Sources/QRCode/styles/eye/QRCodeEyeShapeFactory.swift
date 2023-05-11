@@ -75,15 +75,15 @@ import Foundation
 public extension QRCodeEyeShapeFactory {
 	/// Generate an image of the eye represented by a specific eye generator
 	/// - Parameters:
-	///   - eye: The eye generator to use
-	///   - pupil: The pupil generator to use. If nil, uses the default eye pupil
+	///   - eyeGenerator: The eye generator to use
+	///   - pupilGenerator: The pupil generator to use. If nil, uses the default eye pupil
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
 	/// - Returns: A CGImage representation of the eye
 	func image(
-		eye: QRCodeEyeShapeGenerator,
-		pupil: QRCodePupilShapeGenerator? = nil,
+		eyeGenerator: QRCodeEyeShapeGenerator,
+		pupilGenerator: QRCodePupilShapeGenerator? = nil,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil
@@ -120,9 +120,9 @@ public extension QRCodeEyeShapeFactory {
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
-		path.addPath(eye.eyePath(), transform: scaleTransform)
+		path.addPath(eyeGenerator.eyePath(), transform: scaleTransform)
 
-		let pupil = pupil ?? eye.defaultPupil()
+		let pupil = pupilGenerator ?? eyeGenerator.defaultPupil()
 		path.addPath(pupil.pupilPath(), transform: scaleTransform)
 
 		context.addPath(path)
@@ -134,19 +134,35 @@ public extension QRCodeEyeShapeFactory {
 	}
 }
 
-#if os(macOS)
-import AppKit
-#else
-import UIKit
-#endif
-
 public extension QRCodeEyeShapeFactory {
-	#if os(macOS)
-	func nsImage(eye: QRCodeEyeShapeGenerator, dimension: CGFloat, foregroundColor: NSColor) -> NSImage? {
-		if let cgi = image(eye: eye, dimension: dimension, foregroundColor: foregroundColor.cgColor) {
-			return NSImage(cgImage: cgi, size: .zero)
-		}
-		return nil
+	/// Generate an array of <generator_name>:<sample_image> pairs for each of the eye generators
+	/// - Parameters:
+	///   - dimension: The dimension of the sample images to generate
+	///   - foregroundColor: The foreground color
+	///   - backgroundColor: The background color (optional)
+	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	/// - Returns: A CGImage representation of the data
+	func generateSampleImages(
+		dimension: CGFloat,
+		foregroundColor: CGColor,
+		backgroundColor: CGColor? = nil,
+		isOn: Bool = true
+	) -> [(name: String, image: CGImage)] {
+		QRCodeEyeShapeFactory.shared.availableGeneratorNames
+			.sorted()
+			.compactMap { name in
+				guard
+					let eyeGenerator = QRCodeEyeShapeFactory.shared.named(name),
+					let eyeImage = QRCodeEyeShapeFactory.shared.image(
+						eyeGenerator: eyeGenerator,
+						dimension: dimension,
+						foregroundColor: foregroundColor,
+						backgroundColor: backgroundColor
+					)
+				else {
+					return nil
+				}
+				return (name: name, image: eyeImage)
+			}
 	}
-	#endif
 }

@@ -39,7 +39,7 @@ public extension QRCode.FillStyle {
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 			if let c = settings["imagePNGbase64"] as? String,
 				let d = Data(base64Encoded: c),
-				let i = PlatformImage(data: d)
+				let i = DSFImage(data: d)
 			{
 				return QRCode.FillStyle.Image(i.cgImage())
 			}
