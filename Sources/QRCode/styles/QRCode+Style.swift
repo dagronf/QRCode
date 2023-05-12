@@ -56,6 +56,9 @@ public extension QRCode {
 		/// The background style for the QR code. If nil, no background is drawn. Defaults to white
 		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(CGColor(gray: 1.0, alpha: 1.0))
 
+		/// A corner radius (in qr pixels) to apply to the background fill
+		@objc public var backgroundFractionalCornerRadius: CGFloat = 0
+
 		/// The background color behind the eyes.
 		///
 		/// Setting a solid background color (eg. white) behind the eyes can make the QR code more readable
@@ -69,6 +72,7 @@ public extension QRCode {
 			c.offPixels = self.offPixels?.copyStyle()
 			c.offPixelsBackground = self.offPixelsBackground?.copy()
 			c.background = self.background?.copyStyle()
+			c.backgroundFractionalCornerRadius = self.backgroundFractionalCornerRadius
 			c.eye = self.eye?.copyStyle()
 			c.eyeBackground = self.eyeBackground?.copy()
 			c.pupil = self.pupil?.copyStyle()
@@ -91,7 +95,7 @@ public extension QRCode.Style {
 
 public extension QRCode.Style {
 	@objc func settings() -> [String: Any] {
-		var result = [ "onPixels": onPixels.coreSettings() ]
+		var result: [String: Any] = [ "onPixels": onPixels.coreSettings() ]
 		if let e = eye?.coreSettings() {
 			result["eye"] = e
 		}
@@ -101,6 +105,11 @@ public extension QRCode.Style {
 		if let b = background?.coreSettings() {
 			result["background"] = b
 		}
+
+		if backgroundFractionalCornerRadius > 0.1 {
+			result["backgroundFractionalCornerRadius"] = Double(backgroundFractionalCornerRadius)
+		}
+
 		if let di = offPixels?.coreSettings() {
 			result["offPixels"] = di
 		}
@@ -146,6 +155,10 @@ public extension QRCode.Style {
 		}
 		else {
 			style.background = nil
+		}
+
+		if let e = settings["backgroundCornerRadiusPixels"] as? Double {
+			style.backgroundFractionalCornerRadius = max(0, e)
 		}
 
 		if let e = settings["offPixels"] as? [String: Any],

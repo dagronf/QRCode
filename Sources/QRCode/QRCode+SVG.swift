@@ -54,7 +54,6 @@ public extension QRCode {
 		let rect = CGRect(origin: .zero, size: CGSize(dimension: dimension))
 		let finalRect = rect.insetBy(dx: additionalQuietSpace, dy: additionalQuietSpace)
 
-
 		var pathDefinitions: [String] = []
 
 		// The background color for the qr code
@@ -62,7 +61,13 @@ public extension QRCode {
 		if let background = design.style.background,
 			let backgroundFill = background.svgRepresentation(styleIdentifier: "background")
 		{
-			svg += "   <rect \(backgroundFill.styleAttribute) x=\"0\" y=\"0\" width=\"\(dimension)\" height=\"\(dimension)\" />\n"
+			svg += "   <rect \(backgroundFill.styleAttribute) x=\"0\" y=\"0\" width=\"\(dimension)\" height=\"\(dimension)\""
+			let cornerRadius = design.style.backgroundFractionalCornerRadius
+			if cornerRadius > 0 {
+				let computedRadius = Int(dx * CGFloat(cornerRadius))
+				svg += " rx=\"\(computedRadius)px\" ry=\"\(computedRadius)px\""
+			}
+			svg += " />\n"
 
 			if let def = backgroundFill.styleDefinition {
 				pathDefinitions.append(def)

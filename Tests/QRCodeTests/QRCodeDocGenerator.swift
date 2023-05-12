@@ -599,6 +599,68 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		}
 		markdownText += "\n"
 
+		// Background corner radius
+
+		do {
+			markdownText += "## Corner radius\n\n"
+
+			let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
+			doc.design.additionalQuietSpacePixels = 4
+
+			let c1 = QRCode.FillStyle.Solid(1, 0, 0)
+			let c2 = QRCode.FillStyle.LinearGradient(
+				DSFGradient(pins: [
+					DSFGradient.Pin(CGColor(red: 0.8, green: 0.8, blue: 1, alpha:1), 0),
+					DSFGradient.Pin(CGColor(red: 0.8, green: 0.8, blue: 0.4, alpha:1), 0.4),
+					DSFGradient.Pin(CGColor(red: 0.016, green: 0.198, blue: 1, alpha:1), 1),
+				])!
+			)
+			let c3 = QRCode.FillStyle.RadialGradient(
+				DSFGradient(pins: [
+					DSFGradient.Pin(CGColor(red: 0.8, green: 0.8, blue: 1, alpha: 1), 0),
+					DSFGradient.Pin(CGColor(red: 0.8, green: 0.8, blue: 0.4, alpha:1), 0.4),
+					DSFGradient.Pin(CGColor(red: 0.016, green: 0.198, blue: 1, alpha: 1), 1),
+				])!
+			)
+			let logoImage3 = resourceImage(for: "lego", extension: "jpeg")
+			let c4 = QRCode.FillStyle.Image(logoImage3)
+			let bgs: [QRCodeFillStyleGenerator] = [c1, c2, c3, c4]
+
+			do {
+				var count = 0
+				try bgs.forEach { bgs in
+					count += 1
+					doc.design.style.background = bgs
+					doc.design.foregroundColor(.white)
+
+					markdownText += "|  Type  |    0    |    2    |    4    |    6    |\n"
+					markdownText += "|:-------|:------:|:------:|:------:|:------:|\n"
+
+					markdownText += "| PNG |"
+					try [0, 2, 4, 6].forEach { cr in
+						doc.design.style.backgroundFractionalCornerRadius = cr
+						let content = try XCTUnwrap(doc.imageData(.png(), dimension: 300))
+						let filename = "corner-radius-solid-\(cr)-\(count).png"
+						let link = try imageStore.store(content, filename: filename)
+						markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
+					}
+					markdownText += "\n"
+					markdownText += "| SVG |"
+					try [0, 2, 4, 6].forEach { cr in
+						doc.design.style.backgroundFractionalCornerRadius = cr
+						let content = try XCTUnwrap(doc.imageData(.svg, dimension: 300))
+						let filename = "corner-radius-solid-\(cr)-\(count).svg"
+						let link = try imageStore.store(content, filename: filename)
+						markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
+					}
+					markdownText += "\n\n"
+				}
+				markdownText += "\n"
+			}
+			
+			markdownText += "\n\n"
+		}
+
 		// Components
 
 		do {

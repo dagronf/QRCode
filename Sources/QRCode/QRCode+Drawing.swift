@@ -57,6 +57,14 @@ public extension QRCode {
 		// Fill the background first
 		let backgroundStyle = style.background ?? QRCode.FillStyle.clear
 		ctx.usingGState { context in
+			let cornerRadius = design.style.backgroundFractionalCornerRadius
+			if cornerRadius > 0 {
+				let computedRadius = CGFloat(cornerRadius) * dm
+				context.addPath(
+					CGPath(roundedRect: rect, cornerWidth: computedRadius, cornerHeight: computedRadius, transform: nil)
+				)
+				context.clip()
+			}
 			backgroundStyle.fill(ctx: context, rect: rect)
 		}
 

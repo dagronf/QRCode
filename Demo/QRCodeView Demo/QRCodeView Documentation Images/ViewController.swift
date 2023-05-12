@@ -85,6 +85,37 @@ class ViewController: NSViewController {
 		}
 
 		do {
+			let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
+			doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
+			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
+			doc.design.additionalQuietSpacePixels = 4
+			 [0, 2, 4, 6].forEach { cr in
+				doc.design.style.backgroundFractionalCornerRadius = cr
+				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
+				let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
+				if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("corner-radius-\(Int(cr)).png"))
+				}
+			}
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "Corner radius checking")
+			doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.7)
+			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
+			doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+			doc.design.additionalQuietSpacePixels = 2
+			doc.design.style.backgroundFractionalCornerRadius = 3.0
+			let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))!
+			let im1 = NSImage(cgImage: qrcodeImage, size: CGSize(width: 150, height: 150))
+			if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+				let pngData = tiffData.representation(using: .png, properties: [:])
+				try! pngData?.write(to: tempURL.appendingPathComponent("corner-radius-example.png"))
+			}
+		}
+
+		do {
 			// Eye sample images
 			let eyeShapes = QRCodeEyeShapeFactory.shared.generateSampleImages(
 				dimension: imageSize * 2,

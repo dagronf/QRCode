@@ -72,12 +72,14 @@ It's nice to have a simple, quick drop-in component for displaying a QR code whe
 * Supports Swift Package Manager and CocoaPods
 * Generate a QR code without access to a UI.
 * Supports all error correction levels.
+* Configurable quiet zone
 * Load/Save support
 * Drop-in live display support for SwiftUI, NSView (macOS) and UIView (iOS/tvOS).
 * Generate images, scalable PDFs, scalable SVGs and `CGPath` paths.
 * Configurable designs.
 * Add a logo to a QR code.
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
+* Configurable corner radius
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 
 ## NOTES for v13+
@@ -565,6 +567,32 @@ doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 doc.design.additionalQuietSpacePixels = 15
 let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
 ```
+
+## Background Corner Radius
+
+You can specify a corner radius for your background fill on the style object, which is in fractional qr code data-pixel values.
+
+By default, the corner radius is set to 0.
+
+| 0 pixels | 2 pixels | 4 pixels | 6 pixels |
+|:--------:|:--------:|:--------:|:--------:|
+| <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/corner-radius-0.png" width="150"/></a> | <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/corner-radius-2.png" width="150"/></a> | <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/corner-radius-4.png" width="150"/></a> | <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/corner-radius-6.png" width="150"/></a> |
+
+<details>
+<summary>Background corner radius example</summary>
+
+```swift
+let doc = QRCode.Document(utf8String: "Corner radius checking")
+doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
+doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
+doc.design.additionalQuietSpacePixels = 2
+doc.design.style.backgroundFractionalCornerRadius = 3.0
+let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
+```
+
+<a href="./Art/images/corner-radius-example.png"><img src="./Art/images/corner-radius-example.png" width="150"/></a>
+
+</details>
 
 ## Message Formatters
 
