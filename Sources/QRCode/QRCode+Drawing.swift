@@ -72,6 +72,7 @@ public extension QRCode {
 				finalRect.size,
 				components: .negative,
 				shape: design.shape,
+				logoTemplate: logoTemplate,
 				additionalQuietSpace: additionalQuietSpace
 			)
 
@@ -87,6 +88,7 @@ public extension QRCode {
 					finalRect.size,
 					components: .eyeBackground,
 					shape: design.shape,
+					logoTemplate: logoTemplate,
 					additionalQuietSpace: additionalQuietSpace
 				)
 				ctx.usingGState { context in
@@ -101,6 +103,7 @@ public extension QRCode {
 				finalRect.size,
 				components: .eyeOuter,
 				shape: design.shape,
+				logoTemplate: logoTemplate,
 				additionalQuietSpace: additionalQuietSpace
 			)
 			ctx.usingGState { context in
@@ -112,6 +115,7 @@ public extension QRCode {
 				finalRect.size,
 				components: .eyePupil,
 				shape: design.shape,
+				logoTemplate: logoTemplate,
 				additionalQuietSpace: additionalQuietSpace
 			)
 			ctx.usingGState { context in
