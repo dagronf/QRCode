@@ -157,7 +157,7 @@ public extension QRCode.Style {
 			style.background = nil
 		}
 
-		if let e = settings["backgroundCornerRadiusPixels"] as? Double {
+		if let e = settings["backgroundFractionalCornerRadius"] as? Double {
 			style.backgroundFractionalCornerRadius = max(0, e)
 		}
 

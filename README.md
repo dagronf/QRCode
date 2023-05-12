@@ -60,6 +60,9 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    <a href="./Art/qrcode-womble.jpg">
       <img src="./Art/qrcode-womble.jpg" width="150"/>
    </a>
+      <a href="./Art/wwf.svg">
+      <img src="./Art/wwf.svg" width="150"/>
+   </a>
 </p>
 
 ## Why?
