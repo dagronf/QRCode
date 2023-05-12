@@ -40,7 +40,7 @@ public extension QRCode {
 		@objc public var style = QRCode.Style()
 
 		/// Any additional quiet space beyond the scope of the QR code
-		@objc public var additionalQuietSpace: CGFloat = 0
+		@objc public var additionalQuietSpacePixels: UInt = 0
 
 		/// Basic initializer for the default style
 		@objc public override init() {
@@ -62,7 +62,7 @@ public extension QRCode {
 			let c = Design()
 			c.shape = self.shape.copyShape()
 			c.style = self.style.copyStyle()
-			c.additionalQuietSpace = self.additionalQuietSpace
+			c.additionalQuietSpacePixels = self.additionalQuietSpacePixels
 			return c
 		}
 	}
@@ -76,8 +76,8 @@ public extension QRCode.Design {
 			"shape": shape.settings(),
 			"style": style.settings()
 		]
-		if additionalQuietSpace > 0 {
-			result["additionalQuietSpace"] = self.additionalQuietSpace
+		if additionalQuietSpacePixels > 0 {
+			result["additionalQuietSpacePixels"] = self.additionalQuietSpacePixels
 		}
 		return result
 	}
@@ -101,7 +101,7 @@ public extension QRCode.Design {
 			design.style = style
 		}
 
-		design.additionalQuietSpace = DoubleValue(settings[QRCode.SettingsKey.additionalQuietSpace, default: 0]) ?? 0
+		design.additionalQuietSpacePixels = UIntValue(settings[QRCode.SettingsKey.additionalQuietSpacePixels, default: 0]) ?? 0
 
 		return design
 	}

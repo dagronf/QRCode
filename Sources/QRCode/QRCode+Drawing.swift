@@ -35,18 +35,16 @@ public extension QRCode {
 		// Only works with a 1:1 rect
 		let sz = min(rect.width, rect.height)
 
+		/// The size of each pixel in the output
+		let additionalQuietSpacePixels = CGFloat(design.additionalQuietSpacePixels)
+		let dm: CGFloat = CGFloat(sz) / (CGFloat(self.cellDimension) + (2.0 * additionalQuietSpacePixels))
+		let additionalQuietSpace = dm * additionalQuietSpacePixels
+
 		// Factor in the additional quiet space in the result
-		let additionalQuietSpace = design.additionalQuietSpace
 		guard (2 * additionalQuietSpace) < sz else {
 			Swift.print("additionalQuietSpace too large")
 			return
 		}
-
-
-		let dx = (sz - (2 * additionalQuietSpace)) / CGFloat(self.cellDimension)
-		let dy = (sz - (2 * additionalQuietSpace)) / CGFloat(self.cellDimension)
-
-		let dm = min(dx, dy)
 
 		let xoff = additionalQuietSpace + (rect.width - (CGFloat(self.cellDimension) * dm)) / 2.0
 		let yoff = additionalQuietSpace + (rect.height - (CGFloat(self.cellDimension) * dm)) / 2.0

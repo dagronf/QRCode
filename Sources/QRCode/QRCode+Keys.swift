@@ -39,6 +39,6 @@ public extension QRCode {
 		/// Settings key for 'corners'
 		@objc public static let corners = "corners"
 		/// Settings key for 'additionalQuietSpace'
-		@objc public static let additionalQuietSpace = "additionalQuietSpace"
+		@objc public static let additionalQuietSpacePixels = "additionalQuietSpacePixels"
 	}
 }

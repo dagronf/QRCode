@@ -26,6 +26,7 @@ struct ContentView: View {
 			utf8String: "This is a test of the watch view SwiftUI",
 			generator: QRCodeGenerator_External())
 
+		d.design.additionalQuietSpacePixels = 3
 		d.design.shape.eye = QRCode.EyeShape.Edges(cornerRadiusFraction: 0.5)
 
 		let p = CGPath(ellipseIn: CGRect(x: 0.60, y: 0.60, width: 0.40, height: 0.40), transform: nil)
