@@ -177,4 +177,70 @@ final class QRCodeTests: XCTestCase {
 			try data.writeToTempFile(named: "dpi-test-output.svg")
 		}
 	}
+
+	func testQuietSpace() throws {
+
+		do {
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4)
+			//doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 0, 0)
+			doc.design.style.onPixelsBackground = CGColor.black
+
+			// radial fill
+			let c = QRCode.FillStyle.RadialGradient(
+				DSFGradient(
+					pins: [
+						DSFGradient.Pin(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1), 0),
+						DSFGradient.Pin(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 1), 0.5),
+						DSFGradient.Pin(CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 1), 1.0),
+					]
+				)!,
+				centerPoint: CGPoint(x: 0.5, y: 0.5)
+			)
+			doc.design.style.onPixels = c
+
+
+			doc.design.style.eyeBackground = CGColor(red: 0, green: 1, blue: 1, alpha: 1)
+
+			doc.design.shape.offPixels = QRCode.PixelShape.Flower(insetFraction: 0.2)
+			doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 1, 0)
+
+			let gradient = DSFGradient(
+				pins: [
+					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0, alpha: 1.000), 0),
+					DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 1, alpha: 1.000), 1),
+				]
+			)!
+			doc.design.style.offPixels = QRCode.FillStyle.LinearGradient(
+				gradient,
+				startPoint: CGPoint(x: 0, y: 1),
+				endPoint: CGPoint(x: 1, y: 1)
+			)
+
+			doc.design.style.offPixelsBackground = CGColor.white
+
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+			doc.design.style.background = QRCode.FillStyle.Image(logoImage)
+
+			doc.design.additionalQuietSpacePixels = 8
+
+			let image = try XCTUnwrap(doc.cgImage(dimension: 800))
+			XCTAssertEqual(image.width, 800)
+			XCTAssertEqual(image.height, 800)
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+			//doc.design.additionalQuietSpace = 100
+
+			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
+			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+			doc.design.style.onPixels = QRCode.FillStyle.Image(logoImage)
+
+			let image = try XCTUnwrap(doc.cgImage(dimension: 800))
+			XCTAssertEqual(image.width, 800)
+			XCTAssertEqual(image.height, 800)
+		}
+	}
 }

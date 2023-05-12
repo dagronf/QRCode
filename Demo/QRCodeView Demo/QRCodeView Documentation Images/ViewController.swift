@@ -17,6 +17,7 @@ class ViewController: NSViewController {
 
 		// Do any additional setup after loading the view.
 
+		self.buildQuietSpaceContent()
 		self.buildEyeContent()
 
 	}
@@ -25,6 +26,18 @@ class ViewController: NSViewController {
 		didSet {
 		// Update the view, if already loaded.
 		}
+	}
+
+	func buildQuietSpaceContent() {
+
+
+
+//		doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+//		doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
+//		doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
+//		doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
+//		doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
+
 	}
 
 	func buildEyeContent() {
@@ -43,6 +56,33 @@ class ViewController: NSViewController {
 		)
 		.appendingPathComponent(tempFolderName)
 		try! FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true, attributes: nil)
+
+		do {
+			let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
+			doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
+
+			[0, 5, 10, 15].forEach { aqs in
+				doc.design.additionalQuietSpacePixels = UInt(aqs)
+				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
+				let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
+				if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("quiet-space-\(aqs).png"))
+				}
+			}
+
+			do {
+				let image = NSImage(named: "swift-logo")!
+				doc.design.style.background = QRCode.FillStyle.Image(image.cgImage(forProposedRect: nil, context: nil, hints: nil))
+				doc.design.additionalQuietSpacePixels = 4
+				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
+				let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
+				if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
+					let pngData = tiffData.representation(using: .png, properties: [:])
+					try! pngData?.write(to: tempURL.appendingPathComponent("quiet-space-background-image.png"))
+				}
+			}
+		}
 
 		do {
 			// Eye sample images

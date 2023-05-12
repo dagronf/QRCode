@@ -45,6 +45,11 @@ import CoreGraphics
 	return (opaque as? NSNumber)?.intValue
 }
 
+/// Attempt to convert an opaque type to a uint value.
+@inlinable @inline(__always) internal func UIntValue(_ opaque: Any?) -> UInt? {
+	return (opaque as? NSNumber)?.uintValue
+}
+
 /// Attempt to convert an opaque b64 string type to a CGImage.
 internal func CGImageValueFromB64String(_ opaque: Any?) -> CGImage? {
 	if let imageb64 = opaque as? String,

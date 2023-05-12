@@ -63,7 +63,9 @@ public extension QRCode.FillStyle {
 				ctx.usingGState { context in
 					// image drawing is flipped
 					ctx.scaleBy(x: 1, y: -1)
+					// translate into the rect
 					ctx.translateBy(x: 0, y: -rect.height)
+					ctx.translateBy(x: 0, y: -rect.origin.y * 2)
 					// Draw the logo image into the mask bounds
 					ctx.draw(image, in: rect)
 				}
@@ -81,6 +83,7 @@ public extension QRCode.FillStyle {
 					// image drawing is flipped
 					ctx.scaleBy(x: 1, y: -1)
 					ctx.translateBy(x: 0, y: -rect.height)
+					ctx.translateBy(x: 0, y: -rect.origin.y * 2)
 
 					// Draw the logo image into the mask bounds
 					ctx.draw(image, in: rect)

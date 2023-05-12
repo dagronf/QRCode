@@ -42,7 +42,7 @@ typealias DSFViewRepresentable = NSViewRepresentable
 extension NSView {
 	@inlinable func setNeedsDisplay() { self.needsDisplay = true }
 }
-#else
+#elseif os(iOS) || os(tvOS)
 public typealias DSFView = UIView
 @available(iOS 13.0, tvOS 13.0, *)
 typealias DSFViewRepresentable = UIViewRepresentable

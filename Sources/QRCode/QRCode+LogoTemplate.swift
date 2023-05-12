@@ -54,14 +54,13 @@ public extension QRCode {
 		/// Create a logo using an image and a drawing path
 		/// - Parameters:
 		///   - image: The image to display in the logo
-		///   - path: The bounds path for the logo (0,0 -> 1, 1)
+		///   - path: The bounds path for the logo (0,0 -> 1, 1) within the QR code
 		///   - inset: The inset from the path bounds to draw the image
 		@objc public init(
 			image: CGImage,
 			path: CGPath,
 			inset: CGFloat = 4
 		) {
-
 			/// Check that the path bounds are 0,0 -> 1,1
 			let bounds = path.boundingBoxOfPath
 			assert(bounds.minX >= 0 && bounds.maxX <= 1)

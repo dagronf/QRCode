@@ -547,6 +547,25 @@ generates
 
 </details>
 
+## Quiet zone
+
+You can add a quiet zone around the outside of the QR code by setting `additionalQuietSpacePixels` on the design object. This represents the number of pixels spacing are added around the outside of the actual QR Code.
+
+Note that a background color/image/fill is not affected by the quiet zone (will always extend to the boundaries of the generated image)
+
+By default, the quiet zone is set to 0 pixels.
+
+| 0 pixels | 5 pixels | 10 pixels | 15 pixels | Background Image<br/> with 6 pixels |
+|:----:|:----:|:----:|:----:|:----:|
+| <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/quiet-space-0.png" width="150"/></a> | <a href="./Art/images/quiet-space-5.png"><img src="./Art/images/quiet-space-5.png" width="150"/></a> | <a href="./Art/images/quiet-space-10.png"><img src="./Art/images/quiet-space-10.png" width="150"/></a> | <a href="./Art/images/quiet-space-15.png"><img src="./Art/images/quiet-space-15.png" width="150"/></a> | <a href="./Art/images/quiet-space-background-image.png"><img src="./Art/images/quiet-space-background-image.png" width="150"/></a> |
+
+```swift
+let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
+doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
+doc.design.additionalQuietSpacePixels = 15
+let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
+```
+
 ## Message Formatters
 
 There are a number of QRCode data formats that are somewhat common with QR code readers, such as QR codes 
