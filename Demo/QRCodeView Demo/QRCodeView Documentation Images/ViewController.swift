@@ -62,7 +62,7 @@ class ViewController: NSViewController {
 			doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 
 			[0, 5, 10, 15].forEach { aqs in
-				doc.design.additionalQuietSpacePixels = UInt(aqs)
+				doc.design.additionalQuietZonePixels = UInt(aqs)
 				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
 				let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
 				if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
@@ -74,7 +74,7 @@ class ViewController: NSViewController {
 			do {
 				let image = NSImage(named: "swift-logo")!
 				doc.design.style.background = QRCode.FillStyle.Image(image.cgImage(forProposedRect: nil, context: nil, hints: nil))
-				doc.design.additionalQuietSpacePixels = 4
+				doc.design.additionalQuietZonePixels = 4
 				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
 				let im1 = NSImage(cgImage: cg1, size: CGSize(width: 150, height: 150))
 				if let tiff = im1.tiffRepresentation, let tiffData = NSBitmapImageRep(data: tiff) {
@@ -88,7 +88,7 @@ class ViewController: NSViewController {
 			let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
 			doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
-			doc.design.additionalQuietSpacePixels = 4
+			doc.design.additionalQuietZonePixels = 4
 			 [0, 2, 4, 6].forEach { cr in
 				doc.design.style.backgroundFractionalCornerRadius = cr
 				let cg1 = doc.cgImage(CGSize(width: 300, height: 300))!
@@ -105,7 +105,7 @@ class ViewController: NSViewController {
 			doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.7)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
 			doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-			doc.design.additionalQuietSpacePixels = 2
+			doc.design.additionalQuietZonePixels = 2
 			doc.design.style.backgroundFractionalCornerRadius = 3.0
 			let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))!
 			let im1 = NSImage(cgImage: qrcodeImage, size: CGSize(width: 150, height: 150))

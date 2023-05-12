@@ -551,7 +551,7 @@ generates
 
 ## Quiet zone
 
-You can add a quiet zone around the outside of the QR code by setting `additionalQuietSpacePixels` on the design object. This represents the number of pixels spacing are added around the outside of the actual QR Code.
+You can add a quiet zone around the outside of the QR code by setting `additionalQuietZonePixels` on the design object. This represents the number of pixels spacing are added around the outside of the actual QR Code.
 
 Note that a background color/image/fill is not affected by the quiet zone (will always extend to the boundaries of the generated image)
 
@@ -564,7 +564,7 @@ By default, the quiet zone is set to 0 pixels.
 ```swift
 let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
 doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
-doc.design.additionalQuietSpacePixels = 15
+doc.design.additionalQuietZonePixels = 4
 let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
 ```
 
@@ -585,7 +585,7 @@ By default, the corner radius is set to 0.
 let doc = QRCode.Document(utf8String: "Corner radius checking")
 doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
-doc.design.additionalQuietSpacePixels = 2
+doc.design.additionalQuietZonePixels = 2
 doc.design.style.backgroundFractionalCornerRadius = 3.0
 let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
 ```

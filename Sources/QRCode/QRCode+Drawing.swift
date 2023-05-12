@@ -36,7 +36,7 @@ public extension QRCode {
 		let sz = min(rect.width, rect.height)
 
 		/// The size of each pixel in the output
-		let additionalQuietSpacePixels = CGFloat(design.additionalQuietSpacePixels)
+		let additionalQuietSpacePixels = CGFloat(design.additionalQuietZonePixels)
 		let dm: CGFloat = CGFloat(sz) / (CGFloat(self.cellDimension) + (2.0 * additionalQuietSpacePixels))
 		let additionalQuietSpace = dm * additionalQuietSpacePixels
 

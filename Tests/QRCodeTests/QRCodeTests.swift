@@ -223,7 +223,7 @@ final class QRCodeTests: XCTestCase {
 			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
 			doc.design.style.background = QRCode.FillStyle.Image(logoImage)
 
-			doc.design.additionalQuietSpacePixels = 8
+			doc.design.additionalQuietZonePixels = 8
 
 			let image = try XCTUnwrap(doc.cgImage(dimension: 800))
 			XCTAssertEqual(image.width, 800)
