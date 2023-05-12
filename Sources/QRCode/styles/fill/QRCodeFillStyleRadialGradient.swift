@@ -67,11 +67,11 @@ public extension QRCode.FillStyle {
 
 		/// Fill the specified rect with the gradient
 		public func fill(ctx: CGContext, rect: CGRect) {
-			let grCentre = self.gradientCenterPt(forSize: rect.width)
+			let grCentre = self.gradientCenterPt(rect)
 			let grRadius = rect.width / 1.75
 			ctx.drawRadialGradient(
 				self.gradient.cgGradient,
-				startCenter: self.gradientCenterPt(forSize: rect.width),
+				startCenter: self.gradientCenterPt(rect),
 				startRadius: 0,
 				endCenter: grCentre,
 				endRadius: grRadius,
@@ -83,13 +83,12 @@ public extension QRCode.FillStyle {
 			ctx.addPath(path)
 			ctx.clip()
 
-			let grCentre = self.gradientCenterPt(forSize: rect.width)
-			let grCentre2 = CGPoint(x: grCentre.x + rect.origin.x, y: grCentre.y + rect.origin.y)
+			let grCentre = self.gradientCenterPt(rect)
 			let grRadius = rect.width / 1.75
 			ctx.drawRadialGradient(
 				self.gradient.cgGradient,
-				startCenter: self.gradientCenterPt(forSize: rect.width), startRadius: 0,
-				endCenter: grCentre2, endRadius: grRadius,
+				startCenter: self.gradientCenterPt(rect), startRadius: 0,
+				endCenter: grCentre, endRadius: grRadius,
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
@@ -100,8 +99,11 @@ public extension QRCode.FillStyle {
 			)
 		}
 
-		private func gradientCenterPt(forSize: CGFloat) -> CGPoint {
-			return CGPoint(x: self.centerPoint.x * forSize, y: self.centerPoint.y * forSize)
+		private func gradientCenterPt(_ rect: CGRect) -> CGPoint {
+			return CGPoint(
+				x: rect.minX + (self.centerPoint.x * rect.width),
+				y: rect.minY + (self.centerPoint.y * rect.height)
+			)
 		}
 	}
 }

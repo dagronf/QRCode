@@ -391,7 +391,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			let gradient = DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor(red: 1, green: 0, blue: 0, alpha: 1), 0.1),
-					DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.5),
+					DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 0, alpha: 1), 0.7),
 					DSFGradient.Pin(CGColor(red: 0, green: 0, blue: 1, alpha: 1), 0.9),
 				]
 			)!
