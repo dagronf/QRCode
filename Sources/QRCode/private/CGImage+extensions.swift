@@ -26,7 +26,29 @@ import ImageIO
 
 extension CGImage {
 	/// Create a png representation of the CGImage
-	func pngRepresentation() -> Data? {
+	/// - Parameters:
+	///   - scale: (optional) the scale for the resulting image (default 1)
+	///   - compression: (optional) the compression level to use (0 ... 1)
+	func pngRepresentation(scale: Int = 1, compression: CGFloat? = nil) -> Data? {
+		self.pngRepresentation(dpi: 72.0 * CGFloat(scale), compression: compression)
+	}
+
+	/// Create a png representation of the CGImage
+	/// - Parameters:
+	///   - scale: (optional) the dpi for the resulting image (default 72.0)
+	///   - compression: (optional) the compression level to use (0 ... 1)
+	func pngRepresentation(dpi: CGFloat, compression: CGFloat? = nil) -> Data? {
+		var opts: [CFString: Any] = [:]
+		if dpi != 1 {
+			opts[kCGImagePropertyPixelWidth] = self.width
+			opts[kCGImagePropertyPixelHeight] = self.height
+			opts[kCGImagePropertyDPIWidth] = dpi
+			opts[kCGImagePropertyDPIHeight] = dpi
+		}
+		if let compression = compression {
+			opts[kCGImageDestinationLossyCompressionQuality] = compression
+		}
+
 		guard
 			let mutableData = CFDataCreateMutable(nil, 0),
 			let destination = CGImageDestinationCreateWithData(mutableData, "public.png" as CFString, 1, nil)
@@ -34,10 +56,20 @@ extension CGImage {
 			return nil
 		}
 
-		CGImageDestinationAddImage(destination, self, nil)
+		CGImageDestinationAddImage(destination, self, opts as CFDictionary)
 		CGImageDestinationFinalize(destination)
 
 		return mutableData as Data
+	}
+}
+
+extension CGImage {
+	/// Create a jpg representation of the CGImage
+	/// - Parameters:
+	///   - scale: (optional) the scale for the resulting image (default 1)
+	///   - compression: (optional) the compression level to use (0 ... 1)
+	func jpgRepresentation(scale: Int = 1, compression: CGFloat? = nil) -> Data? {
+		self.jpgRepresentation(dpi: 72.0 * CGFloat(scale), compression: compression)
 	}
 
 	/// Create a JPG representation for the CGImage
@@ -45,9 +77,9 @@ extension CGImage {
 	///   - dpi: (optional) the dpi for the resulting image (default 72)
 	///   - compression: (optional) the compression level to use (0 ... 1)
 	/// - Returns: JPEG data for the image
-	func jpgRepresentation(dpi: CGFloat? = nil, compression: CGFloat? = nil) -> Data? {
+	func jpgRepresentation(dpi: CGFloat, compression: CGFloat? = nil) -> Data? {
 		var opts: [CFString: Any] = [:]
-		if let dpi = dpi {
+		if dpi != 1 {
 			opts[kCGImagePropertyPixelWidth] = self.width
 			opts[kCGImagePropertyPixelHeight] = self.height
 			opts[kCGImagePropertyDPIWidth] = dpi
@@ -58,12 +90,12 @@ extension CGImage {
 		}
 		guard
 			let mutableData = CFDataCreateMutable(nil, 0),
-			let destination = CGImageDestinationCreateWithData(mutableData, "public.jpeg" as CFString, 1, opts as CFDictionary)
+			let destination = CGImageDestinationCreateWithData(mutableData, "public.jpeg" as CFString, 1, nil)
 		else {
 			return nil
 		}
 
-		CGImageDestinationAddImage(destination, self, nil)
+		CGImageDestinationAddImage(destination, self, opts as CFDictionary)
 		CGImageDestinationFinalize(destination)
 
 		return mutableData as Data
