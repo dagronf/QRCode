@@ -70,6 +70,17 @@ import Foundation
 	// Private
 
 	internal var registeredTypes: [QRCodePixelShapeGenerator.Type]
+
+	/// The default matrix to use when generating pixel sample images
+	private static let defaultMatrix = BoolMatrix(dimension: 7, rawFlattenedInt: [
+		0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 1, 0, 0,
+		0, 0, 0, 0, 1, 0, 0,
+		0, 1, 0, 1, 1, 1, 0,
+		0, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 1, 0, 1, 0,
+		0, 0, 0, 0, 0, 0, 0,
+	])
 }
 
 public extension QRCodePixelShapeFactory {
@@ -79,6 +90,7 @@ public extension QRCodePixelShapeFactory {
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
+	///   - samplePixelMatrix: The matrix of pixels to draw in the result
 	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
 	/// - Returns: A CGImage representation of the data
 	@objc func image(
@@ -86,6 +98,7 @@ public extension QRCodePixelShapeFactory {
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil,
+		samplePixelMatrix: BoolMatrix? = nil,
 		isOn: Bool = true
 	) -> CGImage? {
 		let width = Int(dimension)
@@ -119,17 +132,8 @@ public extension QRCodePixelShapeFactory {
 		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
 
 		// Draw the qr with the required styles
-
 		let qr = QRCode()
-		qr.current = BoolMatrix(dimension: 7, rawFlattenedInt: [
-			0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 1, 1, 0, 0,
-			0, 0, 0, 0, 1, 0, 0,
-			0, 1, 0, 1, 1, 1, 0,
-			0, 1, 1, 1, 1, 0, 0,
-			0, 0, 0, 1, 0, 1, 0,
-			0, 0, 0, 0, 0, 0, 0,
-		])
+		qr.current = samplePixelMatrix ?? Self.defaultMatrix
 
 		let path = CGMutablePath()
 		let p2: CGPath = {
@@ -158,6 +162,7 @@ public extension QRCodePixelShapeFactory {
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
 	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	///   - samplePixelMatrix: The matrix of pixels to draw in the result
 	///   - commonSettings: QRCode settings to apply to each generator
 	/// - Returns: A CGImage representation of the data
 	func generateSampleImages(
@@ -165,6 +170,7 @@ public extension QRCodePixelShapeFactory {
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil,
 		isOn: Bool = true,
+		samplePixelMatrix: BoolMatrix? = nil,
 		commonSettings: [String: Any]? = nil
 	) -> [(name: String, image: CGImage)] {
 		QRCodePixelShapeFactory.shared.availableGeneratorNames
@@ -176,7 +182,8 @@ public extension QRCodePixelShapeFactory {
 						pixelGenerator: gen,
 						dimension: dimension,
 						foregroundColor: foregroundColor,
-						backgroundColor: backgroundColor
+						backgroundColor: backgroundColor,
+						samplePixelMatrix: samplePixelMatrix
 					)
 				else {
 					return nil

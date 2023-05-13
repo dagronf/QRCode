@@ -243,4 +243,72 @@ final class QRCodeTests: XCTestCase {
 			XCTAssertEqual(image.height, 800)
 		}
 	}
+
+	func testCustomPixelMatrixDefault() throws {
+		// Default
+		let im = QRCodePixelShapeFactory.shared.image(
+			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.5, hasInnerCorners: true),
+			dimension: 36,
+			foregroundColor: CGColor.init(red: 1, green: 0, blue: 0, alpha: 0.5)
+		)
+		let imd = try XCTUnwrap(im)
+
+		let o1 = try XCTUnwrap(imd.pngRepresentation())
+		try o1.writeToTempFile(named: "custom-pixelssample-default-36x36@1x.png")
+	}
+
+	func testCustomPixelMatrix3() throws {
+		let d3 = BoolMatrix(
+			dimension: 3,
+			rawFlattenedInt: [
+				1, 0, 0,
+				0, 1, 1,
+				0, 1 ,0
+			])
+
+		let im = QRCodePixelShapeFactory.shared.image(
+			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true),
+			dimension: 96,
+			foregroundColor: CGColor.black,
+			samplePixelMatrix: d3
+		)
+		let im3 = try XCTUnwrap(im)
+		let o1 = try XCTUnwrap(im3.jpgRepresentation(dpi: 144.0, compression: 0.75))
+		try o1.writeToTempFile(named: "custom-pixelssample-3x3-48x48@2x.jpg")
+	}
+
+	func testCustomPixelMatrix4() throws {
+		let d3 = BoolMatrix(
+			dimension: 4,
+			rawFlattenedInt: [
+				1, 1, 0, 1,
+				0, 1, 1, 0,
+				1, 0, 1, 0,
+				0, 1, 1, 1,
+			])
+
+		let im = QRCodePixelShapeFactory.shared.image(
+			pixelGenerator: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1),
+			dimension: 72,
+			foregroundColor: CGColor.black,
+			samplePixelMatrix: d3
+		)
+
+		let im4 = try XCTUnwrap(im)
+		let o1 = try XCTUnwrap(im4.pngRepresentation(dpi: 144.0))
+		try o1.writeToTempFile(named: "custom-pixelssample-4x4-36x36@2x.png")
+
+		#if os(iOS) || os(tvOS) || os(watchOS)
+		// Convert to a @2x UIImage
+		let uii = try XCTUnwrap(UIImage(cgImage: im4, scale: 2, orientation: .up))
+		XCTAssertEqual(CGSize(dimension: 36), uii.size)
+		XCTAssertEqual(2, uii.scale)
+		#elseif os(macOS)
+		// Convert to a @2x NSImage
+		let nsi = try XCTUnwrap(NSImage(cgImage: im4, size: CGSize(dimension: 36)))
+		XCTAssertEqual(CGSize(dimension: 36), nsi.size)
+		XCTAssertEqual(nsi.representations[0].pixelsWide, 72)
+		XCTAssertEqual(nsi.representations[0].pixelsHigh, 72)
+		#endif
+	}
 }
