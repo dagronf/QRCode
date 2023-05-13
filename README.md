@@ -53,8 +53,8 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
       <img src="./Art/background-fill-image.jpg" width="150"/>
    </a>
    
-   <a href="./Art/qrcode-off-pixels.png">
-      <img src="./Art/qrcode-off-pixels.png" width="150"/>
+   <a href="./Examples/red-b/red-b.md">
+      <img src="./Examples/red-b/qrcode-off-pixels.jpg" width="150"/>
    </a>
    
    <a href="./Art/qrcode-womble.jpg">
