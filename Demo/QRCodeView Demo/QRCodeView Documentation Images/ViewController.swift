@@ -10,15 +10,27 @@ import QRCode
 
 class ViewController: NSViewController {
 
-
+	let tempURL: URL = {
+		let tempFolderName = ProcessInfo.processInfo.globallyUniqueString
+		let tempURL = try! FileManager.default.url(
+			for: .itemReplacementDirectory,
+			in: .userDomainMask,
+			appropriateFor: URL(fileURLWithPath: NSTemporaryDirectory()),
+			create: true
+		)
+		.appendingPathComponent(tempFolderName)
+		try! FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true, attributes: nil)
+		return tempURL
+	}()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-
-		self.buildQuietSpaceContent()
 		self.buildEyeContent()
+		self.generateSampleQRCodeImages()
+
+		NSWorkspace.shared.open(tempURL)
 
 	}
 
@@ -28,34 +40,11 @@ class ViewController: NSViewController {
 		}
 	}
 
-	func buildQuietSpaceContent() {
 
-
-
-//		doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-//		doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
-//		doc1.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.cgColor)
-//		doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
-//		doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlphaComponent(0.4).cgColor)
-
-	}
 
 	func buildEyeContent() {
 
 		let imageSize: Double = 120
-
-		// unique name
-		let tempFolderName = ProcessInfo.processInfo.globallyUniqueString
-
-		// create the temporary folder url
-		let tempURL = try! FileManager.default.url(
-			for: .itemReplacementDirectory,
-			in: .userDomainMask,
-			appropriateFor: URL(fileURLWithPath: NSTemporaryDirectory()),
-			create: true
-		)
-		.appendingPathComponent(tempFolderName)
-		try! FileManager.default.createDirectory(at: tempURL, withIntermediateDirectories: true, attributes: nil)
 
 		do {
 			let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
@@ -360,8 +349,47 @@ class ViewController: NSViewController {
 			let pdfData = doc.pngData(dimension: 600, dpi: 144)!
 			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-negated.png"))
 		}
-
-		NSWorkspace.shared.open(tempURL)
 	}
 }
 
+extension ViewController {
+
+	func generateSampleQRCodeImages() {
+		do {
+			let doc = QRCode.Document(utf8String: "This is an image background")
+
+			doc.design.style.background = QRCode.FillStyle.Image(image: NSImage(named: "simple-photo"))
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.5)
+
+			let jpg = doc.jpegData(dimension: 400, compression: 0.65)!
+			try! jpg.write(to: tempURL.appendingPathComponent("demo-simple-image-background.jpg"))
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
+
+			let pixelFill = QRCode.FillStyle.LinearGradient(
+				DSFGradient(pins: [
+					DSFGradient.Pin(CGColor(red:0, green:0, blue:1, alpha:1), 0),
+					DSFGradient.Pin(CGColor(red:1, green:0, blue:0, alpha:1), 1),
+				])!,
+				startPoint: CGPoint(x: 0, y: 0),
+				endPoint: CGPoint(x: 0, y: 1)
+			)
+			doc.design.style.onPixels = pixelFill
+			doc.design.shape.onPixels = QRCode.PixelShape.RoundedEndIndent(cornerRadiusFraction: 1, hasInnerCorners: true)
+
+			doc.design.shape.eye = QRCode.EyeShape.Shield(topLeft: false, topRight: true, bottomLeft: true, bottomRight: false)
+
+			let logo = QRCode.LogoTemplate(image: NSImage(named: "wombles")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!)
+			logo.path = CGPath(rect: CGRect(x: 0.65, y: 0.375, width: 0.25, height: 0.25), transform: nil)
+			doc.logoTemplate = logo
+
+			let qrCodeImage = doc.cgImage(dimension: 400)
+
+			let jpg = doc.jpegData(dimension: 400, compression: 0.65)!
+			try! jpg.write(to: tempURL.appendingPathComponent("demo-wombles.jpg"))
+		}
+
+	}
+}
