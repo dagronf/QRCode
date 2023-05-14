@@ -39,12 +39,11 @@ extension CGImage {
 	///   - compression: (optional) the compression level to use (0 ... 1)
 	func pngRepresentation(dpi: CGFloat, compression: CGFloat? = nil) -> Data? {
 		var opts: [CFString: Any] = [:]
-		if dpi != 1 {
-			opts[kCGImagePropertyPixelWidth] = self.width
-			opts[kCGImagePropertyPixelHeight] = self.height
-			opts[kCGImagePropertyDPIWidth] = dpi
-			opts[kCGImagePropertyDPIHeight] = dpi
-		}
+		opts[kCGImagePropertyPixelWidth] = self.width
+		opts[kCGImagePropertyPixelHeight] = self.height
+		opts[kCGImagePropertyDPIWidth] = dpi
+		opts[kCGImagePropertyDPIHeight] = dpi
+
 		if let compression = compression {
 			opts[kCGImageDestinationLossyCompressionQuality] = compression
 		}
@@ -79,12 +78,11 @@ extension CGImage {
 	/// - Returns: JPEG data for the image
 	func jpgRepresentation(dpi: CGFloat, compression: CGFloat? = nil) -> Data? {
 		var opts: [CFString: Any] = [:]
-		if dpi != 1 {
-			opts[kCGImagePropertyPixelWidth] = self.width
-			opts[kCGImagePropertyPixelHeight] = self.height
-			opts[kCGImagePropertyDPIWidth] = dpi
-			opts[kCGImagePropertyDPIHeight] = dpi
-		}
+		opts[kCGImagePropertyPixelWidth] = self.width
+		opts[kCGImagePropertyPixelHeight] = self.height
+		opts[kCGImagePropertyDPIWidth] = dpi
+		opts[kCGImagePropertyDPIHeight] = dpi
+
 		if let compression = compression {
 			opts[kCGImageDestinationLossyCompressionQuality] = compression
 		}
