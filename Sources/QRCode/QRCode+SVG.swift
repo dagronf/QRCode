@@ -180,7 +180,7 @@ public extension QRCode {
 		}
 
 		if let logoTemplate = logoTemplate,
-			let pngData = logoTemplate.image.pngRepresentation()
+			let pngData = try? logoTemplate.image.representation.png()
 		{
 			// Store the image in the SVG as a base64 string
 

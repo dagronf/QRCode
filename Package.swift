@@ -28,13 +28,20 @@ let package = Package(
 		.package(
 			url: "https://github.com/dagronf/swift-qrcode-generator",
 			.upToNextMinor(from: "1.0.3")
-		)
+		),
+
+		// A microframework for cleaning handling image conversion
+		.package(
+			url: "https://github.com/dagronf/SwiftImageReadWrite",
+			.upToNextMinor(from: "1.1.0")
+		),
 	],
 	targets: [
 		// The qr code library
 		.target(
 			name: "QRCode",
 			dependencies: [
+				"SwiftImageReadWrite",
 				.product(
 					name: "QRCodeGenerator",
 					package: "swift-qrcode-generator"

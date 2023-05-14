@@ -56,7 +56,7 @@ internal func CGImageValueFromB64String(_ opaque: Any?) -> CGImage? {
 		let imageb64Data = imageb64.data(using: .ascii, allowLossyConversion: false),
 		let imageData = Data(base64Encoded: imageb64Data)
 	{
-		return CGImage.fromPNGData(imageData)
+		return try? CGImage.load(imageData: imageData)
 	}
 	return nil
 }

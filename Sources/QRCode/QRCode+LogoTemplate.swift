@@ -21,6 +21,7 @@
 
 import CoreGraphics
 import Foundation
+import SwiftImageReadWrite
 
 public extension QRCode {
 	/// A QRCode logo template
@@ -174,15 +175,12 @@ public extension QRCode.LogoTemplate {
 			settings["maskUsingImageTransparency"] = true
 		}
 
-		if let data = self.image.pngRepresentation()
-		{
+		if let data = try? self.image.representation.png() {
 			let b64 = data.base64EncodedString()
 			settings["image"] = b64
 		}
 
-		if let maskImage = self.maskImage,
-			let data = maskImage.pngRepresentation()
-		{
+		if let data = try? self.maskImage?.representation.png() {
 			let b64 = data.base64EncodedString()
 			settings["maskImage"] = b64
 		}

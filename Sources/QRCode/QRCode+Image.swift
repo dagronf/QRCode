@@ -22,7 +22,7 @@
 import CoreGraphics
 import Foundation
 
-import ImageIO
+import SwiftImageReadWrite
 
 // MARK: - CGImage
 
@@ -164,14 +164,8 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> Data? {
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
-			let mutableData = CFDataCreateMutable(nil, 0),
-			let destination = CGImageDestinationCreateWithData(mutableData, "public.png" as CFString, 1, nil)
-		{
-			let options = optionsForScale(size: size, dpi: dpi)
-			CGImageDestinationAddImage(destination, image, options)
-			CGImageDestinationFinalize(destination)
-			return mutableData as Data
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
+			return try? image.representation.png(dpi: dpi)
 		}
 		return nil
 	}
@@ -214,14 +208,8 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> Data? {
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
-			let mutableData = CFDataCreateMutable(nil, 0),
-			let destination = CGImageDestinationCreateWithData(mutableData, "public.tiff" as CFString, 1, nil)
-		{
-			let options = optionsForScale(size: size, dpi: dpi)
-			CGImageDestinationAddImage(destination, image, options)
-			CGImageDestinationFinalize(destination)
-			return mutableData as Data
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
+			return try? image.representation.tiff(dpi: dpi)
 		}
 		return nil
 	}
@@ -264,32 +252,9 @@ public extension QRCode {
 		guard (0.0 ... 1.0).contains(compression) else {
 			return nil
 		}
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate),
-			let mutableData = CFDataCreateMutable(nil, 0),
-			let destination = CGImageDestinationCreateWithData(mutableData, "public.jpeg" as CFString, 1, nil)
-		{
-			let options = optionsForScale(size: size, dpi: dpi, compression: compression)
-			CGImageDestinationAddImage(destination, image, options)
-			CGImageDestinationFinalize(destination)
-			return mutableData as Data
+		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
+			return try? image.representation.jpeg(dpi: dpi, compression: compression)
 		}
 		return nil
 	}
-}
-
-// MARK: - Private
-
-private func optionsForScale(size: CGSize, dpi: CGFloat? = nil, compression: CGFloat? = nil) -> CFDictionary? {
-	var opts: [CFString: Any] = [:]
-	if let dpi = dpi {
-		opts[kCGImagePropertyPixelWidth] = size.width
-		opts[kCGImagePropertyPixelHeight] = size.height
-		opts[kCGImagePropertyDPIWidth] = dpi
-		opts[kCGImagePropertyDPIHeight] = dpi
-	}
-	if let compression = compression {
-		opts[kCGImageDestinationLossyCompressionQuality] = compression
-	}
-	if opts.count > 0 { return opts as CFDictionary }
-	return nil
 }
