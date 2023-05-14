@@ -52,6 +52,11 @@ public extension QRCode.FillStyle {
 			super.init()
 		}
 
+		/// Create an image file style using the platform image type
+		@objc public convenience init(image: DSFImage?) {
+			self.init(image?.cgImage())
+		}
+
 		/// Returns a new copy of the fill style
 		public func copyStyle() -> QRCodeFillStyleGenerator {
 			return Image(self.image?.copy())
