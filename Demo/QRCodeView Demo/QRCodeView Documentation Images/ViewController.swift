@@ -23,6 +23,12 @@ class ViewController: NSViewController {
 		return tempURL
 	}()
 
+	private lazy var demosURL: URL = {
+		let url = tempURL.appendingPathComponent("demos")
+		try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+		return url
+	}()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -362,7 +368,7 @@ extension ViewController {
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.5)
 
 			let jpg = doc.jpegData(dimension: 400, compression: 0.65)!
-			try! jpg.write(to: tempURL.appendingPathComponent("demo-simple-image-background.jpg"))
+			try! jpg.write(to: demosURL.appendingPathComponent("demo-simple-image-background.jpg"))
 		}
 
 		do {
@@ -384,12 +390,103 @@ extension ViewController {
 			let logo = QRCode.LogoTemplate(image: NSImage(named: "wombles")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!)
 			logo.path = CGPath(rect: CGRect(x: 0.65, y: 0.375, width: 0.25, height: 0.25), transform: nil)
 			doc.logoTemplate = logo
-
-			let qrCodeImage = doc.cgImage(dimension: 400)
-
 			let jpg = doc.jpegData(dimension: 400, compression: 0.65)!
-			try! jpg.write(to: tempURL.appendingPathComponent("demo-wombles.jpg"))
+			try! jpg.write(to: demosURL.appendingPathComponent("demo-wombles.jpg"))
 		}
 
+		do {
+			let doc = QRCode.Document(
+				utf8String: "QRCode drawing only the 'off' pixels of the qr code with quiet space",
+				errorCorrection: .high
+			)
+			doc.design.additionalQuietZonePixels = 6
+			doc.design.style.backgroundFractionalCornerRadius = 4
+			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
+			doc.design.shape.negatedOnPixelsOnly = true
+
+			// Black background
+			doc.design.style.background = QRCode.FillStyle.Solid(gray: 0)
+			// White foreground
+			doc.design.foregroundStyle(QRCode.FillStyle.Solid(gray: 1))
+
+			let qrCodeImage = doc.cgImage(dimension: 600)
+			let pngData = doc.pngData(dimension: 600)!
+			try! pngData.write(to: demosURL.appendingPathComponent("design-negated-quiet-space.png"))
+		}
+
+		do {
+			let d = QRCode.Document(generator: QRCodeGenerator_External())
+			d.utf8String = "https://www.swift.org"
+
+			d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
+
+			d.design.style.eye = QRCode.FillStyle.Solid(gray: 1)
+			d.design.style.eyeBackground = CGColor(gray: 0, alpha: 0.2)
+
+			d.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+			d.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1)
+			d.design.style.onPixelsBackground = CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 0.2)
+
+			d.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
+			d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
+			d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
+
+			let svg = d.svg(dimension: 600)
+			try! svg.write(to: demosURL.appendingPathComponent("svgExportPixelBackgroundColors.svg"), atomically: true, encoding: .utf8)
+		}
+
+		do {
+			let doc = QRCode.Document(
+				utf8String: "http://www.bom.gov.au/products/IDR022.loop.shtml",
+				errorCorrection: .high
+			)
+
+			// Set the background image
+			let backgroundImage = NSImage(named: "b-image")
+			doc.design.style.background = QRCode.FillStyle.Image(image: backgroundImage)
+
+			// The red component color
+			let red_color = CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+
+			// Use Squircle for the eye
+			doc.design.shape.eye = QRCode.EyeShape.Squircle()
+			// We need to set the color of the eye background, or else the background image shows
+			// through the eye (which is bad for recognition)
+			doc.design.style.eyeBackground = red_color
+
+			// Make the 'on' pixels white
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 1, 1)
+			doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.5)
+
+			// Make the 'off' pixels red
+			doc.design.style.offPixels = QRCode.FillStyle.Solid(red_color)
+			doc.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.5)
+
+			// Generate the image
+			let jpg = doc.jpegData(dimension: 400, dpi: 144.0, compression: 0.65)!
+			try! jpg.write(to: demosURL.appendingPathComponent("qrcode-off-pixels.jpg"))
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "https://www.worldwildlife.org")
+
+			let backgroundImage = NSImage(named: "wwf")
+			doc.design.style.background = QRCode.FillStyle.Image(image: backgroundImage)
+
+			doc.design.style.eyeBackground = CGColor(gray: 1, alpha: 1)
+
+			doc.design.shape.onPixels = QRCode.PixelShape.Star(insetFraction: 0.4)
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(.black)
+
+			doc.design.shape.offPixels = QRCode.PixelShape.Star(insetFraction: 0.4)
+			doc.design.style.offPixels = QRCode.FillStyle.Solid(.white)
+
+			doc.design.shape.eye = QRCode.EyeShape.Leaf()
+			doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+
+			// Generate the image
+			let svg = doc.svg(dimension: 300)
+			try! svg.write(to: demosURL.appendingPathComponent("wwf.svg"), atomically: true, encoding: .utf8)
+		}
 	}
 }

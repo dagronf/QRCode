@@ -42,11 +42,11 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    <a href="./Art/qrcode-apple-watch.pdf">
       <img src="./Art/qrcode-apple-watch.png" width="150"/>
    </a>
-   <a href="./Art/qrcode-design-negated.pdf">
-      <img src="./Art/qrcode-design-negated.png" width="150"/>
+   <a href="./Examples/negated/index.md">
+      <img src="./Examples/negated/design-negated-quiet-space.png" width="150"/>
    </a>
-   <a href="./Art/pixel-background-colors.png">
-      <img src="./Art/pixel-background-colors.png" width="150"/>
+   <a href="./Examples/green/index.md">
+      <img src="./Examples/green/svgExportPixelBackgroundColors.svg" width="150"/>
    </a>
 
    <a href="./Examples/logo-background/logo-background.md">
@@ -60,8 +60,8 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
    <a href="./Examples/wombles/wombles.md">
       <img src="./Examples/wombles/demo-wombles.jpg" width="150"/>
    </a>
-      <a href="./Art/wwf.svg">
-      <img src="./Art/wwf.svg" width="150"/>
+      <a href="./Examples/wwf/index.md">
+      <img src="./Examples/wwf/wwf.svg" width="150"/>
    </a>
 </p>
 
