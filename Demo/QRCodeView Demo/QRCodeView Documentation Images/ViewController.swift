@@ -256,7 +256,7 @@ class ViewController: NSViewController {
 
 			// Centered square logo
 			doc.logoTemplate = QRCode.LogoTemplate(
-				image: image.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
+				image: image.cgImage!,
 				path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
 				inset: 2
 			)
