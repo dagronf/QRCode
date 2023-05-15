@@ -38,7 +38,9 @@ public struct QRCodeViewUI: View {
 		pupilStyle: QRCodePupilShapeGenerator? = nil,
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		negatedOnPixelsOnly: Bool? = nil,
-		generator: QRCodeEngine? = nil
+		generator: QRCodeEngine? = nil,
+		additionalQuietZonePixels: UInt = 0,
+		backgroundFractionalCornerRadius: CGFloat = 0
 	) {
 		self.content = QRCode.Document(
 			utf8String: content,
@@ -47,6 +49,9 @@ public struct QRCodeViewUI: View {
 		)
 		self.content.design.foregroundColor(foregroundColor)
 		self.content.design.backgroundColor(backgroundColor)
+
+		self.content.design.additionalQuietZonePixels = additionalQuietZonePixels
+		self.content.design.style.backgroundFractionalCornerRadius = backgroundFractionalCornerRadius
 
 		if let pixelStyle = pixelStyle {
 			self.content.design.shape.onPixels = pixelStyle

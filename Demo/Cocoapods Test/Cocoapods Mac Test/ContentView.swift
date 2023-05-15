@@ -25,8 +25,13 @@ struct ContentView: View {
 				.foregroundColor(.accentColor)
 			TextField("", text: $content)
 				.multilineTextAlignment(.center)
-			QRCodeViewUI(content: content, pixelStyle: style1)
-				.frame(minWidth: 300, minHeight: 300)
+			QRCodeViewUI(
+				content: content,
+				pixelStyle: style1,
+				additionalQuietZonePixels: 3,
+				backgroundFractionalCornerRadius: 2
+			)
+			.frame(minWidth: 300, minHeight: 300)
 		}
 		.padding()
 	}
