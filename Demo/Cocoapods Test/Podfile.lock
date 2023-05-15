@@ -1,6 +1,8 @@
 PODS:
-  - QRCode (13.6.0):
+  - QRCode (14.1.0):
+    - SwiftImageReadWrite (~> 1.1.5)
     - SwiftQRCodeGenerator
+  - SwiftImageReadWrite (1.1.5)
   - SwiftQRCodeGenerator (1.0.3)
 
 DEPENDENCIES:
@@ -8,17 +10,18 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - SwiftImageReadWrite
     - SwiftQRCodeGenerator
 
 EXTERNAL SOURCES:
   QRCode:
     :path: "../../"
-    :tag: "~> 13"
 
 SPEC CHECKSUMS:
-  QRCode: 63b6489750cf7bbf9afe665156708d8bdfc0fb94
+  QRCode: e60b431ba8b64238ba0588e26933dc970d7d5eee
+  SwiftImageReadWrite: 34f1839ed6f4fa1615185f58eb6c524216acab94
   SwiftQRCodeGenerator: c5cdef1603699784b07af0fd3cc1c2f45ac26ada
 
-PODFILE CHECKSUM: bb9f9e21455b2ee188f5511c1fe8ffe9a7a90969
+PODFILE CHECKSUM: b0880c6726e63aa76b7dc5e06474343d8ea31f7d
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
