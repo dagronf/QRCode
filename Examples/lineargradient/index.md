@@ -12,13 +12,13 @@ let doc = QRCode.Document(utf8String: "https://developer.apple.com/swift/")
 doc.design.additionalQuietZonePixels = 1
 doc.design.style.backgroundFractionalCornerRadius = 3
 
-let gradient = DSFGradient(pins: [
-   DSFGradient.Pin(CGColor(srgbRed: 0.005, green: 0.101, blue: 0.395, alpha: 1), 0.3),
-   DSFGradient.Pin(CGColor(srgbRed: 0, green: 0.021, blue: 0.137, alpha: 1), 0.55),
-   DSFGradient.Pin(CGColor(srgbRed: 0, green: 0.978, blue: 0.354, alpha: 1), 0.65),
-   DSFGradient.Pin(CGColor(srgbRed: 1, green: 0.248, blue:0, alpha:1), 0.66),
-   DSFGradient.Pin(CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1), 1.0),
-])!
+let gradient = try DSFGradient.build([
+   (0.30, CGColor(srgbRed: 0.005, green: 0.101, blue: 0.395, alpha: 1)),
+   (0.55, CGColor(srgbRed: 0, green: 0.021, blue: 0.137, alpha: 1)),
+   (0.65, CGColor(srgbRed: 0, green: 0.978, blue: 0.354, alpha: 1)),
+   (0.66, CGColor(srgbRed: 1, green: 0.248, blue:0, alpha: 1)),
+   (1.00, CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)),
+])
 
 let linear = QRCode.FillStyle.LinearGradient(
    gradient,

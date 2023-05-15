@@ -196,3 +196,44 @@ public extension DSFGradient.Pin {
 	}
 }
 #endif
+
+// MARK: - Builder
+
+public extension DSFGradient {
+	/// DSFGradient errors thrown
+	enum GradientError: Error {
+		/// Attempted to create a gradient where one of the colors couldnt be converted to the appropriate colorspace
+		case couldntConvertColorspace
+	}
+
+	/// Buidl a gradient
+	/// - Parameters:
+	///   - pins: An array of (position:Color) pairs in the gradient
+	///   - colorspace: An optional colorspace
+	/// - Returns: A gradient
+	///
+	/// An attempt to make the gradient creation less verbose.
+	///
+	/// ```swift
+	/// let gradient = try DSFGradient.build([
+	///   (0.0 , CGColor(srgbRed: 0.005, green: 0.101, blue: 0.395, alpha: 1)),
+	///   (0.25, CGColor(srgbRed: 0, green: 0.021, blue: 0.137, alpha: 1)),
+	///   ...
+	/// ])
+	/// ```
+	static func build(
+		_ pins: [(pos: CGFloat, color: CGColor)],
+		colorspace: CGColorSpace? = CGColorSpace(name: CGColorSpace.sRGB)
+	) throws -> DSFGradient {
+		var result: [DSFGradient.Pin] = []
+		pins.forEach { item in
+			let p = DSFGradient.Pin(item.color, item.pos)
+			result.append(p)
+		}
+		guard let result = DSFGradient(pins: result) else {
+			throw GradientError.couldntConvertColorspace
+		}
+		return result
+	}
+}
+
