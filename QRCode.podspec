@@ -11,7 +11,7 @@ s.source                     = { :git => 'https://github.com/dagronf/QRCode.git'
 s.module_name                = 'QRCode'
 
 s.dependency                 'SwiftQRCodeGenerator'
-s.dependency                 'SwiftImageReadWrite', '~> 1.1.5'
+s.dependency                 'SwiftImageReadWrite', '~> 1.1.6'
 
 s.osx.deployment_target      = '10.13'
 s.ios.deployment_target      = '13.0'
