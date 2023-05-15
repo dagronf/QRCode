@@ -180,12 +180,14 @@ public extension QRCode {
 	///   - dpi: The dpi for the resulting images
 	///   - design: The design for the QR Code
 	///   - logoTemplate: The logo template to apply to the qr code
+	///   - compression: The compression level when generating the image (0.0 ... 1.0)
 	/// - Returns: The TIFF data
 	@objc func tiffData(
 		dimension: Int,
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
-		logoTemplate: QRCode.LogoTemplate? = nil
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		compression: Double = .infinity
 	) -> Data? {
 		return self.tiffData(
 			CGSize(dimension: dimension),
@@ -201,15 +203,18 @@ public extension QRCode {
 	///   - dpi: The dpi for the resultant image
 	///   - design: The design for the QR Code
 	///   - logoTemplate: The logo template to apply to the qr code
+	///   - compression: The compression level when generating the image (0.0 ... 1.0)
 	/// - Returns: The TIFF data
 	@objc func tiffData(
 		_ size: CGSize,
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
-		logoTemplate: QRCode.LogoTemplate? = nil
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		compression: Double = .infinity
 	) -> Data? {
+		let compression: CGFloat? = (compression == .infinity) ? nil : compression
 		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
-			return try? image.representation.tiff(dpi: dpi)
+			return try? image.representation.tiff(dpi: dpi, compression: compression)
 		}
 		return nil
 	}
@@ -231,7 +236,7 @@ public extension QRCode {
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		compression: Double = 0.9
+		compression: Double = .infinity
 	) -> Data? {
 		return self.jpegData(
 			CGSize(dimension: dimension),
@@ -242,16 +247,22 @@ public extension QRCode {
 		)
 	}
 
+	/// Return a JPEG representation of the QR code
+	/// - Parameters:
+	///   - size: The dimensions of the image to create
+	///   - dpi: The dpi for the resulting images
+	///   - design: The design for the QR Code
+	///   - logoTemplate: The logo template to apply to the qr code
+	///   - compression: The compression level when generating the JPEG file (0.0 ... 1.0)
+	/// - Returns: The JPEG data
 	@objc func jpegData(
 		_ size: CGSize,
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		compression: Double = 0.9
+		compression: Double = .infinity
 	) -> Data? {
-		guard (0.0 ... 1.0).contains(compression) else {
-			return nil
-		}
+		let compression: CGFloat? = (compression == .infinity) ? nil : compression
 		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
 			return try? image.representation.jpeg(dpi: dpi, compression: compression)
 		}
