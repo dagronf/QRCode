@@ -1,5 +1,8 @@
 import XCTest
 @testable import QRCode
+
+import SwiftImageReadWrite
+
 final class QRCodeTests: XCTestCase {
 	func testBasicQRCode() throws {
 		let doc = QRCode(generator: __testGenerator)
@@ -253,7 +256,7 @@ final class QRCodeTests: XCTestCase {
 		)
 		let imd = try XCTUnwrap(im)
 
-		let o1 = try XCTUnwrap(imd.pngRepresentation())
+		let o1 = try imd.representation.png()
 		try o1.writeToTempFile(named: "custom-pixelssample-default-36x36@1x.png")
 	}
 
@@ -273,7 +276,7 @@ final class QRCodeTests: XCTestCase {
 			samplePixelMatrix: d3
 		)
 		let im3 = try XCTUnwrap(im)
-		let o1 = try XCTUnwrap(im3.jpgRepresentation(dpi: 144.0, compression: 0.75))
+		let o1 = try im3.representation.jpeg(dpi: 144.0, compression: 0.75)
 		try o1.writeToTempFile(named: "custom-pixelssample-3x3-48x48@2x.jpg")
 	}
 
@@ -295,7 +298,7 @@ final class QRCodeTests: XCTestCase {
 		)
 
 		let im4 = try XCTUnwrap(im)
-		let o1 = try XCTUnwrap(im4.pngRepresentation(dpi: 144.0))
+		let o1 = try im4.representation.png(dpi: 144.0)
 		try o1.writeToTempFile(named: "custom-pixelssample-4x4-36x36@2x.png")
 
 		#if os(iOS) || os(tvOS) || os(watchOS)
