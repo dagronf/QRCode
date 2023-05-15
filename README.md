@@ -36,8 +36,8 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
       <img src="./Art/qrcode-with-logo.png" width="150"/>
    </a>   
    &nbsp;
-   <a href="./Art/qrcode-with-basic-logo.svg">
-      <img src="./Art/qrcode-with-basic-logo.svg" width="150"/>
+   <a href="./Examples/scan/index.md">
+      <img src="./Examples/scan/qrcode-with-basic-logo.svg" width="150"/>
    </a>   
 
    <a href="./Examples/lineargradient/index.md">
@@ -138,7 +138,7 @@ let generated = doc.cgImage(CGSize(width: 800, height: 800))
 
 Generates
 
-<img src="./Art/simple-generated-qrcode.png" width="80"/>
+<img src="./Art/images/simple-generated-qrcode.png" width="80"/>
 
 You can further style the qr code (see below) 
 

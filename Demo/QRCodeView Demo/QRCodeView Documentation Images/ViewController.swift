@@ -313,39 +313,6 @@ class ViewController: NSViewController {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
-
-			doc.design.shape.eye = QRCode.EyeShape.Squircle()
-			doc.design.style.eye = QRCode.FillStyle.Solid(108.0 / 255.0, 76.0 / 255.0, 191.0 / 255.0)
-			doc.design.style.pupil = QRCode.FillStyle.Solid(168.0 / 255.0, 33.0 / 255.0, 107.0 / 255.0)
-
-			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
-
-			let c = QRCode.FillStyle.RadialGradient(
-				DSFGradient(pins: [
-					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.75, alpha: 1), 1),
-					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.95, alpha: 1), 0),
-					]
-				)!,
-				centerPoint: CGPoint(x: 0.5, y: 0.5))
-
-			doc.design.style.background = c
-
-			// Create a logo 'template'
-			doc.logoTemplate = QRCode.LogoTemplate(
-				image: NSImage(named: "apple-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
-				path: CGPath(rect: CGRect(x: 0.49, y: 0.4, width: 0.45, height: 0.22), transform: nil),
-				inset: 4
-			)
-
-			let svg = doc.svg(dimension: 200)
-			try! svg.write(to: tempURL.appendingPathComponent("qrcode-with-basic-logo.svg"), atomically: true, encoding: .ascii)
-
-			let pdfData = doc.pdfData(dimension: 200)!
-			try! pdfData.write(to: tempURL.appendingPathComponent("qrcode-with-basic-logo.pdf"))
-		}
-
-		do {
 			let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
 			doc.design.shape.negatedOnPixelsOnly = true
@@ -518,10 +485,43 @@ extension ViewController {
 			doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.1)
 			doc.design.shape.offPixels = QRCode.PixelShape.Vertical(insetFraction: 0.05, cornerRadiusFraction: 1)
 
-			//let image = doc.nsImage(dimension: 400)
-
 			let imageData = doc.pngData(dimension: 400)!
 			try! imageData.write(to: demosURL.appendingPathComponent("linear-background.png"))
+		}
+
+		do {
+			let doc = QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
+
+			doc.design.shape.eye = QRCode.EyeShape.Squircle()
+			doc.design.style.eye = QRCode.FillStyle.Solid(108.0 / 255.0, 76.0 / 255.0, 191.0 / 255.0)
+			doc.design.style.pupil = QRCode.FillStyle.Solid(168.0 / 255.0, 33.0 / 255.0, 107.0 / 255.0)
+
+			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
+
+			let c = QRCode.FillStyle.RadialGradient(
+				DSFGradient(pins: [
+					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.75, alpha: 1), 1),
+					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0.95, alpha: 1), 0),
+					]
+				)!,
+				centerPoint: CGPoint(x: 0.5, y: 0.5))
+
+			doc.design.style.background = c
+
+			// Create a logo 'template'
+			doc.logoTemplate = QRCode.LogoTemplate(
+				image: NSImage(named: "apple-logo")!.cgImage(forProposedRect: nil, context: nil, hints: nil)!,
+				path: CGPath(rect: CGRect(x: 0.49, y: 0.4, width: 0.45, height: 0.22), transform: nil),
+				inset: 4
+			)
+
+			let image = doc.nsImage(dimension: 200)
+
+			let svg = doc.svg(dimension: 200)
+			try! svg.write(to: demosURL.appendingPathComponent("qrcode-with-basic-logo.svg"), atomically: true, encoding: .ascii)
+
+			let pdfData = doc.pdfData(dimension: 200)!
+			try! pdfData.write(to: demosURL.appendingPathComponent("qrcode-with-basic-logo.pdf"))
 		}
 	}
 }
