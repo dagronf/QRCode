@@ -13,7 +13,7 @@ s.module_name                = 'QRCode'
 s.dependency                 'SwiftQRCodeGenerator'
 s.dependency                 'SwiftImageReadWrite', '~> 1.1.6'
 
-s.osx.deployment_target      = '10.13'
+s.osx.deployment_target      = '10.11'
 s.ios.deployment_target      = '13.0'
 s.tvos.deployment_target     = '13.0'
 s.watchos.deployment_target  = '6.0'
