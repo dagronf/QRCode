@@ -43,6 +43,7 @@ import Foundation
 			QRCode.PixelShape.Sharp.self,
 			QRCode.PixelShape.Star.self,
 			QRCode.PixelShape.RoundedEndIndent.self,
+			QRCode.PixelShape.Shiny.self,
 		]
 		super.init()
 	}

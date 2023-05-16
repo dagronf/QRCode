@@ -178,8 +178,6 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 
 ### Set the data content
 
-
-
 ```swift
 /// Set raw data
 @objc public var data: Data
@@ -215,7 +213,14 @@ The higher the error correction level, the larger the QR code will be.
 
 `QRCode` supports a number of ways of 'designing' your qr code.  By default, the qr code will be generated in its traditional form - square, black foreground and white background. By tweaking the design settings of the qr code you can make it a touch fancier.
 
-The design comprises two components
+**Note** You can fancify your QR code so much that it can no longer be read by readers.
+
+1. Always check that your QR code can be read **at the size that it will be presented to users**. (hint: use your phone!)
+2. Have good contrast between the QR Code and its background
+3. If you use 'off' pixels (see below) make sure they are very high contrast to the 'on' pixels.
+4. Don't have high contrast between the 'on' pixels and the eye.
+
+The design comprises two components :-
 
 |        | Description    |
 |--------|:--------------------------------------------------------------------------|
@@ -313,7 +318,8 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 |<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
-|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
+|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`| A 'flower' style |
+|<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` | A pixel style that appears 'shiny' |
 
 #### 'offPixels' shape (optional)
 
