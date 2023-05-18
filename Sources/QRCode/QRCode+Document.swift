@@ -28,34 +28,6 @@ import SwiftUI
 
 public extension QRCode {
 
-	class Content {
-		var rawData: Data? {
-			didSet {
-				if self.rawData != nil {
-					self.text = nil
-				}
-			}
-		}
-		var text: String? {
-			didSet {
-				if self.text != nil {
-					self.rawData = nil
-				}
-			}
-		}
-		convenience init() {
-			self.init(Data())
-		}
-		init(_ data: Data) {
-			self.rawData = data
-			self.text = nil
-		}
-		init(_ text: String) {
-			self.text = text
-			self.rawData = nil
-		}
-	}
-
 	/// A QR Code document
 	@objc(QRCodeDocument) class Document: NSObject {
 
@@ -66,16 +38,13 @@ public extension QRCode {
 			}
 		}
 
-		let content: Content
-
-
 		/// Binary data to display in the QR code
 		@objc public var data: Data? {
 			get {
-				content.rawData
+				self.content.data
 			}
 			set {
-				content.rawData = newValue
+				self.content.data = newValue ?? Data()
 				self.regenerate()
 			}
 		}
@@ -85,10 +54,10 @@ public extension QRCode {
 		/// If you need string content using a different encoding, use the `data` property instead
 		@objc public var utf8String: String? {
 			get {
-				content.text
+				self.content.utf8
 			}
 			set {
-				content.text = newValue
+				self.content.utf8 = newValue ?? ""
 				self.regenerate()
 			}
 		}
@@ -99,7 +68,9 @@ public extension QRCode {
 		}
 
 		/// A logo template
-		@objc public var logoTemplate: QRCode.LogoTemplate?
+		@objc public var logoTemplate: QRCode.LogoTemplate? {
+			didSet { self.regenerate() }
+		}
 
 		/// Create a QR code
 		@objc override public init() {
@@ -179,8 +150,11 @@ public extension QRCode {
 			super.init()
 		}
 
-		// The qrcode content.
+		/// The qrcode content.
 		internal let qrcode: QRCode
+
+		/// The content to display
+		internal let content: Content
 	}
 }
 
