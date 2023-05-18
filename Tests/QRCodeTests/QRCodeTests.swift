@@ -280,6 +280,45 @@ final class QRCodeTests: XCTestCase {
 		try o1.writeToTempFile(named: "custom-pixelssample-3x3-48x48@2x.jpg")
 	}
 
+	func testCustomMatrixAlignment() throws {
+		let d5x5 = BoolMatrix(
+			dimension: 5,
+			rawFlattenedInt: [
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+			])
+
+		let d4x4 = BoolMatrix(
+			dimension: 4,
+			rawFlattenedInt: [
+				1, 1, 1, 0,
+				0, 0, 1, 1,
+				1, 0, 1, 1,
+				1, 1, 0, 1,
+			])
+
+		try [d4x4, d5x5].forEach { matrix in
+			let allImages = QRCodePixelShapeFactory.shared.generateSampleImages(
+				dimension: 100,
+				foregroundColor: .black,
+				backgroundColor: .white,
+				isOn: true,
+				samplePixelMatrix: matrix,
+				commonSettings: [
+					QRCode.SettingsKey.insetFraction: 0.2,
+					QRCode.SettingsKey.cornerRadiusFraction: 0.8,
+					QRCode.SettingsKey.hasInnerCorners: true,
+				]
+			)
+			try allImages.forEach { item in
+				try item.image.representation.jpeg().writeToTempFile(named: "pixel-alignment-check-\(matrix.dimension)-\(item.name).jpg")
+			}
+		}
+	}
+
 	func testCustomPixelMatrix4() throws {
 		let d3 = BoolMatrix(
 			dimension: 4,
