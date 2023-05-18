@@ -27,19 +27,12 @@
 import CoreGraphics
 import Foundation
 
-/// A QRCode generator class
+/// A QRCode generator class.
+///
+/// Note that while this can be used on any thread, it is not in itself thread-safe.
 @objc public class QRCode: NSObject {
 	/// The generator to use when generating the QR code.
-	///
-	/// Defaults to CoreImage on macOS/iOS/tvOS, or the external 3rd party library for watchOS
-	@objc public var generator: QRCodeEngine = {
-#if os(watchOS)
-		// You must supply a 3rd party generator for watchOS (see README.md)
-		return QRCodeGenerator_External()
-#else
-		return QRCodeGenerator_CoreImage()
-#endif
-	}()
+	@objc public var generator: QRCodeEngine = QRCode.DefaultEngine()
 
 	/// Create a blank QRCode
 	@objc override public init() {
@@ -63,7 +56,7 @@ import Foundation
 		errorCorrection: ErrorCorrection = .default,
 		generator: QRCodeEngine? = nil
 	) {
-		if let g = generator { self.generator = g }
+		if let generator = generator { self.generator = generator }
 		super.init()
 		self.update(data: data, errorCorrection: errorCorrection)
 	}
@@ -74,7 +67,7 @@ import Foundation
 		errorCorrection: ErrorCorrection = .default,
 		generator: QRCodeEngine? = nil
 	) {
-		if let g = generator { self.generator = g }
+		if let generator = generator { self.generator = generator }
 		super.init()
 		self.update(text: utf8String, errorCorrection: errorCorrection)
 	}
@@ -85,7 +78,7 @@ import Foundation
 		errorCorrection: ErrorCorrection = .default,
 		generator: QRCodeEngine? = nil
 	) {
-		if let g = generator { self.generator = g }
+		if let generator = generator { self.generator = generator }
 		super.init()
 		self.update(message: message, errorCorrection: errorCorrection)
 	}
