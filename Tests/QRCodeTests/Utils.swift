@@ -16,42 +16,25 @@ import UIKit
 typealias CommonImage = UIImage
 #endif
 
-// Note:  DateFormatter is thread safe
-// See https://developer.apple.com/documentation/foundation/dateformatter#1680059
-internal let iso8601Formatter: DateFormatter = {
-	let dateFormatter = DateFormatter()
-	dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX ISO8601
-	dateFormatter.dateFormat = "yyyy-MM-dd'T'HHmmssZ"
-	return dateFormatter
-}()
-
-let __tmpFolder: URL = {
-	let u = FileManager.default
-		.temporaryDirectory
-		.appendingPathComponent("qrcodeTests")
-		.appendingPathComponent(iso8601Formatter.string(from: Date()))
-	try! FileManager.default.createDirectory(at: u, withIntermediateDirectories: true)
-	Swift.print("Temp files at: \(u)")
-	return u
-}()
-
-func testFilenameWithName(_ name: String) throws -> URL {
-	__tmpFolder.appendingPathComponent(name)
+extension CGPoint {
+	@inlinable static func _P(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x, y: y) }
+	@inlinable static func _P(_ x: Int, _ y: Int) -> CGPoint { CGPoint(x: x, y: y) }
+	@inlinable static func _P(_ x: Double, _ y: Double) -> CGPoint { CGPoint(x: x, y: y) }
 }
 
-extension String {
-	@discardableResult func writeToTempFile(named filename: String, encoding: String.Encoding = .utf8) throws -> URL {
-		let tempURL = try testFilenameWithName(filename)
-		try self.write(to: tempURL, atomically: true, encoding: encoding)
-		return tempURL
-	}
-}
-
-extension Data {
-	@discardableResult func writeToTempFile(named filename: String) throws -> URL {
-		let tempURL = try testFilenameWithName(filename)
-		try self.write(to: tempURL)
-		return tempURL
+extension CGColor {
+	/// Compare two colors by converting them to srgba colorspace and comparing the components
+	func dumbEquality(with other: CGColor, accuracy: Double) -> Bool {
+		guard
+			let s = self.sRGBAComponents(),
+			let o = other.sRGBAComponents()
+		else {
+			return false
+		}
+		return abs(s.r - o.r) < accuracy &&
+			abs(s.g - o.g) < accuracy &&
+			abs(s.b - o.b) < accuracy &&
+			abs(s.a - o.a) < accuracy
 	}
 }
 

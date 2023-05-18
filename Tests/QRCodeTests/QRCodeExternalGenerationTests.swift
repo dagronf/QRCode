@@ -11,6 +11,8 @@ import XCTest
 
 final class QRCodeExternalGenerationTests: XCTestCase {
 
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeExternalGenerationTests")
+
 	func testBasicAlpha() throws {
 		let eGen = QRCodeGenerator_External()
 
@@ -54,7 +56,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		let d31 = QRCode.Document(utf8String: m31, generator: eGen)
 		XCTAssertEqual(27, d31.boolMatrix.dimension)
 		let data31 = try XCTUnwrap(d31.imageData(.png(), dimension: 300))
-		try data31.writeToTempFile(named: "extgen_numerics_only.png")
+		try outputFolder.write(data31, to: "extgen_numerics_only.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
@@ -75,7 +77,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		XCTAssertEqual(g32?.dimension, 31)
 		let d32 = QRCode.Document(utf8String: m32, generator: eGen)
 		XCTAssertEqual(31, d32.boolMatrix.dimension)
-		try d32.imageData(.png(), dimension: 300)?.writeToTempFile(named: "extgen_alphanumerics_only.png")
+		let d32d = try XCTUnwrap(d32.imageData(.png(), dimension: 300))
+		try outputFolder.write(d32d, to: "extgen_alphanumerics_only.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
@@ -95,7 +98,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		XCTAssertEqual(g33?.dimension, 35)
 		let d33 = QRCode.Document(utf8String: m33, generator: eGen)
 		XCTAssertEqual(35, d33.boolMatrix.dimension)
-		try d33.imageData(.png(), dimension: 300)?.writeToTempFile(named: "extgen_generic_text.png")
+		let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+		try outputFolder.write(d33d, to: "extgen_generic_text.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
@@ -115,7 +119,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			XCTAssertEqual(g33.dimension, 39)
 			let d33 = QRCode.Document(utf8String: m33, generator: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
-			try d33.imageData(.png(), dimension: 300)?.writeToTempFile(named: "extgen_arabic_text_utf8.png")
+			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+			try outputFolder.write(d33d, to: "extgen_arabic_text_utf8.png")
 
 #if !os(watchOS)
 			// Make sure we can detect the generated QR code
@@ -132,7 +137,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			XCTAssertEqual(g33.dimension, 39)
 			let d33 = QRCode.Document(utf8String: m33, generator: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
-			try d33.imageData(.png(), dimension: 300)?.writeToTempFile(named: "extgen_arabic_text_utf8.png")
+			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+			try outputFolder.write(d33d, to: "extgen_emojis_text_utf8.png")
 
 #if !os(watchOS)
 			// Make sure we can detect the generated QR code

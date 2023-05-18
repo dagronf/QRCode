@@ -2,6 +2,9 @@ import XCTest
 @testable import QRCode
 
 final class QRCodeMaskingTests: XCTestCase {
+
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeMaskingTests")
+
 	func testBasicMask() throws {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
@@ -17,11 +20,11 @@ final class QRCodeMaskingTests: XCTestCase {
 			code.logoTemplate = t
 
 			let svg = code.svg(dimension: 600)
-			try svg.writeToTempFile(named: "testBasicMask1.svg")
+			try outputFolder.write(svg, to: "testBasicMask1.svg")
 
 			let image = code.platformImage(dimension: 300, dpi: 144)!
 			let data = image.pngRepresentation()!
-			try data.writeToTempFile(named: "testBasicMask1.png")
+			try outputFolder.write(data, to: "testBasicMask1.png")
 		}
 
 		do {
@@ -30,11 +33,11 @@ final class QRCodeMaskingTests: XCTestCase {
 			code.logoTemplate = t
 
 			let svg = code.svg(dimension: 600)
-			try svg.writeToTempFile(named: "testBasicMask2.svg")
+			try outputFolder.write(svg, to: "testBasicMask2.svg")
 
 			let image = code.platformImage(dimension: 300, dpi: 144)!
 			let data = image.pngRepresentation()!
-			try data.writeToTempFile(named: "testBasicMask2.png")
+			try outputFolder.write(data, to: "testBasicMask2.png")
 		}
 	}
 
@@ -95,14 +98,14 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
-			try data.writeToTempFile(named: "logo-lower-right-logo-small.png")
+			try outputFolder.write(data, to: "logo-lower-right-logo-small.png")
 
 			let logoQRCode2 = try XCTUnwrap(code.platformImage(dimension: 512))
 			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
-			try data2.writeToTempFile(named: "logo-lower-right-logo-larger.png")
+			try outputFolder.write(data2, to: "logo-lower-right-logo-larger.png")
 
 			let str = code.svg(dimension: 512)
-			try str.writeToTempFile(named: "logo-lower-right-logo-larger.svg")
+			try outputFolder.write(str, to: "logo-lower-right-logo-larger.svg")
 		}
 
 		do {
@@ -118,7 +121,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 600))
 			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
-			try data.writeToTempFile(named: "logo-center-square-logo.png")
+			try outputFolder.write(data, to: "logo-center-square-logo.png")
 		}
 
 		do {
@@ -134,7 +137,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 512))
 			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
-			try data.writeToTempFile(named: "logo-rectangular-non-centered.png")
+			try outputFolder.write(data, to: "logo-rectangular-non-centered.png")
 
 			let logo2 = QRCode.LogoTemplate(
 				image: logoImage,
@@ -145,10 +148,10 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logoQRCode2 = try XCTUnwrap(code.platformImage(dimension: 3000))
 			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
-			try data2.writeToTempFile(named: "logo-rectangular-non-centered-large.png")
+			try outputFolder.write(data2, to: "logo-rectangular-non-centered-large.png")
 
 			let str = code.svg(dimension: 3000)
-			try str.writeToTempFile(named: "logo-rectangular-non-centered-large.svg")
+			try outputFolder.write(str, to: "logo-rectangular-non-centered-large.svg")
 		}
 	}
 
@@ -167,7 +170,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "fixed-template-circle-center.png")
+			try outputFolder.write(data2, to: "fixed-template-circle-center.png")
 		}
 
 		do {
@@ -178,7 +181,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "fixed-template-circle-bottom-right.png")
+			try outputFolder.write(data2, to: "fixed-template-circle-bottom-right.png")
 		}
 
 		do {
@@ -189,7 +192,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "fixed-template-square-center.png")
+			try outputFolder.write(data2, to: "fixed-template-square-center.png")
 		}
 
 		do {
@@ -200,7 +203,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "fixed-template-square-bottom-right.png")
+			try outputFolder.write(data2, to: "fixed-template-square-bottom-right.png")
 		}
 	}
 
@@ -218,7 +221,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(doc.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "logotemplate-image-transparency-mask.png")
+			try outputFolder.write(data2, to: "logotemplate-image-transparency-mask.png")
 		}
 
 		do {
@@ -227,8 +230,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 			let logo1 = try XCTUnwrap(doc.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
-			try data2.writeToTempFile(named: "logotemplate-image-using-imagemask.png")
+			try outputFolder.write(data2, to: "logotemplate-image-using-imagemask.png")
 		}
 	}
 }
-

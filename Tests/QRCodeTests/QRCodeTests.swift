@@ -2,8 +2,12 @@ import XCTest
 @testable import QRCode
 
 import SwiftImageReadWrite
+internal let testResultsContainer = try! TestFilesContainer(named: "QRCodeTests")
 
 final class QRCodeTests: XCTestCase {
+
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeTests")
+
 	func testBasicQRCode() throws {
 		let doc = QRCode(generator: __testGenerator)
 		let url = URL(string: "https://www.apple.com.au/")!
@@ -120,7 +124,7 @@ final class QRCodeTests: XCTestCase {
 		do {
 			for dpi in dpis {
 				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
-				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).png")
+				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).png")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
 				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
@@ -131,7 +135,7 @@ final class QRCodeTests: XCTestCase {
 		do {
 			for dpi in dpis {
 				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
-				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).tiff")
+				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).tiff")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
 				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
@@ -142,7 +146,7 @@ final class QRCodeTests: XCTestCase {
 		do {
 			for dpi in dpis {
 				let data = try XCTUnwrap(doc.jpegData(dimension: dpi.0, dpi: dpi.1, compression: 0.4))
-				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).jpg")
+				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).jpg")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
 				XCTAssertEqual(dpi.0, im.representations[0].pixelsWide)
@@ -153,7 +157,7 @@ final class QRCodeTests: XCTestCase {
 		do {
 			for dpi in dpis {
 				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
-				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).png")
+				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).png")
 				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
 			}
@@ -162,7 +166,7 @@ final class QRCodeTests: XCTestCase {
 		do {
 			for dpi in dpis {
 				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
-				let url = try data.writeToTempFile(named: "dpi-test-output\(dpi.2).tiff")
+				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).tiff")
 				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
 			}
@@ -172,12 +176,12 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			let data = try XCTUnwrap(doc.pdfData(dimension: 300))
-			try data.writeToTempFile(named: "dpi-test-output.pdf")
+			try outputFolder.write(data, to: "dpi-test-output.pdf")
 		}
 
 		do {
 			let data = try XCTUnwrap(doc.svgData(dimension: 300))
-			try data.writeToTempFile(named: "dpi-test-output.svg")
+			try outputFolder.write(data, to: "dpi-test-output.svg")
 		}
 	}
 
@@ -257,7 +261,7 @@ final class QRCodeTests: XCTestCase {
 		let imd = try XCTUnwrap(im)
 
 		let o1 = try imd.representation.png()
-		try o1.writeToTempFile(named: "custom-pixelssample-default-36x36@1x.png")
+		try outputFolder.write(o1, to: "custom-pixelssample-default-36x36@1x.png")
 	}
 
 	func testCustomPixelMatrix3() throws {
@@ -277,19 +281,12 @@ final class QRCodeTests: XCTestCase {
 		)
 		let im3 = try XCTUnwrap(im)
 		let o1 = try im3.representation.jpeg(dpi: 144.0, compression: 0.75)
-		try o1.writeToTempFile(named: "custom-pixelssample-3x3-48x48@2x.jpg")
+		try outputFolder.write(o1, to: "custom-pixelssample-3x3-48x48@2x.jpg")
 	}
 
 	func testCustomMatrixAlignment() throws {
-		let d5x5 = BoolMatrix(
-			dimension: 5,
-			rawFlattenedInt: [
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-			])
+
+		var markdownText = "# Pixel alignment checks\n\n"
 
 		let d4x4 = BoolMatrix(
 			dimension: 4,
@@ -300,11 +297,26 @@ final class QRCodeTests: XCTestCase {
 				1, 1, 0, 1,
 			])
 
+		let d5x5 = BoolMatrix(
+			dimension: 5,
+			rawFlattenedInt: [
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 1,
+			])
+
+		let outputFolder = try outputFolder.subfolder(with: "pixel-alignment")
+
 		try [d4x4, d5x5].forEach { matrix in
+
+			markdownText += "## Matrix check\n\n"
+
 			let allImages = QRCodePixelShapeFactory.shared.generateSampleImages(
-				dimension: 100,
+				dimension: 300,
 				foregroundColor: .black,
-				backgroundColor: .white,
+				backgroundColor: CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1),
 				isOn: true,
 				samplePixelMatrix: matrix,
 				commonSettings: [
@@ -313,10 +325,17 @@ final class QRCodeTests: XCTestCase {
 					QRCode.SettingsKey.hasInnerCorners: true,
 				]
 			)
+
 			try allImages.forEach { item in
-				try item.image.representation.jpeg().writeToTempFile(named: "pixel-alignment-check-\(matrix.dimension)-\(item.name).jpg")
+				let n = "pixel-alignment-check-\(matrix.dimension)-\(item.name).jpg"
+				try outputFolder.write(try item.image.representation.jpeg(scale: 2, compression: 0.5), to: n)
+				markdownText += "<img src=\"./\(n)\" width=\"150\" /> &nbsp;"
 			}
+			markdownText += "\n\n"
 		}
+
+		// Write out a markdown file for easy presentation of the results
+		try outputFolder.write(markdownText, to: "_pixel-alignment.md", encoding: .utf8)
 	}
 
 	func testCustomPixelMatrix4() throws {
@@ -338,7 +357,7 @@ final class QRCodeTests: XCTestCase {
 
 		let im4 = try XCTUnwrap(im)
 		let o1 = try im4.representation.png(dpi: 144.0)
-		try o1.writeToTempFile(named: "custom-pixelssample-4x4-36x36@2x.png")
+		try outputFolder.write(o1, to: "custom-pixelssample-4x4-36x36@2x.png")
 
 		#if os(iOS) || os(tvOS) || os(watchOS)
 		// Convert to a @2x UIImage

@@ -2,6 +2,9 @@ import XCTest
 @testable import QRCode
 
 final class QRCodeLoadSaveTests: XCTestCase {
+
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeLoadSaveTests")
+
 	func testBasic() throws {
 		let doc1 = QRCode.Document(generator: __testGenerator)
 		doc1.data = "this is a test".data(using: .utf8)!
@@ -150,14 +153,16 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 		let doc2 = try QRCode.Document(dictionary: settings, generator: generator)
 		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
-		try doc2.imageData(.jpg(compression: 0.2), dimension: 300)?.writeToTempFile(named: "NegatedQRCodeTestFile-on.jpg")
+		let data1 = try XCTUnwrap(doc2.imageData(.jpg(compression: 0.2), dimension: 300))
+		try outputFolder.write(data1, to: "NegatedQRCodeTestFile-on.jpg")
 
 		doc2.design.shape.negatedOnPixelsOnly = false
 		let settings3 = doc2.settings()
 		let doc3 = try QRCode.Document(dictionary: settings3, generator: generator)
 		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
 
-		try doc3.imageData(.jpg(compression: 0.5), dimension: 300)?.writeToTempFile(named: "NegatedQRCodeTestFile-off.jpg")
+		let data2 = try XCTUnwrap(doc3.imageData(.jpg(compression: 0.5), dimension: 300))
+		try outputFolder.write(data2, to: "NegatedQRCodeTestFile-off.jpg")
 	}
 
 	func testEncodeDecodeShield() throws {

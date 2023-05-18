@@ -3,6 +3,9 @@
 import XCTest
 
 final class QRCodeSVGTests: XCTestCase {
+
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeSVGTests")
+
 	func testBasicSVG() throws {
 		let doc = QRCode.Document(
 			utf8String: "This is a test This is a test This is a test This is a test",
@@ -21,16 +24,14 @@ final class QRCodeSVGTests: XCTestCase {
 			let svg = doc.svg(dimension: 800)
 			XCTAssertGreaterThan(svg.count, 0)
 
-			try svg.writeToTempFile(named: "basicSVG1-mask-no-image.svg")
+			try outputFolder.write(svg, to: "basicSVG1-mask-no-image.svg")
 		}
 
 		do {
 			doc.design.foregroundColor(CGColor(red: 0, green: 0.3, blue: 0, alpha: 1))
-
 			let svg = doc.svg(dimension: 512)
 			XCTAssertGreaterThan(svg.count, 0)
-
-			try svg.writeToTempFile(named: "basicSVG2-mask-no-image.svg")
+			try outputFolder.write(svg, to: "basicSVG2-mask-no-image.svg")
 		}
 	}
 
@@ -49,11 +50,11 @@ final class QRCodeSVGTests: XCTestCase {
 			let svg1 = code.svg(dimension: 600)
 
 			XCTAssertTrue(svg1.contains("fill=\"#ff00ff\""))
-			try svg1.writeToTempFile(named: "solidFillGeneration.svg")
+			try outputFolder.write(svg1, to: "solidFillGeneration.svg")
 
 			let image = code.platformImage(dimension: 300, dpi: 144)!
 			let data = image.pngRepresentation()!
-			try data.writeToTempFile(named: "solidFillGeneration.png")
+			try outputFolder.write(data, to: "solidFillGeneration.png")
 		}
 	}
 
@@ -89,11 +90,11 @@ final class QRCodeSVGTests: XCTestCase {
 			)!
 		)
 		let svg1 = code.svg(dimension: 600)
-		try svg1.writeToTempFile(named: "svgExportLinearFill.svg")
+		try outputFolder.write(svg1, to: "svgExportLinearFill.svg")
 
 		let image = code.platformImage(dimension: 300, dpi: 144)!
 		let data = image.pngRepresentation()!
-		try data.writeToTempFile(named: "svgExportLinearFill.png")
+		try outputFolder.write(data, to: "svgExportLinearFill.png")
 	}
 
 	func testExportSVGWithRadialFill() throws {
@@ -124,11 +125,11 @@ final class QRCodeSVGTests: XCTestCase {
 
 		code.design.style.onPixels = c
 		let svg1 = code.svg(dimension: 600)
-		try svg1.writeToTempFile(named: "svgExportRadialFill.svg")
+		try outputFolder.write(svg1, to: "svgExportRadialFill.svg")
 
 		let image = code.platformImage(dimension: 300, dpi: 144)!
 		let data = image.pngRepresentation()!
-		try data.writeToTempFile(named: "svgExportRadialFill.png")
+		try outputFolder.write(data, to: "svgExportRadialFill.png")
 	}
 
 	func testExportSVGWithBackgroundPixelColors() throws {
@@ -150,7 +151,7 @@ final class QRCodeSVGTests: XCTestCase {
 		d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
 
 		let svg1 = d.svg(dimension: 600)
-		try svg1.writeToTempFile(named: "svgExportPixelBackgroundColors.svg")
+		try outputFolder.write(svg1, to: "svgExportPixelBackgroundColors.svg")
 	}
 
 	func testSVGFormatter() throws {

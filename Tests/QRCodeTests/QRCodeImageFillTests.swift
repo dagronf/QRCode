@@ -9,6 +9,8 @@ func resourceImage(for resource: String, extension extn: String) -> CGImage {
 
 final class QRCodeImageFillTests: XCTestCase {
 
+	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeImageFillTests")
+
 	func testBasic() throws {
 		let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
 
@@ -25,11 +27,10 @@ final class QRCodeImageFillTests: XCTestCase {
 		// Write out json data -- the image should be encoded as base64 PNG
 		let rawData = try doc.jsonData()
 		let svgData = doc.svg(dimension: 300)
-		try svgData.writeToTempFile(named: "svgdata.svg")
+		try outputFolder.write(svgData, to: "svgdata-orig.svg")
 
 		let svgDataSuperLarge = doc.svg(dimension: 3000)
-		try svgDataSuperLarge.writeToTempFile(named: "svgdata-superlarge.svg")
-
+		try outputFolder.write(svgDataSuperLarge, to: "svgdata-superlarge.svg")
 
 		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: rawData, generator: QRCodeGenerator_External()))
 		let fillStyle = try XCTUnwrap(doc2.design.style.background as? QRCode.FillStyle.Image)
@@ -41,6 +42,8 @@ final class QRCodeImageFillTests: XCTestCase {
 		Swift.print(im2)
 
 		let svgData2 = doc2.svg(dimension: 300)
+		try outputFolder.write(svgData2, to: "svgdata-recon.svg")
+
 		XCTAssertEqual(svgData, svgData2)
 	}
 

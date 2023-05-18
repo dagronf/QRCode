@@ -1,38 +1,22 @@
 import XCTest
 
-#if os(macOS)
-
-import AppKit
-
 @testable import QRCode
-
-import SwiftImageReadWrite
-
-let __genFolder: URL = {
-	let u = __tmpFolder
-		.appendingPathComponent("markdown-generated")
-
-	try? FileManager.default.removeItem(at: u)
-	try! FileManager.default.createDirectory(at: u, withIntermediateDirectories: true)
-	Swift.print("Generated files at: \(u)")
-	return u
-}()
 
 class ImageOutput {
 
-	let _imagesFolder = __genFolder.appendingPathComponent("images")
+	let _imagesFolder: TestFilesContainer.Subfolder
 
-	init() {
-		try! FileManager.default.createDirectory(at: _imagesFolder, withIntermediateDirectories: true)
+	init(_ folder: TestFilesContainer.Subfolder) {
+		_imagesFolder = folder
 	}
 
 	func store(_ data: Data, filename: String) throws -> String {
-		try data.write(to: _imagesFolder.appendingPathComponent(filename))
+		try _imagesFolder.write(data, to: filename)
 		return "./images/\(filename)"
 	}
 
 	func store(_ string: String, filename: String) throws -> String {
-		try string.write(to: _imagesFolder.appendingPathComponent(filename), atomically: false, encoding: .utf8)
+		try _imagesFolder.write(string, to: filename)
 		return "./images/\(filename)"
 	}
 }
@@ -53,9 +37,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		// The dimension for all the generated images
 		let dimension: Int = 600
 
-		//NSWorkspace.shared.activateFileViewerSelecting([__genFolder])
-
-		let imageStore = ImageOutput()
+		let outputFolder = try testResultsContainer.subfolder(with: "generation")
+		let imagesFolder = try outputFolder.subfolder(with: "images")
+		let imageStore = ImageOutput(imagesFolder)
 
 		var markdownText = ""
 
@@ -102,9 +86,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.design.shape.onPixels = generator
 
 					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					#if !os(watchOS)
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == text
 					let detect = detected ? "✅" : "❌"
+					#else
+					let detect = "???"
+					#endif
 					let name = "pixelint - \(name) - \(enc.ECLevel).png"
 					let link = try imageStore.store(try cgImage.representation.png(), filename: name)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>\(detect)|"
@@ -150,9 +138,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.design.shape.negatedOnPixelsOnly = false
 
 					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+#if !os(watchOS)
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == text
 					let detect = detected ? "✅" : "❌"
+#else
+					let detect = "???"
+#endif
 					let filename = "pixelext - \(name) - \(enc.ECLevel).png"
 					let link = try imageStore.store(try cgImage.representation.png(), filename: filename)
 					markdownText += "<a href=\"./images/\(name)\"><img src=\"\(link)\" width=\"125\" /></a><br/>\(detect)|"
@@ -219,9 +211,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				do {
 					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					#if !os(watchOS)
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == "QR Code generation test"
 					let detect = detected ? "✅" : "❌"
+					#else
+					let detect = "???"
+					#endif
 
 					let filename = "eye - \(name).png"
 					let content = try cgImage.representation.png()
@@ -292,9 +288,14 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				do {
 					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+
+					#if !os(watchOS)
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == "QR Code generation test"
 					let detect = detected ? "✅" : "❌"
+					#else
+					let detect = "???"
+					#endif
 
 					let filename = "pupil - \(name).png"
 					let content = try cgImage.representation.png()
@@ -665,6 +666,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		// Components
 
+		#if os(macOS)
+
 		do {
 			markdownText += "## Component paths\n\n"
 
@@ -742,6 +745,11 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		}
 		markdownText += "\n"
 
+		#endif
+
+
+		#if os(macOS)
+
 		// On path, off path check
 
 		do {
@@ -815,6 +823,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 			markdownText += "\n"
 		}
+
+		#endif
 
 		markdownText += "## Style export equivalence checks \n\n"
 
@@ -1531,12 +1541,6 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		}
 
 		// Write out the markdown
-
-		let mdt = __genFolder.appendingPathComponent("styles.md")
-		try markdownText.write(to: mdt, atomically: false, encoding: .utf8)
+		try outputFolder.write(markdownText, to: "styles.md", encoding: .utf8)
 	}
 }
-
-
-
-#endif

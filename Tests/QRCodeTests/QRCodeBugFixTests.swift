@@ -11,6 +11,8 @@ import UIKit
 
 final class BugFixTests: XCTestCase {
 
+	let outputFolder = try! testResultsContainer.subfolder(with: "BugFixTests")
+
 	func testExternalOptimizationIssue() throws {
 		let unoptim = "this is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr code"
 		let optim = "THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE"
@@ -47,13 +49,13 @@ final class BugFixTests: XCTestCase {
 
 		// The files on disk should have 3x scale
 		let o1 = try XCTUnwrap(generatedImage1.jpegData(compressionQuality: 0.5))
-		try o1.writeToTempFile(named: "uiimage_generation_dpi_x3.jpg")
+		try outputFolder.write(o1, to: "uiimage_generation_dpi_x3.jpg")
 		let o2 = try XCTUnwrap(generatedImage2.jpegData(compressionQuality: 0.5))
-		try o2.writeToTempFile(named: "uiimage_generation_scale_x3.jpg")
+		try outputFolder.write(o2, to: "uiimage_generation_scale_x3.jpg")
 		let op1 = try XCTUnwrap(generatedImage1.pngData())
-		try op1.writeToTempFile(named: "uiimage_generation_dpi_x3.png")
+		try outputFolder.write(op1, to: "uiimage_generation_dpi_x3.png")
 		let op2 = try XCTUnwrap(generatedImage2.pngData())
-		try op2.writeToTempFile(named: "uiimage_generation_scale_x3.png")
+		try outputFolder.write(op2, to: "uiimage_generation_scale_x3.png")
 	}
 #endif
 
@@ -77,11 +79,13 @@ final class BugFixTests: XCTestCase {
 		XCTAssertEqual(300, cg1.width)
 		XCTAssertEqual(300, cg1.height)
 
+		let outputFolder = try testResultsContainer.subfolder(with: "testNSImageDPI")
+
 		// The files on disk should have 3x scale
 		let o1 = try XCTUnwrap(generatedImage1.jpegRepresentation(compression: 0.5))
-		try o1.writeToTempFile(named: "nsimage_generation_dpi_x3.jpg")
+		try outputFolder.write(o1, to: "nsimage_generation_dpi_x3.jpg")
 		let op1 = try XCTUnwrap(generatedImage1.pngRepresentation())
-		try op1.writeToTempFile(named: "nsimage_generation_dpi_x3.png")
+		try outputFolder.write(op1, to: "nsimage_generation_dpi_x3.png")
 	}
 #endif
 
