@@ -166,6 +166,10 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm),
 								y: yoff + (CGFloat(row) * dm)
 							))
+							.concatenating(CGAffineTransform(
+								translationX: -(ri.width / 8),
+								y: -(ri.width / 8)
+							))
 						let sq = Shiny.pathShiny(row: row, col: col)
 						path.addPath(sq, transform: transform)
 					}

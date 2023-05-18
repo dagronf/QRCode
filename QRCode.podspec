@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name                       = 'QRCode'
-s.version                    = '14.1.1'
+s.version                    = '14.2.1'
 s.summary                    = 'A simple drop-in macOS/iOS/tvOS/watchOS QR Code generator view for Swift, Objective-C and SwiftUI.'
 s.homepage                   = 'https://github.com/dagronf/QRCode'
 s.license                    = { :type => 'MIT', :file => 'LICENSE' }
