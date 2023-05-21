@@ -79,7 +79,7 @@ final class BugFixTests: XCTestCase {
 		XCTAssertEqual(300, cg1.width)
 		XCTAssertEqual(300, cg1.height)
 
-		let outputFolder = try testResultsContainer.subfolder(with: "testNSImageDPI")
+		let outputFolder = try outputFolder.subfolder(with: "testNSImageDPI")
 
 		// The files on disk should have 3x scale
 		let o1 = try XCTUnwrap(generatedImage1.jpegRepresentation(compression: 0.5))
@@ -88,5 +88,4 @@ final class BugFixTests: XCTestCase {
 		try outputFolder.write(op1, to: "nsimage_generation_dpi_x3.png")
 	}
 #endif
-
 }

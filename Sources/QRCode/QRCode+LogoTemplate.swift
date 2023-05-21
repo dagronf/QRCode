@@ -35,22 +35,13 @@ public extension QRCode {
 			}
 		}
 
-		/// The inset from the path bounds to draw the image
-		@objc public var inset: CGFloat
-
 		/// The image to display.
 		///
 		/// If no image is provided, the mask is still applied to the QR code when generating.
-		@objc public var image: CGImage
+		@objc public let image: CGImage
 
 		/// An image to use as a mask for the logo.
-		@objc public var maskImage: CGImage?
-
-		/// If true, uses a transparent mask image to mask the QRCode when drawing the image
-		///
-		/// 1. If `maskImage` is not nil, masks the QR code using `maskImage` before drawing the logo image
-		/// 2. If `maskImage` is not provided, uses the transparency information in `image` to generate a mask.
-		@objc public var useImageMasking: Bool = false
+		@objc public let maskImage: CGImage?
 
 		/// Create a logo using an image and a drawing path
 		/// - Parameters:
@@ -71,6 +62,8 @@ public extension QRCode {
 			self.image = image
 			self.path = path
 			self.inset = inset
+			self.useImageMasking = false
+			self.maskImage = nil
 		}
 
 		/// Create a logo using an image and a drawing path
@@ -137,6 +130,17 @@ public extension QRCode {
 		}
 
 		//// < Codable
+
+		// private
+
+		/// The inset from the path bounds to draw the image
+		internal let inset: CGFloat
+
+		/// If true, uses a transparent mask image to mask the QRCode when drawing the image
+		///
+		/// 1. If `maskImage` is not nil, masks the QR code using `maskImage` before drawing the logo image
+		/// 2. If `maskImage` is not provided, uses the transparency information in `image` to generate a mask.
+		internal let useImageMasking: Bool
 	}
 }
 
