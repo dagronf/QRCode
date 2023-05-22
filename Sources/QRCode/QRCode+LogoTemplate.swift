@@ -168,6 +168,16 @@ public extension QRCode.LogoTemplate {
 		QRCode.LogoTemplate(image: self.image.copy()!, path: self.path, inset: self.inset)
 	}
 
+	/// Make a copy of this logo template using the specified image
+	@objc func copyWithImage(_ image: CGImage, _ maskImage: CGImage? = nil) -> QRCode.LogoTemplate {
+		if useImageMasking {
+			return QRCode.LogoTemplate(image: image, maskImage: maskImage)
+		}
+		else {
+			return QRCode.LogoTemplate(image: image, path: self.path, inset: self.inset)
+		}
+	}
+
 	/// Return a dictionary representation of the logo template
 	@objc func settings() -> [String: Any] {
 		var settings: [String: Any] = [

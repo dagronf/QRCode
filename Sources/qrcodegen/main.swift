@@ -182,8 +182,7 @@ Examples:
 				let image = NSImage(contentsOf: path),
 				let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
 			{
-				template.image = cgImage
-				return template
+				return template.copyWithImage(cgImage)
 			}
 			return nil
 		}()
