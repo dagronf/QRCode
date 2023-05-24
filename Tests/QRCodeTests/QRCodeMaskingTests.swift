@@ -240,6 +240,10 @@ final class QRCodeMaskingTests: XCTestCase {
 			errorCorrection: .high
 		)
 
+		let path = CGPath(rect: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
+		let transf = CGMutablePath()
+		transf.addPath(path, transform: CGAffineTransform(scaleX: 10, y: 10))
+
 		let outputFolder = try outputFolder.subfolder(with: "logotemplate-qrmasking")
 
 		do {
