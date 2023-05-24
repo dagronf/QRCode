@@ -43,17 +43,20 @@ public extension QRCode {
 		/// An image to use as a mask for the logo.
 		@objc public let maskImage: CGImage?
 
+		/// If true, removes pixels under the drawn image
+		@objc public let masksQRCodePixels: Bool
+
 		/// Create a logo using an image and a drawing path
 		/// - Parameters:
 		///   - image: The image to display in the logo
 		///   - path: The bounds path for the logo (0,0 -> 1, 1) within the QR code
 		///   - inset: The inset from the path bounds to draw the image
-		///   - maskQRCodePixels: If true, removes pixels underneath the drawn image
+		///   - masksQRCodePixels: If true, removes pixels underneath the drawn image
 		@objc public init(
 			image: CGImage,
 			path: CGPath,
 			inset: CGFloat = 4,
-			maskQRCodePixels: Bool = true
+			masksQRCodePixels: Bool = true
 		) {
 			/// Check that the path bounds are 0,0 -> 1,1
 			let bounds = path.boundingBoxOfPath
@@ -66,25 +69,25 @@ public extension QRCode {
 			self.inset = inset
 			self.useImageMasking = false
 			self.maskImage = nil
-			self.maskQRCodePixels = maskQRCodePixels
+			self.masksQRCodePixels = masksQRCodePixels
 		}
 
 		/// Create a logo using an image and a drawing path
 		/// - Parameters:
 		///   - image: The logo image to display
 		///   - maskImage: The mask to apply when drawing the image
-		///   - maskQRCodePixels: If true, removes pixels underneath the drawn image
+		///   - masksQRCodePixels: If true, removes pixels underneath the drawn image
 		@objc public init(
 			image: CGImage,
 			maskImage: CGImage? = nil,
-			maskQRCodePixels: Bool = true
+			masksQRCodePixels: Bool = true
 		) {
 			self.path = CGPath(rect: CGRect(origin: .zero, size: .init(dimension: 1.0)), transform: nil)
 			self.image = image
 			self.maskImage = maskImage
 			self.inset = 0
 			self.useImageMasking = true
-			self.maskQRCodePixels = maskQRCodePixels
+			self.masksQRCodePixels = masksQRCodePixels
 		}
 
 		/// Create a LogoTemplate from a dictionary of settings
@@ -99,7 +102,7 @@ public extension QRCode {
 			self.inset = DoubleValue(settings["inset"]) ?? 0
 
 			self.useImageMasking = BoolValue(settings["maskUsingImageTransparency"]) ?? false
-			self.maskQRCodePixels = BoolValue(settings["maskQRCodePixels"]) ?? true
+			self.masksQRCodePixels = BoolValue(settings["masksQRCodePixels"]) ?? true
 
 			guard let image = CGImageValueFromB64String(settings["image"]) else { return nil }
 			self.image = image
@@ -114,7 +117,7 @@ public extension QRCode {
 			case path
 			case inset
 			case useImageMasking
-			case maskQRCodePixels
+			case masksQRCodePixels
 		}
 
 		public required init(from decoder: Decoder) throws {
@@ -124,13 +127,13 @@ public extension QRCode {
 			self.path = try container.decode(CGPathCodable.self, forKey: .path).path
 			self.inset = try container.decode(Double.self, forKey: .inset)
 			self.useImageMasking = try container.decode(Bool.self, forKey: .useImageMasking)
-			self.maskQRCodePixels = try container.decodeIfPresent(Bool.self, forKey: .maskQRCodePixels) ?? true
+			self.masksQRCodePixels = try container.decodeIfPresent(Bool.self, forKey: .masksQRCodePixels) ?? true
 		}
 
 		public func encode(to encoder: Encoder) throws {
 			var container = encoder.container(keyedBy: Self.CodingKeys)
 			try container.encode(useImageMasking, forKey: .useImageMasking)
-			try container.encode(maskQRCodePixels, forKey: .maskQRCodePixels)
+			try container.encode(masksQRCodePixels, forKey: .masksQRCodePixels)
 			try container.encode(inset, forKey: .inset)
 			try container.encode(CGPathCodable(self.path), forKey: .path)
 			try container.encode(CGImageCodable(image), forKey: .image)
@@ -151,9 +154,6 @@ public extension QRCode {
 		/// 1. If `maskImage` is not nil, masks the QR code using `maskImage` before drawing the logo image
 		/// 2. If `maskImage` is not provided, uses the transparency information in `image` to generate a mask.
 		internal let useImageMasking: Bool
-
-		/// If true, removes pixels under the drawn image
-		internal let maskQRCodePixels: Bool
 	}
 }
 
@@ -282,7 +282,7 @@ extension QRCode.LogoTemplate {
 	}
 
 	func applyingMask(matrix: BoolMatrix, dimension: CGFloat) -> BoolMatrix {
-		guard self.maskQRCodePixels else {
+		guard self.masksQRCodePixels else {
 			return matrix
 		}
 		

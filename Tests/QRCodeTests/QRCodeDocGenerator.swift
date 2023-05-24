@@ -1021,6 +1021,16 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				}(),
 				// -------------------
 				try {
+					let doc = QRCode.Document(utf8String: "Adding a logo to a QR code (without masking) with quiet space", errorCorrection: .high)
+					doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
+					doc.design.additionalQuietZonePixels = 3
+					let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
+					let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+					doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, masksQRCodePixels: false)
+					return ("design-logo-masking-using-transparency-without-masking-and-quiet-space", doc)
+				}(),
+				// -------------------
+				try {
 					let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image", errorCorrection: .high)
 					doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 

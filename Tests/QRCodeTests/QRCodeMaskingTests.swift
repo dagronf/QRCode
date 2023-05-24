@@ -256,7 +256,7 @@ final class QRCodeMaskingTests: XCTestCase {
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-imagepath-qrmasked.svg")
 			}
 			do {
-				doc.logoTemplate = QRCode.LogoTemplate(image: image, path: imageDestination, maskQRCodePixels: false)
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, path: imageDestination, masksQRCodePixels: false)
 				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-imagepath-qrnotmasked.png")
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-imagepath-qrnotmasked.svg")
 			}
@@ -271,7 +271,7 @@ final class QRCodeMaskingTests: XCTestCase {
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-transparency-qrmasked.svg")
 			}
 			do {
-				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskQRCodePixels: false)
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, masksQRCodePixels: false)
 				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-transparency-qrnotmasked.png")
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-transparency-qrnotmasked.svg")
 			}
@@ -287,7 +287,7 @@ final class QRCodeMaskingTests: XCTestCase {
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-maskimage-qrmasked.svg")
 			}
 			do {
-				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imagemask, maskQRCodePixels: false)
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imagemask, masksQRCodePixels: false)
 				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-maskimage-qrnotmasked.png")
 				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-maskimage-qrnotmasked.svg")
 			}
