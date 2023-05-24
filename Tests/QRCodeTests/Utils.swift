@@ -65,6 +65,28 @@ func roundTripEncodeDecode<Object: Codable>(_ object: Object) throws -> (data: D
 	return (data, try JSONDecoder().decode(Object.self, from: data))
 }
 
+func heartpath_1x1() -> CGPath {
+	let pth = CGMutablePath()
+	pth.move(to: CGPoint(x: 0.92, y: 0.09))
+	pth.addCurve(to: CGPoint(x: 0.72, y: 0), control1: CGPoint(x: 0.87, y: 0.03), control2: CGPoint(x: 0.8, y: 0))
+	pth.addCurve(to: CGPoint(x: 0.53, y: 0.09), control1: CGPoint(x: 0.65, y: 0), control2: CGPoint(x: 0.58, y: 0.03))
+	pth.addLine(to: CGPoint(x: 0.5, y: 0.12))
+	pth.addLine(to: CGPoint(x: 0.47, y: 0.09))
+	pth.addCurve(to: CGPoint(x: 0.28, y: 0), control1: CGPoint(x: 0.42, y: 0.03), control2: CGPoint(x: 0.35, y: 0))
+	pth.addCurve(to: CGPoint(x: 0.08, y: 0.09), control1: CGPoint(x: 0.2, y: 0), control2: CGPoint(x: 0.13, y: 0.03))
+	pth.addCurve(to: CGPoint(x: 0, y: 0.31), control1: CGPoint(x: 0.03, y: 0.15), control2: CGPoint(x: -0, y: 0.23))
+	pth.addCurve(to: CGPoint(x: 0.08, y: 0.54), control1: CGPoint(x: 0, y: 0.4), control2: CGPoint(x: 0.03, y: 0.48))
+	pth.addLine(to: CGPoint(x: 0.48, y: 0.99))
+	pth.addCurve(to: CGPoint(x: 0.5, y: 1), control1: CGPoint(x: 0.49, y: 1), control2: CGPoint(x: 0.49, y: 1))
+	pth.addCurve(to: CGPoint(x: 0.52, y: 0.99), control1: CGPoint(x: 0.51, y: 1), control2: CGPoint(x: 0.51, y: 1))
+	pth.addLine(to: CGPoint(x: 0.92, y: 0.54))
+	pth.addCurve(to: CGPoint(x: 1, y: 0.32), control1: CGPoint(x: 0.97, y: 0.48), control2: CGPoint(x: 1, y: 0.4))
+	pth.addCurve(to: CGPoint(x: 0.92, y: 0.09), control1: CGPoint(x: 1, y: 0.23), control2: CGPoint(x: 0.97, y: 0.15))
+	pth.close()
+	return pth
+}
+
+
 #if os(macOS)
 
 import AppKit

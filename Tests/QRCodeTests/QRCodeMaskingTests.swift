@@ -233,4 +233,64 @@ final class QRCodeMaskingTests: XCTestCase {
 			try outputFolder.write(data2, to: "logotemplate-image-using-imagemask.png")
 		}
 	}
+
+	func testLogoQRMasking() throws {
+		let doc = QRCode.Document(
+			utf8String: "Verifying logo image masking works",
+			errorCorrection: .high
+		)
+
+		let path = CGPath(rect: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
+		let transf = CGMutablePath()
+		transf.addPath(path, transform: CGAffineTransform(scaleX: 10, y: 10))
+
+		let outputFolder = try outputFolder.subfolder(with: "logotemplate-qrmasking")
+
+		do {
+			// Checking whether the logotemplate style of 'use path' correctly masks the qr accordingly
+			let image = try loadImageResource("square-logo", withExtension: "png")
+			let imageDestination = CGPath(rect: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, path: imageDestination)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-imagepath-qrmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-imagepath-qrmasked.svg")
+			}
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, path: imageDestination, maskQRCodePixels: false)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-imagepath-qrnotmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-imagepath-qrnotmasked.svg")
+			}
+		}
+
+		do {
+			// Checking whether the logotemplate style of 'use images transparency' correctly masks the qr accordingly
+			let image = try loadImageResource("logo", withExtension: "png")
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-transparency-qrmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-transparency-qrmasked.svg")
+			}
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskQRCodePixels: false)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-transparency-qrnotmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-transparency-qrnotmasked.svg")
+			}
+		}
+
+		do {
+			// Checking whether the logotemplate style of 'use images transparency' correctly masks the qr accordingly
+			let image = try loadImageResource("logo", withExtension: "png")
+			let imagemask = try loadImageResource("logo-mask", withExtension: "png")
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imagemask)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-maskimage-qrmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-maskimage-qrmasked.svg")
+			}
+			do {
+				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imagemask, maskQRCodePixels: false)
+				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-maskimage-qrnotmasked.png")
+				try outputFolder.write(try XCTUnwrap(doc.svgData(dimension: 300)), to: "logotemplate-maskimage-qrnotmasked.svg")
+			}
+		}
+	}
 }
