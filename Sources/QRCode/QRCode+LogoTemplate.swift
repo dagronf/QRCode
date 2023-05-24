@@ -55,7 +55,7 @@ public extension QRCode {
 		@objc public init(
 			image: CGImage,
 			path: CGPath,
-			inset: CGFloat = 4,
+			inset: CGFloat = 0,
 			masksQRCodePixels: Bool = true
 		) {
 			/// Check that the path bounds are 0,0 -> 1,1
@@ -202,6 +202,8 @@ public extension QRCode.LogoTemplate {
 			settings["maskUsingImageTransparency"] = true
 		}
 
+		settings["masksQRCodePixels"] = self.masksQRCodePixels
+
 		if let data = try? self.image.representation.png() {
 			let b64 = data.base64EncodedString()
 			settings["image"] = b64
@@ -274,7 +276,7 @@ extension QRCode.LogoTemplate {
 					let index = ((sz * y) + x) * 4
 					let a = rawImage[index + 3]
 
-					mask[y, x] = (a <= 10)
+					mask[y, x] = (a <= 1)
 				}
 			}
 			return matrix.applyingMask(mask)
