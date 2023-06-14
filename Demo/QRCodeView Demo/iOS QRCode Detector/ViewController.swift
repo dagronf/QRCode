@@ -5,11 +5,11 @@
 //  Created by Darren Ford on 2/7/2022.
 //
 
-import QRCode
+import QRCodeDetector
 import UIKit
 
 class ViewController: UIViewController {
-	let detector = QRCode.VideoDetector()
+	let detector = QRCodeDetector.VideoDetector()
 	var previewLayer: CALayer?
 
 	override func viewDidLoad() {

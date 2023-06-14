@@ -6,11 +6,11 @@
 //
 
 import Cocoa
-import QRCode
+import QRCodeDetector
 
 class ViewController: NSViewController {
 
-	let detector = QRCode.VideoDetector()
+	let detector = QRCodeDetector.VideoDetector()
 	var previewLayer: CALayer?
 
 	override func viewDidLoad() {

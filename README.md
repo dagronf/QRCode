@@ -69,7 +69,8 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 ## Why?
 
-It's nice to have a simple, quick drop-in component for displaying a QR code when you need it!
+* It's nice to have a simple, quick drop-in component for displaying a QR code when you need it!
+* It's nice to have your app look great!
 
 ## Features
 
@@ -86,14 +87,7 @@ It's nice to have a simple, quick drop-in component for displaying a QR code whe
 * Configurable fill styles (solid, linear gradient, radial gradient) for image generation.
 * Configurable corner radius
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
-
-## NOTES for v13+
-
-When you upgrade your code to 13 any code you may have used (especially for watchOS) may need some minor updates to compile for v13.0.0.
-
-The library has combined the two distinct targets (`QRCode` and `QRCodeExternal`) into a single target (`QRCode`). As a result, the `QRCodeExternal` target (and `import QRCodeExternal` in your code) is no longer required - you can simply link against `QRCode` to get all the functionality - even for watchOS! 
-
-v13.0.0 has also added support for CocoaPods.
+* Basic qr code video detection (via importing `QRCodeDetector`).
 
 ## Installing
 
@@ -102,7 +96,7 @@ v13.0.0 has also added support for CocoaPods.
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "13.0.0")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "15.0.0")
 ```
 
 ### Cocoapods
@@ -110,12 +104,20 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'QRCode', :git => 'https://github.com/dagronf/qrcode.git', :tag => '13.0.0'
+pod 'QRCode', :git => 'https://github.com/dagronf/qrcode.git', :tag => '15.0.0'
 ```
 
-### Linking
+### Usage
 
-Make sure you link your project against `QRCode`
+The core functionality for generating a nice QR code is found in the `QRCode` library.
+
+If you want to use the qr code video detection, you'll need to import the `QRCodeDetector` library.  The reason for
+separating these out into two different libraries is because video detection **requires** your app to have a
+`NSCameraUsageDescription` defined in your including app (along with adding an `AVFoundation` dependency) if you're
+putting it on the app store - something that you may not want if your app doesn't need it!
+
+* For QR code generation, link against `QRCode`
+* For QR code detection, link against `QRCodeDetector` 
 
 ### In your source
 
@@ -916,7 +918,10 @@ if let detected = QRCode.DetectQRCodes(in: /*some image*/),
 
 ### From a video stream
 
-There is a video detector class `QRCode.VideoDetector` which is a very basic qr code detector for video streams.
+In order to allow `QRCode` to be used in App Store or Test Flight targets without having to allow Camera usage,
+the video detector component has been extracted out into its own target, `QRCodeDetector`.
+
+There is a video detector class `QRCodeDetector.VideoDetector` which is a very basic qr code detector for video streams.
 
 There are two basic demos demonstrating the qr code detection in a video stream.
 

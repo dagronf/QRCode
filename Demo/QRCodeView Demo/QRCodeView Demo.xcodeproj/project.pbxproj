@@ -80,6 +80,10 @@
 		236A0522286FE6570019C842 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 236A0520286FE6570019C842 /* Main.storyboard */; };
 		236A0524286FE6580019C842 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 236A0523286FE6580019C842 /* Assets.xcassets */; };
 		236A0527286FE6580019C842 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 236A0525286FE6580019C842 /* LaunchScreen.storyboard */; };
+		23701CD42A39687700021944 /* QRCodeDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 23701CD32A39687700021944 /* QRCodeDetector */; };
+		23701CD52A39687700021944 /* QRCodeDetector in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23701CD32A39687700021944 /* QRCodeDetector */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		23701CD72A3968DC00021944 /* QRCodeDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 23701CD62A3968DC00021944 /* QRCodeDetector */; };
+		23701CD82A3968DC00021944 /* QRCodeDetector in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23701CD62A3968DC00021944 /* QRCodeDetector */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		237E4000274F08AE003E5E24 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E3FFF274F08AE003E5E24 /* Shared.swift */; };
 		237E4001274F08AE003E5E24 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E3FFF274F08AE003E5E24 /* Shared.swift */; };
 		239FBAE128A638C2002F74AC /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 239FBAE028A638C2002F74AC /* QRCode */; };
@@ -91,8 +95,6 @@
 		23C64A5F282F448D0094E093 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A5E282F448D0094E093 /* ViewController.swift */; };
 		23C64A61282F448E0094E093 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C64A60282F448E0094E093 /* Assets.xcassets */; };
 		23C64A64282F448E0094E093 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23C64A62282F448E0094E093 /* Main.storyboard */; };
-		23C7586028AC77E3007528CE /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7585F28AC77E3007528CE /* QRCode */; };
-		23C7586228AC7842007528CE /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586128AC7842007528CE /* QRCode */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
 		23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9A29247CD800236B80 /* AppDelegate.swift */; };
@@ -217,6 +219,28 @@
 			dstSubfolderSpec = 10;
 			files = (
 				23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23701CD22A3967BB00021944 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				23701CD52A39687700021944 /* QRCodeDetector in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23701CD92A3968DC00021944 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				23701CD82A3968DC00021944 /* QRCodeDetector in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +378,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23C7586028AC77E3007528CE /* QRCode in Frameworks */,
+				23701CD42A39687700021944 /* QRCodeDetector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,7 +386,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23C7586228AC7842007528CE /* QRCode in Frameworks */,
+				23701CD72A3968DC00021944 /* QRCodeDetector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,6 +807,7 @@
 				236A04FF286FE1960019C842 /* Sources */,
 				236A0500286FE1960019C842 /* Frameworks */,
 				236A0501286FE1960019C842 /* Resources */,
+				23701CD22A3967BB00021944 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -790,7 +815,7 @@
 			);
 			name = "macOS QRCode Detector";
 			packageProductDependencies = (
-				23C7585F28AC77E3007528CE /* QRCode */,
+				23701CD32A39687700021944 /* QRCodeDetector */,
 			);
 			productName = "macOS QRCode Detector";
 			productReference = 236A0503286FE1960019C842 /* macOS QRCode Detector.app */;
@@ -803,6 +828,7 @@
 				236A0514286FE6570019C842 /* Sources */,
 				236A0515286FE6570019C842 /* Frameworks */,
 				236A0516286FE6570019C842 /* Resources */,
+				23701CD92A3968DC00021944 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -810,7 +836,7 @@
 			);
 			name = "iOS QRCode Detector";
 			packageProductDependencies = (
-				23C7586128AC7842007528CE /* QRCode */,
+				23701CD62A3968DC00021944 /* QRCodeDetector */,
 			);
 			productName = "iOS QRCode Detector";
 			productReference = 236A0518286FE6570019C842 /* iOS QRCode Detector.app */;
@@ -1922,7 +1948,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture video and detect QR codes within the video stream";
@@ -1951,7 +1977,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture video and detect QR codes within the video stream";
@@ -2388,6 +2414,14 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
 		};
+		23701CD32A39687700021944 /* QRCodeDetector */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeDetector;
+		};
+		23701CD62A3968DC00021944 /* QRCodeDetector */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCodeDetector;
+		};
 		239FBAE028A638C2002F74AC /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCode;
@@ -2411,14 +2445,6 @@
 		23BF104329258E16006B23A9 /* qrcodegen */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = qrcodegen;
-		};
-		23C7585F28AC77E3007528CE /* QRCode */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = QRCode;
-		};
-		23C7586128AC7842007528CE /* QRCode */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = QRCode;
 		};
 		23C7586528AC78B8007528CE /* QRCodeDynamic */ = {
 			isa = XCSwiftPackageProductDependency;

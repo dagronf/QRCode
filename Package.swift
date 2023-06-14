@@ -12,9 +12,13 @@ let package = Package(
 		.watchOS(.v6)
 	],
 	products: [
+		// QR Code generation library
 		.library(name: "QRCode", targets: ["QRCode"]),
 		.library(name: "QRCodeStatic", type: .static, targets: ["QRCode"]),
 		.library(name: "QRCodeDynamic", type: .dynamic, targets: ["QRCode"]),
+
+		// QR Code video detection library
+		.library(name: "QRCodeDetector", type: .dynamic, targets: ["QRCodeDetector"]),
 	],
 	dependencies: [
 		// Swift argument parser is used for the command-line application
@@ -37,7 +41,7 @@ let package = Package(
 		),
 	],
 	targets: [
-		// The qr code library
+		// The QRCode core library
 		.target(
 			name: "QRCode",
 			dependencies: [
@@ -49,13 +53,16 @@ let package = Package(
 			]
 		),
 
+		// The QR code detector library
+		.target(name: "QRCodeDetector"),
+
 		// the qrcodegen command-line tool
 		.executableTarget(
-			 name: "qrcodegen",
-			 dependencies: [
+			name: "qrcodegen",
+			dependencies: [
 				"QRCode",
 				.product(name: "ArgumentParser", package: "swift-argument-parser"),
-			 ]),
+			]),
 
 		// testing target
 		.testTarget(
