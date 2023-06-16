@@ -372,4 +372,48 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(nsi.representations[0].pixelsHigh, 72)
 		#endif
 	}
+
+	func stringsFromQRCode(_ cgImage: CGImage) -> [String] {
+		let features = QRCode.DetectQRCodes(cgImage)
+		return features.compactMap { $0.messageString }
+	}
+
+	func testCGImageQuickGen() throws {
+		do {
+			let image = try XCTUnwrap(CGImage.qrCode("This is a test!!!", dimension: 300))
+			XCTAssertEqual(image.width, 300)
+			XCTAssertEqual(image.height, 300)
+			XCTAssertEqual(image.qrCodedMessages(), ["This is a test!!!"])
+		}
+
+		do {
+			let path = try XCTUnwrap(CGPath.qrCode("This is a test!!!", dimension: 300))
+
+			let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+			let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+			let ctx = try XCTUnwrap(CGContext(
+					data: nil,
+					width: 300,
+					height: 300,
+					bitsPerComponent: 8,
+					bytesPerRow: 300 * 4,
+					space: colorSpace,
+					bitmapInfo: bitmapInfo.rawValue
+				)
+			)
+
+			ctx.scaleBy(x: 1, y: -1)
+			ctx.translateBy(x: 0, y: -300)
+
+			ctx.setFillColor(.white)
+			ctx.fill([CGRect(x: 0, y: 0, width: 300, height: 300)])
+
+			ctx.addPath(path)
+			ctx.setFillColor(.black)
+			ctx.fillPath()
+
+			let image = try XCTUnwrap(ctx.makeImage())
+			XCTAssertEqual(image.qrCodedMessages(), ["This is a test!!!"])
+		}
+	}
 }

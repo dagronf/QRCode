@@ -117,7 +117,7 @@ separating these out into two different libraries is because video detection **r
 putting it on the app store - something that you may not want if your app doesn't need it!
 
 * For QR code generation, link against `QRCode`
-* For QR code detection, link against `QRCodeDetector` 
+* For QR code video detection, link against `QRCodeDetector` 
 
 ### In your source
 
@@ -175,6 +175,12 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 ```
 
 </details>
+
+There are also some extensions on `CGImage` to help making qr codes even easier
+
+```swift
+let qrCodeImage = CGImage.qrCode("Hi there!", dimension: 800)
+```
 
 ## Settings
 
@@ -259,8 +265,6 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    |"corneredPixels"|`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
 |<img src="./Art/images/eye_edges.png" width="60"/>             |"edges"|`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
 |<img src="./Art/images/eye_shield.png" width="60"/>            |"shield"|`QRCode.EyeShape.Shield`| A shield with configurable corners |
-
-
 
 ### Custom Pupil shape (optional)
 
@@ -640,6 +644,12 @@ Produces a CGPath representation of the QRCode
 
 The components allow the caller to generate individual paths for the QR code components which can then be individually styled and recombined later on. 
 
+There are also extensions on `CGPath` to make it even easier to generate a `CGPath` from a qr code.
+
+```swift
+let qrcodePath = CGPath.qrCode("This is a test!!!", dimension: 800)
+```
+
 ### Generating a styled image
 
 ```swift
@@ -914,6 +924,13 @@ if let detected = QRCode.DetectQRCodes(in: /*some image*/),
    let qrCodeMessage = detected[0].messageString
    ...
 }
+```
+
+Even easier, there is an extension on `CGImage` to detect the strings encoded within the image if you only want the string content for each match.
+
+```swift
+let image = CGImage(...)
+let messages = image.qrCodedMessages()
 ```
 
 ### From a video stream
