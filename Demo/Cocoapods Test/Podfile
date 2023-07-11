@@ -3,12 +3,12 @@ target 'Cocoapods Test' do
 	# use_frameworks!
 	platform :ios, '13.0'
 
-	pod 'QRCode', :path => '../../'
+	pod 'DSF_QRCode', :path => '../../'
 end
 
 target 'Cocoapods Mac Test' do
 	# use_frameworks!
 	platform :macos, '10.13'
 
-	pod 'QRCode', :path => '../../'
+	pod 'DSF_QRCode', :path => '../../'
 end
