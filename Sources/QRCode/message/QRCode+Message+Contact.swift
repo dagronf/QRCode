@@ -65,8 +65,11 @@ public extension QRCode.Message {
 				self.namePrefix = namePrefix
 				self.nameSuffix = nameSuffix
 			}
-			
-			var vcard: String {
+
+			/// VCard encoding for a contact name
+			///
+			/// name (semicolon separated: LASTNAME; FIRSTNAME; ADDITIONAL NAME; NAME PREFIX(Mr.,Mrs.); NAME SUFFIX) (*required)
+			@objc public var vcard: String {
 				"N:\(self.lastName ?? "");\(self.firstName ?? "");\(self.additionalName ?? "");\(self.namePrefix ?? "");\(self.nameSuffix ?? "")\n"
 			}
 		}
@@ -111,13 +114,18 @@ public extension QRCode.Message {
 				self.postalCode = postalCode
 				self.country = country
 			}
-			
-			var vcard: String {
+
+			/// VCard encoding for an address
+			@objc public var vcard: String {
 				return "ADR;TYPE=\(self.type):\(self.postOfficeAddress ?? "");\(self.extendedAddress ?? "");\(self.street ?? "");\(self.locality ?? "");\(self.region ?? "");\(self.postalCode ?? "");\(self.country ?? "")\n"
 			}
 		}
-		
-		public let data: Foundation.Data
+
+		/// The VCard encoding
+		@objc public let vcard: String
+
+		/// The VCard utf8 data encoding
+		@objc public let data: Foundation.Data
 		
 		/// Create a QR Code that contains a VCard
 		/// - Parameters:
@@ -144,7 +152,7 @@ public extension QRCode.Message {
 			var msg: String = "BEGIN:VCARD\nVERSION:3.0\n"
 			
 			// name (semicolon separated: LASTNAME; FIRSTNAME; ADDITIONAL NAME; NAME PREFIX(Mr.,Mrs.); NAME SUFFIX) (*required)
-			msg += "N:\(name.lastName ?? "");\(name.firstName ?? "");\(name.additionalName ?? "");\(name.namePrefix ?? "");\(name.nameSuffix ?? "")\n"
+			msg += name.vcard
 			
 			// formatted name (The way that the name is to be displayed. It can contain desired honorific prefixes, suffixes, titles.)(*required)
 			msg += "FN:\(formattedName)\n"
@@ -177,7 +185,8 @@ public extension QRCode.Message {
 			}
 			
 			msg += "END:VCARD"
-			
+
+			self.vcard = msg
 			guard let vcardData = msg.data(using: .utf8) else { return nil }
 			self.data = vcardData
 		}
