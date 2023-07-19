@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'leaf' style eye design
 	@objc(QRCodeEyeShapeLeaf) class Leaf: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "leaf"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.leaf", bundle: .localization, comment: "Leaf eye generator title") }
+		@objc public static var Title: String { "Leaf" }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Leaf()
 		}

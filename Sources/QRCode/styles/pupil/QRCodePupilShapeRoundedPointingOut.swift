@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeRoundedPointingOut) class RoundedPointingOut: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "roundedPointingOut" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.roundedpointout", bundle: .localization, comment: "Rounded pointing out pupil generator title") }
+		@objc public static var Title: String { "Rounded pointing out" }
 
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			RoundedPointingOut()

@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// An eye with vertical bars as the pupil
 	@objc(QRCodeEyeShapeBarsHorizontal) class BarsHorizontal: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "barsHorizontal"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.barsHorizontal", bundle: .localization, comment: "Horizontal bars generator title") }
+		@objc public static var Title: String { "Horizontal bars" }
 
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.BarsHorizontal()

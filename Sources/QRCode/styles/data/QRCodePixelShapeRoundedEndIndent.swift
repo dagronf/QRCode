@@ -27,7 +27,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name = "roundedEndIndent"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.roundedEndIndent", bundle: .localization, comment: "Rounded end indent pixel generator title") }
+		@objc public static var Title: String { "Rounded end indent" }
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {

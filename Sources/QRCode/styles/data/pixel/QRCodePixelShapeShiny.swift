@@ -28,7 +28,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "shiny"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.shiny", bundle: .localization, comment: "Shiny pixel generator title") }
+		@objc public static var Title: String { "Shiny" }
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {

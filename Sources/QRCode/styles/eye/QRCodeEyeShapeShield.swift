@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'shield' style eye design with configurable corner styles
 	@objc(QRCodeEyeShapeShield) class Shield: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "shield"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.shield", bundle: .localization, comment: "Shield eye generator title") }
+		@objc public static var Title: String { "Shield" }
 
 		/// The corners to push in
 		public var corners: QRCode.Corners = .all

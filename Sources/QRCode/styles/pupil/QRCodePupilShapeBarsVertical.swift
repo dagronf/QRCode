@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeBarsVertical) class BarsVertical: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "barsVertical" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.barsVertical", bundle: .localization, comment: "Horizontal bars generator title") }
+		@objc public static var Title: String { "Vertical bars" }
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
 			BarsVertical()
 		}

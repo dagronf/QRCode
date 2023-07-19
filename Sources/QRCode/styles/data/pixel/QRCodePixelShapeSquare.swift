@@ -28,7 +28,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "square"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.square", bundle: .localization, comment: "Square pixel generator title") }
+		@objc public static var Title: String { "Square" }
 
 		/// Create
 		/// - Parameters:

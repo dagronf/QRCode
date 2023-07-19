@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'pixel' style eye design which provides corner radius configuration
 	@objc(QRCodeEyeShapeCorneredPixels) class CorneredPixels: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "corneredPixels"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.corneredpixels", bundle: .localization, comment: "Cornered pixels eye generator title") }
+		@objc public static var Title: String { "Cornered pixels" }
 
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1

@@ -4,7 +4,6 @@ import PackageDescription
 
 let package = Package(
 	name: "QRCode",
-	defaultLocalization: "en",
 	platforms: [
 		.macOS(.v10_11),
 		.iOS(.v13),

@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeShield) class Shield: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "shield" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.shield", bundle: .localization, comment: "Shield pupil generator title") }
+		@objc public static var Title: String { "Shield" }
 
 		/// The corners to 'push in'
 		public var corners: QRCode.Corners = .all

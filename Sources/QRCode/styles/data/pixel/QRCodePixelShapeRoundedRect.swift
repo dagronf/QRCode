@@ -28,7 +28,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "roundedRect"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.roundedrect", bundle: .localization, comment: "Rounded rect pixel generator title") }
+		@objc public static var Title: String { "Rounded rectangle" }
 
 		/// Create
 		/// - Parameters:

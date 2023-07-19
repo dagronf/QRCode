@@ -26,7 +26,7 @@ public extension QRCode.EyeShape {
 	/// A 'square' style eye design
 	@objc(QRCodeEyeShapeSquare) class Square: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "square"
-		@objc public static var Title: String { NSLocalizedString("eyestyle.square", bundle: .localization, comment: "Square eye generator title") }
+		@objc public static var Title: String { "Square" }
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Square()
 		}

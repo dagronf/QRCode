@@ -29,7 +29,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeCorneredPixels) class CorneredPixels: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "corneredPixels" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.corneredpixels", bundle: .localization, comment: "Cornered pixels generator title") }
+		@objc public static var Title: String { "Cornered pixels" }
 
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1

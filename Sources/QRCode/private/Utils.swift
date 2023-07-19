@@ -60,12 +60,3 @@ internal func CGImageValueFromB64String(_ opaque: Any?) -> CGImage? {
 	}
 	return nil
 }
-
-/// A common 'localization' bundle that swaps between Cocoapod and SPM as needed
-extension Bundle {
-#if COCOAPODS
-	static let localization = Bundle.main
-#else
-	static let localization = Bundle.module
-#endif
-}

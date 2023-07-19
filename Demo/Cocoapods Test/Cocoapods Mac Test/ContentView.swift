@@ -14,11 +14,6 @@ struct ContentView: View {
 	let style1 = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.8, hasInnerCorners: true)
 
 	var body: some View {
-		// Simple quick check of localization
-		if QRCode.PixelShape.RoundedPath.Title != "Rounded path" {
-			fatalError()
-		}
-
 		VStack {
 			Image(systemName: "globe")
 				.imageScale(.large)

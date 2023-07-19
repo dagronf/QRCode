@@ -28,7 +28,7 @@ public extension QRCode.PixelShape {
 		/// The generator name
 		@objc public static let Name: String = "flower"
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pixelstyle.flower", bundle: .localization, comment: "Flower pixel generator title") }
+		@objc public static var Title: String { "Flower" }
 
 		//////// Codable
 

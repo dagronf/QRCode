@@ -30,7 +30,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapePixels) class Pixels: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "pixels" }
 		/// The generator title
-		@objc public static var Title: String { NSLocalizedString("pupilstyle.pixels", bundle: .localization, comment: "Pixels pupil generator title") }
+		@objc public static var Title: String { "Pixels" }
 
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
