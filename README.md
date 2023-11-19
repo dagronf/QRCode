@@ -96,7 +96,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "16.1.1")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "16.1.2")
 ```
 
 ### Cocoapods
@@ -104,7 +104,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'DSF_QRCode', '~> 16.1.1'
+pod 'DSF_QRCode', '~> 16.1.2'
 ```
 
 ### Usage
@@ -124,6 +124,26 @@ putting it on the app store - something that you may not want if your app doesn'
 Swift: `import QRCode`
 
 Objective-C: `@import QRCode;`
+
+### Using `Tuist` or similar
+
+`QRCode` supports Objective-C at its core, allowing usage in both Swift and Objective-C.
+
+While using `QRCode` directly in Xcode automatically supports this, it's important to make sure that you link against
+the Objective-C library.  If not, you will receive crashes during runtime (which isn't ideal).
+
+You need to make sure your linker flags `OTHER_LDFLAGS` contains `-ObjC` to 
+
+For example, using [Tuist](https://tuist.io) you will need to add the following …
+
+```
+settings: Settings(
+   base: [
+      "OTHER_LDFLAGS": "-ObjC"
+   ],
+   ...
+)
+```
 
 ## Generating a QR Code
 

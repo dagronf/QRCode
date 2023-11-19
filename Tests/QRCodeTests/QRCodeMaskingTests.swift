@@ -166,7 +166,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
 			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
 
-			code.logoTemplate = QRCode.LogoTemplate.CircleCenter(image: logoImage.cgImage()!)
+			code.logoTemplate = .CircleCenter(image: logoImage.cgImage()!)
 
 			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
 			let data2 = try XCTUnwrap(logo1.pngRepresentation())
