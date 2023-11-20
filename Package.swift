@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
 	name: "QRCode",
 	platforms: [
-		.macOS(.v10_11),
+		.macOS(.v10_13),
 		.iOS(.v13),
 		.tvOS(.v13),
 		.watchOS(.v6)
@@ -30,7 +30,7 @@ let package = Package(
 		// A 3rd-party QR code generation library for watchOS, forked from https://github.com/fwcd/swift-qrcode-generator
 		.package(
 			url: "https://github.com/dagronf/swift-qrcode-generator",
-			.upToNextMinor(from: "1.0.3")
+			.upToNextMinor(from: "2.0.2")
 		),
 
 		// A microframework for cleaning handling image conversion

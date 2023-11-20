@@ -11,7 +11,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
     </a>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/macOS-10.11+-red" />
+    <img src="https://img.shields.io/badge/macOS-10.13+-red" />
     <img src="https://img.shields.io/badge/iOS-13+-blue" />
     <img src="https://img.shields.io/badge/tvOS-13+-orange" />
     <img src="https://img.shields.io/badge/watchOS-6+-brightgreen" />
@@ -96,7 +96,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "16.1.2")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "17.0.0")
 ```
 
 ### Cocoapods
@@ -104,7 +104,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'DSF_QRCode', '~> 16.1.2'
+pod 'DSF_QRCode', '~> 17.0.0'
 ```
 
 ### Usage
