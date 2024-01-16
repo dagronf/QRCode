@@ -373,17 +373,13 @@ final class QRCodeTests: XCTestCase {
 		#endif
 	}
 
-	func stringsFromQRCode(_ cgImage: CGImage) -> [String] {
-		let features = QRCode.DetectQRCodes(cgImage)
-		return features.compactMap { $0.messageString }
-	}
-
+	#if !os(watchOS)
 	func testCGImageQuickGen() throws {
 		do {
 			let image = try XCTUnwrap(CGImage.qrCode("This is a test!!!", dimension: 300))
 			XCTAssertEqual(image.width, 300)
 			XCTAssertEqual(image.height, 300)
-			XCTAssertEqual(image.qrCodedMessages(), ["This is a test!!!"])
+			XCTAssertEqual(image.detectQRCodeStrings(), ["This is a test!!!"])
 		}
 
 		do {
@@ -413,7 +409,8 @@ final class QRCodeTests: XCTestCase {
 			ctx.fillPath()
 
 			let image = try XCTUnwrap(ctx.makeImage())
-			XCTAssertEqual(image.qrCodedMessages(), ["This is a test!!!"])
+			XCTAssertEqual(image.detectQRCodeStrings(), ["This is a test!!!"])
 		}
 	}
+	#endif
 }

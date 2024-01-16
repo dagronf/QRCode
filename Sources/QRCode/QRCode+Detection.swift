@@ -48,6 +48,26 @@ public extension QRCode {
 			.features(in: ciImage, options: options)
 			.compactMap { $0 as? CIQRCodeFeature }
 	}
+
+	/// Detect QR coded strings in the specified image using CoreImage
+	/// - Parameter cgImage: The image in which to detect QRCodes
+	/// - Returns: An array of detected qrcode-encoded strings within the image
+	///
+	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
+	@objc @inlinable static func DetectQRStrings(_ cgImage: CGImage) -> [String] {
+		QRCode.DetectQRCodes(cgImage)
+			.compactMap { $0.messageString }
+	}
+}
+
+public extension CGImage {
+	/// Returns all qrcode strings that were encoded in this image
+	/// - Returns: An array of detected qr code strings
+	///
+	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
+	@inlinable func detectQRCodeStrings() -> [String] {
+		return QRCode.DetectQRStrings(self)
+	}
 }
 
 #endif

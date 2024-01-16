@@ -950,7 +950,7 @@ Even easier, there is an extension on `CGImage` to detect the strings encoded wi
 
 ```swift
 let image = CGImage(...)
-let messages = image.qrCodedMessages()
+let messages = image.detectQRCodeStrings()
 ```
 
 ### From a video stream

@@ -88,14 +88,3 @@ public extension CGPath {
 		return doc.path(dimension: dimension)
 	}
 }
-
-#if !os(watchOS)
-public extension CGImage {
-	/// Returns all qrcode messages that were encoded in this image
-	/// - Returns: An array of detected qr code strings
-	func qrCodedMessages() -> [String] {
-		let features = QRCode.DetectQRCodes(self)
-		return features.compactMap { $0.messageString }
-	}
-}
-#endif
