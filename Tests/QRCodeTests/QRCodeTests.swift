@@ -115,6 +115,36 @@ final class QRCodeTests: XCTestCase {
 		#endif
 	}
 
+	#if canImport(CoreImage)
+	func testDiff() throws {
+		let g1 = QRCode.Document(utf8String: "This is a test", errorCorrection: .high)
+		let i1 = g1.cgImage(.init(width: 300, height: 300))!
+		let g2 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
+		let i2 = g2.cgImage(.init(width: 300, height: 300))!
+		let g3 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
+		g3.design.backgroundColor(CGColor(gray: 1, alpha: 0.9))
+		let i3 = g3.cgImage(.init(width: 300, height: 300))!
+
+		do {
+			// Check exact match
+			let diff = try CGImage.diff(i1, i1)
+			XCTAssertEqual(0.0, diff, accuracy: 0.000001)
+		}
+
+		do {
+			// Check big difference
+			let diff = try CGImage.diff(i1, i2)
+			XCTAssertEqual(1.0, diff, accuracy: 0.000001)
+		}
+
+		do {
+			// Check minor difference
+			let diff = try CGImage.diff(i2, i3)
+			XCTAssertEqual(0.1, diff, accuracy: 0.01)
+		}
+	}
+	#endif
+
 	func testGenerateImagesAtDifferentResolutions() throws {
 		let doc = QRCode.Document(utf8String: "Generate content QR", errorCorrection: .high, generator: __testGenerator)
 		doc.design.shape.onPixels = QRCode.PixelShape.Circle()
