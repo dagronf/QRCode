@@ -26,13 +26,32 @@ import CoreImage
 import Foundation
 
 public extension QRCode {
+
+	/// QRCode detection accuracy
+	@objc(QRCodeDetectionAccuracy) enum DetectionAccuracy: Int {
+		/// Faster but less accurate
+		case low = 0
+		/// Slower but more accurate
+		case high = 1
+
+		/// Mapping between `DetectionAccuracy` and the `CIDetectorAccuracy` strings
+		@inlinable internal var mode: String {
+			switch self {
+			case .low: return CIDetectorAccuracyLow
+			case .high: return CIDetectorAccuracyHigh
+			}
+		}
+	}
+
 	/// Detect QR code(s) in the specified image using CoreImage
-	/// - Parameter cgImage: The image in which to detect QRCodes
+	/// - Parameters:
+	///   - cgImage: The image in which to detect QRCodes
+	///   - accuracy: The accuracy to use when detecting codes. `.low` is faster, but less accurate.
 	/// - Returns: An array of detected QR Codes
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
-	@objc static func DetectQRCodes(_ cgImage: CGImage) -> [CIQRCodeFeature] {
-		var options: [String: Any] = [CIDetectorAccuracy: CIDetectorAccuracyHigh]
+	@objc static func DetectQRCodes(_ cgImage: CGImage, accuracy: DetectionAccuracy = .high) -> [CIQRCodeFeature] {
+		var options: [String: Any] = [CIDetectorAccuracy: accuracy.mode]
 		let context = CIContext()
 		let ciImage = CIImage(cgImage: cgImage)
 		guard let qrDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: context, options: options) else {
@@ -50,12 +69,14 @@ public extension QRCode {
 	}
 
 	/// Detect QR coded strings in the specified image using CoreImage
-	/// - Parameter cgImage: The image in which to detect QRCodes
+	/// - Parameters:
+	///   - cgImage: The image in which to detect QRCodes
+	///   - accuracy: The accuracy to use when detecting codes. `.low` is faster, but less accurate.
 	/// - Returns: An array of detected qrcode-encoded strings within the image
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
-	@objc @inlinable static func DetectQRStrings(_ cgImage: CGImage) -> [String] {
-		QRCode.DetectQRCodes(cgImage)
+	@objc @inlinable static func DetectQRStrings(_ cgImage: CGImage, accuracy: DetectionAccuracy = .high) -> [String] {
+		QRCode.DetectQRCodes(cgImage, accuracy: accuracy)
 			.compactMap { $0.messageString }
 	}
 }
