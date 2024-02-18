@@ -15,7 +15,7 @@ final class ComponentsTests: XCTestCase {
 		let gps1 = [
 			DSFGradient.Pin(CGColor.white, 1.0),
 			DSFGradient.Pin(CGColor.black, 0.0),
-			DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0, alpha: 1.0), 0.2),
+			DSFGradient.Pin(CGColor.RGBA(1, 1, 0, 1), 0.2),
 		]
 		let g1 = DSFGradient(pins: gps1)
 		let arc = try! XCTUnwrap(g1?.asRGBAGradientString())

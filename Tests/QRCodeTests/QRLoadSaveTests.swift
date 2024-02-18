@@ -85,14 +85,14 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		doc1.data = "simple colors".data(using: .utf8)!
 		doc1.errorCorrection = .quantize
 
-		doc1.design.style.onPixels = QRCode.FillStyle.Solid(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
-		doc1.design.style.offPixels = QRCode.FillStyle.Solid(CGColor(red: 0, green: 1, blue: 0, alpha: 0.1))
-		doc1.design.style.background = QRCode.FillStyle.Solid(CGColor(red: 0, green: 0, blue: 1, alpha: 0.5))
+		doc1.design.style.onPixels = QRCode.FillStyle.Solid(CGColor.RGBA(1, 0, 0, 1))
+		doc1.design.style.offPixels = QRCode.FillStyle.Solid(CGColor.RGBA(0, 1, 0, 0.1))
+		doc1.design.style.background = QRCode.FillStyle.Solid(CGColor.RGBA(0, 0, 1, 0.5))
 
 		doc1.design.style.eye = QRCode.FillStyle.LinearGradient(
 			DSFGradient(pins: [
-				DSFGradient.Pin(CGColor(gray: 0.5, alpha: 0.5), 0),
-				DSFGradient.Pin(CGColor(gray: 1.0, alpha: 0.1), 1)
+				DSFGradient.Pin(CGColor.gray(0.5, 0.5), 0),
+				DSFGradient.Pin(CGColor.gray(1.0, 0.1), 1)
 				]
 			)!
 		)
@@ -105,7 +105,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	}
 
 	func testSolidFillLoadSave() throws {
-		let c = QRCode.FillStyle.Solid(CGColor(red: 0.5, green: 0.5, blue: 1, alpha: 0.8))
+		let c = QRCode.FillStyle.Solid(CGColor.RGBA(0.5, 0.5, 1, 0.8))
 		let ctc = try XCTUnwrap(c.color.sRGBAComponents())
 		let core = c.coreSettings()
 
@@ -124,7 +124,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let c = QRCode.FillStyle.RadialGradient(
 			DSFGradient(pins: [
 				DSFGradient.Pin(CGColor.black, 0),
-				DSFGradient.Pin(CGColor(gray: 0.5, alpha: 0.5), 0.5),
+				DSFGradient.Pin(CGColor.gray(0.5, 0.5), 0.5),
 				DSFGradient.Pin(CGColor.white, 1)
 				]
 			)!,

@@ -1,7 +1,5 @@
 //
-//  QRCodeFillStyleSolid.swift
-//
-//  Copyright © 2023 Darren Ford. All rights reserved.
+//  Copyright © 2024 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -32,10 +30,14 @@ public extension QRCode.FillStyle {
 		/// The fill color
 		@objc public let color: CGColor
 
+		/// The color settings as a dictionary
 		@objc public func settings() -> [String: Any] {
 			[ "color": color.archiveSRGBA() ?? "1.0,0.0,0.0,0.5" ]
 		}
 
+		/// Create a Solid fill style using the provided settings dictionary
+		/// - Parameter settings: The settings dictionary
+		/// - Returns: A solid fill style object
 		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
 			if let c = settings["color"] as? String,
 				let g = CGColor.UnarchiveSRGBA(c) {
@@ -49,14 +51,19 @@ public extension QRCode.FillStyle {
 			self.color = color
 		}
 
+		/// Create a color from srgb float values
+		@objc public convenience init(srgbRed: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat = 1.0) {
+			self.init(CGColor.sRGBA(srgbRed, green, blue, alpha))
+		}
+
 		/// Create a color from rgb float values
 		@objc public convenience init(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, alpha: CGFloat = 1.0) {
-			self.init(CGColor(red: red, green: green, blue: blue, alpha: alpha))
+			self.init(CGColor.RGBA(red, green, blue, alpha))
 		}
 
 		/// Create a color from gray values
 		@objc public convenience init(gray: CGFloat, alpha: CGFloat = 1.0) {
-			self.init(CGColor(gray: gray, alpha: alpha))
+			self.init(CGColor.gray(gray, alpha))
 		}
 
 		/// Returns a new copy of the fill style

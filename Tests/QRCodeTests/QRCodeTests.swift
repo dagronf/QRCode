@@ -122,7 +122,7 @@ final class QRCodeTests: XCTestCase {
 		let g2 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
 		let i2 = g2.cgImage(.init(width: 300, height: 300))!
 		let g3 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
-		g3.design.backgroundColor(CGColor(gray: 1, alpha: 0.9))
+		g3.design.backgroundColor(CGColor.gray(1, 0.9))
 		let i3 = g3.cgImage(.init(width: 300, height: 300))!
 
 		do {
@@ -227,9 +227,9 @@ final class QRCodeTests: XCTestCase {
 			let c = QRCode.FillStyle.RadialGradient(
 				DSFGradient(
 					pins: [
-						DSFGradient.Pin(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1), 0),
-						DSFGradient.Pin(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 1), 0.5),
-						DSFGradient.Pin(CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 1), 1.0),
+						DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
+						DSFGradient.Pin(CGColor.sRGBA(0, 1, 0, 1), 0.5),
+						DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1.0),
 					]
 				)!,
 				centerPoint: CGPoint(x: 0.5, y: 0.5)
@@ -237,15 +237,15 @@ final class QRCodeTests: XCTestCase {
 			doc.design.style.onPixels = c
 
 
-			doc.design.style.eyeBackground = CGColor(red: 0, green: 1, blue: 1, alpha: 1)
+			doc.design.style.eyeBackground = CGColor.RGBA(0, 1, 1, 1)
 
 			doc.design.shape.offPixels = QRCode.PixelShape.Flower(insetFraction: 0.2)
 			doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 1, 0)
 
 			let gradient = DSFGradient(
 				pins: [
-					DSFGradient.Pin(CGColor(red: 1, green: 1, blue: 0, alpha: 1.000), 0),
-					DSFGradient.Pin(CGColor(red: 0, green: 1, blue: 1, alpha: 1.000), 1),
+					DSFGradient.Pin(CGColor.RGBA(1, 1, 0, 1), 0),
+					DSFGradient.Pin(CGColor.RGBA(0, 1, 1, 1), 1),
 				]
 			)!
 			doc.design.style.offPixels = QRCode.FillStyle.LinearGradient(
@@ -286,7 +286,7 @@ final class QRCodeTests: XCTestCase {
 		let im = QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.5, hasInnerCorners: true),
 			dimension: 36,
-			foregroundColor: CGColor.init(red: 1, green: 0, blue: 0, alpha: 0.5)
+			foregroundColor: CGColor.RGBA(1, 0, 0, 0.5)
 		)
 		let imd = try XCTUnwrap(im)
 
@@ -346,7 +346,7 @@ final class QRCodeTests: XCTestCase {
 			let allImages = QRCodePixelShapeFactory.shared.generateSampleImages(
 				dimension: 300,
 				foregroundColor: .black,
-				backgroundColor: CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1),
+				backgroundColor: CGColor.sRGBA(1, 0, 0, 1),
 				isOn: true,
 				samplePixelMatrix: matrix,
 				commonSettings: [

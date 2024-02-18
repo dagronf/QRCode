@@ -16,7 +16,7 @@ final class QRCodeSVGTests: XCTestCase {
 		do {
 			let image = try loadImageResource("colored-fill", withExtension: "jpg")
 
-			doc.design.foregroundColor(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+			doc.design.foregroundColor(CGColor.RGBA(1, 0, 0, 1))
 			doc.logoTemplate = QRCode.LogoTemplate(
 				image: image,
 				path: CGPath(ellipseIn: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil)
@@ -28,7 +28,7 @@ final class QRCodeSVGTests: XCTestCase {
 		}
 
 		do {
-			doc.design.foregroundColor(CGColor(red: 0, green: 0.3, blue: 0, alpha: 1))
+			doc.design.foregroundColor(CGColor.RGBA(0, 0.3, 0, 1))
 			let svg = doc.svg(dimension: 512)
 			XCTAssertGreaterThan(svg.count, 0)
 			try outputFolder.write(svg, to: "basicSVG2-mask-no-image.svg")
@@ -45,7 +45,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 		do {
 			// Flat color
-			code.design.style.onPixels = QRCode.FillStyle.Solid(CGColor(srgbRed: 1, green: 0, blue: 1, alpha: 1))
+			code.design.style.onPixels = QRCode.FillStyle.Solid(CGColor.sRGBA(1, 0, 1, 1))
 
 			let svg1 = code.svg(dimension: 600)
 
@@ -72,8 +72,8 @@ final class QRCodeSVGTests: XCTestCase {
 		code.design.style.eye = QRCode.FillStyle.LinearGradient(
 			DSFGradient(
 				pins: [
-					DSFGradient.Pin(CGColor(srgbRed: 0.6, green: 0.6, blue: 0, alpha: 1), 0),
-					DSFGradient.Pin(CGColor(srgbRed: 0.0, green: 0.4, blue: 0, alpha: 1), 1),
+					DSFGradient.Pin(CGColor.sRGBA(0.6, 0.6, 0, 1), 0),
+					DSFGradient.Pin(CGColor.sRGBA(0.0, 0.4, 0, 1), 1),
 				]
 			)!,
 			startPoint: CGPoint(x: 0, y: 1),
@@ -84,8 +84,8 @@ final class QRCodeSVGTests: XCTestCase {
 		code.design.style.onPixels = QRCode.FillStyle.LinearGradient(
 			DSFGradient(
 				pins: [
-					DSFGradient.Pin(CGColor(srgbRed: 1.0, green: 0, blue: 0, alpha: 1), 0),
-					DSFGradient.Pin(CGColor(srgbRed: 0, green: 0, blue: 1.0, alpha: 1), 1),
+					DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
+					DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1),
 				]
 			)!
 		)
@@ -115,9 +115,9 @@ final class QRCodeSVGTests: XCTestCase {
 		let c = QRCode.FillStyle.RadialGradient(
 			DSFGradient(
 				pins: [
-					DSFGradient.Pin(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1), 0),
-					DSFGradient.Pin(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 1), 0.5),
-					DSFGradient.Pin(CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 1), 1.0),
+					DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
+					DSFGradient.Pin(CGColor.sRGBA(0, 1, 0, 1), 0.5),
+					DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1.0),
 				]
 			)!,
 			centerPoint: CGPoint(x: 0.5, y: 0.5)
@@ -137,18 +137,18 @@ final class QRCodeSVGTests: XCTestCase {
 		let d = QRCode.Document(generator: QRCodeGenerator_External())
 		d.utf8String = "https://www.swift.org"
 
-		d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
+		d.design.backgroundColor(CGColor.sRGBA(0, 0.6, 0, 1))
 
 		d.design.style.eye = QRCode.FillStyle.Solid(gray: 1)
-		d.design.style.eyeBackground = CGColor(gray: 0, alpha: 0.2)
+		d.design.style.eyeBackground = CGColor.gray(0, 0.2)
 
 		d.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
 		d.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1)
-		d.design.style.onPixelsBackground = CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 0.2)
+		d.design.style.onPixelsBackground = CGColor.sRGBA(1, 1, 1, 0.2)
 
 		d.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
 		d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
-		d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
+		d.design.style.offPixelsBackground = CGColor.sRGBA(0, 0, 0, 0.2)
 
 		let svg1 = d.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportPixelBackgroundColors.svg")

@@ -217,25 +217,25 @@ public extension QRCodeView {
 	#else
 	/// Interface builder data color
 	@IBInspectable var ibPixelColor: UIColor {
-		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black) }
 		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder eye color
 	@IBInspectable var ibEyeColor: UIColor {
-		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .black) }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder pupil color
 	@IBInspectable var ibPupilColor: UIColor {
-		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 0, alpha: 1)) }
+		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .black) }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder background color
 	@IBInspectable var ibBackgroundColor: UIColor {
-		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? CGColor(gray: 1, alpha: 1)) }
+		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? .white) }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 

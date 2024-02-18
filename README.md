@@ -12,7 +12,7 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 </p>
 <p align="center">
     <img src="https://img.shields.io/badge/macOS-10.13+-red" />
-    <img src="https://img.shields.io/badge/iOS-13+-blue" />
+    <img src="https://img.shields.io/badge/iOS-11+-blue" />
     <img src="https://img.shields.io/badge/tvOS-13+-orange" />
     <img src="https://img.shields.io/badge/watchOS-6+-brightgreen" />
     <img src="https://img.shields.io/badge/macCatalyst-1.0+-purple" />

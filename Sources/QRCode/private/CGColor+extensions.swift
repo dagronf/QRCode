@@ -1,7 +1,5 @@
 //
-//  CGColor+extensions.swift
-//
-//  Copyright © 2023 Darren Ford. All rights reserved.
+//  Copyright © 2024 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -36,7 +34,7 @@ private let ArchiveRGBAColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 		self.b = b
 		self.a = a
 	}
-	
+
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
 	@objc public var stringValue: String {
 		"\(self.r),\(self.g),\(self.b),\(self.a)"
@@ -58,12 +56,12 @@ public extension CGColor {
 		}
 		return RGBAComponents(r: comps[0], g: comps[1], b: comps[2], a: comps[3])
 	}
-	
+
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
 	func archiveSRGBA() -> String? {
 		return self.sRGBAComponents()?.stringValue
 	}
-	
+
 	/// Create a CGColor from an archive string for the format "r,g,b,a" (eg. "1.0,0.0,0.0,0.5")
 	static func UnarchiveSRGBA(_ archive: String) -> CGColor? {
 		let comps = archive
@@ -77,14 +75,6 @@ public extension CGColor {
 		return CGColor(colorSpace: ArchiveRGBAColorSpace, components: comps)
 	}
 }
-
-#if !os(macOS)
-extension CGColor {
-	static let white = CGColor(gray: 1, alpha: 1)
-	static let black = CGColor(gray: 0, alpha: 1)
-	static let clear = CGColor(gray: 0, alpha: 0)
-}
-#endif
 
 extension CGColor {
 	/// Return an RGBA hex code (eg. "#00000000")
