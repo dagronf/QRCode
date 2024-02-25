@@ -30,7 +30,7 @@ import Foundation
 /// A QRCode generator class.
 ///
 /// Note that while this can be used on any thread, it is not in itself thread-safe.
-@objc public class QRCode: NSObject {
+@objc public final class QRCode: NSObject, @unchecked Sendable {
 	/// The generator to use when generating the QR code.
 	@objc public var generator: QRCodeEngine = QRCode.DefaultEngine()
 

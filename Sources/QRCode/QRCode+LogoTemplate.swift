@@ -25,7 +25,7 @@ import SwiftImageReadWrite
 
 public extension QRCode {
 	/// A QRCode logo template
-	@objc(QRCodeLogoTemplate) class LogoTemplate: NSObject, Codable {
+	@objc(QRCodeLogoTemplate) final class LogoTemplate: NSObject, Codable, @unchecked Sendable {
 		/// A CGPath with the bounds x=0, y=0, width=1, height=1 in which to draw the image
 		@objc public var path: CGPath {
 			didSet {

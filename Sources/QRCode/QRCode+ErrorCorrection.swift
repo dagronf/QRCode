@@ -23,7 +23,7 @@ import Foundation
 
 public extension QRCode {
 	/// The error correction level
-	@objc(QRCodeErrorCorrection) enum ErrorCorrection: Int, CaseIterable {
+	@objc(QRCodeErrorCorrection) enum ErrorCorrection: Int, CaseIterable, Sendable {
 		/// Lowest error correction (L - Recovers 7% of data)
 		case low = 0
 		/// Medium error correction (M - Recovers 15% of data)

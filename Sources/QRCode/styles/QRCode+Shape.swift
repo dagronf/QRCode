@@ -26,7 +26,7 @@ import Foundation
 
 public extension QRCode {
 	/// Represents the shape when generating the qr code
-	@objc(QRCodeShape) class Shape: NSObject {
+	@objc(QRCodeShape) final class Shape: NSObject, @unchecked Sendable {
 
 		/// Convenience initializer for objc
 		@objc public static func create() -> Shape { return Shape() }

@@ -26,7 +26,7 @@ import Foundation
 
 public extension QRCode {
 	/// The components of the QR code
-	@objc(QRCodeComponents) class Components: NSObject, OptionSet {
+	@objc(QRCodeComponents) final class Components: NSObject, OptionSet, @unchecked Sendable {
 		/// The outer ring of the eye
 		public static let eyeOuter = Components(rawValue: 1 << 0)
 		/// The pupil (center) of the eye
