@@ -44,6 +44,7 @@ import CoreGraphics
 			QRCode.PupilShape.BarsHorizontal.self,
 			QRCode.PupilShape.RoundedPointingOut.self,
 			QRCode.PupilShape.Shield.self,
+			QRCode.PupilShape.UsePixelShape.self,
 		]
 		super.init()
 	}
@@ -127,7 +128,13 @@ public extension QRCodePupilShapeFactory {
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
-		path.addPath(pupilGenerator.pupilPath(), transform: scaleTransform)
+
+		if let g = pupilGenerator as? QRCode.PupilShape.UsePixelShape {
+			path.addPath(g.previewPath(), transform: scaleTransform)
+		}
+		else {
+			path.addPath(pupilGenerator.pupilPath(), transform: scaleTransform)
+		}
 
 		context.addPath(path)
 		context.setFillColor(foregroundColor)

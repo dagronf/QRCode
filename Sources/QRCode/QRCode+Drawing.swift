@@ -54,6 +54,16 @@ public extension QRCode {
 
 		let style = design.style
 
+		//
+		// Special case handling for the 'use pixel shape' eye and pupil types
+		//
+		if let eyePixelShape = design.shape.eye as? QRCode.EyeShape.UsePixelShape {
+			eyePixelShape.pixelShape = design.shape.onPixels
+		}
+		if let pupilPixelShape = design.shape.pupil as? QRCode.PupilShape.UsePixelShape {
+			pupilPixelShape.pixelShape = design.shape.onPixels
+		}
+
 		// Fill the background first
 		let backgroundStyle = style.background ?? QRCode.FillStyle.clear
 		ctx.usingGState { context in

@@ -43,7 +43,8 @@ import Foundation
 			QRCode.EyeShape.Pixels.self,
 			QRCode.EyeShape.CorneredPixels.self,
 			QRCode.EyeShape.RoundedPointingOut.self,
-			QRCode.EyeShape.Shield.self
+			QRCode.EyeShape.Shield.self,
+			QRCode.EyeShape.UsePixelShape.self
 		]
 		super.init()
 	}
@@ -120,10 +121,20 @@ public extension QRCodeEyeShapeFactory {
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
-		path.addPath(eyeGenerator.eyePath(), transform: scaleTransform)
+		if let g = eyeGenerator as? QRCode.EyeShape.UsePixelShape {
+			path.addPath(g.previewPath(), transform: scaleTransform)
+		}
+		else {
+			path.addPath(eyeGenerator.eyePath(), transform: scaleTransform)
+		}
 
-		let pupil = pupilGenerator ?? eyeGenerator.defaultPupil()
-		path.addPath(pupil.pupilPath(), transform: scaleTransform)
+		if let g = pupilGenerator as? QRCode.PupilShape.UsePixelShape {
+			path.addPath(g.previewPath(), transform: scaleTransform)
+		}
+		else {
+			let pupil = pupilGenerator ?? eyeGenerator.defaultPupil()
+			path.addPath(pupil.pupilPath(), transform: scaleTransform)
+		}
 
 		context.addPath(path)
 		context.setFillColor(foregroundColor)

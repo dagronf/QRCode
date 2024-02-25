@@ -113,6 +113,16 @@ public extension QRCode {
 
 		let path = CGMutablePath()
 
+		//
+		// Special case for the 'use pixel shape' eye and pupil types
+		//
+		if let eyePixelShape = shape.eye as? QRCode.EyeShape.UsePixelShape {
+			eyePixelShape.pixelShape = shape.onPixels
+		}
+		if let pupilPixelShape = shape.pupil as? QRCode.PupilShape.UsePixelShape {
+			pupilPixelShape.pixelShape = shape.onPixels
+		}
+
 		if components.contains(.negative) {
 			var current = self.current.inverted()
 			if let template = logoTemplate {

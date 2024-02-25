@@ -826,6 +826,29 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		#endif
 
+		markdownText += "## Use Pixel shape checks \n\n"
+
+		do {
+			let doc = QRCode.Document(utf8String: "This is a test")
+			doc.design.shape.eye = QRCode.EyeShape.UsePixelShape()
+			doc.design.shape.pupil = QRCode.PupilShape.UsePixelShape()
+
+			let names = QRCodePixelShapeFactory.shared.availableGeneratorNames
+			for name in names {
+				guard let g = QRCodePixelShapeFactory.shared.named(name) else { continue }
+				_ = g.setSettingValue(0.1, forKey: QRCode.SettingsKey.insetFraction)
+				_ = g.setSettingValue(1, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+				doc.design.shape.onPixels = g
+
+				let image = try XCTUnwrap(doc.imageData(.jpg(), dimension: 250))
+				let filename = "usePixelShape-\(name).jpg"
+				let link = try imageStore.store(image, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
+			}
+
+			markdownText += "\n"
+		}
+
 		markdownText += "## Style export equivalence checks \n\n"
 
 		do {

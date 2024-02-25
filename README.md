@@ -285,6 +285,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    |"corneredPixels"|`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
 |<img src="./Art/images/eye_edges.png" width="60"/>             |"edges"|`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
 |<img src="./Art/images/eye_shield.png" width="60"/>            |"shield"|`QRCode.EyeShape.Shield`| A shield with configurable corners |
+|                                                               |"usePixelShape"|`QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
 
 ### Custom Pupil shape (optional)
 
@@ -307,6 +308,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_pixels.png" width="30"/>           |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius for each pixel |
 |<img src="./Art/images/pupil_corneredPixels.png" width="30"/>   |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |
 |<img src="./Art/images/pupil_shield.png" width="30"/>           |"shield"|`QRCode.PupilShape.Shield`|  A shield with configurable corners |
+|                                                                |"usePixelShape"|`QRCode.PupilShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the pupils |
 
 <details>
 <summary>Example</summary>
