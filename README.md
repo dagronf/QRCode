@@ -1,6 +1,6 @@
 # QRCode
 
-A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for SwiftUI, Swift and Objective-C.
+A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
@@ -69,12 +69,12 @@ A simple and quick macOS/iOS/tvOS/watchOS QR Code generator/detector library for
 
 ## Why?
 
-* It's nice to have a simple, quick drop-in component for displaying a QR code when you need it!
+* It's nice to have a simple drop-in component for displaying a QR code when you need it!
 * It's nice to have your app look great!
 
 ## Features
 
-* Supports Swift and Objective-C.
+* Supports Swift, SwiftUI and Objective-C.
 * Supports Swift Package Manager and CocoaPods
 * Generate a QR code without access to a UI.
 * Supports all error correction levels.
@@ -754,7 +754,7 @@ This library provides drop-in components for presenting a styled QR code.
 
 `QRCodeView` is a view implementation for displaying a QR Code. This view supports :-
 
-* `@IBDesignable` via Interface Builder so you can design and style your QR code completely within Interface Builder without having a `QRCode.Document` object.
+* ~~`@IBDesignable` via Interface Builder so you can design and style your QR code completely within Interface Builder without having a `QRCode.Document` object.~~
 * (Optional) drag support for dragging a QR code out of the view.
 
 ### SwiftUI

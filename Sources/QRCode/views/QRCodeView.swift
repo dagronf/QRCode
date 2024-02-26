@@ -33,7 +33,7 @@ import UIKit
 // MARK: - QRCode View
 
 /// A simple NSView/UIView that displays a QR Code
-@objc @IBDesignable public class QRCodeView: QRCodeDocumentView {
+@objc public class QRCodeView: QRCodeDocumentView {
 
 	/// The correction level to use when generating the QR code
 	@objc public var errorCorrection: QRCode.ErrorCorrection {
@@ -127,10 +127,10 @@ import UIKit
 	}
 
 	/// If true, the view allows dragging a QRCode representation out
-	@IBInspectable var supportsDrag: Bool = false
+	@objc dynamic var supportsDrag: Bool = false
 
 	/// The size of the QRCode image when dragged out of the view
-	@IBInspectable var dragImageSize: CGSize = CGSize(width: 512, height: 512)
+	@objc dynamic var dragImageSize: CGSize = CGSize(width: 512, height: 512)
 
 	private var _eyeShape: String = "" {
 		didSet {
@@ -161,80 +161,80 @@ import UIKit
 
 public extension QRCodeView {
 	/// The name of the shape generator for the eye
-	@IBInspectable var ibEyeShape: String {
+	@objc dynamic var ibEyeShape: String {
 		get { _eyeShape }
 		set { _eyeShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// The name of the shape generator for the data
-	@IBInspectable var ibPixelShape: String {
+	@objc dynamic var ibPixelShape: String {
 		get { _pixelShape }
 		set { _pixelShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// The name of the shape generator for the data
-	@IBInspectable var ibPupilShape: String {
+	@objc dynamic var ibPupilShape: String {
 		get { _pupilShape }
 		set { _pupilShape = newValue; self.rebuildQRCode() }
 	}
 
 	/// Interface builder correction level
-	@IBInspectable var ibCorrectionLevel: String {
+	@objc dynamic var ibCorrectionLevel: String {
 		get { return self.errorCorrection.ECLevel }
 		set { self.errorCorrection = QRCode.ErrorCorrection.Create(newValue.first ?? "q") ?? .quantize; self.rebuildQRCode() }
 	}
 
 	/// Interface builder text content
-	@IBInspectable var ibTextContent: String {
+	@objc dynamic var ibTextContent: String {
 		get { String(data: self.data, encoding: .utf8) ?? "" }
 		set { self.data = newValue.data(using: .utf8) ?? Data(); self.rebuildQRCode() }
 	}
 
 	#if os(macOS)
 	/// Interface builder data color
-	@IBInspectable var ibPixelColor: NSColor {
+	@objc dynamic var ibPixelColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .black) ?? NSColor.black }
 		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder eye color
-	@IBInspectable var ibEyeColor: NSColor {
+	@objc dynamic var ibEyeColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .black) ?? NSColor.black }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder pupil color
-	@IBInspectable var ibPupilColor: NSColor {
+	@objc dynamic var ibPupilColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .black) ?? NSColor.black }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder background color
-	@IBInspectable var ibBackgroundColor: NSColor {
+	@objc dynamic var ibBackgroundColor: NSColor {
 		get { NSColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? .white) ?? NSColor.white }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 	#else
 	/// Interface builder data color
-	@IBInspectable var ibPixelColor: UIColor {
+	@objc dynamic var ibPixelColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.onPixels as? QRCode.FillStyle.Solid)?.color ?? .commonBlack) }
 		set { self.design.style.onPixels = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder eye color
-	@IBInspectable var ibEyeColor: UIColor {
+	@objc dynamic var ibEyeColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.eye as? QRCode.FillStyle.Solid)?.color ?? .commonBlack) }
 		set { self.design.style.eye = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder pupil color
-	@IBInspectable var ibPupilColor: UIColor {
+	@objc dynamic var ibPupilColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.pupil as? QRCode.FillStyle.Solid)?.color ?? .commonBlack) }
 		set { self.design.style.pupil = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
 
 	/// Interface builder background color
-	@IBInspectable var ibBackgroundColor: UIColor {
+	@objc dynamic var ibBackgroundColor: UIColor {
 		get { UIColor(cgColor: (self.design.style.background as? QRCode.FillStyle.Solid)?.color ?? .commonWhite) }
 		set { self.design.style.background = QRCode.FillStyle.Solid(newValue.cgColor); self.rebuildQRCode() }
 	}
