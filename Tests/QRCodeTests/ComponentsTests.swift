@@ -13,8 +13,8 @@ final class ComponentsTests: XCTestCase {
 
 	func testDSFGradient() {
 		let gps1 = [
-			DSFGradient.Pin(CGColor.white, 1.0),
-			DSFGradient.Pin(CGColor.black, 0.0),
+			DSFGradient.Pin(CGColor.commonWhite, 1.0),
+			DSFGradient.Pin(CGColor.commonBlack, 0.0),
 			DSFGradient.Pin(CGColor.RGBA(1, 1, 0, 1), 0.2),
 		]
 		let g1 = DSFGradient(pins: gps1)

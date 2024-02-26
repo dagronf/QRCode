@@ -30,7 +30,7 @@ public extension QRCode {
 		private override init() { super.init() }
 
 		/// Simple convenience for a clear fill
-		@objc public static let clear = FillStyle.Solid(.clear)
+		@objc public static let clear = FillStyle.Solid(.commonClear)
 
 		/// An object to contain SVG data during rendering
 		@objc public class SVGDefinition: NSObject {

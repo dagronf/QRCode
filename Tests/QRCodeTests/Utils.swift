@@ -38,6 +38,20 @@ extension CGColor {
 	}
 }
 
+extension CGColor {
+	#if os(macOS)
+	/// Create a CGColor from a HSB value
+	static func createWithHue(_ hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) -> CGColor {
+		NSColor(calibratedHue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
+	}
+	#else
+	/// Create a CGColor from a HSB value
+	static func createWithHue(_ hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) -> CGColor {
+		UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
+	}
+	#endif
+}
+
 extension String {
 	func termCount(_ term: String) -> Int {
 		self.components(separatedBy: term).count - 1

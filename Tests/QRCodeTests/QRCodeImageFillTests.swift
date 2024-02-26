@@ -50,7 +50,7 @@ final class QRCodeImageFillTests: XCTestCase {
 	func testBasic2() throws {
 		let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
 
-		doc.design.backgroundColor(.black)
+		doc.design.backgroundColor(.commonBlack)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 
 		let logoImage =  resourceImage(for: "colored-fill", extension: "jpg")

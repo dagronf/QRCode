@@ -109,7 +109,7 @@ final class QRCodeSVGTests: XCTestCase {
 		code.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
 		code.design.style.background = QRCode.FillStyle.Solid(1, 1.0, 0.8)
-		code.design.style.eyeBackground = CGColor.white
+		code.design.style.eyeBackground = CGColor.commonWhite
 
 		// radial fill
 		let c = QRCode.FillStyle.RadialGradient(

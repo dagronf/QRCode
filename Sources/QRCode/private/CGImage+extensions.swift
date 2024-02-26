@@ -111,7 +111,7 @@ extension CGImage {
 
 extension CGImage {
 	/// Create a CGImage and draw onto it
-	static func Create(size: CGSize, _ drawBlock: (CGContext) -> Void) -> CGImage? {
+	static func Create(size: CGSize, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) -> CGImage? {
 		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 		guard
 			let space = CGColorSpace(name: CGColorSpace.sRGB),
@@ -126,6 +126,11 @@ extension CGImage {
 			)
 		else {
 			return nil
+		}
+
+		if flipped {
+			ctx.scaleBy(x: 1, y: -1)
+			ctx.translateBy(x: 0, y: -size.height)
 		}
 
 		drawBlock(ctx)

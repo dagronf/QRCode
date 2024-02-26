@@ -145,7 +145,7 @@ public extension QRCode.Design {
 	/// - Returns: This design object
 	@discardableResult
 	@objc func backgroundColor(_ color: CGColor?) -> QRCode.Design {
-		self.style.background = color.unwrapping { QRCode.FillStyle.Solid($0) } ?? QRCode.FillStyle.Solid(.clear)
+		self.style.background = color.unwrapping { QRCode.FillStyle.Solid($0) } ?? QRCode.FillStyle.Solid(.commonClear)
 		return self
 	}
 }

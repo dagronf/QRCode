@@ -108,7 +108,7 @@ public extension QRCodeEyeShapeFactory {
 
 		// fill the background color
 		context.usingGState { ctx in
-			ctx.setFillColor(backgroundColor ?? .clear)
+			ctx.setFillColor(backgroundColor ?? .commonClear)
 			ctx.fill(CGRect(origin: .zero, size: CGSize(width: width, height: height)))
 		}
 

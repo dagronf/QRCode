@@ -85,8 +85,8 @@ final class QRCodeTests: XCTestCase {
 	func testBasicCreate() throws {
 		do {
 			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
-			doc.design.backgroundColor(CGColor.clear)
-			doc.design.foregroundColor(CGColor.white)
+			doc.design.backgroundColor(CGColor.commonClear)
+			doc.design.foregroundColor(CGColor.commonWhite)
 			let image = doc.cgImage(CGSize(width: 800, height: 800))
 			let _ = try XCTUnwrap(image)
 		}
@@ -97,7 +97,7 @@ final class QRCodeTests: XCTestCase {
 		let image = QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: g,
 			dimension: 300,
-			foregroundColor: CGColor.black
+			foregroundColor: CGColor.commonBlack
 		)
 		XCTAssertNotNil(image)
 
@@ -221,7 +221,7 @@ final class QRCodeTests: XCTestCase {
 			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4)
 			//doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 0, 0)
-			doc.design.style.onPixelsBackground = CGColor.black
+			doc.design.style.onPixelsBackground = CGColor.commonBlack
 
 			// radial fill
 			let c = QRCode.FillStyle.RadialGradient(
@@ -254,7 +254,7 @@ final class QRCodeTests: XCTestCase {
 				endPoint: CGPoint(x: 1, y: 1)
 			)
 
-			doc.design.style.offPixelsBackground = CGColor.white
+			doc.design.style.offPixelsBackground = CGColor.commonWhite
 
 			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
 			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
@@ -306,7 +306,7 @@ final class QRCodeTests: XCTestCase {
 		let im = QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true),
 			dimension: 96,
-			foregroundColor: CGColor.black,
+			foregroundColor: CGColor.commonBlack,
 			samplePixelMatrix: d3
 		)
 		let im3 = try XCTUnwrap(im)
@@ -345,7 +345,7 @@ final class QRCodeTests: XCTestCase {
 
 			let allImages = QRCodePixelShapeFactory.shared.generateSampleImages(
 				dimension: 300,
-				foregroundColor: .black,
+				foregroundColor: .commonBlack,
 				backgroundColor: CGColor.sRGBA(1, 0, 0, 1),
 				isOn: true,
 				samplePixelMatrix: matrix,
@@ -381,7 +381,7 @@ final class QRCodeTests: XCTestCase {
 		let im = QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1),
 			dimension: 72,
-			foregroundColor: CGColor.black,
+			foregroundColor: CGColor.commonBlack,
 			samplePixelMatrix: d3
 		)
 
@@ -431,11 +431,11 @@ final class QRCodeTests: XCTestCase {
 			ctx.scaleBy(x: 1, y: -1)
 			ctx.translateBy(x: 0, y: -300)
 
-			ctx.setFillColor(.white)
+			ctx.setFillColor(.commonWhite)
 			ctx.fill([CGRect(x: 0, y: 0, width: 300, height: 300)])
 
 			ctx.addPath(path)
-			ctx.setFillColor(.black)
+			ctx.setFillColor(.commonBlack)
 			ctx.fillPath()
 
 			let image = try XCTUnwrap(ctx.makeImage())

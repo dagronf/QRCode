@@ -32,7 +32,7 @@ extension CGColor {
 		if #available(iOS 13, tvOS 13, watchOS 6, *) {
 			return CGColor(gray: gray, alpha: a)
 		}
-		return CGColor(colorSpace: _grayColorSpace, components: [gray, a]) ?? .black
+		return CGColor(colorSpace: _grayColorSpace, components: [gray, a]) ?? .commonBlack
 	}
 
 	/// Creates a color in the Generic RGB color space
@@ -46,7 +46,7 @@ extension CGColor {
 		if #available(iOS 13, tvOS 13, watchOS 6, *) {
 			return CGColor(red: red, green: green, blue: blue, alpha: alpha)
 		}
-		return CGColor(colorSpace: _rgbaColorSpace, components: [red, green, blue, alpha]) ?? .black
+		return CGColor(colorSpace: _rgbaColorSpace, components: [red, green, blue, alpha]) ?? .commonBlack
 	}
 
 	/// Creates a color in the sRGB color space.
@@ -60,7 +60,7 @@ extension CGColor {
 		if #available(macOS 15, iOS 13, tvOS 13, watchOS 6, *) {
 			return CGColor(srgbRed: red, green: green, blue: blue, alpha: alpha)
 		}
-		return CGColor(colorSpace: _sRGBAColorSpace, components: [red, green, blue, alpha]) ?? .black
+		return CGColor(colorSpace: _sRGBAColorSpace, components: [red, green, blue, alpha]) ?? .commonBlack
 	}
 }
 
@@ -70,10 +70,8 @@ extension CGColor {
 @usableFromInline internal let _rgbaColorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear)!
 @usableFromInline internal let _grayColorSpace = CGColorSpace(name: CGColorSpace.extendedGray)!
 
-#if !os(macOS)
 extension CGColor {
-	@usableFromInline static let white = CGColor.gray(1)
-	@usableFromInline static let black = CGColor.gray(0)
-	@usableFromInline static let clear = CGColor.gray(0, 0)
+	@usableFromInline internal static let commonWhite = CGColor.gray(1)
+	@usableFromInline internal static let commonBlack = CGColor.gray(0)
+	@usableFromInline internal static let commonClear = CGColor.gray(0, 0)
 }
-#endif

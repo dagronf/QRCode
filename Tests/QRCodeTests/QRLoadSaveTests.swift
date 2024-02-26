@@ -123,9 +123,9 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testRadialGradientLoadSave() throws {
 		let c = QRCode.FillStyle.RadialGradient(
 			DSFGradient(pins: [
-				DSFGradient.Pin(CGColor.black, 0),
+				DSFGradient.Pin(CGColor.commonBlack, 0),
 				DSFGradient.Pin(CGColor.gray(0.5, 0.5), 0.5),
-				DSFGradient.Pin(CGColor.white, 1)
+				DSFGradient.Pin(CGColor.commonWhite, 1)
 				]
 			)!,
 			centerPoint: CGPoint(x: 0.2, y: 0.8))
