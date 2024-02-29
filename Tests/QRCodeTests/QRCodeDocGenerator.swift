@@ -1223,7 +1223,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 
 			do {
-				let logoImage =  resourceImage(for: "swift-logo", extension: "png")
+				let logoImage = resourceImage(for: "swift-logo", extension: "png")
 				let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
 				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", generator: QRCodeGenerator_External())
