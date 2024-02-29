@@ -46,7 +46,8 @@ import CoreGraphics
 			QRCode.PupilShape.Shield.self,
 			QRCode.PupilShape.UsePixelShape.self,
 			QRCode.PupilShape.HexagonLeaf.self,
-		]
+			QRCode.PupilShape.Seal.self,
+		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
 
