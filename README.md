@@ -96,7 +96,7 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "17.0.0")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "18.0.0")
 ```
 
 ### Cocoapods
@@ -104,7 +104,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'DSF_QRCode', '~> 17.0.0'
+pod 'DSF_QRCode', '~> 18.0.0'
 ```
 
 ### Usage
@@ -1013,26 +1013,34 @@ OPTIONS:
                           The output format compression factor (if the output format supports it, png,jpg) 
   --style-template-file <style-template-file>
                           The QR code file to use as a style template 
+  --logo-image-file <logo-image-file>
+                          The image file to use as a logo if the style template file defines a logo template 
   -t, --text <text>       The text to be stored in the QR code 
   -s, --silence           Silence any output 
   -c, --error-correction <error-correction>
                           The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize),
                           "H" (high) 
-  -p, --pupil-shape <pupil-shape>
-                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle,
-                          corneredPixels, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
-                          roundedRect, square, squircle. 
-  -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle,
-                          corneredPixels, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
-                          roundedRect, square, squircle. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are circle, curvePixel, horizontal, pointy,
-                          roundedPath, roundedRect, sharp, square, squircle, vertical. 
-  -n, --inset-fraction <inset-fraction>
+                          The onPixels shape to use. Available shapes are circle, curvePixel, flower, horizontal,
+                          pointy, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle, star,
+                          vertical. 
+  -n, --on-pixel-inset-fraction <on-pixel-inset-fraction>
                           The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>
                           The onPixels shape corner radius fractional value (0.0 -> 1.0) 
+  -e, --eye-shape <eye-shape>
+                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle,
+                          corneredPixels, edges, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
+                          roundedRect, shield, square, squircle, usePixelShape. 
+  --eye-shape-corner-radius <eye-shape-corner-radius>
+                          The fractional (0 ... 1) corner radius to use for the eye shape IF the eye shape supports it. 
+  -p, --pupil-shape <pupil-shape>
+                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle,
+                          corneredPixels, edges, hexagonLeaf, leaf, pixels, roundedOuter, roundedPointingIn,
+                          roundedPointingOut, roundedRect, shield, square, squircle, usePixelShape. 
+  --pupil-shape-corner-radius <pupil-shape-corner-radius>
+                          The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape
+                          supports it. 
   --bg-color <bg-color>   The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   --data-color <data-color>
                           The onPixels color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
