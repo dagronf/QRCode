@@ -26,6 +26,18 @@ let outputFolder = try! testResultsContainer.subfolder(with: "generation")
 private let imagesFolder = try! outputFolder.subfolder(with: "images")
 private let imageStore = ImageOutput(imagesFolder)
 
+let osstring: String = {
+#if os(watchOS)
+	"watchOS"
+#elseif os(macOS)
+	"macOS"
+#elseif os(iOS)
+	"iOS"
+#elseif os(tvOS)
+	"tvOS"
+	#endif
+}()
+
 final class QRCodeDocGeneratorTests: XCTestCase {
 
 	// The dimension for all the generated images
@@ -41,10 +53,14 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		QRCode.SettingsKey.hasInnerCorners: true
 	]
 
+	override class func setUp() {
+		markdownText += "# QRCode Generation (\(osstring))\n\n"
+	}
+
 	// Called when the test _class_ completes
 	override class func tearDown() {
 		// Write out the markdown
-		try! outputFolder.write(markdownText, to: "styles.md", encoding: .utf8)
+		try! outputFolder.write(markdownText, to: "styles-\(osstring).md", encoding: .utf8)
 	}
 
 	func testPixelShapesCoreImage() throws {
