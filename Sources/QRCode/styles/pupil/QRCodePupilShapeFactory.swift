@@ -1,7 +1,7 @@
 //
 //  QRCodePupilShapeFactory.swift
 //
-//  Copyright © 2023 Darren Ford. All rights reserved.
+//  Copyright © 2024 Darren Ford. All rights reserved.
 //
 //  MIT license
 //
@@ -45,6 +45,7 @@ import CoreGraphics
 			QRCode.PupilShape.RoundedPointingOut.self,
 			QRCode.PupilShape.Shield.self,
 			QRCode.PupilShape.UsePixelShape.self,
+			QRCode.PupilShape.HexagonLeaf.self,
 		]
 		super.init()
 	}
