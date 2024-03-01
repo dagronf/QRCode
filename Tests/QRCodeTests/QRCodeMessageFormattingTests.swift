@@ -75,4 +75,56 @@ final class QRCodeMessageFormattingTests: XCTestCase {
 
 		try XCTValidateSingleQRCode(image, expectedText: expected)
 	}
+
+	func testEventYearFormatterCheck() throws {
+		// This is a check to make sure our YEAR formatting in the event formatter is correct.
+		// Accidentally using YYYY in the date formatter has unexpected results
+		// See: https://dev.to/shane/yyyy-vs-yyyy-the-day-the-java-date-formatter-hurt-my-brain-4527
+
+		let components = DateComponents(
+			calendar: .current,
+			timeZone: TimeZone(identifier: "UTC"),
+			year: 2019,
+			month: 12,
+			day: 31,
+			hour: 10,
+			minute: 0,
+			second: 0
+		)
+		let d1 = try XCTUnwrap(components.date)
+
+		let df = DateFormatter()
+		df.timeZone = TimeZone(abbreviation: "UTC")
+
+		do {
+			// lowercase 'y' represents the YEAR
+			df.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
+			let d1s = df.string(from: d1)
+			XCTAssertEqual("20191231T100000Z", d1s)
+		}
+
+		do {
+			// uppercase 'Y' represents the YEAR in "Week of Year" based calendars
+			// This is NOT what we expect for the event formatter
+			df.dateFormat = "YYYYMMdd'T'HHmmss'Z'"
+			let d2s = df.string(from: d1)
+
+			// A week of year based year should have the year in 2020 for this date
+			XCTAssertNotEqual("20191231T100000Z", d2s)
+			// This week is technically the START of the new year (2020)
+			XCTAssertEqual("20201231T100000Z", d2s)
+		}
+
+		do {
+			let event = try QRCode.Message.Event(
+				summary: "Checking dates",
+				location: "Some dumb computer",
+				start: d1,
+				end: d1.addingTimeInterval(3600)
+			)
+			let formatted = try XCTUnwrap(event.text)
+			XCTAssertTrue(formatted.contains("DTSTART:20191231T100000Z"))
+			XCTAssertTrue(formatted.contains("DTEND:20191231T110000Z"))
+		}
+	}
 }

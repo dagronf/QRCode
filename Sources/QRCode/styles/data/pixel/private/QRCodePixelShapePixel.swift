@@ -84,14 +84,32 @@ internal extension QRCode.PixelShape {
 
 			let path = CGMutablePath()
 
-			let rotationBase = rotationFraction == 0.0 ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: rotationFraction * CGFloat.pi)
+			let rotationBase = {
+				if rotationFraction == 0.0 {
+					return CGAffineTransform.identity
+				}
+				else {
+					return CGAffineTransform(rotationAngle: rotationFraction * CGFloat.pi)
+				}
+			}()
+
+			// We want a consistent random number
+			var rotationRandomGenerator = SplitMix64(seed: 183691261160545909)
+			var insetRandomGenerator = SplitMix64(seed: 308653205)
 
 			for row in 0 ..< matrix.dimension {
 				for col in 0 ..< matrix.dimension {
 					// If the pixel is 'off' then we move on to the next
 					guard matrix[row, col] == true else { continue }
 
-					let insetFraction = self.useRandomInset ? (Double.random(in: -0.1 ... self.insetFraction)) : self.insetFraction
+					let insetFraction = {
+						if self.useRandomInset {
+							return Double.random(in: 0.0 ... self.insetFraction, using: &insetRandomGenerator)
+						}
+						else {
+							return self.insetFraction
+						}
+					}()
 
 					let origX = xoff + (CGFloat(col) * dm) + (dm / 2)
 					let origY = yoff + (CGFloat(row) * dm) + (dm / 2)
@@ -102,7 +120,11 @@ internal extension QRCode.PixelShape {
 
 					let rotatetfm: CGAffineTransform = {
 						if self.useRandomRotation {
-							return CGAffineTransform(rotationAngle: CGFloat.random(in: -self.rotationFraction...self.rotationFraction) * CGFloat.pi)
+							return CGAffineTransform(
+								rotationAngle: CGFloat.random(
+									in: -self.rotationFraction...self.rotationFraction,
+									using: &rotationRandomGenerator) * CGFloat.pi
+							)
 						}
 						return rotationBase
 					}()

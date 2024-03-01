@@ -30,6 +30,8 @@ import Foundation
  END:VEVENT
  */
 
+private let _formatString = "yyyyMMdd'T'HHmmss'Z'"
+
 public extension QRCode.Message {
 	/// A formattter for a generating a basic event QRCode
 	@objc(QRCodeMessageEvent) class Event: NSObject, QRCodeMessageFormatter {
@@ -59,7 +61,7 @@ public extension QRCode.Message {
 
 			let df = DateFormatter()
 			df.timeZone = TimeZone(abbreviation: "UTC")
-			df.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
+			df.dateFormat = _formatString
 
 			let dtstart = df.string(from: start)
 			msg += "DTSTART:\(dtstart)\r\n"
