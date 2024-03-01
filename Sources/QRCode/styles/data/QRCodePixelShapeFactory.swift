@@ -44,7 +44,7 @@ import Foundation
 			QRCode.PixelShape.Star.self,
 			QRCode.PixelShape.RoundedEndIndent.self,
 			QRCode.PixelShape.Shiny.self,
-		]
+		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
 

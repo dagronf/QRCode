@@ -45,7 +45,7 @@ import Foundation
 			QRCode.EyeShape.RoundedPointingOut.self,
 			QRCode.EyeShape.Shield.self,
 			QRCode.EyeShape.UsePixelShape.self
-		]
+		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
 
