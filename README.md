@@ -310,6 +310,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_shield.png" width="30"/>           |"shield"|`QRCode.PupilShape.Shield`|  A shield with configurable corners |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />     |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
 |<img src="./Art/images/pupil_seal.png" width="30" />            |"seal"|`QRCode.PixelShape.Seal` | A seal leaf shape |
+|<img src="./Art/images/pupil_blobby.png" width="30" />          |"blobby"|`QRCode.PixelShape.Blobby` | A blobby shape |
 |                                                                |"usePixelShape"|`QRCode.PupilShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the pupils |
 
 <details>
