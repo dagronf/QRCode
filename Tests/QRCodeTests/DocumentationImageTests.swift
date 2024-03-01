@@ -42,31 +42,28 @@ final class DocumentationImageTests: XCTestCase {
 		// Put teardown code here. This method is called after the invocation of each test method in the class.
 	}
 
-	func testGenerateEyeContent() throws {
+	func testQuietSpace() throws {
+		let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
+		doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 
-		let imageSize: Double = 120
-
-		do {
-			let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
-			doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
-
-			try [0, 5, 10, 15].forEach { aqs in
-				doc.design.additionalQuietZonePixels = UInt(aqs)
-				let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-				let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-				try outputFolder.write(data, to: "quiet-space-\(aqs).png")
-			}
-
-			do {
-				let image = resourceImage(for: "swift-logo", extension: "png")
-				doc.design.style.background = QRCode.FillStyle.Image(image)
-				doc.design.additionalQuietZonePixels = 4
-				let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-				let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-				try outputFolder.write(data, to: "quiet-space-background-image.png")
-			}
+		try [0, 5, 10, 15].forEach { aqs in
+			doc.design.additionalQuietZonePixels = UInt(aqs)
+			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
+			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			try outputFolder.write(data, to: "quiet-space-\(aqs).png")
 		}
 
+		do {
+			let image = resourceImage(for: "swift-logo", extension: "png")
+			doc.design.style.background = QRCode.FillStyle.Image(image)
+			doc.design.additionalQuietZonePixels = 4
+			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
+			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			try outputFolder.write(data, to: "quiet-space-background-image.png")
+		}
+	}
+
+	func testCornerRadius() throws {
 		do {
 			let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
 			doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
@@ -92,117 +89,121 @@ final class DocumentationImageTests: XCTestCase {
 			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
 			try outputFolder.write(data, to: "corner-radius-example.png")
 		}
+	}
 
-		do {
-			// Eye sample images
-			let eyeShapes = QRCodeEyeShapeFactory.shared.generateSampleImages(
-				dimension: imageSize * 2,
-				foregroundColor: .commonBlack,
-				backgroundColor: CGColor.gray(0.9)
-			)
+	let imageSize: Double = 120
 
-			try eyeShapes.forEach { sample in
-				let data = try XCTUnwrap(sample.image.representation.png())
-				try outputFolder.write(data, to: "eye_\(sample.name).png")
-			}
+	func testGenerateEyeShapeDocumentationImages() throws {
+		// Eye sample images
+		let eyeShapes = QRCodeEyeShapeFactory.shared.generateSampleImages(
+			dimension: imageSize * 2,
+			foregroundColor: .commonBlack,
+			backgroundColor: CGColor.gray(0.9)
+		)
+
+		try eyeShapes.forEach { sample in
+			let data = try XCTUnwrap(sample.image.representation.png())
+			try outputFolder.write(data, to: "eye_\(sample.name).png")
 		}
+	}
 
-		do {
-			// Pixels sample images
-			let commonPixelSettings: [String: Any] = [
-				QRCode.SettingsKey.insetFraction: 0.1,
-				QRCode.SettingsKey.cornerRadiusFraction: 0.75
-			]
-			let pixelShapes = QRCodePixelShapeFactory.shared.generateSampleImages(
-				dimension: imageSize * 2,
-				foregroundColor: .commonBlack,
-				backgroundColor: CGColor.gray(0.9),
-				commonSettings: commonPixelSettings
-			)
+	func testGeneratePixelShapeDocumentationImages() throws {
+		// Pixels sample images
+		let commonPixelSettings: [String: Any] = [
+			QRCode.SettingsKey.insetFraction: 0.1,
+			QRCode.SettingsKey.cornerRadiusFraction: 0.75
+		]
+		let pixelShapes = QRCodePixelShapeFactory.shared.generateSampleImages(
+			dimension: imageSize * 2,
+			foregroundColor: .commonBlack,
+			backgroundColor: CGColor.gray(0.9),
+			commonSettings: commonPixelSettings
+		)
 
-			try pixelShapes.forEach { sample in
-				let data = try XCTUnwrap(sample.image.representation.png())
-				try outputFolder.write(data, to: "data_\(sample.name).png")
-			}
+		try pixelShapes.forEach { sample in
+			let data = try XCTUnwrap(sample.image.representation.png())
+			try outputFolder.write(data, to: "data_\(sample.name).png")
 		}
+	}
 
-		do {
-			// Pupil sample images
-			let pupilShapes = QRCodePupilShapeFactory.shared.generateSampleImages(
-				dimension: imageSize * 2,
-				foregroundColor: .commonBlack,
-				backgroundColor: CGColor.gray(0.9)
-			)
+	func testGeneratePupilShapeDocumentationImages() throws {
+		// Pupil sample images
+		let pupilShapes = QRCodePupilShapeFactory.shared.generateSampleImages(
+			dimension: imageSize * 2,
+			foregroundColor: .commonBlack,
+			backgroundColor: CGColor.gray(0.9)
+		)
 
-			try pupilShapes.forEach { sample in
-				let data = try XCTUnwrap(sample.image.representation.png())
-				try outputFolder.write(data, to: "pupil_\(sample.name).png")
-			}
+		try pupilShapes.forEach { sample in
+			let data = try XCTUnwrap(sample.image.representation.png())
+			try outputFolder.write(data, to: "pupil_\(sample.name).png")
 		}
+	}
 
-		do {
-			let doc1 = QRCode.Document(utf8String: "Testing off-pixels")
-			doc1.design.backgroundColor(.commonWhite)
-			doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
-			doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
-			doc1.design.style.onPixels = QRCode.FillStyle.Solid(systemGreen)
-			doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
-			doc1.design.style.offPixels = QRCode.FillStyle.Solid(systemGreen.copy(alpha: 0.4)!)
+	func testOffPixelImageGeneration() throws {
+		let doc1 = QRCode.Document(utf8String: "Testing off-pixels")
+		doc1.design.backgroundColor(.commonWhite)
+		doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+		doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
+		doc1.design.style.onPixels = QRCode.FillStyle.Solid(systemGreen)
+		doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
+		doc1.design.style.offPixels = QRCode.FillStyle.Solid(systemGreen.copy(alpha: 0.4)!)
 
-			let cg1 = try XCTUnwrap(doc1.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-			try outputFolder.write(data, to: "offPixels.png")
-		}
+		let cg1 = try XCTUnwrap(doc1.cgImage(CGSize(width: 300, height: 300)))
+		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		try outputFolder.write(data, to: "offPixels.png")
+	}
 
-		do {
-			let doc2 = QRCode.Document(utf8String: "Github example for colors")
-			doc2.design.backgroundColor(.commonWhite)
-			doc2.design.shape.eye = QRCode.EyeShape.Leaf()
-			doc2.design.style.eye = QRCode.FillStyle.Solid(systemGreen)
-			doc2.design.style.pupil = QRCode.FillStyle.Solid(systemBlue)
+	func testEyeColorStyles() throws {
+		let doc2 = QRCode.Document(utf8String: "Github example for colors")
+		doc2.design.backgroundColor(.commonWhite)
+		doc2.design.shape.eye = QRCode.EyeShape.Leaf()
+		doc2.design.style.eye = QRCode.FillStyle.Solid(systemGreen)
+		doc2.design.style.pupil = QRCode.FillStyle.Solid(systemBlue)
 
-			doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
-			doc2.design.style.onPixels = QRCode.FillStyle.Solid(systemBrown)
+		doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
+		doc2.design.style.onPixels = QRCode.FillStyle.Solid(systemBrown)
 
-			let cg1 = try XCTUnwrap(doc2.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-			try outputFolder.write(data, to: "eye_colorstyles.png")
-		}
+		let cg1 = try XCTUnwrap(doc2.cgImage(CGSize(width: 300, height: 300)))
+		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		try outputFolder.write(data, to: "eye_colorstyles.png")
+	}
 
-		do {
-			// Set the background color to a solid white
-			let doc3 = QRCode.Document(utf8String: "Github example for colors")
-			doc3.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
+	func testRadialFillStyle() throws {
+		// Set the background color to a solid white
+		let doc3 = QRCode.Document(utf8String: "Github example for colors")
+		doc3.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
 
-			// Set the fill color for the data to radial gradient
-			let radial = QRCode.FillStyle.RadialGradient(
-				DSFGradient(pins: [
-					DSFGradient.Pin(CGColor.RGBA(0.8, 0, 0, 1), 0),
-					DSFGradient.Pin(CGColor.RGBA(0.1, 0, 0, 1), 1)
-				])!,
-				centerPoint: CGPoint(x: 0.5, y: 0.5)
-			)
-			doc3.design.style.onPixels = radial
+		// Set the fill color for the data to radial gradient
+		let radial = QRCode.FillStyle.RadialGradient(
+			DSFGradient(pins: [
+				DSFGradient.Pin(CGColor.RGBA(0.8, 0, 0, 1), 0),
+				DSFGradient.Pin(CGColor.RGBA(0.1, 0, 0, 1), 1)
+			])!,
+			centerPoint: CGPoint(x: 0.5, y: 0.5)
+		)
+		doc3.design.style.onPixels = radial
 
-			let cg1 = try XCTUnwrap(doc3.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-			try outputFolder.write(data, to: "fillstyles.png")
-		}
+		let cg1 = try XCTUnwrap(doc3.cgImage(CGSize(width: 300, height: 300)))
+		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		try outputFolder.write(data, to: "fillstyles.png")
+	}
 
-		do {
-			let doc = QRCode.Document(utf8String: "Custom pupil")
-			doc.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
-			doc.design.shape.eye = QRCode.EyeShape.Squircle()
-			doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
-			doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
-			doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
-			doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
+	func testCustomPupilUsage() throws {
+		let doc = QRCode.Document(utf8String: "Custom pupil")
+		doc.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
+		doc.design.shape.eye = QRCode.EyeShape.Squircle()
+		doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
+		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+		doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
+		doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
-			try outputFolder.write(data, to: "custompupil.png")
-		}
+		let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
+		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		try outputFolder.write(data, to: "custompupil.png")
+	}
 
+	func testLogoUsage() throws {
 		do {
 			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
 			doc.design.backgroundColor(CGColor.sRGBA(0.149, 0.137, 0.208))
@@ -262,7 +263,9 @@ final class DocumentationImageTests: XCTestCase {
 			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
 			try outputFolder.write(data, to: "qrcode-with-logo-example-bottom-right.png")
 		}
+	}
 
+	func testGenerateOffPixels() throws {
 		do {
 			let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
