@@ -1080,7 +1080,7 @@ Since watchOS doesn't support Core Image filters, I defer to using an (optional)
 ```
 MIT License
 
-Copyright (c) 2023 Darren Ford
+Copyright (c) 2024 Darren Ford
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
