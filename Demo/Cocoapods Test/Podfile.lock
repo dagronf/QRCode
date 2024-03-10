@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  DSF_QRCode: afc29f4e09035874f81d3b3d865c58a1e3536ccf
+  DSF_QRCode: e2029dc77d1a60ec1edea66fcc99995768f47e36
   SwiftImageReadWrite: 69f6521a74fdddbb61b2cc844150ec64de2cb4c7
   SwiftQRCodeGenerator: cc02fed209335064d0b0dd61b2a0874b9bc6bd5a
 

@@ -1,4 +1,4 @@
-// swift-tools-version: 5.4
+// swift-tools-version: 5.5
 
 import PackageDescription
 
@@ -49,11 +49,18 @@ let package = Package(
 					name: "QRCodeGenerator",
 					package: "swift-qrcode-generator"
 				),
+			],
+			resources: [
+				.copy("PrivacyInfo.xcprivacy"),
 			]
 		),
 
 		// The QR code detector library
-		.target(name: "QRCodeDetector"),
+		.target(
+			name: "QRCodeDetector",
+			resources: [
+				.copy("PrivacyInfo.xcprivacy"),
+			]),
 
 		// the qrcodegen command-line tool
 		.executableTarget(
@@ -61,7 +68,11 @@ let package = Package(
 			dependencies: [
 				"QRCode",
 				.product(name: "ArgumentParser", package: "swift-argument-parser"),
-			]),
+			],
+			resources: [
+				.copy("PrivacyInfo.xcprivacy"),
+			]
+		),
 
 		// testing target
 		.testTarget(
