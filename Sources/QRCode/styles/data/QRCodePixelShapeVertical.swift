@@ -31,8 +31,8 @@ public extension QRCode.PixelShape {
 
 		/// Create an instance of this path generator with the specified settings
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0.1]) ?? 0.1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1.0
 			return QRCode.PixelShape.Vertical(insetFraction: insetFraction, cornerRadiusFraction: radius)
 		}
 
@@ -42,7 +42,7 @@ public extension QRCode.PixelShape {
 		var cornerRadiusFraction: CGFloat
 
 		/// Create a generator with a specified inset fraction and corner radius fraction
-		@objc public init(insetFraction: CGFloat = 0, cornerRadiusFraction: CGFloat = 0) {
+		@objc public init(insetFraction: CGFloat = 0.1, cornerRadiusFraction: CGFloat = 1.0) {
 			self.insetFraction = insetFraction.clamped(to: 0...1)
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 			super.init()
