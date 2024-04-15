@@ -31,23 +31,23 @@ public extension QRCode.PupilShape {
 		/// The generator title
 		@objc public static var Title: String { "Edges" }
 
+		@objc public static let DefaultCornerRadius = 0.65
+
 		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Edges(cornerRadiusFraction: radius)
 		}
 
-		private var _actualCornerRadius: CGFloat = 0
-
 		/// The fractional corner radius (0 ... 1) for the edge bars
-		@objc public var cornerRadiusFraction: CGFloat = 0 {
+		@objc public var cornerRadiusFraction: CGFloat {
 			didSet {
 				self._actualCornerRadius = self.cornerRadiusFraction.unitClamped() * 5.0
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.PupilShape.Edges.DefaultCornerRadius) {
 			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
+			self._actualCornerRadius = cornerRadiusFraction.unitClamped() * 5.0
 		}
 
 		/// Make a copy of the object
@@ -73,7 +73,10 @@ public extension QRCode.PupilShape {
 				roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerWidth: self._actualCornerRadius,
 				cornerHeight: self._actualCornerRadius,
-				transform: nil)
+				transform: nil
+			)
 		}
+
+		private var _actualCornerRadius: CGFloat
 	}
 }

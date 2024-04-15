@@ -32,8 +32,10 @@ public extension QRCode.PupilShape {
 		/// The generator title
 		@objc public static var Title: String { "Pixels" }
 
+		@objc public static let DefaultCornerRadius = 0.65
+
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Pixels(cornerRadiusFraction: radius)
 		}
 
@@ -54,16 +56,15 @@ public extension QRCode.PupilShape {
 			return false
 		}
 
-		private var _actualCornerRadius: CGFloat = 0
-		@objc public var cornerRadiusFraction: CGFloat = 0 {
+		@objc public var cornerRadiusFraction: CGFloat {
 			didSet {
-				self._actualCornerRadius = self.cornerRadiusFraction * 5.0
+				self._actualCornerRadius = self.cornerRadiusFraction.unitClamped() * 5.0
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.PupilShape.Pixels.DefaultCornerRadius) {
 			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
+			self._actualCornerRadius = cornerRadiusFraction.unitClamped() * 5.0
 		}
 
 		/// The pupil centered in the 90x90 square
@@ -80,5 +81,7 @@ public extension QRCode.PupilShape {
 			path.addPath(CGPath(roundedRect: CGRect(x: 50, y: 50, width: 9, height: 9), cornerWidth: self._actualCornerRadius, cornerHeight: self._actualCornerRadius, transform: nil))
 			return path
 		}
+
+		private var _actualCornerRadius: CGFloat
 	}
 }
