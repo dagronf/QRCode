@@ -89,20 +89,6 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 * Basic qr code video detection (via importing `QRCodeDetector`).
 
-## TOC
-
-* [Installing](#installing)
-* [Generating a QR Code](#generating-a-qr-code)
-* [Settings](#settings)
-* [Design](#design)
-  * [Shape](#shape)
-  * [Style](#style)
-* [Adding a logo to a QR code](#Adding-a-logo-to-a-QR-code)
-* [Quiet zone](#quiet-zone)
-* [Background Corner Radius](#background-corner-radius)
-* [Message Formatters](#message-formatters)
-* [Generating output](#generating-output)
-
 ## Installing
 
 ### Swift Package Manager
