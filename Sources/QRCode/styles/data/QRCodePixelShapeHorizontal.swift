@@ -29,10 +29,15 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Horizontal bars" }
 
+		/// Default inset value
+		@objc public static let DefaultInset: CGFloat = 0.1
+		/// Default corner radius value
+		@objc public static let DefaultCornerRadius: CGFloat = 1
+
 		/// Create an instance of this path generator with the specified settings
 		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0.1]) ?? 0.1
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1.0
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction]) ?? Self.DefaultInset
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return QRCode.PixelShape.Horizontal(insetFraction: insetFraction, cornerRadiusFraction: radius)
 		}
 
@@ -50,7 +55,10 @@ public extension QRCode.PixelShape {
 		var cornerRadiusFraction: CGFloat
 
 		/// Create a generator with a specified inset fraction and corner radius fraction
-		@objc public init(insetFraction: CGFloat = 0.1, cornerRadiusFraction: CGFloat = 1.0) {
+		@objc public init(
+			insetFraction: CGFloat = QRCode.PixelShape.Horizontal.DefaultInset,
+			cornerRadiusFraction: CGFloat = QRCode.PixelShape.Horizontal.DefaultCornerRadius
+		) {
 			self.insetFraction = insetFraction.clamped(to: 0...1)
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0...1)
 			super.init()
@@ -128,7 +136,7 @@ public extension QRCode.PixelShape.Horizontal {
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 		if key == QRCode.SettingsKey.insetFraction {
 			guard let v = value else {
-				self.insetFraction = 0
+				self.insetFraction = Self.DefaultInset
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
@@ -137,7 +145,7 @@ public extension QRCode.PixelShape.Horizontal {
 		}
 		else if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
-				self.cornerRadiusFraction = 0
+				self.cornerRadiusFraction = Self.DefaultCornerRadius
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }

@@ -24,6 +24,22 @@ final class BugFixTests: XCTestCase {
 		XCTAssertEqual(91, od.boolMatrix.dimension)
 	}
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+	func testVerticalHorizontalDefaults() throws {
+		let od = QRCode.Document(utf8String: "This is a test")
+		let pi = QRCode.PixelShape.Vertical()
+		od.design.shape.onPixels = pi
+
+		let generatedImage1 = try XCTUnwrap(od.nsImage(dimension: 300, dpi: 216))
+		Swift.print(generatedImage1)
+		pi.insetFraction = 0.1
+		pi.cornerRadiusFraction = 1.0
+
+		let generatedImage2 = try XCTUnwrap(od.nsImage(dimension: 300, dpi: 216))
+		Swift.print(generatedImage2)
+	}
+#endif
+
 #if canImport(UIKit)
 	func testBlurryUIImageRegression() throws {
 		let optim = "THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE - THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE"

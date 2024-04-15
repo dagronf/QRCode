@@ -89,6 +89,20 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 * Basic qr code video detection (via importing `QRCodeDetector`).
 
+## TOC
+
+* [Installing](#installing)
+* [Generating a QR Code](#generating-a-qr-code)
+* [Settings](#settings)
+* [Design](#design)
+  * [Shape](#shape)
+  * [Style](#style)
+* [Adding a logo to a QR code](#Adding-a-logo-to-a-QR-code)
+* [Quiet zone](#quiet-zone)
+* [Background Corner Radius](#background-corner-radius)
+* [Message Formatters](#message-formatters)
+* [Generating output](#generating-output)
+
 ## Installing
 
 ### Swift Package Manager
@@ -265,7 +279,11 @@ The QRCode is made up of four distinct components
 * The eye, which is made up of an `eye` (the outer part of the eye) and a `pupil` (the inner part).
 * The 'off' data pixels (`offPixels`)
 
-### Eye shape
+### Shape
+
+The 'shape' represents the way that each of the components are drawn 
+
+#### Eye shape
 
 You can provide an `EyeShape` object to style just the eyes of the generated qr code. There are built-in generators for
 square, circle, rounded rectangle, and more.
@@ -287,7 +305,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_shield.png" width="60"/>            |"shield"|`QRCode.EyeShape.Shield`| A shield with configurable corners |
 |                                                               |"usePixelShape"|`QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
 
-### Custom Pupil shape (optional)
+#### Custom Pupil shape (optional)
 
 You can provide an override to the default `EyeShape` pupil shape to change just the shape of the pupil. There are built-in generators for square, circle, rounded rectangle, and more.
 
@@ -330,7 +348,7 @@ doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 
 </details>
 
-### 'OnPixels' shape
+#### 'OnPixels' shape
 
 The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
 however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for a variety of styles.
@@ -349,8 +367,8 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 |<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
-|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`| A 'flower' style |
-|<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` | A pixel style that appears 'shiny' |
+|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
+|<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` |A pixel style that appears 'shiny'|
 
 #### 'offPixels' shape (optional)
 
@@ -382,7 +400,9 @@ let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
 
 </details>
 
-### Fill styles
+### Style
+
+#### Fill styles
 
 You can provide a custom fill for any of the individual components of the qr code.
 

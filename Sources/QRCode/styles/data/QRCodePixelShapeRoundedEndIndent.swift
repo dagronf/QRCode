@@ -29,19 +29,21 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Rounded end indent" }
 
+		// The default radius for the curved edges
+		@objc public static let DefaultCornerRadius: CGFloat = 0.65
+		// Should we draw inner corners on the shape
+		@objc public static let DefaultHasInnerCorners: Bool = false
+
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? self.DefaultCornerRadiusValue
-			let hasInnerCorners = BoolValue(settings?[QRCode.SettingsKey.hasInnerCorners]) ?? true
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
+			let hasInnerCorners = BoolValue(settings?[QRCode.SettingsKey.hasInnerCorners]) ?? Self.DefaultHasInnerCorners
 			return RoundedEndIndent(cornerRadiusFraction: radius, hasInnerCorners: hasInnerCorners)
 		}
 
 		// The template pixel generator size is 10x10
 		static let DefaultSize = CGSize(width: 10, height: 10)
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
-
-		// The default radius for the curved edges is 3
-		private static let DefaultCornerRadiusValue: CGFloat = 0.3
 
 		private let innerRadius: Double = 5.0 / 3.0
 
@@ -54,7 +56,7 @@ public extension QRCode.PixelShape {
 		}
 
 		// The radius as relates to the 10x10 pixel size
-		private var _cornerRadius: CGFloat = DefaultCornerRadiusValue {
+		private var _cornerRadius: CGFloat = DefaultCornerRadius {
 			didSet {
 				self.cornerRadiusChanged()
 			}
@@ -71,8 +73,8 @@ public extension QRCode.PixelShape {
 
 		/// Create
 		@objc public init(
-			cornerRadiusFraction: CGFloat = 0.3,
-			hasInnerCorners: Bool = true
+			cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedEndIndent.DefaultCornerRadius,
+			hasInnerCorners: Bool = QRCode.PixelShape.RoundedEndIndent.DefaultHasInnerCorners
 		) {
 			self._cornerRadius = cornerRadiusFraction.clamped(to: 0 ... 1)
 			self.hasInnerCorners = hasInnerCorners
@@ -408,7 +410,7 @@ public extension QRCode.PixelShape.RoundedEndIndent {
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 		if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
-				self.cornerRadiusFraction = 0
+				self.cornerRadiusFraction = Self.DefaultCornerRadius
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }
@@ -417,7 +419,7 @@ public extension QRCode.PixelShape.RoundedEndIndent {
 		}
 		if key == QRCode.SettingsKey.hasInnerCorners {
 			guard let v = value else {
-				self.hasInnerCorners = false
+				self.hasInnerCorners = Self.DefaultHasInnerCorners
 				return true
 			}
 			guard let v = BoolValue(v) else { return false }

@@ -30,6 +30,11 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Rounded rectangle" }
 
+		/// Default inset value
+		@objc public static let DefaultInset: CGFloat = 0.1
+		/// Default corner radius value
+		@objc public static let DefaultCornerRadius: CGFloat = 0.65
+
 		/// Create
 		/// - Parameters:
 		///   - cornerRadiusFraction: The corner radius (0.0 -> 1.0)
@@ -38,8 +43,8 @@ public extension QRCode.PixelShape {
 		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
 		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 		@objc public init(
-			cornerRadiusFraction: CGFloat = 0,
-			insetFraction: CGFloat = 0,
+			cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedRect.DefaultCornerRadius,
+			insetFraction: CGFloat = QRCode.PixelShape.RoundedRect.DefaultInset,
 			useRandomInset: Bool = false,
 			rotationFraction: CGFloat = 0,
 			useRandomRotation: Bool = false
@@ -57,8 +62,8 @@ public extension QRCode.PixelShape {
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
+			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction]) ?? Self.DefaultInset
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
 			let rotationFraction = CGFloatValue(settings?[QRCode.SettingsKey.rotationFraction]) ?? 0.0
 			let useRandomRotation = BoolValue(settings?[QRCode.SettingsKey.useRandomRotation]) ?? false

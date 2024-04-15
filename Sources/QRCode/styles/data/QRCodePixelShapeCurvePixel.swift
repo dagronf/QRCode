@@ -31,7 +31,7 @@ public extension QRCode.PixelShape {
 
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? self.DefaultCornerRadiusValue
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? CurvePixel.DefaultCornerRadiusValue
 			return CurvePixel(cornerRadiusFraction: radius)
 		}
 
@@ -39,8 +39,8 @@ public extension QRCode.PixelShape {
 		static let DefaultSize = CGSize(width: 10, height: 10)
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 
-		// The default radius for the curved edges is 3
-		private static let DefaultCornerRadiusValue: CGFloat = 1
+		// The default radius for the curved edges
+		@objc public static let DefaultCornerRadiusValue: CGFloat = 1
 
 		private var actualRadius: CGFloat = CurvePixel.DefaultCornerRadiusValue
 		private var actualRadiusSize = CGSize(
@@ -66,7 +66,7 @@ public extension QRCode.PixelShape {
 			set { self._cornerRadius = newValue.clamped(to: 0 ... 1) }
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 1) {
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.PixelShape.CurvePixel.DefaultCornerRadiusValue) {
 			self._cornerRadius = cornerRadiusFraction.clamped(to: 0 ... 1)
 			super.init()
 			self.cornerRadiusChanged()
@@ -285,7 +285,7 @@ public extension QRCode.PixelShape.CurvePixel {
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 		if key == QRCode.SettingsKey.cornerRadiusFraction {
 			guard let v = value else {
-				self.cornerRadiusFraction = 0
+				self.cornerRadiusFraction = Self.DefaultCornerRadiusValue
 				return true
 			}
 			guard let v = DoubleValue(v) else { return false }

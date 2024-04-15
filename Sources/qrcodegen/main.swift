@@ -104,6 +104,10 @@ Examples:
 	@Option(name: [.customShort("r"), .long], help: "The onPixels shape corner radius fractional value (0.0 -> 1.0)")
 	var onPixelShapeCornerRadius: Double?
 
+	/// Should we draw inner corners on the pixel shape. Not all data shapes support this
+	@Option(name: [.customShort("a"), .long], help: "The onPixels 'has inner corners' value (true/false)")
+	var onPixelShapeHasInnerCorners: Bool?
+
 	// Eye shape
 
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
@@ -212,11 +216,12 @@ Examples:
 		// The eye shape
 
 		if let name = eyeShape {
-			let cf = eyeShapeCornerRadius ?? 0.0
-			guard let shape = QRCodeEyeShapeFactory.shared.named(
-				name,
-				settings: [ QRCode.SettingsKey.cornerRadiusFraction: cf ]
-			) else {
+			var settings: [String: Any] = [:]
+			if let cf = eyeShapeCornerRadius {
+				settings[QRCode.SettingsKey.cornerRadiusFraction] = cf
+			}
+
+			guard let shape = QRCodeEyeShapeFactory.shared.named(name, settings: settings) else {
 				Swift.print("Unknown eye style '\(name)'.")
 				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 				Swift.print("Available eye styles are \(known)")
@@ -248,10 +253,16 @@ Examples:
 		// The onPixels shape
 
 		let dataShapeName = self.onPixelShape ?? "square"
-		let settings: [String: Any] = [
-			QRCode.SettingsKey.insetFraction: onPixelInsetFraction ?? 0,
-			QRCode.SettingsKey.cornerRadiusFraction: onPixelShapeCornerRadius ?? 0
-		]
+		var settings: [String: Any] = [:]
+		if let v = onPixelInsetFraction {
+			settings[QRCode.SettingsKey.insetFraction] = v
+		}
+		if let v = onPixelShapeCornerRadius {
+			settings[QRCode.SettingsKey.cornerRadiusFraction] = v
+		}
+		if let v = onPixelShapeHasInnerCorners {
+			settings[QRCode.SettingsKey.hasInnerCorners] = v
+		}
 
 		guard let shape = QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings) else {
 			Swift.print("Unknown 'onPixels' style '\(dataShapeName)'.")
