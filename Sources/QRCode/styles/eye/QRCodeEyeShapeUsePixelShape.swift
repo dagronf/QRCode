@@ -55,10 +55,9 @@ public extension QRCode.EyeShape {
 			QRCode.PupilShape.UsePixelShape()
 		}
 
-		public func settings() -> [String : Any] { [:] }
-
-		public func supportsSettingValue(forKey key: String) -> Bool { false }
-		public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		@objc public func settings() -> [String : Any] { [:] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		@objc public static let Name = "usePixelShape"
 		@objc public static var Title: String { "Pixel Shape" }

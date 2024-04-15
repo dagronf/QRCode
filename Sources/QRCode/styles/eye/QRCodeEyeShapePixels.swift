@@ -27,8 +27,11 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapePixels) class Pixels: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "pixels"
 		@objc public static var Title: String { "Pixels" }
+
+		@objc public static let DefaultCornerRadius = 0.65
+
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 0
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Pixels(cornerRadiusFraction: radius)
 		}
 
@@ -47,16 +50,20 @@ public extension QRCode.EyeShape {
 			return Self.Create(self.settings())
 		}
 
-		private var _actualCornerRadius: CGFloat = 0
-		@objc public var cornerRadiusFraction: CGFloat = 0 {
-			didSet {
-				self._actualCornerRadius = self.cornerRadiusFraction * 5.0
+		private var _actualCornerRadius: CGFloat
+
+		/// The corner radius
+		@objc public var cornerRadiusFraction: CGFloat {
+			didSet { 
+				self._actualCornerRadius = self.cornerRadiusFraction.clamped(to: 0 ... 1) * 5.0
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 0) {
-			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
+		/// Create a pixel eye shape
+		/// - Parameter cornerRadiusFraction: The corner radius
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.EyeShape.Pixels.DefaultCornerRadius) {
+			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
+			self._actualCornerRadius = self.cornerRadiusFraction * 5.0
 		}
 
 		public func eyePath() -> CGPath {
@@ -101,6 +108,8 @@ public extension QRCode.EyeShape {
 		}
 
 		private static let _defaultPupil = QRCode.PupilShape.Pixels()
-		public func defaultPupil() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Pixels(cornerRadiusFraction: self.cornerRadiusFraction) }
+		public func defaultPupil() -> QRCodePupilShapeGenerator {
+			QRCode.PupilShape.Pixels(cornerRadiusFraction: self.cornerRadiusFraction)
+		}
 	}
 }

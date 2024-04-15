@@ -27,8 +27,11 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeEdges) class Edges: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "edges"
 		@objc public static var Title: String { "Edges" }
+
+		@objc public static let DefaultCornerRadius = 1.0
+
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Edges(cornerRadiusFraction: radius)
 		}
 
@@ -42,19 +45,15 @@ public extension QRCode.EyeShape {
 			return false
 		}
 
-		private var _actualCornerRadius: CGFloat = 0
+		private var _actualCornerRadius: CGFloat { self.cornerRadiusFraction * 5.0 }
 
 		/// The fractional corner radius (0 ... 1) for the edge bars
-		@objc public var cornerRadiusFraction: CGFloat = 0 {
-			didSet {
-				self._actualCornerRadius = self.cornerRadiusFraction.unitClamped() * 5.0
-			}
-		}
+		@objc public var cornerRadiusFraction: CGFloat = QRCode.EyeShape.Edges.DefaultCornerRadius
 
 		/// Create an Edge eye shape with the specified corner radius
-		@objc public init(cornerRadiusFraction: CGFloat = 0.0) {
-			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.EyeShape.Edges.DefaultCornerRadius) {
+			let v = cornerRadiusFraction.unitClamped()
+			self.cornerRadiusFraction = v
 		}
 
 		/// Make a copy of the object

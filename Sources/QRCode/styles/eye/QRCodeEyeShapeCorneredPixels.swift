@@ -28,8 +28,10 @@ public extension QRCode.EyeShape {
 		@objc public static let Name = "corneredPixels"
 		@objc public static var Title: String { "Cornered pixels" }
 
+		@objc public static let DefaultCornerRadius = 0.65
+
 		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
-			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? 1
+			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return CorneredPixels(cornerRadiusFraction: radius)
 		}
 
@@ -37,7 +39,7 @@ public extension QRCode.EyeShape {
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { key == QRCode.SettingsKey.cornerRadiusFraction }
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
 			if key == QRCode.SettingsKey.cornerRadiusFraction, let value = DoubleValue(value) {
-				cornerRadiusFraction = max(0, min(1, value))
+				self.cornerRadiusFraction = value.clamped(to: 0 ... 1)
 				return true
 			}
 			return false
@@ -48,16 +50,18 @@ public extension QRCode.EyeShape {
 			return Self.Create(self.settings())
 		}
 
-		private var _actualCornerRadius: CGFloat = 1
-		@objc public var cornerRadiusFraction: CGFloat = 1 {
+		private var _actualCornerRadius: CGFloat
+
+		/// The corner radius fraction
+		@objc public var cornerRadiusFraction: CGFloat {
 			didSet {
 				self._actualCornerRadius = self.cornerRadiusFraction * 5.0
 			}
 		}
 
-		@objc public init(cornerRadiusFraction: CGFloat = 1) {
-			self.cornerRadiusFraction = cornerRadiusFraction
-			self._actualCornerRadius = cornerRadiusFraction * 5.0
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.EyeShape.CorneredPixels.DefaultCornerRadius) {
+			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
+			self._actualCornerRadius = self.cornerRadiusFraction * 5.0
 		}
 
 		public func eyePath() -> CGPath {
