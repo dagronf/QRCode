@@ -396,8 +396,14 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(2, uii.scale)
 		#elseif os(macOS)
 		// Convert to a @2x NSImage
-		let nsi = try XCTUnwrap(NSImage(cgImage: im4, size: CGSize(dimension: 36)))
+
+		// For some reason, this creator fails on GitHub actions, but runs fine locally
+		//		let nsi = try XCTUnwrap(NSImage(cgImage: im4, size: CGSize(dimension: 36)))
+		let nsi = NSImage(size: NSSize(dimension: 36))
+		nsi.addRepresentation(NSBitmapImageRep(cgImage: im4))
+
 		XCTAssertEqual(CGSize(dimension: 36), nsi.size)
+		XCTAssertEqual(nsi.representations.count, 1)
 		XCTAssertEqual(nsi.representations[0].pixelsWide, 72)
 		XCTAssertEqual(nsi.representations[0].pixelsHigh, 72)
 		#endif
