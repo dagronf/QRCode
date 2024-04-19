@@ -1,22 +1,25 @@
 # This workflow will build a Swift project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
 
-name: Swift
+name: Build and run tests
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [ push, pull_request ]
 
 jobs:
-  build:
-
+  macos_tests:
+    name: Unit tests on macOS
     runs-on: macos-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - uses: actions/checkout@v3
+      - name: Build
+        run: swift build -v -c release
+      - name: Run tests
+        run: swift test -v -c release
+
+  ios_tests:
+    name: Unit tests on iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests on iOS
+        run: xcodebuild -scheme QRCode test -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest"
