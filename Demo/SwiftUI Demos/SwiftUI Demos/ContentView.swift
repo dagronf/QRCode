@@ -44,12 +44,19 @@ let doc1: QRCode.Document = {
 
 struct ContentView: View {
 	var body: some View {
-		ScrollView(.vertical) {
-			VStack {
-				PixelBackgroundColorsView()
+		TabView {
+			ScrollView(.vertical) {
+				VStack {
+					PixelBackgroundColorsView()
+				}
+				.frame(maxWidth: 100000)
 			}
-			.frame(maxWidth: 100000)
+			.tabItem { Text("basic") }
+
+			ItemView()
+				.tabItem { Text("3d") }
 		}
+		.padding()
 	}
 }
 
@@ -76,4 +83,58 @@ struct PixelBackgroundColorsView_Previews: PreviewProvider {
 	static var previews: some View {
 		PixelBackgroundColorsView()
 	}
+}
+
+
+////
+
+struct ItemView: View {
+
+	@State var xdegrees = 0.0
+	@State var ydegrees = 0.0
+
+	var body: some View {
+		VStack {
+			Text("Example of using the SwiftUI shape component")
+			QRCodeShape(
+				text: "Wombling, wombling happy time",
+				errorCorrection: .high,
+				shape: QRCode.Shape(
+					onPixels: QRCode.PixelShape.RoundedPath(),
+					eye: QRCode.EyeShape.Leaf()
+				)
+			)!
+			.fill(.blue) //.shadow(.drop(color: .gray, radius: 3, x: 2, y: 2)))
+			.aspectRatio(contentMode: .fit)
+			.rotation3DEffect(.degrees(xdegrees), axis: (x: 0, y: 1, z: 0))
+			.rotation3DEffect(.degrees(ydegrees), axis: (x: 1, y: 0, z: 0))
+			//.border(Color.brown)
+			
+			.overlay {
+				GeometryReader { geo in
+					Spacer()
+						.onContinuousHover(coordinateSpace: .local, perform: { p in
+							let r = geo.frame(in: .local)
+							withAnimation(.easeInOut(duration: 0.2)) {
+								switch p {
+								case .active(let point):
+									let offx = point.x - ((r.origin.x + r.width) / 2)
+									xdegrees = (offx / r.width * 15)
+									let offy = point.y - ((r.origin.y + r.height) / 2)
+									ydegrees = (-offy / r.height * 15)
+								case .ended:
+									xdegrees = 0
+									ydegrees = 0
+								}
+							}
+						})
+				}
+			}
+		}
+		.padding()
+	}
+}
+
+#Preview("3d") {
+	ItemView()
 }

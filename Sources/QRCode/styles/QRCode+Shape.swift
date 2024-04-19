@@ -27,6 +27,26 @@ import Foundation
 public extension QRCode {
 	/// Represents the shape when generating the qr code
 	@objc(QRCodeShape) final class Shape: NSObject, @unchecked Sendable {
+		/// Create a new shape using
+		/// - Parameters:
+		///   - onPixels: The onPixels shape
+		///   - offPixels: The offPixels shape
+		///   - negatedOnPixelsOnly: If true, only draw the off pixels in the resulting QR code
+		///   - eye: The eye shape
+		///   - pupil: The pupil shape
+		@objc public init(
+			onPixels: QRCodePixelShapeGenerator = QRCode.PixelShape.Square(),
+			offPixels: QRCodePixelShapeGenerator? = nil,
+			negatedOnPixelsOnly: Bool = false,
+			eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square(),
+			pupil: QRCodePupilShapeGenerator? = nil
+		) {
+			self.onPixels = onPixels
+			self.offPixels = offPixels
+			self.negatedOnPixelsOnly = negatedOnPixelsOnly
+			self.eye = eye
+			self.pupil = pupil
+		}
 
 		/// Convenience initializer for objc
 		@objc public static func create() -> Shape { return Shape() }
