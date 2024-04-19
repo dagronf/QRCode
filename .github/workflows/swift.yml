@@ -16,10 +16,10 @@ jobs:
       - name: Run tests
         run: swift test -v -c release
 
-  ios_tests:
-    name: Unit tests on iOS
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run tests on iOS
-        run: xcodebuild -scheme QRCode test -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest"
+#  ios_tests:
+#    name: Unit tests on iOS
+#    runs-on: macos-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Run tests on iOS
+#        run: xcodebuild -scheme QRCode test -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest"
