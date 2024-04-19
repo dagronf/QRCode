@@ -52,6 +52,7 @@ echo $TEMPDIR
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -e shield --output-file "${TEMPDIR}/eye-shield.png" 512
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -e square --output-file "${TEMPDIR}/eye-square.png" 512
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -e squircle --output-file "${TEMPDIR}/eye-squircle.png" 512
+./.build/release/qrcodegen -c H -t "This is a QR code" -d square -e teardrop --output-file "${TEMPDIR}/eye-teardrop.png" 512
 
 # barsHorizontal, barsVertical, blobby, circle, corneredPixels, edges, hexagonLeaf,
 # leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut, roundedRect,
@@ -74,6 +75,7 @@ echo $TEMPDIR
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -p shield --output-file "${TEMPDIR}/pupil-shield.png" 512
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -p square --output-file "${TEMPDIR}/pupil-square.png" 512
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -p squircle --output-file "${TEMPDIR}/pupil-squircle.png" 512
+./.build/release/qrcodegen -c H -t "This is a QR code" -d square -p teardrop --output-file "${TEMPDIR}/pupil-teardrop.png" 512
 ./.build/release/qrcodegen -c H -t "This is a QR code" -d square -p usePixelShape --output-file "${TEMPDIR}/pupil-usePixelShape.png" 512
 
 open ${TEMPDIR}
