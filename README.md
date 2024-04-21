@@ -278,10 +278,12 @@ square, circle, rounded rectangle, and more.
 |:---:|---|---|---|
 |<img src="./Art/images/eye_square.png" width="60"/>            | "square" |`QRCode.EyeShape.Square`|Simple square (default)|
 |<img src="./Art/images/eye_circle.png" width="60"/>            | "circle" |`QRCode.EyeShape.Circle`|Simple circle|
+|<img src="./Art/images/eye_peacock.png" width="60" />          | "peacock" |`QRCode.EyeShape.Peacock` | A peacock-eye style shape |
 |<img src="./Art/images/eye_roundedRect.png" width="60"/>       | "roundedRect" |`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
 |<img src="./Art/images/eye_roundedouter.png" width="60"/>      | "roundedOuter" |`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
 |<img src="./Art/images/eye_roundedpointingin.png" width="60"/> | "roundedPointingIn" |`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
 |<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" |`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
 |<img src="./Art/images/eye_squircle.png" width="60"/>          | "squircle" |`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/eye_barsHorizontal.png" width="60"/>    | "barsHorizontal" |`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
 |<img src="./Art/images/eye_barsVertical.png" width="60"/>      | "barsVertical" |`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|

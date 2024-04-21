@@ -1,0 +1,83 @@
+//
+//  QRCodeEyeShapePeacock.swift
+//
+//  Copyright © 2024 Darren Ford. All rights reserved.
+//
+//  MIT license
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial
+//  portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+//  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+//  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
+import CoreGraphics
+import Foundation
+
+public extension QRCode.EyeShape {
+	/// A 'Peacock feather eye' style eye design
+	@objc(QRCodeEyeShapePeacock) class Peacock: NSObject, QRCodeEyeShapeGenerator {
+		@objc public static let Name = "peacock"
+		@objc public static var Title: String { "Peacock" }
+		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+			return QRCode.EyeShape.Peacock()
+		}
+		
+		@objc public func settings() -> [String: Any] { return [:] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+
+		/// Make a copy of the object
+		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+			return Self.Create(self.settings())
+		}
+		
+		public func eyePath() -> CGPath {
+			let eyeShapePath = CGMutablePath()
+			eyeShapePath.move(to: NSPoint(x: 45, y: 20))
+			eyeShapePath.curve(to: NSPoint(x: 70, y: 45), controlPoint1: NSPoint(x: 58.81, y: 20), controlPoint2: NSPoint(x: 70, y: 31.19))
+			eyeShapePath.curve(to: NSPoint(x: 70, y: 58.44), controlPoint1: NSPoint(x: 70, y: 45), controlPoint2: NSPoint(x: 70, y: 51.89))
+			eyeShapePath.curve(to: NSPoint(x: 70, y: 70), controlPoint1: NSPoint(x: 70, y: 64.36), controlPoint2: NSPoint(x: 70, y: 70))
+			eyeShapePath.line(to: NSPoint(x: 45, y: 70))
+			eyeShapePath.curve(to: NSPoint(x: 20, y: 45), controlPoint1: NSPoint(x: 31.19, y: 70), controlPoint2: NSPoint(x: 20, y: 58.81))
+			eyeShapePath.curve(to: NSPoint(x: 45, y: 20), controlPoint1: NSPoint(x: 20, y: 31.19), controlPoint2: NSPoint(x: 31.19, y: 20))
+			eyeShapePath.close()
+			eyeShapePath.move(to: NSPoint(x: 10, y: 10))
+			eyeShapePath.curve(to: NSPoint(x: 10, y: 45), controlPoint1: NSPoint(x: 10, y: 10), controlPoint2: NSPoint(x: 10, y: 45))
+			eyeShapePath.curve(to: NSPoint(x: 45, y: 80), controlPoint1: NSPoint(x: 10, y: 64.33), controlPoint2: NSPoint(x: 25.67, y: 80))
+			eyeShapePath.line(to: NSPoint(x: 80, y: 80))
+			eyeShapePath.curve(to: NSPoint(x: 80, y: 74.22), controlPoint1: NSPoint(x: 80, y: 80), controlPoint2: NSPoint(x: 80, y: 77.67))
+			eyeShapePath.curve(to: NSPoint(x: 80, y: 45), controlPoint1: NSPoint(x: 80, y: 64.28), controlPoint2: NSPoint(x: 80, y: 45))
+			eyeShapePath.curve(to: NSPoint(x: 45, y: 10), controlPoint1: NSPoint(x: 80, y: 25.67), controlPoint2: NSPoint(x: 64.33, y: 10))
+			eyeShapePath.line(to: NSPoint(x: 10, y: 10))
+			eyeShapePath.line(to: NSPoint(x: 10, y: 10))
+			eyeShapePath.close()
+			return eyeShapePath
+		}
+
+		public func eyeBackgroundPath() -> CGPath {
+			let safeZonePath = CGMutablePath()
+			safeZonePath.move(to: NSPoint(x: 90, y: 90))
+			safeZonePath.curve(to: NSPoint(x: 90, y: 45), controlPoint1: NSPoint(x: 90, y: 90), controlPoint2: NSPoint(x: 90, y: 45))
+			safeZonePath.curve(to: NSPoint(x: 45, y: 0), controlPoint1: NSPoint(x: 90, y: 20.15), controlPoint2: NSPoint(x: 69.85, y: 0))
+			safeZonePath.line(to: NSPoint(x: 0, y: 0))
+			safeZonePath.line(to: NSPoint(x: 0, y: 45))
+			safeZonePath.curve(to: NSPoint(x: 45, y: 90), controlPoint1: NSPoint(x: 0, y: 69.85), controlPoint2: NSPoint(x: 20.15, y: 90))
+			safeZonePath.line(to: NSPoint(x: 90, y: 90))
+			safeZonePath.line(to: NSPoint(x: 90, y: 90))
+			safeZonePath.close()
+			return safeZonePath
+		}
+		
+		private static let _defaultPupil = QRCode.PupilShape.Circle()
+		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+	}
+}
