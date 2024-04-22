@@ -1582,6 +1582,47 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 		}
 		markdownText += "\n\n"
+	}
 
+	func testCheckEyeBackgroundPath() throws {
+
+		// Verify that the eye background path is drawn correctly
+
+		markdownText += "## Verify eye background exclusion zone drawing\n\n"
+
+		let doc = QRCode.Document(utf8String: "Validate QR Eye background")
+
+		doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
+
+		markdownText += "|  eye  | flipped |   0   |   2   |   4   |\n"
+		markdownText += "|:------|:-------:|:-----:|:-----:|:-----:|\n"
+
+		try QRCodeEyeShapeFactory.shared.all().sorted(by: { $0.name < $1.name }).forEach { generator in
+			doc.design.shape.eye = generator
+			doc.design.style.eyeBackground = .commonWhite
+
+			let flipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) ? [false, true] : [false]
+
+			try flipped.forEach { isFlipped in
+
+				markdownText += "|\(generator.name)|\(isFlipped)"
+
+				try [0, 2, 4].forEach { (quietZone: UInt) in
+
+					markdownText += "|"
+
+					_ = doc.design.shape.eye.setSettingValue(isFlipped, forKey: QRCode.SettingsKey.isFlipped)
+
+					doc.design.additionalQuietZonePixels = quietZone
+
+					let image = try XCTUnwrap(doc.imageData(.png(), dimension: dimension))
+					let filename = "eye-background-exclusion-zone-\(generator.name)-\(quietZone)-\(isFlipped).png"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += "|\n"
+			}
+		}
+		markdownText += "\n\n"
 	}
 }

@@ -72,6 +72,11 @@ import Foundation
 		return self.named(type, settings: settings)
 	}
 
+	/// Return all of the eye generators
+	@objc public func all() -> [QRCodeEyeShapeGenerator] {
+		self.registeredTypes.map { $0.Create(nil) }
+	}
+
 	// Private
 
 	internal var registeredTypes: [QRCodeEyeShapeGenerator.Type]

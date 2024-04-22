@@ -68,7 +68,10 @@ public extension QRCode.EyeShape {
 			eyeBackgroundPath.curve(to: CGPoint(x: 45, y: 90), controlPoint1: CGPoint(x: 0, y: 69.85), controlPoint2: CGPoint(x: 20.15, y: 90))
 			eyeBackgroundPath.curve(to: CGPoint(x: 90, y: 45), controlPoint1: CGPoint(x: 69.85, y: 90), controlPoint2: CGPoint(x: 90, y: 69.85))
 			eyeBackgroundPath.close()
-			return eyeBackgroundPath
+
+			let n = CGMutablePath()
+			n.addPath(eyeBackgroundPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+			return n
 		}
 		
 		private static let _defaultPupil = QRCode.PupilShape.Teardrop()

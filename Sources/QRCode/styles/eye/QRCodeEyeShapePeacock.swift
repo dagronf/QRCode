@@ -74,7 +74,10 @@ public extension QRCode.EyeShape {
 			safeZonePath.line(to: CGPoint(x: 90, y: 90))
 			safeZonePath.line(to: CGPoint(x: 90, y: 90))
 			safeZonePath.close()
-			return safeZonePath
+
+			let n = CGMutablePath()
+			n.addPath(safeZonePath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+			return n
 		}
 		
 		private static let _defaultPupil = QRCode.PupilShape.Circle()
