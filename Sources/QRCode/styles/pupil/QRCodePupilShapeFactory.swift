@@ -49,6 +49,7 @@ import CoreGraphics
 			QRCode.PupilShape.Seal.self,
 			QRCode.PupilShape.Blobby.self,
 			QRCode.PupilShape.Teardrop.self,
+			QRCode.PupilShape.UFO.self,
 		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}

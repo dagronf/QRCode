@@ -292,6 +292,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_edges.png" width="60"/>             | "edges" |`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
 |<img src="./Art/images/eye_shield.png" width="60"/>            | "shield" |`QRCode.EyeShape.Shield`| A shield with configurable corners |
 |<img src="./Art/images/eye_teardrop.png" width="60" />         | "teardrop" |`QRCode.EyeShape.Teardrop` | A teardrop shape |
+|<img src="./Art/images/eye_ufo.png" width="60" />              | "ufo" |`QRCode.EyeShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
 |                                                               | "usePixelShape" |`QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
 
 #### Custom Pupil shape (optional)
@@ -319,6 +320,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_seal.png" width="30" />            |"seal"|`QRCode.PixelShape.Seal` | A seal leaf shape |
 |<img src="./Art/images/pupil_blobby.png" width="30" />          |"blobby"|`QRCode.PixelShape.Blobby` | A blobby shape |
 |<img src="./Art/images/pupil_teardrop.png" width="30" />        |"teardrop"|`QRCode.PixelShape.Teardrop` | A teardrop shape |
+|<img src="./Art/images/pupil_ufo.png" width="30" />             |"ufo"|`QRCode.PixelShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
 |                                                                |"usePixelShape"|`QRCode.PupilShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the pupils |
 
 <details>

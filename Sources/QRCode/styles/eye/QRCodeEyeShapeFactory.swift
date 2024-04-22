@@ -48,6 +48,7 @@ import Foundation
 			QRCode.EyeShape.Teardrop.self,
 			QRCode.EyeShape.Fireball.self,
 			QRCode.EyeShape.Peacock.self,
+			QRCode.EyeShape.UFO.self,
 		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
