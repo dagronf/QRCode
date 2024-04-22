@@ -63,7 +63,8 @@ enum TestErrors: Error {
 	case invalidImage
 }
 
-func loadImageResource(_ resource: String, withExtension extn: String) throws -> CGImage {
+// Load a CGImage from an image resource
+func resourceImage(for resource: String, extension extn: String) throws -> CGImage {
 	guard let logoURL = Bundle.module.url(forResource: resource, withExtension: extn) else {
 		throw TestErrors.invalidURL
 	}
@@ -72,6 +73,12 @@ func loadImageResource(_ resource: String, withExtension extn: String) throws ->
 		throw TestErrors.invalidImage
 	}
 	return logoImage
+}
+
+// Load a common image (NSImage, UIImage)
+func resourceCommonImage(for resource: String, extension extn: String) throws -> CommonImage {
+	let image = try resourceImage(for: resource, extension: extn)
+	return CommonImage(cgImage: image)
 }
 
 func roundTripEncodeDecode<Object: Codable>(_ object: Object) throws -> (data: Data, object: Object) {

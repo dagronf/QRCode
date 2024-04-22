@@ -14,7 +14,7 @@ final class QRCodeSVGTests: XCTestCase {
 		)
 
 		do {
-			let image = try loadImageResource("colored-fill", withExtension: "jpg")
+			let image = try resourceImage(for: "colored-fill", extension: "jpg")
 
 			doc.design.foregroundColor(CGColor.RGBA(1, 0, 0, 1))
 			doc.logoTemplate = QRCode.LogoTemplate(

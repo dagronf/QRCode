@@ -21,9 +21,9 @@ final class QRCodeEncodeDecodeTests: XCTestCase {
 
 	func testLogoTemplateEncoding() throws {
 
-		let image = try loadImageResource("colored-fill", withExtension: "jpg")
+		let image = try resourceImage(for: "colored-fill", extension: "jpg")
 		let sz = CGSize(width: image.width, height: image.height)
-		let maskImage = try loadImageResource("apple", withExtension: "png")
+		let maskImage = try resourceImage(for: "apple", extension: "png")
 		let szMask = CGSize(width: maskImage.width, height: maskImage.height)
 
 		do {

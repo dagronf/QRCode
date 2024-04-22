@@ -12,7 +12,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			generator: __testGenerator
 		)
 
-		let image = try loadImageResource("colored-fill", withExtension: "jpg")
+		let image = try resourceImage(for: "colored-fill", extension: "jpg")
 
 		do {
 			let p = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
@@ -48,7 +48,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			generator: __testGenerator
 		)
 
-		let image2 = try loadImageResource("colored-fill", withExtension: "jpg")
+		let image2 = try resourceImage(for: "colored-fill", extension: "jpg")
 
 		let p = CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil)
 		let t = QRCode.LogoTemplate(image: image2, path: p)
@@ -110,7 +110,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// Centered square logo
-			let logoImage = try loadImageResource("square-logo", withExtension: "png")
+			let logoImage = try resourceImage(for: "square-logo", extension: "png")
 
 			let logo = QRCode.LogoTemplate(
 				image: logoImage,
@@ -126,7 +126,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// rectangular, non-centered
-			let logoImage = try loadImageResource("apple", withExtension: "png")
+			let logoImage = try resourceImage(for: "apple", extension: "png")
 
 			let logo = QRCode.LogoTemplate(
 				image: logoImage,
@@ -214,7 +214,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			generator: __testGenerator
 		)
 
-		let image = try loadImageResource("logo", withExtension: "png")
+		let image = try resourceImage(for: "logo", extension: "png")
 
 		do {
 			doc.logoTemplate = QRCode.LogoTemplate(image: image)
@@ -225,7 +225,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		}
 
 		do {
-			let imageMask = try loadImageResource("logo-mask", withExtension: "png")
+			let imageMask = try resourceImage(for: "logo-mask", extension: "png")
 			doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imageMask)
 
 			let logo1 = try XCTUnwrap(doc.platformImage(dimension: 300))
@@ -248,7 +248,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// Checking whether the logotemplate style of 'use path' correctly masks the qr accordingly
-			let image = try loadImageResource("square-logo", withExtension: "png")
+			let image = try resourceImage(for: "square-logo", extension: "png")
 			let imageDestination = CGPath(rect: CGRect(x: 0.3, y: 0.3, width: 0.4, height: 0.4), transform: nil)
 			do {
 				doc.logoTemplate = QRCode.LogoTemplate(image: image, path: imageDestination)
@@ -264,7 +264,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// Checking whether the logotemplate style of 'use images transparency' correctly masks the qr accordingly
-			let image = try loadImageResource("logo", withExtension: "png")
+			let image = try resourceImage(for: "logo", extension: "png")
 			do {
 				doc.logoTemplate = QRCode.LogoTemplate(image: image)
 				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-transparency-qrmasked.png")
@@ -279,8 +279,8 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// Checking whether the logotemplate style of 'use images transparency' correctly masks the qr accordingly
-			let image = try loadImageResource("logo", withExtension: "png")
-			let imagemask = try loadImageResource("logo-mask", withExtension: "png")
+			let image = try resourceImage(for: "logo", extension: "png")
+			let imagemask = try resourceImage(for: "logo-mask", extension: "png")
 			do {
 				doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imagemask)
 				try outputFolder.write(try XCTUnwrap(doc.pngData(dimension: 300)), to: "logotemplate-maskimage-qrmasked.png")

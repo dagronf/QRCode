@@ -167,7 +167,7 @@ final class QRCodeDetectionTests: XCTestCase {
 	func testMaskedDetection() throws {
 		let text = "https://www.qrcode.com/en/howto/generate.html"
 		let doc = QRCode.Document(utf8String: text, errorCorrection: .high)
-		let image = try loadImageResource("colored-fill", withExtension: "jpg")
+		let image = try resourceImage(for: "colored-fill", extension: "jpg")
 
 		do {
 			let p = CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil)
@@ -187,7 +187,7 @@ final class QRCodeDetectionTests: XCTestCase {
 		}
 
 		do {
-			let logoImage = try loadImageResource("colored-fill", withExtension: "jpg")
+			let logoImage = try resourceImage(for: "colored-fill", extension: "jpg")
 
 			// This mask image is too big, and will fail detection using the built-in CIDetector
 			let p = CGPath(ellipseIn: CGRect(x: 0.20, y: 0.20, width: 0.60, height: 0.60), transform: nil)

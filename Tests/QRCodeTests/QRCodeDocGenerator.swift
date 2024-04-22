@@ -564,9 +564,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			doc.design.backgroundColor(CGColor.RGBA(0.977, 1.000, 0.875, 1))
 
-			let logoImage = try loadImageResource("instagram-icon", withExtension: "png")
-			let logoImage1 = try loadImageResource("square-logo", withExtension: "png")
-			let logoImage2 = try loadImageResource("apple", withExtension: "png")
+			let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
+			let logoImage1 = try resourceImage(for: "square-logo", extension: "png")
+			let logoImage2 = try resourceImage(for: "apple", extension: "png")
 
 			let items = [
 				QRCode.LogoTemplate.CircleCenter(image: logoImage, inset: 8),
@@ -650,7 +650,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 1),
 			])!
 		)
-		let logoImage3 = resourceImage(for: "lego", extension: "jpeg")
+		let logoImage3 = try resourceImage(for: "lego", extension: "jpeg")
 		let c4 = QRCode.FillStyle.Image(logoImage3)
 		let bgs: [QRCodeFillStyleGenerator] = [c1, c2, c3, c4]
 
@@ -1208,16 +1208,16 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.backgroundColor(CGColor.gray(0, 1))
 				doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 
-				let logoImage =  resourceImage(for: "colored-fill", extension: "jpg")
+				let logoImage = try resourceImage(for: "colored-fill", extension: "jpg")
 				let fillImage = QRCode.FillStyle.Image(logoImage)
 				doc.design.style.onPixels = fillImage
 
-				let logoImage2 = resourceImage(for: "colored-fill-invert", extension: "jpg")
+				let logoImage2 = try resourceImage(for: "colored-fill-invert", extension: "jpg")
 				let eyeImage = QRCode.FillStyle.Image(logoImage2)
 				doc.design.style.eye = eyeImage
 				doc.design.shape.eye = QRCode.EyeShape.Squircle()
 
-				let logoImage3 = resourceImage(for: "colored-fill-bw", extension: "jpg")
+				let logoImage3 = try resourceImage(for: "colored-fill-bw", extension: "jpg")
 				let pupilImage = QRCode.FillStyle.Image(logoImage3)
 				doc.design.style.pupil = pupilImage
 				doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
@@ -1239,7 +1239,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 
 			do {
-				let logoImage = resourceImage(for: "swift-logo", extension: "png")
+				let logoImage = try resourceImage(for: "swift-logo", extension: "png")
 				let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
 				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", generator: QRCodeGenerator_External())

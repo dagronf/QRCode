@@ -2,11 +2,6 @@ import XCTest
 
 @testable import QRCode
 
-func resourceImage(for resource: String, extension extn: String) -> CGImage {
-	let url = Bundle.module.url(forResource: resource, withExtension: extn)!
-	return CommonImage(contentsOfFile: url.path)!.cgImage()!
-}
-
 final class QRCodeImageFillTests: XCTestCase {
 
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeImageFillTests")
@@ -53,16 +48,16 @@ final class QRCodeImageFillTests: XCTestCase {
 		doc.design.backgroundColor(.commonBlack)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 
-		let logoImage =  resourceImage(for: "colored-fill", extension: "jpg")
+		let logoImage = try resourceImage(for: "colored-fill", extension: "jpg")
 		let fillImage = QRCode.FillStyle.Image(logoImage)
 		doc.design.style.onPixels = fillImage
 
-		let logoImage2 = resourceImage(for: "colored-fill-invert", extension: "jpg")
+		let logoImage2 = try resourceImage(for: "colored-fill-invert", extension: "jpg")
 		let eyeImage = QRCode.FillStyle.Image(logoImage2)
 		doc.design.style.eye = eyeImage
 		doc.design.shape.eye = QRCode.EyeShape.Squircle()
 
-		let logoImage3 = resourceImage(for: "colored-fill-bw", extension: "jpg")
+		let logoImage3 = try resourceImage(for: "colored-fill-bw", extension: "jpg")
 		let pupilImage = QRCode.FillStyle.Image(logoImage3)
 		doc.design.style.pupil = pupilImage
 		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()

@@ -54,7 +54,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let image = resourceImage(for: "swift-logo", extension: "png")
+			let image = try resourceImage(for: "swift-logo", extension: "png")
 			doc.design.style.background = QRCode.FillStyle.Image(image)
 			doc.design.additionalQuietZonePixels = 4
 			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
@@ -215,7 +215,7 @@ final class DocumentationImageTests: XCTestCase {
 
 			doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 
-			let image = resourceImage(for: "square-logo", extension: "png")
+			let image = try resourceImage(for: "square-logo", extension: "png")
 
 			// Centered square logo
 			doc.logoTemplate = QRCode.LogoTemplate(
@@ -234,7 +234,7 @@ final class DocumentationImageTests: XCTestCase {
 
 		do {
 			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo center square", errorCorrection: .high)
-			let image = resourceImage(for: "square-logo", extension: "png")
+			let image = try resourceImage(for: "square-logo", extension: "png")
 
 			// Create a logo 'template'
 			doc.logoTemplate = QRCode.LogoTemplate(
@@ -250,7 +250,7 @@ final class DocumentationImageTests: XCTestCase {
 
 		do {
 			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo bottom right circular", errorCorrection: .high)
-			let image = resourceImage(for: "instagram-icon", extension: "png")
+			let image = try resourceImage(for: "instagram-icon", extension: "png")
 
 			// Create a logo 'template'
 			doc.logoTemplate = QRCode.LogoTemplate(
@@ -286,7 +286,7 @@ final class DocumentationImageTests: XCTestCase {
 
 		do {
 			let doc = QRCode.Document(utf8String: "This is an image background")
-			let image = resourceImage(for: "photo-logo", extension: "jpg")
+			let image = try resourceImage(for: "photo-logo", extension: "jpg")
 
 			doc.design.style.background = QRCode.FillStyle.Image(image)
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.5)
@@ -298,7 +298,7 @@ final class DocumentationImageTests: XCTestCase {
 
 		do {
 			let doc = QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
-			let image = resourceImage(for: "wombles", extension: "jpeg")
+			let image = try resourceImage(for: "wombles", extension: "jpeg")
 
 			let pixelFill = QRCode.FillStyle.LinearGradient(
 				DSFGradient(pins: [
@@ -370,7 +370,7 @@ final class DocumentationImageTests: XCTestCase {
 			)
 
 			// Set the background image
-			let backgroundImage = resourceImage(for: "b-image", extension: "jpg")
+			let backgroundImage = try resourceImage(for: "b-image", extension: "jpg")
 			doc.design.style.background = QRCode.FillStyle.Image(backgroundImage)
 
 			// The red component color
@@ -399,7 +399,7 @@ final class DocumentationImageTests: XCTestCase {
 		do {
 			let doc = QRCode.Document(utf8String: "https://www.worldwildlife.org")
 
-			let backgroundImage = resourceImage(for: "wwf", extension: "jpeg")
+			let backgroundImage = try resourceImage(for: "wwf", extension: "jpeg")
 			doc.design.style.background = QRCode.FillStyle.Image(backgroundImage)
 
 			doc.design.style.eyeBackground = .commonWhite
@@ -471,7 +471,7 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.background = c
 
 			// Create a logo 'template'
-			let image = resourceImage(for: "logo-scan", extension: "png")
+			let image = try resourceImage(for: "logo-scan", extension: "png")
 
 			doc.logoTemplate = QRCode.LogoTemplate(
 				image: image,
@@ -485,5 +485,29 @@ final class DocumentationImageTests: XCTestCase {
 			let pdfData = doc.pdfData(dimension: 200)!
 			try outputFolder.write(pdfData, to: "qrcode-with-basic-logo.pdf")
 		}
+	}
+
+	func testPeacockBeach() throws {
+		let doc = QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
+
+		let background = CGColor(srgbRed: 0.018, green:0.086, blue:0.15, alpha:1)
+		doc.design.backgroundColor(background)
+
+		doc.design.shape.eye = QRCode.EyeShape.Peacock()
+
+		doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4, useRandomInset: true)
+
+		let image = try resourceCommonImage(for: "beach-square", extension: "jpg")
+		doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
+
+		let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
+		let data = try XCTUnwrap(cg1.representation.jpeg(dpi: 144, compression: 0.65))
+		try outputFolder.write(data, to: "beach-peacock.jpg")
+
+		let pdfData = doc.pdfData(dimension: 300)!
+		try outputFolder.write(pdfData, to: "beach-peacock.pdf")
+
+		let svgData = doc.svgData(dimension: 300)!
+		try outputFolder.write(svgData, to: "beach-peacock.svg")
 	}
 }
