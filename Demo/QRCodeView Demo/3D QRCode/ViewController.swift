@@ -193,6 +193,7 @@ class ViewController: DSFAppKitBuilderViewController {
 					ScrollView(borderType: .noBorder) {
 						VStack {
 							FakeBox("Pixel Styles") {
+								
 								Flow(minimumInteritemSpacing: 1, minimumLineSpacing: 1, ForEach(allPixelStyles.wrappedValue, { item in
 									let image = QRCodePixelShapeFactory.shared.image(
 										pixelGenerator: item,
@@ -202,7 +203,7 @@ class ViewController: DSFAppKitBuilderViewController {
 									return Button(image: NSImage(cgImage: image, size: .init(width: 60, height: 60))) { [weak self] _ in
 										guard let `self` = self else { return }
 										self.qrCode.design.shape.onPixels = item
-										self.sync()
+										self.sync(.pixels)
 										self.update()
 									}
 									.isBordered(false)
@@ -258,7 +259,7 @@ class ViewController: DSFAppKitBuilderViewController {
 										guard let `self` = self else { return }
 										self.qrCode.design.shape.eye = item
 										self.qrCode.design.shape.pupil = nil
-										self.sync()
+										self.sync(.eye)
 										self.update()
 									}
 									.isBordered(false)
@@ -308,7 +309,7 @@ class ViewController: DSFAppKitBuilderViewController {
 									return Button(image: NSImage(cgImage: image, size: .init(width: 40, height: 40))) { [weak self] _ in
 										guard let `self` = self else { return }
 										self.qrCode.design.shape.pupil = item
-										self.sync()
+										self.sync(.pupil)
 										self.update()
 									}
 									.isBordered(false)
@@ -349,7 +350,7 @@ class ViewController: DSFAppKitBuilderViewController {
 						self.qrCode.design.shape.onPixels = QRCode.PixelShape.Square()
 						self.qrCode.design.shape.eye = QRCode.EyeShape.Square()
 						self.qrCode.design.shape.pupil = nil
-						self.sync()
+						self.sync(.all)
 						self.update()
 					}
 				}
@@ -361,8 +362,19 @@ class ViewController: DSFAppKitBuilderViewController {
 		.padding(8)
 	}
 
-	private func sync() {
-		do {
+	struct SyncType: OptionSet {
+		let rawValue: Int
+
+		static let pixels = SyncType(rawValue: 1 << 0)
+		static let eye = SyncType(rawValue: 1 << 1)
+		static let pupil = SyncType(rawValue: 1 << 2)
+
+		static let all: SyncType = [.pixels, .eye, .pupil]
+	}
+
+
+	private func sync(_ syncType: SyncType) {
+		if syncType.contains(.pixels) {
 			let item = qrCode.design.shape.onPixels
 			self.pixelCurveRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
 			self.pixelCurveRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.6
@@ -380,7 +392,7 @@ class ViewController: DSFAppKitBuilderViewController {
 			self.pixelRandomRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomRotation)
 		}
 
-		do {
+		if syncType.contains(.eye) {
 			let item = qrCode.design.shape.eye
 			self.eyeCornerRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
 			self.eyeCornerRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.65
@@ -403,7 +415,7 @@ class ViewController: DSFAppKitBuilderViewController {
 			}
 		}
 
-		do {
+		if syncType.contains(.pupil) {
 			let item = qrCode.design.shape.pupil
 			self.pupilFlippedEnabled.wrappedValue = item?.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
 			self.pupilFlipped.wrappedValue = item?.settingsValue(for: QRCode.SettingsKey.isFlipped) ?? false
@@ -548,7 +560,7 @@ class ViewController: DSFAppKitBuilderViewController {
 
 		self.sceneView.scene = scene
 
-		self.sync()
+		self.sync(.all)
 		self.update()
 	}
 }
