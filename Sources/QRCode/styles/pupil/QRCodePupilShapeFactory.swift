@@ -58,6 +58,11 @@ import CoreGraphics
 		self.registeredTypes.map { $0.Name }.sorted()
 	}
 
+	/// Return a copy of all the pupil generators
+	@objc public func all() -> [QRCodePupilShapeGenerator] {
+		self.registeredTypes.map { $0.Create(nil) }
+	}
+
 	/// Return a new instance of an eye shape generator with the specified name and optional settings
 	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePupilShapeGenerator? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {

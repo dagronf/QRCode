@@ -376,7 +376,31 @@ public extension QRCode.Document {
 	///   - components: The components of the QR code to include in the path
 	/// - Returns: A path containing the components
 	@objc func path(_ size: CGSize, components: QRCode.Components = .all) -> CGPath {
-		return self.qrcode.path(size, components: components, shape: self.design.shape)
+		/// The size of each pixel in the output
+		let additionalQuietSpacePixels = CGFloat(design.additionalQuietZonePixels)
+		let dm: CGFloat = CGFloat(size.width) / (CGFloat(self.cellDimension) + (2.0 * additionalQuietSpacePixels))
+		let additionalQuietSpace = dm * additionalQuietSpacePixels
+
+		// Factor in the additional quiet space in the result
+		guard (2 * additionalQuietSpace) < size.width else {
+			Swift.print("additionalQuietSpace too large")
+			return CGMutablePath()
+		}
+
+		var components = components
+		if self.design.shape.negatedOnPixelsOnly {
+			components.insert(.negative)
+		}
+
+		return self.qrcode.path(
+			CGSize(
+				width: size.width - (2 * additionalQuietSpace),
+				height: size.height - (2 * additionalQuietSpace)
+			),
+			components: components,
+			shape: self.design.shape,
+			additionalQuietSpace: additionalQuietSpace
+		)
 	}
 
 	/// Generate a path containing the QR Code components for the current QRCode shape

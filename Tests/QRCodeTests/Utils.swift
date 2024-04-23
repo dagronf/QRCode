@@ -107,6 +107,41 @@ func heartpath_1x1() -> CGPath {
 	return pth
 }
 
+enum CreateBitmapError: Error {
+	case InvalidContext
+	case CannotMakeImage
+}
+
+/// Create a bitmap and draw into it
+func CreateBitmap(dimension: Int, flipped: Bool = true, _ block: (CGContext) -> Void) throws -> CGImage {
+	let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+	let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+	guard let ctx = CGContext(
+		data: nil,
+		width: dimension,
+		height: dimension,
+		bitsPerComponent: 8,
+		bytesPerRow: dimension * 4,
+		space: colorSpace,
+		bitmapInfo: bitmapInfo.rawValue
+	)
+	else {
+		throw CreateBitmapError.InvalidContext
+	}
+	
+	if flipped {
+		ctx.scaleBy(x: 1, y: -1)
+		ctx.translateBy(x: 0, y: Double(-dimension))
+	}
+	block(ctx)
+	
+	guard let img = ctx.makeImage() else {
+		throw CreateBitmapError.CannotMakeImage
+	}
+
+	return img
+}
+
 
 #if os(macOS)
 

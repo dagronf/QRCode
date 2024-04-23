@@ -21,8 +21,8 @@ class ImageOutput {
 	}
 }
 
-var markdownText = ""
-let outputFolder = try! testResultsContainer.subfolder(with: "generation")
+private var markdownText = ""
+private let outputFolder = try! testResultsContainer.subfolder(with: "generation")
 private let imagesFolder = try! outputFolder.subfolder(with: "images")
 private let imageStore = ImageOutput(imagesFolder)
 

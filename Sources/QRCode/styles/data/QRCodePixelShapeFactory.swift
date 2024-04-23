@@ -53,6 +53,10 @@ import Foundation
 		self.registeredTypes.map { $0.Name }.sorted()
 	}
 
+	@objc public func all() -> [QRCodePixelShapeGenerator] {
+		self.registeredTypes.map { $0.Create(nil) }
+	}
+
 	/// Return a new instance of the data shape generator with the specified name and optional settings
 	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePixelShapeGenerator? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
