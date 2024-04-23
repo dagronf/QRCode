@@ -68,6 +68,9 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
    <a href="./Examples/peacock/index.md">
       <img src="./Examples/peacock/beach-peacock.jpg" width="150"/>
    </a>
+   <a href="./Art/images/3d-demo.jpg">
+      <img src="./Art/images/3d-demo.jpg" width="150"/>
+   </a>
 
 </p>
 

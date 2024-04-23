@@ -18,7 +18,7 @@ class ViewController: DSFAppKitBuilderViewController {
 
 	let qrCode = QRCode.Document(utf8String: "This is a QR code")
 
-	let debounce = DSFDebounce(seconds: 0.2)
+	let debounce = DSFDebounce(seconds: 0.05)
 
 	let sceneView = SCNView()
 	private lazy var qrText: ValueBinder<String> = ValueBinder("This is a QR code") { newValue in
@@ -103,6 +103,53 @@ class ViewController: DSFAppKitBuilderViewController {
 
 	///
 
+	private lazy var eyeCornerRadius = ValueBinder(0.65) { newValue in
+		_ = self.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+		self.update()
+	}
+	private var eyeCornerRadiusEnabled = ValueBinder(false)
+
+	private lazy var eyeFlipped = ValueBinder(false) { newValue in
+		_ = self.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+		self.update()
+	}
+	private var eyeFlippedEnabled = ValueBinder(false)
+
+	private lazy var eyeSelectedCorners = ValueBinder(NSSet()) { newValue in
+		var value: Int = 0
+		if newValue.contains(0) { value += QRCode.Corners.tl.rawValue }
+		if newValue.contains(1) { value += QRCode.Corners.tr.rawValue }
+		if newValue.contains(2) { value += QRCode.Corners.bl.rawValue }
+		if newValue.contains(3) { value += QRCode.Corners.br.rawValue }
+
+		_ = self.qrCode.design.shape.eye.setSettingValue(value, forKey: QRCode.SettingsKey.corners)
+		self.update()
+	}
+	private var eyeSelectedCornersEnabled = ValueBinder(false)
+
+	///
+
+	private lazy var pupilFlipped = ValueBinder(false) { newValue in
+		_ = self.qrCode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+		self.update()
+	}
+	private var pupilFlippedEnabled = ValueBinder(false)
+
+	private lazy var pupilSelectedCorners = ValueBinder(NSSet()) { newValue in
+		var value: Int = 0
+		if newValue.contains(0) { value += QRCode.Corners.tl.rawValue }
+		if newValue.contains(1) { value += QRCode.Corners.tr.rawValue }
+		if newValue.contains(2) { value += QRCode.Corners.bl.rawValue }
+		if newValue.contains(3) { value += QRCode.Corners.br.rawValue }
+
+		_ = self.qrCode.design.shape.pupil?.setSettingValue(value, forKey: QRCode.SettingsKey.corners)
+		self.update()
+	}
+	private var pupilSelectedCornersEnabled = ValueBinder(false)
+
+
+	///
+
 	override func viewWillAppear() {
 		super.viewWillAppear()
 
@@ -114,6 +161,8 @@ class ViewController: DSFAppKitBuilderViewController {
 		VStack {
 			HStack(spacing: 0) {
 				View(sceneView)
+					.minWidth(300)
+					.minHeight(300)
 
 				VStack {
 
@@ -135,10 +184,11 @@ class ViewController: DSFAppKitBuilderViewController {
 								Toggle()
 									.controlSize(.small)
 									.bindOnOff(negatePixels)
+								EmptyView()
 							}
 						}
 					}
-					.width(280)
+					.width(310)
 
 					ScrollView(borderType: .noBorder) {
 						VStack {
@@ -152,21 +202,7 @@ class ViewController: DSFAppKitBuilderViewController {
 									return Button(image: NSImage(cgImage: image, size: .init(width: 60, height: 60))) { [weak self] _ in
 										guard let `self` = self else { return }
 										self.qrCode.design.shape.onPixels = item
-										self.pixelCurveRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
-										self.pixelCurveRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.6
-										self.pixelInnerCurves.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.hasInnerCorners) ?? false
-										self.pixelInnerCurvesEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
-
-										self.pixelInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction)
-										self.pixelInset.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.insetFraction) ?? 0.1
-										self.pixelRandomInset.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.useRandomInset) ?? false
-										self.pixelRandomInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomInset)
-
-										self.pixelRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction)
-										self.pixelRotation.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.rotationFraction) ?? 0.0
-										self.pixelRandomRotation.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.useRandomRotation) ?? false
-										self.pixelRandomRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomRotation)
-
+										self.sync()
 										self.update()
 									}
 									.isBordered(false)
@@ -176,33 +212,33 @@ class ViewController: DSFAppKitBuilderViewController {
 								HDivider()
 
 								HStack {
-									Label("radius")
+									Label("radius:").font(.callout.bold())
 									Slider(pixelCurveRadius, range: 0 ... 1)
 										.controlSize(.small)
 										.bindIsEnabled(pixelCurveRadiusEnabled)
-									Label("inner")
+									Label("inner:").font(.callout.bold())
 									Toggle()
 										.controlSize(.small)
 										.bindOnOff(pixelInnerCurves)
 										.bindIsEnabled(pixelInnerCurvesEnabled)
 								}
 								HStack {
-									Label("inset")
+									Label("inset:").font(.callout.bold())
 									Slider(pixelInset, range: 0 ... 1)
 										.controlSize(.small)
 										.bindIsEnabled(pixelInsetEnabled)
-									Label("random")
+									Label("rnd:").font(.callout.bold())
 									Toggle()
 										.controlSize(.small)
 										.bindOnOff(pixelRandomInset)
 										.bindIsEnabled(pixelRandomInsetEnabled)
 								}
 								HStack {
-									Label("rotation")
+									Label("rotation:").font(.callout.bold())
 									Slider(pixelRotation, range: 0 ... 1)
 										.controlSize(.small)
 										.bindIsEnabled(pixelRotationEnabled)
-									Label("random")
+									Label("rnd:").font(.callout.bold())
 									Toggle()
 										.controlSize(.small)
 										.bindOnOff(pixelRandomRotation)
@@ -215,16 +251,50 @@ class ViewController: DSFAppKitBuilderViewController {
 								Flow(minimumInteritemSpacing: 1, minimumLineSpacing: 1, ForEach(allEyeStyles.wrappedValue, { item in
 									let image = QRCodeEyeShapeFactory.shared.image(
 										eyeGenerator: item,
-										dimension: 80,
+										dimension: 96,
 										foregroundColor: NSColor.textColor.cgColor
 									)!
-									return Button(image: NSImage(cgImage: image, size: .init(width: 40, height: 40))) { [weak self] _ in
-										self?.qrCode.design.shape.eye = item
-										self?.update()
+									return Button(image: NSImage(cgImage: image, size: .init(width: 48, height: 48))) { [weak self] _ in
+										guard let `self` = self else { return }
+										self.qrCode.design.shape.eye = item
+										self.qrCode.design.shape.pupil = nil
+										self.sync()
+										self.update()
 									}
 									.isBordered(false)
 									.toolTip(item.title)
 								}))
+
+								HDivider()
+
+								HStack {
+									Label("radius:").font(.callout.bold())
+									Slider(eyeCornerRadius, range: 0 ... 1)
+										.controlSize(.small)
+										.bindIsEnabled(eyeCornerRadiusEnabled)
+								}
+								HStack {
+									Label("flipped:").font(.callout.bold())
+									Toggle()
+										.controlSize(.small)
+										.bindOnOff(eyeFlipped)
+										.bindIsEnabled(eyeFlippedEnabled)
+								}
+
+								HStack {
+									Label("corners:").font(.callout.bold())
+									Segmented(trackingMode: .selectAny) {
+										Segment("􀰼")
+										Segment("􀄔")
+										Segment("􀄖")
+										Segment("􀄘")
+									}
+									.controlSize(.small)
+									.bindSelectedSegments(eyeSelectedCorners)
+									.bindIsEnabled(eyeSelectedCornersEnabled)
+									.horizontalHuggingPriority(.init(10))
+									EmptyView()
+								}
 							}
 
 							FakeBox("Pupil Styles") {
@@ -236,31 +306,131 @@ class ViewController: DSFAppKitBuilderViewController {
 										foregroundColor: NSColor.textColor.cgColor
 									)!
 									return Button(image: NSImage(cgImage: image, size: .init(width: 40, height: 40))) { [weak self] _ in
-										self?.qrCode.design.shape.pupil = item
-										self?.update()
+										guard let `self` = self else { return }
+										self.qrCode.design.shape.pupil = item
+										self.sync()
+										self.update()
 									}
 									.isBordered(false)
 									.toolTip(item.title)
 								}))
+
+								HDivider()
+
+								HStack {
+									Label("flipped:").font(.callout.bold())
+									Toggle()
+										.controlSize(.small)
+										.bindOnOff(pupilFlipped)
+										.bindIsEnabled(pupilFlippedEnabled)
+								}
+
+								HStack {
+									Label("corners:").font(.callout.bold())
+									Segmented(trackingMode: .selectAny) {
+										Segment("􀰼")
+										Segment("􀄔")
+										Segment("􀄖")
+										Segment("􀄘")
+									}
+									.controlSize(.small)
+									.bindSelectedSegments(pupilSelectedCorners)
+									.bindIsEnabled(pupilSelectedCornersEnabled)
+									EmptyView()
+								}
 							}
 						}
 					}
+
+					HDivider()
+
+					Button(title: "Reset") { [weak self] _ in
+						guard let `self` = self else { return }
+						self.qrCode.design.shape.onPixels = QRCode.PixelShape.Square()
+						self.qrCode.design.shape.eye = QRCode.EyeShape.Square()
+						self.qrCode.design.shape.pupil = nil
+						self.sync()
+						self.update()
+					}
 				}
 				.edgeInsets(12)
-				.width(300)
+				.width(340)
 			}
 
 		}
 		.padding(8)
 	}
 
-	private func update() {
-		debounce.debounce { [weak self] in
-			self?.update2()
+	private func sync() {
+		do {
+			let item = qrCode.design.shape.onPixels
+			self.pixelCurveRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
+			self.pixelCurveRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.6
+			self.pixelInnerCurves.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.hasInnerCorners) ?? false
+			self.pixelInnerCurvesEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
+
+			self.pixelInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction)
+			self.pixelInset.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.insetFraction) ?? 0.1
+			self.pixelRandomInset.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.useRandomInset) ?? false
+			self.pixelRandomInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomInset)
+
+			self.pixelRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction)
+			self.pixelRotation.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.rotationFraction) ?? 0.0
+			self.pixelRandomRotation.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.useRandomRotation) ?? false
+			self.pixelRandomRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomRotation)
+		}
+
+		do {
+			let item = qrCode.design.shape.eye
+			self.eyeCornerRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
+			self.eyeCornerRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.65
+
+			self.eyeFlippedEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+			self.eyeFlipped.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.isFlipped) ?? false
+
+			self.eyeSelectedCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
+			if let value: Int = item.settingsValue(for: QRCode.SettingsKey.corners) {
+				let opts = QRCode.Corners(rawValue: value)
+				let s = NSMutableSet()
+				if opts.contains(.tl) { s.add(0) }
+				if opts.contains(.tr) { s.add(1) }
+				if opts.contains(.bl) { s.add(2) }
+				if opts.contains(.br) { s.add(3) }
+				self.eyeSelectedCorners.wrappedValue = s
+			}
+			else {
+				self.eyeSelectedCorners.wrappedValue = NSSet()
+			}
+		}
+
+		do {
+			let item = qrCode.design.shape.pupil
+			self.pupilFlippedEnabled.wrappedValue = item?.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
+			self.pupilFlipped.wrappedValue = item?.settingsValue(for: QRCode.SettingsKey.isFlipped) ?? false
+
+			self.pupilSelectedCornersEnabled.wrappedValue = item?.supportsSettingValue(forKey: QRCode.SettingsKey.corners) ?? false
+			if let value: Int = item?.settingsValue(for: QRCode.SettingsKey.corners) {
+				let opts = QRCode.Corners(rawValue: value)
+				let s = NSMutableSet()
+				if opts.contains(.tl) { s.add(0) }
+				if opts.contains(.tr) { s.add(1) }
+				if opts.contains(.bl) { s.add(2) }
+				if opts.contains(.br) { s.add(3) }
+				self.pupilSelectedCorners.wrappedValue = s
+			}
+			else {
+				self.pupilSelectedCorners.wrappedValue = NSSet()
+			}
 		}
 	}
 
-	private func update2() {
+	private func update() {
+		debounce.debounce { [weak self] in
+			self?._update()
+		}
+	}
+
+	private func _update() {
 		let path = qrCode.path(CGSize(width: 1000, height: 1000))
 		let mx = CGMutablePath()
 		mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
@@ -270,9 +440,8 @@ class ViewController: DSFAppKitBuilderViewController {
 	var qrCodeShape: SCNShape?
 
 	func setupScene() {
-
-		qrCode.design.shape.eye = QRCode.EyeShape.Peacock()
-		qrCode.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
+		qrCode.design.shape.onPixels = QRCode.PixelShape.Square()
+		qrCode.design.shape.eye = QRCode.EyeShape.Square()
 
 		let path = qrCode.path(CGSize(width: 1000, height: 1000))
 		let mx = CGMutablePath()
@@ -299,7 +468,26 @@ class ViewController: DSFAppKitBuilderViewController {
 		let material = SCNMaterial()
 		material.isDoubleSided = true
 		material.shininess = 1
-		material.diffuse.contents = NSColor.white
+
+//		let bmp = try! CGImage.makeImage(dimension: 500) { ctx in
+//			let gradient = try! DSFGradient.build([
+//				(0.30, CGColor(srgbRed: 0.005, green: 0.101, blue: 0.395, alpha: 1)),
+//				(0.55, CGColor(srgbRed: 0, green: 0.021, blue: 0.137, alpha: 1)),
+//				(0.655, CGColor(srgbRed: 0, green: 0.978, blue: 0.354, alpha: 1)),
+//				(0.66, CGColor(srgbRed: 1, green: 0.248, blue:0, alpha: 1)),
+//				(1.00, CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)),
+//			])
+//
+//			let linear = QRCode.FillStyle.LinearGradient(
+//				gradient,
+//				startPoint: CGPoint(x: 0.2, y: 0),
+//				endPoint: CGPoint(x: 1, y: 1)
+//			)
+//			linear.fill(ctx: ctx, rect: CGRect(origin: .zero, size: .init(width: 500, height: 500)))
+//		}
+//		material.diffuse.contents = bmp
+
+		//material.diffuse.contents = NSColor.white
 		shape.insertMaterial(material, at: 0)
 		let n = SCNNode(geometry: shape)
 
@@ -315,7 +503,11 @@ class ViewController: DSFAppKitBuilderViewController {
 
 			let material = SCNMaterial()
 			material.isDoubleSided = true
-			material.diffuse.contents = NSColor.systemIndigo
+			if #available(macOS 10.15, *) {
+				material.diffuse.contents = NSColor.systemIndigo
+			} else {
+				material.diffuse.contents = NSColor.systemPurple
+			}
 			plane.insertMaterial(material, at: 0)
 
 			scene.rootNode.addChildNode(planeNode)
@@ -355,31 +547,8 @@ class ViewController: DSFAppKitBuilderViewController {
 		}
 
 		self.sceneView.scene = scene
-	}
-}
 
-
-func ForEach<T>(_ items: [T], _ block: (T) -> Element) -> [Element] {
-	items.map { block($0) }
-}
-
-
-public class DSFDebounce {
-
-	// MARK: - Properties
-	private let queue = DispatchQueue.main
-	private var workItem = DispatchWorkItem(block: {})
-	private var interval: TimeInterval
-
-	// MARK: - Initializer
-	init(seconds: TimeInterval) {
-		self.interval = seconds
-	}
-
-	// MARK: - Debouncing function
-	func debounce(action: @escaping (() -> Void)) {
-		workItem.cancel()
-		workItem = DispatchWorkItem(block: { action() })
-		queue.asyncAfter(deadline: .now() + interval, execute: workItem)
+		self.sync()
+		self.update()
 	}
 }

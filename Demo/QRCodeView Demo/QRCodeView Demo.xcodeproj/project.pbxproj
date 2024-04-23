@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				23A593D02BD86CEF001BA2A0 /* PBXTargetDependency */,
 				23BF104429258E16006B23A9 /* PBXTargetDependency */,
 				23BF104229258CA1006B23A9 /* PBXTargetDependency */,
 				2345F6E1274890860087569B /* PBXTargetDependency */,
@@ -95,6 +96,10 @@
 		239FBAE328A638CA002F74AC /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 239FBAE228A638CA002F74AC /* QRCode */; };
 		239FBAE528A638D8002F74AC /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 239FBAE428A638D8002F74AC /* QRCode */; };
 		239FBAE928A638FB002F74AC /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 239FBAE828A638FB002F74AC /* QRCode */; };
+		23A593C82BD867D1001BA2A0 /* NSBezierPath+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593C72BD867D1001BA2A0 /* NSBezierPath+extensions.swift */; };
+		23A593CA2BD867FB001BA2A0 /* CGPath+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */; };
+		23A593CC2BD86BEA001BA2A0 /* CGImage+create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */; };
+		23A593CE2BD86C2A001BA2A0 /* debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593CD2BD86C2A001BA2A0 /* debounce.swift */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
 		23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9A29247CD800236B80 /* AppDelegate.swift */; };
@@ -172,6 +177,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2348FB7D273A2EF3004DB2BF;
 			remoteInfo = "QRCodeView iOS Demo";
+		};
+		23A593CF2BD86CEF001BA2A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2348FB5C273A2DDB004DB2BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 232C192E2BD63A680079E11E;
+			remoteInfo = "3D QRCode";
 		};
 		23BF104129258CA1006B23A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -302,6 +314,10 @@
 		236A0528286FE6580019C842 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		237E3FFF274F08AE003E5E24 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "QRCodeView-SwiftUI-Demo--macOS--Info.plist"; sourceTree = "<group>"; };
+		23A593C72BD867D1001BA2A0 /* NSBezierPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+extensions.swift"; sourceTree = "<group>"; };
+		23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+extensions.swift"; sourceTree = "<group>"; };
+		23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+create.swift"; sourceTree = "<group>"; };
+		23A593CD2BD86C2A001BA2A0 /* debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = debounce.swift; sourceTree = "<group>"; };
 		23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS Logo Image Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E66A9A29247CD800236B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E66A9C29247CD800236B80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -463,6 +479,7 @@
 		232C19302BD63A680079E11E /* 3D QRCode */ = {
 			isa = PBXGroup;
 			children = (
+				23A593C62BD867C0001BA2A0 /* utils */,
 				232C19312BD63A680079E11E /* AppDelegate.swift */,
 				232C19332BD63A680079E11E /* ViewController.swift */,
 				232C19352BD63A690079E11E /* Assets.xcassets */,
@@ -609,6 +626,17 @@
 				236A0528286FE6580019C842 /* Info.plist */,
 			);
 			path = "iOS QRCode Detector";
+			sourceTree = "<group>";
+		};
+		23A593C62BD867C0001BA2A0 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				23A593C72BD867D1001BA2A0 /* NSBezierPath+extensions.swift */,
+				23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */,
+				23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */,
+				23A593CD2BD86C2A001BA2A0 /* debounce.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		23E66A9929247CD800236B80 /* macOS Logo Image Demo */ = {
@@ -1132,7 +1160,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A593CE2BD86C2A001BA2A0 /* debounce.swift in Sources */,
+				23A593CA2BD867FB001BA2A0 /* CGPath+extensions.swift in Sources */,
 				232C19342BD63A680079E11E /* ViewController.swift in Sources */,
+				23A593CC2BD86BEA001BA2A0 /* CGImage+create.swift in Sources */,
+				23A593C82BD867D1001BA2A0 /* NSBezierPath+extensions.swift in Sources */,
 				232C19322BD63A680079E11E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1261,6 +1293,11 @@
 			isa = PBXTargetDependency;
 			target = 2348FB7D273A2EF3004DB2BF /* QRCodeView iOS Demo */;
 			targetProxy = 236B043E274B5DFA004F0146 /* PBXContainerItemProxy */;
+		};
+		23A593D02BD86CEF001BA2A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 232C192E2BD63A680079E11E /* 3D QRCode */;
+			targetProxy = 23A593CF2BD86CEF001BA2A0 /* PBXContainerItemProxy */;
 		};
 		23BF104229258CA1006B23A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1577,7 +1614,7 @@
 					"@executable_path/../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dagronf.QRCode.3dqrcode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1611,7 +1648,7 @@
 					"@executable_path/../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.dagronf.QRCode.3dqrcode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
