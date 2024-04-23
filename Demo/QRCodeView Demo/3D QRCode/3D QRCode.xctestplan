@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "15F11F1E-E6BD-4FC1-9716-5564DE39A2D2",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:QRCodeView Demo.xcodeproj",
+      "identifier" : "232C192E2BD63A680079E11E",
+      "name" : "3D QRCode"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/..",
+        "identifier" : "QRCodeTests",
+        "name" : "QRCodeTests"
+      }
+    }
+  ],
+  "version" : 1
+}
