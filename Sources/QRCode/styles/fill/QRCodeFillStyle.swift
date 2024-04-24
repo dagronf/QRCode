@@ -77,6 +77,32 @@ public extension QRCodeFillStyleGenerator {
 	}
 }
 
+extension QRCodeFillStyleGenerator {
+	/// Make an image representation of the fill style
+	/// - Parameters:
+	///   - width: The image width
+	///   - height: The image height
+	///   - isFlipped: Flip the image
+	/// - Returns: The image
+	public func makeImage(width: Int, height: Int, isFlipped: Bool = false) -> CGImage? {
+		let sz = CGSize(width: width, height: height)
+		return CGImage.Create(size: sz, flipped: isFlipped) { ctx in
+			self.fill(ctx: ctx, rect: CGRect(origin: .zero, size: sz))
+		}
+	}
+
+	/// Make an image representation of the fill style
+	/// - Parameters:
+	///   - dimension: The dimension of the resulting image
+	///   - isFlipped: Flip the image
+	/// - Returns: The image
+	public func makeImage(dimension: Int, isFlipped: Bool = false) -> CGImage? {
+		self.makeImage(width: dimension, height: dimension, isFlipped: isFlipped)
+	}
+}
+
+// MARK: Fill factory
+
 public class QRCodeFillStyleFactory {
 	public static var registeredTypes: [QRCodeFillStyleGenerator.Type] = [
 		QRCode.FillStyle.Solid.self,

@@ -14,6 +14,10 @@ final class QRCodeImageFillTests: XCTestCase {
 
 		let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
+		let fillImage = try XCTUnwrap(backgroundImage.makeImage(dimension: 500))
+		XCTAssertEqual(500, fillImage.width)
+		XCTAssertEqual(500, fillImage.height)
+
 		doc.design.style.background = backgroundImage
 
 		let im1 = try XCTUnwrap(doc.platformImage(dimension: 600))
@@ -59,6 +63,13 @@ final class QRCodeImageFillTests: XCTestCase {
 
 		let logoImage3 = try resourceImage(for: "colored-fill-bw", extension: "jpg")
 		let pupilImage = QRCode.FillStyle.Image(logoImage3)
+
+		do {
+			let fillImage = try XCTUnwrap(pupilImage.makeImage(dimension: 500))
+			XCTAssertEqual(500, fillImage.width)
+			XCTAssertEqual(500, fillImage.height)
+		}
+
 		doc.design.style.pupil = pupilImage
 		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 

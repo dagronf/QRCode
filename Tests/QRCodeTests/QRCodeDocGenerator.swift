@@ -650,6 +650,11 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 1),
 			])!
 		)
+
+		let fillImage = try XCTUnwrap(c3.makeImage(dimension: 500))
+		XCTAssertEqual(500, fillImage.width)
+		XCTAssertEqual(500, fillImage.height)
+
 		let logoImage3 = try resourceImage(for: "lego", extension: "jpeg")
 		let c4 = QRCode.FillStyle.Image(logoImage3)
 		let bgs: [QRCodeFillStyleGenerator] = [c1, c2, c3, c4]

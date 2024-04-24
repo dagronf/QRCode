@@ -234,6 +234,11 @@ final class QRCodeTests: XCTestCase {
 				)!,
 				centerPoint: CGPoint(x: 0.5, y: 0.5)
 			)
+
+			let fillImage = try XCTUnwrap(c.makeImage(dimension: 500))
+			XCTAssertEqual(500, fillImage.width)
+			XCTAssertEqual(500, fillImage.height)
+
 			doc.design.style.onPixels = c
 
 

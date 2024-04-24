@@ -121,16 +121,6 @@ class ViewController: DSFAppKitBuilderViewController {
 		self.updateDisplay()
 	}
 
-	struct SyncType: OptionSet {
-		let rawValue: Int
-
-		static let pixels = SyncType(rawValue: 1 << 0)
-		static let eye = SyncType(rawValue: 1 << 1)
-		static let pupil = SyncType(rawValue: 1 << 2)
-
-		static let all: SyncType = [.pixels, .eye, .pupil]
-	}
-
 	private func updateDisplay() {
 		debounce.debounce { [weak self] in
 			self?._updateDisplay()

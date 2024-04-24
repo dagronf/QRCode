@@ -308,6 +308,11 @@ final class DocumentationImageTests: XCTestCase {
 				startPoint: CGPoint(x: 0, y: 0),
 				endPoint: CGPoint(x: 0, y: 1)
 			)
+
+			let fillImage = try XCTUnwrap(pixelFill.makeImage(dimension: 500))
+			XCTAssertEqual(500, fillImage.width)
+			XCTAssertEqual(500, fillImage.height)
+
 			doc.design.style.onPixels = pixelFill
 			doc.design.shape.onPixels = QRCode.PixelShape.RoundedEndIndent(cornerRadiusFraction: 1, hasInnerCorners: true)
 
