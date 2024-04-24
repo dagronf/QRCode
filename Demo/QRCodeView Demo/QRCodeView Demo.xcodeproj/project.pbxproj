@@ -100,6 +100,10 @@
 		23A593CA2BD867FB001BA2A0 /* CGPath+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */; };
 		23A593CC2BD86BEA001BA2A0 /* CGImage+create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */; };
 		23A593CE2BD86C2A001BA2A0 /* debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593CD2BD86C2A001BA2A0 /* debounce.swift */; };
+		23A593D22BD89A86001BA2A0 /* PixelStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D12BD89A86001BA2A0 /* PixelStylesView.swift */; };
+		23A593D42BD89E4D001BA2A0 /* EyeStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */; };
+		23A593D62BD89F99001BA2A0 /* PupilStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */; };
+		23A593D82BD8AA9D001BA2A0 /* CommonSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
 		23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9A29247CD800236B80 /* AppDelegate.swift */; };
@@ -318,6 +322,10 @@
 		23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+extensions.swift"; sourceTree = "<group>"; };
 		23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+create.swift"; sourceTree = "<group>"; };
 		23A593CD2BD86C2A001BA2A0 /* debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = debounce.swift; sourceTree = "<group>"; };
+		23A593D12BD89A86001BA2A0 /* PixelStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelStylesView.swift; sourceTree = "<group>"; };
+		23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeStylesView.swift; sourceTree = "<group>"; };
+		23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PupilStylesView.swift; sourceTree = "<group>"; };
+		23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsView.swift; sourceTree = "<group>"; };
 		23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS Logo Image Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E66A9A29247CD800236B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E66A9C29247CD800236B80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -485,6 +493,10 @@
 				232C19352BD63A690079E11E /* Assets.xcassets */,
 				232C19372BD63A690079E11E /* Main.storyboard */,
 				232C193A2BD63A690079E11E /* _D_QRCode.entitlements */,
+				23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */,
+				23A593D12BD89A86001BA2A0 /* PixelStylesView.swift */,
+				23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */,
+				23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */,
 			);
 			path = "3D QRCode";
 			sourceTree = "<group>";
@@ -1160,11 +1172,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A593D42BD89E4D001BA2A0 /* EyeStylesView.swift in Sources */,
 				23A593CE2BD86C2A001BA2A0 /* debounce.swift in Sources */,
 				23A593CA2BD867FB001BA2A0 /* CGPath+extensions.swift in Sources */,
+				23A593D22BD89A86001BA2A0 /* PixelStylesView.swift in Sources */,
 				232C19342BD63A680079E11E /* ViewController.swift in Sources */,
 				23A593CC2BD86BEA001BA2A0 /* CGImage+create.swift in Sources */,
 				23A593C82BD867D1001BA2A0 /* NSBezierPath+extensions.swift in Sources */,
+				23A593D62BD89F99001BA2A0 /* PupilStylesView.swift in Sources */,
+				23A593D82BD8AA9D001BA2A0 /* CommonSettingsView.swift in Sources */,
 				232C19322BD63A680079E11E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

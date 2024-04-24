@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
-        <plugIn identifier="com.apple.SceneKitIBPlugin" version="22689"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -685,7 +685,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="3d QR Code demo" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -709,63 +709,7 @@
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="527" height="424"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <sceneView playing="YES" translatesAutoresizingMaskIntoConstraints="NO" id="64A-rt-EtM">
-                                <rect key="frame" x="0.0" y="39" width="527" height="385"/>
-                            </sceneView>
-                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" fixedFrame="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VeC-N9-saS">
-                                <rect key="frame" x="10" y="10" width="359" height="21"/>
-                                <subviews>
-                                    <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbb-xV-6EB">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="280" id="3mA-b7-ajq"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="This is a test" drawsBackground="YES" id="Sof-ij-R2G">
-                                            <font key="font" usesAppearanceFont="YES"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <action selector="didUpdateText:" target="XfG-lQ-9wD" id="pZ4-j4-0P9"/>
-                                        </connections>
-                                    </textField>
-                                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dyc-ir-qzs">
-                                        <rect key="frame" x="285" y="-3" width="78" height="25"/>
-                                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="ecd-Pl-42N" id="ewj-5z-iAh">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="menu"/>
-                                            <menu key="menu" id="RK8-GD-YU2">
-                                                <items>
-                                                    <menuItem title="Item 1" state="on" id="ecd-Pl-42N"/>
-                                                    <menuItem title="Item 2" id="HY7-3Q-Or1"/>
-                                                    <menuItem title="Item 3" id="kp8-12-qye"/>
-                                                </items>
-                                            </menu>
-                                        </popUpButtonCell>
-                                    </popUpButton>
-                                </subviews>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="64A-rt-EtM" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Fha-aZ-wze"/>
-                            <constraint firstAttribute="bottom" secondItem="64A-rt-EtM" secondAttribute="bottom" constant="39" id="JI2-Xw-Dxz"/>
-                            <constraint firstAttribute="trailing" secondItem="64A-rt-EtM" secondAttribute="trailing" id="bTR-RU-r6h"/>
-                            <constraint firstItem="64A-rt-EtM" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="eXf-rg-rdd"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="qrcodeText" destination="cbb-xV-6EB" id="2rR-qS-Rhx"/>
-                        <outlet property="sceneView" destination="64A-rt-EtM" id="0RT-Gu-WFQ"/>
-                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
