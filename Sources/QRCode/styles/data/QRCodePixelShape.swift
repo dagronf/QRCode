@@ -75,5 +75,5 @@ public extension QRCodePixelShapeGenerator {
 	}
 
 	/// Return a value from the settings
-	func settingsValue<T>(for key: String) -> T? { settings()[key] as? T }
+	func settingsValue<T>(forKey key: String) -> T? { settings()[key] as? T }
 }

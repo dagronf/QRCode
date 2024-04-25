@@ -40,6 +40,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		230812F42BDB3CF7004BB42D /* CornerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812F32BDB3CF7004BB42D /* CornerPicker.swift */; };
 		2309F89E28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */; };
 		2309F8A028ED33F8009666A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89F28ED33F8009666A1 /* ContentView.swift */; };
 		2309F8A228ED33F9009666A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A128ED33F9009666A1 /* Assets.xcassets */; };
@@ -104,8 +105,25 @@
 		23A593D42BD89E4D001BA2A0 /* EyeStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */; };
 		23A593D62BD89F99001BA2A0 /* PupilStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */; };
 		23A593D82BD8AA9D001BA2A0 /* CommonSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */; };
+		23C444822BDA313200AD8F6C /* EyeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C444812BDA313100AD8F6C /* EyeSettingsView.swift */; };
+		23C444842BDA363100AD8F6C /* MultiSelectPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C444832BDA363100AD8F6C /* MultiSelectPickerView.swift */; };
+		23C444862BDA3F4A00AD8F6C /* PupilSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C444852BDA3F4A00AD8F6C /* PupilSettingsView.swift */; };
+		23C444882BDA42F200AD8F6C /* debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C444872BDA42F200AD8F6C /* debounce.swift */; };
 		23C7586628AC78B8007528CE /* QRCodeDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; };
 		23C7586728AC78B8007528CE /* QRCodeDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 23C7586528AC78B8007528CE /* QRCodeDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		23DA09C62BD9CF69009EDB38 /* QRCode_3DApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09C52BD9CF69009EDB38 /* QRCode_3DApp.swift */; };
+		23DA09C82BD9CF69009EDB38 /* QRCode_3DDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09C72BD9CF69009EDB38 /* QRCode_3DDocument.swift */; };
+		23DA09CA2BD9CF69009EDB38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09C92BD9CF69009EDB38 /* ContentView.swift */; };
+		23DA09CC2BD9CF6A009EDB38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23DA09CB2BD9CF6A009EDB38 /* Assets.xcassets */; };
+		23DA09CF2BD9CF6A009EDB38 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23DA09CE2BD9CF6A009EDB38 /* Preview Assets.xcassets */; };
+		23DA09D62BD9CFDC009EDB38 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 23DA09D52BD9CFDC009EDB38 /* QRCode */; };
+		23DA09D82BD9D3DB009EDB38 /* QRCodePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09D72BD9D3DB009EDB38 /* QRCodePreviewView.swift */; };
+		23DA09DA2BD9D9E1009EDB38 /* CGPath+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09D92BD9D9E1009EDB38 /* CGPath+extensions.swift */; };
+		23DA09DC2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09DB2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift */; };
+		23DA09E02BD9F366009EDB38 /* CommonSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09DF2BD9F366009EDB38 /* CommonSettingsView.swift */; };
+		23DA09E22BD9F3AB009EDB38 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09E12BD9F3AB009EDB38 /* SettingsView.swift */; };
+		23DA09E42BD9F469009EDB38 /* PixelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09E32BD9F469009EDB38 /* PixelSettingsView.swift */; };
+		23DA09E62BD9FD0D009EDB38 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA09E52BD9FD0D009EDB38 /* FlowLayout.swift */; };
 		23E66A9B29247CD800236B80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9A29247CD800236B80 /* AppDelegate.swift */; };
 		23E66A9D29247CD800236B80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66A9C29247CD800236B80 /* ViewController.swift */; };
 		23E66A9F29247CD900236B80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E66A9E29247CD900236B80 /* Assets.xcassets */; };
@@ -257,6 +275,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		230812F32BDB3CF7004BB42D /* CornerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerPicker.swift; sourceTree = "<group>"; };
 		2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple tvOS QRCode.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_tvOS_QRCodeApp.swift; sourceTree = "<group>"; };
 		2309F89F28ED33F8009666A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -326,6 +345,25 @@
 		23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeStylesView.swift; sourceTree = "<group>"; };
 		23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PupilStylesView.swift; sourceTree = "<group>"; };
 		23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsView.swift; sourceTree = "<group>"; };
+		23C444812BDA313100AD8F6C /* EyeSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeSettingsView.swift; sourceTree = "<group>"; };
+		23C444832BDA363100AD8F6C /* MultiSelectPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectPickerView.swift; sourceTree = "<group>"; };
+		23C444852BDA3F4A00AD8F6C /* PupilSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PupilSettingsView.swift; sourceTree = "<group>"; };
+		23C444872BDA42F200AD8F6C /* debounce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = debounce.swift; path = "3D QRCode/utils/debounce.swift"; sourceTree = SOURCE_ROOT; };
+		23DA09C32BD9CF69009EDB38 /* QRCode 3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode 3D.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23DA09C52BD9CF69009EDB38 /* QRCode_3DApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode_3DApp.swift; sourceTree = "<group>"; };
+		23DA09C72BD9CF69009EDB38 /* QRCode_3DDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode_3DDocument.swift; sourceTree = "<group>"; };
+		23DA09C92BD9CF69009EDB38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		23DA09CB2BD9CF6A009EDB38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		23DA09CE2BD9CF6A009EDB38 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		23DA09D02BD9CF6A009EDB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23DA09D12BD9CF6A009EDB38 /* QRCode_3D.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRCode_3D.entitlements; sourceTree = "<group>"; };
+		23DA09D72BD9D3DB009EDB38 /* QRCodePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodePreviewView.swift; sourceTree = "<group>"; };
+		23DA09D92BD9D9E1009EDB38 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPath+extensions.swift"; path = "QRCode 3D/utils/CGPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
+		23DA09DB2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSBezierPath+extensions.swift"; path = "QRCode 3D/utils/NSBezierPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
+		23DA09DF2BD9F366009EDB38 /* CommonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsView.swift; sourceTree = "<group>"; };
+		23DA09E12BD9F3AB009EDB38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		23DA09E32BD9F469009EDB38 /* PixelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelSettingsView.swift; sourceTree = "<group>"; };
+		23DA09E52BD9FD0D009EDB38 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "macOS Logo Image Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E66A9A29247CD800236B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E66A9C29247CD800236B80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +452,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				23701CD72A3968DC00021944 /* QRCodeDetector in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23DA09C02BD9CF69009EDB38 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23DA09D62BD9CFDC009EDB38 /* QRCode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +564,7 @@
 				2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */,
 				23E66A9929247CD800236B80 /* macOS Logo Image Demo */,
 				232C19302BD63A680079E11E /* 3D QRCode */,
+				23DA09C42BD9CF69009EDB38 /* QRCode 3D */,
 				2348FB65273A2DDB004DB2BF /* Products */,
 				2348FB77273A2DF5004DB2BF /* Frameworks */,
 			);
@@ -539,6 +586,7 @@
 				2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */,
 				23E66A9829247CD800236B80 /* macOS Logo Image Demo.app */,
 				232C192F2BD63A680079E11E /* 3D QRCode.app */,
+				23DA09C32BD9CF69009EDB38 /* QRCode 3D.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -647,6 +695,56 @@
 				23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */,
 				23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */,
 				23A593CD2BD86C2A001BA2A0 /* debounce.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		23DA09C42BD9CF69009EDB38 /* QRCode 3D */ = {
+			isa = PBXGroup;
+			children = (
+				23DA09DE2BD9F336009EDB38 /* utils */,
+				23DA09DD2BD9F32F009EDB38 /* settings */,
+				23DA09C52BD9CF69009EDB38 /* QRCode_3DApp.swift */,
+				23DA09C72BD9CF69009EDB38 /* QRCode_3DDocument.swift */,
+				23DA09D72BD9D3DB009EDB38 /* QRCodePreviewView.swift */,
+				23DA09C92BD9CF69009EDB38 /* ContentView.swift */,
+				23DA09CB2BD9CF6A009EDB38 /* Assets.xcassets */,
+				23DA09D02BD9CF6A009EDB38 /* Info.plist */,
+				23DA09D12BD9CF6A009EDB38 /* QRCode_3D.entitlements */,
+				23DA09CD2BD9CF6A009EDB38 /* Preview Content */,
+			);
+			path = "QRCode 3D";
+			sourceTree = "<group>";
+		};
+		23DA09CD2BD9CF6A009EDB38 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				23DA09CE2BD9CF6A009EDB38 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		23DA09DD2BD9F32F009EDB38 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				23DA09E12BD9F3AB009EDB38 /* SettingsView.swift */,
+				23DA09DF2BD9F366009EDB38 /* CommonSettingsView.swift */,
+				23C444812BDA313100AD8F6C /* EyeSettingsView.swift */,
+				23DA09E32BD9F469009EDB38 /* PixelSettingsView.swift */,
+				23C444852BDA3F4A00AD8F6C /* PupilSettingsView.swift */,
+				23DA09E52BD9FD0D009EDB38 /* FlowLayout.swift */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
+		23DA09DE2BD9F336009EDB38 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				23DA09D92BD9D9E1009EDB38 /* CGPath+extensions.swift */,
+				23DA09DB2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift */,
+				23C444832BDA363100AD8F6C /* MultiSelectPickerView.swift */,
+				23C444872BDA42F200AD8F6C /* debounce.swift */,
+				230812F32BDB3CF7004BB42D /* CornerPicker.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -899,6 +997,26 @@
 			productReference = 236A0518286FE6570019C842 /* iOS QRCode Detector.app */;
 			productType = "com.apple.product-type.application";
 		};
+		23DA09C22BD9CF69009EDB38 /* QRCode 3D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23DA09D42BD9CF6A009EDB38 /* Build configuration list for PBXNativeTarget "QRCode 3D" */;
+			buildPhases = (
+				23DA09BF2BD9CF69009EDB38 /* Sources */,
+				23DA09C02BD9CF69009EDB38 /* Frameworks */,
+				23DA09C12BD9CF69009EDB38 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "QRCode 3D";
+			packageProductDependencies = (
+				23DA09D52BD9CFDC009EDB38 /* QRCode */,
+			);
+			productName = "QRCode 3D";
+			productReference = 23DA09C32BD9CF69009EDB38 /* QRCode 3D.app */;
+			productType = "com.apple.product-type.application";
+		};
 		23E66A9729247CD800236B80 /* macOS Logo Image Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23E66AA629247CD900236B80 /* Build configuration list for PBXNativeTarget "macOS Logo Image Demo" */;
@@ -988,6 +1106,9 @@
 					236B0438274B5DEA004F0146 = {
 						CreatedOnToolsVersion = 13.1;
 					};
+					23DA09C22BD9CF69009EDB38 = {
+						CreatedOnToolsVersion = 15.3;
+					};
 					23E66A9729247CD800236B80 = {
 						CreatedOnToolsVersion = 14.1;
 					};
@@ -1027,6 +1148,7 @@
 				2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */,
 				23E66A9729247CD800236B80 /* macOS Logo Image Demo */,
 				232C192E2BD63A680079E11E /* 3D QRCode */,
+				23DA09C22BD9CF69009EDB38 /* QRCode 3D */,
 			);
 		};
 /* End PBXProject section */
@@ -1125,6 +1247,15 @@
 				236A0527286FE6580019C842 /* LaunchScreen.storyboard in Resources */,
 				236A0524286FE6580019C842 /* Assets.xcassets in Resources */,
 				236A0522286FE6570019C842 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23DA09C12BD9CF69009EDB38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23DA09CF2BD9CF6A009EDB38 /* Preview Assets.xcassets in Resources */,
+				23DA09CC2BD9CF6A009EDB38 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1240,6 +1371,28 @@
 				236A051F286FE6570019C842 /* ViewController.swift in Sources */,
 				236A051B286FE6570019C842 /* AppDelegate.swift in Sources */,
 				236A051D286FE6570019C842 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23DA09BF2BD9CF69009EDB38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23C444882BDA42F200AD8F6C /* debounce.swift in Sources */,
+				23DA09E02BD9F366009EDB38 /* CommonSettingsView.swift in Sources */,
+				23DA09E22BD9F3AB009EDB38 /* SettingsView.swift in Sources */,
+				23C444862BDA3F4A00AD8F6C /* PupilSettingsView.swift in Sources */,
+				23DA09D82BD9D3DB009EDB38 /* QRCodePreviewView.swift in Sources */,
+				23DA09C62BD9CF69009EDB38 /* QRCode_3DApp.swift in Sources */,
+				23C444822BDA313200AD8F6C /* EyeSettingsView.swift in Sources */,
+				23DA09DA2BD9D9E1009EDB38 /* CGPath+extensions.swift in Sources */,
+				230812F42BDB3CF7004BB42D /* CornerPicker.swift in Sources */,
+				23DA09C82BD9CF69009EDB38 /* QRCode_3DDocument.swift in Sources */,
+				23DA09DC2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift in Sources */,
+				23DA09E62BD9FD0D009EDB38 /* FlowLayout.swift in Sources */,
+				23DA09CA2BD9CF69009EDB38 /* ContentView.swift in Sources */,
+				23C444842BDA363100AD8F6C /* MultiSelectPickerView.swift in Sources */,
+				23DA09E42BD9F469009EDB38 /* PixelSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2195,6 +2348,83 @@
 			};
 			name = Release;
 		};
+		23DA09D22BD9CF6A009EDB38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "QRCode 3D/QRCode_3D.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCode 3D/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCode 3D/Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.QRCode-3D";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		23DA09D32BD9CF6A009EDB38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "QRCode 3D/QRCode_3D.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCode 3D/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QRCode 3D/Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.QRCode-3D";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
 		23E66AA429247CD900236B80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2442,6 +2672,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		23DA09D42BD9CF6A009EDB38 /* Build configuration list for PBXNativeTarget "QRCode 3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23DA09D22BD9CF6A009EDB38 /* Debug */,
+				23DA09D32BD9CF6A009EDB38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		23E66AA629247CD900236B80 /* Build configuration list for PBXNativeTarget "macOS Logo Image Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2522,6 +2761,10 @@
 		23C7586528AC78B8007528CE /* QRCodeDynamic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeDynamic;
+		};
+		23DA09D52BD9CFDC009EDB38 /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCode;
 		};
 		23E66AA729247CEA00236B80 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -54,6 +54,11 @@ class PupilStylesView: Element {
 					initialSelection: item.name == qrCode.design.shape.actualPupilShape.name
 				)
 			}))
+			.onChange(of: pupilSelection) { [weak self] newValue in
+				guard let `self` = self else { return }
+				self.qrCode.design.shape.pupil = self.allPupilStyles.wrappedValue[newValue]
+				self.update()
+			}
 
 			HDivider()
 
@@ -65,6 +70,10 @@ class PupilStylesView: Element {
 						.bindOnOff(pupilFlipped)
 						.bindIsEnabled(pupilFlippedEnabled)
 					EmptyView()
+				}
+				.onChange(of: pupilFlipped) { [weak self] newValue in
+					_ = self?.qrCode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+					self?.update()
 				}
 
 				HStack {
@@ -87,10 +96,10 @@ class PupilStylesView: Element {
 	private func sync() {
 		let item = qrCode.design.shape.actualPupilShape
 		self.pupilFlippedEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-		self.pupilFlipped.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.isFlipped) ?? false
+		self.pupilFlipped.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
 
 		self.pupilSelectedCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
-		if let value: Int = item.settingsValue(for: QRCode.SettingsKey.corners) {
+		if let value: Int = item.settingsValue(forKey: QRCode.SettingsKey.corners) {
 			let opts = QRCode.Corners(rawValue: value)
 			let s = NSMutableSet()
 			if opts.contains(.tl) { s.add(0) }
@@ -119,15 +128,9 @@ class PupilStylesView: Element {
 
 	let allPupilStyles = ValueBinder(QRCodePupilShapeFactory.shared.all())
 
-	private lazy var pupilSelection: ValueBinder<Int> = ValueBinder(0) { newValue in
-		self.qrCode.design.shape.pupil = self.allPupilStyles.wrappedValue[newValue]
-		self.update()
-	}
+	private lazy var pupilSelection: ValueBinder<Int> = ValueBinder(0)
 
-	private lazy var pupilFlipped = ValueBinder(false) { newValue in
-		_ = self.qrCode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
-		self.update()
-	}
+	private lazy var pupilFlipped = ValueBinder(false)
 	private var pupilFlippedEnabled = ValueBinder(false)
 
 	private lazy var pupilSelectedCorners = ValueBinder(NSSet()) { newValue in

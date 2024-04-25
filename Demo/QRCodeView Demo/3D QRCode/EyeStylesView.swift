@@ -55,6 +55,11 @@ class EyeStylesView: Element {
 				initialSelection: item.name == qrCode.design.shape.eye.name
 			)
 		}))
+		.onChange(of: eyeSelection) { [weak self] newValue in
+			guard let `self` = self else { return }
+			self.qrCode.design.shape.eye = self.allEyeStyles.wrappedValue[newValue]
+			self.update()
+		}
 
 		HDivider()
 
@@ -65,6 +70,10 @@ class EyeStylesView: Element {
 				Slider(eyeCornerRadius, range: 0 ... 1)
 					.controlSize(.small)
 					.bindIsEnabled(eyeCornerRadiusEnabled)
+					.onChange(of: eyeCornerRadius) { [weak self] newValue in
+						_ = self?.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+						self?.update()
+					}
 			}
 			HStack {
 				Label("flipped:").font(.callout)
@@ -72,6 +81,10 @@ class EyeStylesView: Element {
 					.controlSize(.small)
 					.bindOnOff(eyeFlipped)
 					.bindIsEnabled(eyeFlippedEnabled)
+					.onChange(of: eyeFlipped) { [weak self] newValue in
+						_ = self?.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+						self?.update()
+					}
 				EmptyView()
 			}
 
@@ -96,13 +109,13 @@ class EyeStylesView: Element {
 	private func sync() {
 		let item = qrCode.design.shape.eye
 		self.eyeCornerRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
-		self.eyeCornerRadius.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.65
+		self.eyeCornerRadius.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.65
 
 		self.eyeFlippedEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-		self.eyeFlipped.wrappedValue = item.settingsValue(for: QRCode.SettingsKey.isFlipped) ?? false
+		self.eyeFlipped.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
 
 		self.eyeSelectedCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
-		if let value: Int = item.settingsValue(for: QRCode.SettingsKey.corners) {
+		if let value: Int = item.settingsValue(forKey: QRCode.SettingsKey.corners) {
 			let opts = QRCode.Corners(rawValue: value)
 			let s = NSMutableSet()
 			if opts.contains(.tl) { s.add(0) }
@@ -129,21 +142,12 @@ class EyeStylesView: Element {
 	let selectedEyeStyle = ValueBinder(RadioBinding())
 
 	let allEyeStyles = ValueBinder(QRCodeEyeShapeFactory.shared.all())
-	private lazy var eyeSelection = ValueBinder(0) { newValue in
-		self.qrCode.design.shape.eye = self.allEyeStyles.wrappedValue[newValue]
-		self.update()
-	}
+	private lazy var eyeSelection = ValueBinder(0)
 
-	private lazy var eyeCornerRadius = ValueBinder(0.65) { newValue in
-		_ = self.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.cornerRadiusFraction)
-		self.update()
-	}
+	private lazy var eyeCornerRadius = ValueBinder(0.65)
 	private var eyeCornerRadiusEnabled = ValueBinder(false)
 
-	private lazy var eyeFlipped = ValueBinder(false) { newValue in
-		_ = self.qrCode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
-		self.update()
-	}
+	private lazy var eyeFlipped = ValueBinder(false)
 	private var eyeFlippedEnabled = ValueBinder(false)
 
 	private lazy var eyeSelectedCorners = ValueBinder(NSSet()) { newValue in
