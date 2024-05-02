@@ -507,7 +507,7 @@ final class QRCodeTests: XCTestCase {
 			.foreground(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
 
 		try outputFolder.write(
-			try doc.imageData(dimension: 300, representation: .png(scale: 2)),
+			try doc.generate.image(dimension: 300, representation: .png(scale: 2)),
 			to: "builder-test1.png"
 		)
 
@@ -517,7 +517,7 @@ final class QRCodeTests: XCTestCase {
 				.foreground(CGColor(srgbRed: 1, green: 1, blue: 0, alpha: 1))
 				.background(CGColor(srgbRed: 0.3, green: 0, blue: 0.3, alpha: 1))
 			try outputFolder.write(
-				try doc.imageData(dimension: 1000, representation: .png(scale: 2)),
+				try doc.generate.image(dimension: 1000, representation: .png(scale: 2)),
 				to: "builder-basic-foreground-background.png"
 			)
 		}
@@ -528,8 +528,8 @@ final class QRCodeTests: XCTestCase {
 				.text("Fish and chips")
 				.background(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
 				.logo(image, position: .circleCenter(inset: 5))
-				.image(dimension: 500)
-		
+				.generate.image(dimension: 500)
+
 			try outputFolder.write(
 				try im2.imageData(for: .png()),
 				to: "logo-basic-circle-center.png"
@@ -542,7 +542,7 @@ final class QRCodeTests: XCTestCase {
 				.text("World Wildlife Foundation")
 				.background.style(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
 				.logo(image, position: .squareBottomRight(inset: 0))
-				.image(dimension: 500)
+				.generate.image(dimension: 500)
 
 			try outputFolder.write(
 				try im2.imageData(for: .png()),
@@ -564,7 +564,7 @@ final class QRCodeTests: XCTestCase {
 					unitRect: CGRect(x: 0.3, y: 0.72, width: 0.45, height: 0.22),
 					inset: 10
 				)
-				.image(dimension: 500)
+				.generate.image(dimension: 500)
 
 			try outputFolder.write(
 				try im2.imageData(for: .png()),

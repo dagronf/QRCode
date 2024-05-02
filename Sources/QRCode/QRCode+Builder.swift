@@ -35,6 +35,12 @@ import Foundation
 
 import SwiftImageReadWrite
 
+#if os(macOS)
+import AppKit.NSBezierPath
+#else
+import UIKit.UIBezierPath
+#endif
+
 public extension QRCode {
 	/// Create a builder
 	static var build: Builder { Builder() }
@@ -466,36 +472,37 @@ public extension QRCode.Builder {
 	}
 }
 
-// MARK: - Image Generation
+// MARK: - Generator
 
 public extension QRCode.Builder {
+	/// The off-pixels for the QR code
+	var generate: Generate { Generate(builder: self) }
+	struct Generate {
+		// Private
+		fileprivate let builder: QRCode.Builder
+		fileprivate init(builder: QRCode.Builder) { self.builder = builder }
+	}
+}
+
+// MARK: Image
+
+public extension QRCode.Builder.Generate {
 	/// Generate an image
 	/// - Parameter dimension: The dimension of the resulting image
 	/// - Returns: The image
 	@discardableResult func image(dimension: Int) throws -> CGImage {
-		guard let result = self.document.cgImage(dimension: dimension) else {
-			throw BuilderError.cannotCreate
+		guard let result = builder.document.cgImage(dimension: dimension) else {
+			throw QRCode.Builder.BuilderError.cannotCreate
 		}
 		return result
 	}
 
-	/// Generate a CGPath
-	/// - Parameter dimension: The dimension of the resulting path
-	/// - Returns: A path
-	@discardableResult func path(dimension: Int) -> CGPath {
-		self.document.path(dimension: dimension)
-	}
-}
-
-// MARK: - Image Data Generation
-
-public extension QRCode.Builder {
 	/// Generate an image with a specifed format
 	/// - Parameters:
 	///   - dimension: The dimension of the image
 	///   - representation: The image representation to use when generating the image data
 	/// - Returns: Image data
-	@discardableResult func imageData(dimension: Int, representation: ImageExportType) throws -> Data {
+	@discardableResult func image(dimension: Int, representation: ImageExportType) throws -> Data {
 		try self.image(dimension: dimension).imageData(for: representation)
 	}
 
@@ -504,9 +511,9 @@ public extension QRCode.Builder {
 	///   - dimension: The dimension of the resulting pdf
 	///   - pdfResolution: The resolution to use when generating the pdf
 	/// - Returns: pdf data
-	@discardableResult func pdfData(dimension: Int, pdfResolution: CGFloat = 72.0) throws -> Data {
-		guard let result = self.document.pdfData(dimension: dimension, pdfResolution: pdfResolution) else {
-			throw BuilderError.cannotCreate
+	@discardableResult func pdf(dimension: Int, pdfResolution: CGFloat = 72.0) throws -> Data {
+		guard let result = builder.document.pdfData(dimension: dimension, pdfResolution: pdfResolution) else {
+			throw QRCode.Builder.BuilderError.cannotCreate
 		}
 		return result
 	}
@@ -514,10 +521,37 @@ public extension QRCode.Builder {
 	/// Generate an SVG representation
 	/// - Parameter dimension: The dimension of the resulting svg
 	/// - Returns: SVG data
-	@discardableResult func svgData(dimension: Int) throws -> Data {
-		guard let result = self.document.svgData(dimension: dimension) else {
-			throw BuilderError.cannotCreate
+	@discardableResult func svg(dimension: Int) throws -> Data {
+		guard let result = builder.document.svgData(dimension: dimension) else {
+			throw QRCode.Builder.BuilderError.cannotCreate
 		}
 		return result
 	}
+}
+
+// MARK: Path
+
+public extension QRCode.Builder.Generate {
+	/// Generate a CGPath
+	/// - Parameter dimension: The dimension of the resulting path
+	/// - Returns: A path
+	@discardableResult func path(dimension: Int) -> CGPath {
+		builder.document.path(dimension: dimension)
+	}
+
+#if os(macOS)
+	/// Generate an NSBezierPath
+	/// - Parameter dimension: The dimension of the resulting path
+	/// - Returns: A path
+	@discardableResult func nsBezierPath(dimension: Int) -> NSBezierPath {
+		NSBezierPath(cgPath: self.path(dimension: dimension))
+	}
+#else
+	/// Generate a UIBezierPath
+	/// - Parameter dimension: The dimension of the resulting path
+	/// - Returns: A path
+	@discardableResult func uiBezierPath(dimension: Int) -> UIBezierPath {
+		UIBezierPath(cgPath: self.path(dimension: dimension))
+	}
+#endif
 }
