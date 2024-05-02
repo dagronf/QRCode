@@ -68,7 +68,7 @@ extension QRCodePreviewView {
 	class Coordinator {
 		init() { }
 
-		let debounce = DSFDebounce(seconds: 0.1)
+		let debounce = DSFDebounce(seconds: 0.01)
 
 		var document: QRCode.Document?
 		var view: SCNView! {
@@ -77,7 +77,9 @@ extension QRCodePreviewView {
 			}
 		}
 
-		private var qrCodeShape: SCNShape?
+		private var qrOnPupilShape: SCNShape?
+		private var qrEyeShape: SCNShape?
+		private var qrPupilShape: SCNShape?
 		private var qrBackgroundPlane: SCNPlane?
 
 		func update() {
@@ -88,11 +90,36 @@ extension QRCodePreviewView {
 
 		func _update() {
 			guard let qrcode = document else { return }
-			let path = qrcode.path(CGSize(width: 1000, height: 1000))
-			let mx = CGMutablePath()
-			mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
-			qrCodeShape?.path = osPath(cgPath: mx)
-			qrBackgroundPlane?.cornerRadius = qrcode.design.style.backgroundFractionalCornerRadius * 1000
+			do {
+				// background
+				let bgi = qrcode.design.style.background?.makeImage(dimension: 1000, isFlipped: true)
+				qrBackgroundPlane?.materials.first?.diffuse.contents = bgi ?? CGColor(gray: 0, alpha: 0)
+				qrBackgroundPlane?.cornerRadius = qrcode.design.style.backgroundFractionalCornerRadius * 1000
+			}
+			do {
+				// On pixels
+				let path = qrcode.path(CGSize(width: 1000, height: 1000), components: [.onPixels])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				qrOnPupilShape?.path = osPath(cgPath: mx)
+				qrOnPupilShape?.materials.first?.diffuse.contents = qrcode.design.style.onPixels.makeImage(dimension: 1000, isFlipped: true)
+			}
+			do {
+				// Eye
+				let path = qrcode.path(CGSize(width: 1000, height: 1000), components: [.eyeOuter])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				qrEyeShape?.path = osPath(cgPath: mx)
+				qrEyeShape?.materials.first?.diffuse.contents = qrcode.design.style.actualEyeStyle.makeImage(dimension: 1000, isFlipped: true)
+			}
+			do {
+				// Pupil
+				let path = qrcode.path(CGSize(width: 1000, height: 1000), components: [.eyePupil])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				qrPupilShape?.path = osPath(cgPath: mx)
+				qrPupilShape?.materials.first?.diffuse.contents = qrcode.design.style.actualPupilStyle.makeImage(dimension: 1000, isFlipped: true)
+			}
 		}
 
 		func configure() {
@@ -119,18 +146,47 @@ extension QRCodePreviewView {
 
 			let qrCode = document!
 
-			let path = qrCode.path(CGSize(width: 1000, height: 1000))
-			let mx = CGMutablePath()
-			mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
-			let p = osPath(cgPath: mx)
-			let shape = SCNShape(path: p, extrusionDepth: 20)
-			self.qrCodeShape = shape
+			do {
+				let path = qrCode.path(CGSize(width: 1000, height: 1000), components: [.onPixels])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				let p = osPath(cgPath: mx)
+				let shape = SCNShape(path: p, extrusionDepth: 20)
+				self.qrOnPupilShape = shape
 
-			//shape.insertMaterial(material, at: 0)
-			let n = SCNNode(geometry: shape)
-			n.position = SCNVector3(x: -500, y: -500, z: 0)
+				let n = SCNNode(geometry: shape)
+				n.position = SCNVector3(x: -500, y: -500, z: 0)
 
-			scene.rootNode.addChildNode(n)
+				scene.rootNode.addChildNode(n)
+			}
+
+			do {
+				let path = qrCode.path(CGSize(width: 1000, height: 1000), components: [.eyeOuter])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				let p = osPath(cgPath: mx)
+				let shape = SCNShape(path: p, extrusionDepth: 20)
+				self.qrEyeShape = shape
+
+				let n = SCNNode(geometry: shape)
+				n.position = SCNVector3(x: -500, y: -500, z: 0)
+
+				scene.rootNode.addChildNode(n)
+			}
+
+			do {
+				let path = qrCode.path(CGSize(width: 1000, height: 1000), components: [.eyePupil])
+				let mx = CGMutablePath()
+				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+				let p = osPath(cgPath: mx)
+				let shape = SCNShape(path: p, extrusionDepth: 20)
+				self.qrPupilShape = shape
+
+				let n = SCNNode(geometry: shape)
+				n.position = SCNVector3(x: -500, y: -500, z: 0)
+
+				scene.rootNode.addChildNode(n)
+			}
 
 			do {
 				let plane = SCNPlane(width: 1000, height: 1000)
@@ -161,7 +217,7 @@ extension QRCodePreviewView {
 				let light = SCNLight()
 				light.type = .omni
 				light.intensity = 5000
-				light.color = CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+				//light.color = CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
 				let lightNode = SCNNode()
 				lightNode.light = light
 				lightNode.position = SCNVector3(x: -500, y: -500, z: 100)
@@ -172,23 +228,25 @@ extension QRCodePreviewView {
 				let light = SCNLight()
 				light.type = .omni
 				light.intensity = 5000
-				light.color = CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 1)
+				//light.color = CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 1)
 				let lightNode = SCNNode()
 				lightNode.light = light
 				lightNode.position = SCNVector3(x: 0, y: 0, z: -400)
 				scene.rootNode.addChildNode(lightNode)
 			}
 
+			_update()
 		}
 
 		func refreshCode() {
-			let qrCode = document!
-
-			let path = qrCode.path(CGSize(width: 1000, height: 1000))
-			let mx = CGMutablePath()
-			mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
-			qrCodeShape?.path = osPath(cgPath: mx)
-			qrBackgroundPlane?.cornerRadius = qrCode.design.style.backgroundFractionalCornerRadius * 1000
+			_update()
+//			let qrCode = document!
+//
+//			let path = qrCode.path(CGSize(width: 1000, height: 1000))
+//			let mx = CGMutablePath()
+//			mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
+//			qrCodeShape?.path = osPath(cgPath: mx)
+//			qrBackgroundPlane?.cornerRadius = qrCode.design.style.backgroundFractionalCornerRadius * 1000
 		}
 	}
 }

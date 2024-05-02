@@ -27,7 +27,6 @@ struct CommonSettingsView: View {
 	@State var cornerRadius: Double = 0
 	@State var negate: Bool = false
 	@State var correction: QRCode.ErrorCorrection = .quantize
-	@State var fillStyle = ObservedFillStyle(style: QRCode.FillStyle.Solid(gray: 0))
 
 	var body: some View {
 		Form {
@@ -45,7 +44,11 @@ struct CommonSettingsView: View {
 				Text("corner radius")
 			}
 			LabeledContent("style") {
-				StyleSelectorView(fillStyle: $fillStyle.style, supportsNoFill: true)
+				StyleSelectorView(
+					current: document.qrcode.design.style.background, supportsNoFill: true) { newFill in
+						document.qrcode.design.style.background = newFill
+						document.objectWillChange.send()
+				}
 			}
 			Toggle(isOn: $negate, label: {
 				Text("negate")
@@ -57,7 +60,6 @@ struct CommonSettingsView: View {
 			correction = document.qrcode.errorCorrection
 			negate = document.qrcode.design.shape.negatedOnPixelsOnly
 			cornerRadius = document.qrcode.design.style.backgroundFractionalCornerRadius
-			fillStyle.style = document.qrcode.design.style.background
 		}
 		.onChange(of: text) { newValue in
 			document.qrcode.utf8String = text
@@ -77,10 +79,6 @@ struct CommonSettingsView: View {
 		}
 		.onChange(of: cornerRadius) { newValue in
 			document.qrcode.design.style.backgroundFractionalCornerRadius = newValue
-			document.objectWillChange.send()
-		}
-		.onChange(of: fillStyle) { newValue in
-			document.qrcode.design.style.background = newValue.style
 			document.objectWillChange.send()
 		}
 	}

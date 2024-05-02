@@ -14,9 +14,9 @@ private let _DefaultGradient = DSFGradient(pins: [
 ])!
 
 struct StyleSelectorView: View {
-	@Binding var fillStyle: QRCodeFillStyleGenerator?
 
 	let supportsNoFill: Bool
+	let current: QRCodeFillStyleGenerator?
 
 	@State var fillStyleSelector: Int = 0
 
@@ -25,9 +25,12 @@ struct StyleSelectorView: View {
 	@State var radial = StyleRadialGradient()
 	@State var image = StyleImage()
 
-	init(fillStyle: Binding<QRCodeFillStyleGenerator?>, supportsNoFill: Bool = false) {
-		self._fillStyle = fillStyle
+	let styleDidChange: (QRCodeFillStyleGenerator) -> Void
+
+	init(current: QRCodeFillStyleGenerator?, supportsNoFill: Bool = false, _ styleDidChange: @escaping (QRCodeFillStyleGenerator) -> Void) {
+		self.current = current
 		self.supportsNoFill = supportsNoFill
+		self.styleDidChange = styleDidChange
 	}
 
 	var body: some View {
@@ -63,29 +66,29 @@ struct StyleSelectorView: View {
 			.frame(width: 46, height: 24)
 		}
 		.onAppear {
-			guard let fillStyle = fillStyle else {
+			guard let current = current else {
 				fillStyleSelector = 0
 				return
 			}
-			if fillStyle is QRCode.FillStyle.Solid { fillStyleSelector = 1 }
-			else if fillStyle is QRCode.FillStyle.LinearGradient { fillStyleSelector = 2 }
-			else if fillStyle is QRCode.FillStyle.RadialGradient { fillStyleSelector = 3 }
-			else if fillStyle is QRCode.FillStyle.Image { fillStyleSelector = 4 }
+			if current is QRCode.FillStyle.Solid { fillStyleSelector = 1 }
+			else if current is QRCode.FillStyle.LinearGradient { fillStyleSelector = 2 }
+			else if current is QRCode.FillStyle.RadialGradient { fillStyleSelector = 3 }
+			else if current is QRCode.FillStyle.Image { fillStyleSelector = 4 }
 			else { fatalError() }
 		}
 		.frame(minHeight: 28)
 
 		.onChange(of: solid) { newValue in
-			fillStyle = QRCode.FillStyle.Solid(solid.cgColor ?? .black)
+			styleDidChange(QRCode.FillStyle.Solid(solid.cgColor ?? CGColor(gray: 0, alpha: 1)))
 		}
 		.onChange(of: linear) { newValue in
-			fillStyle = newValue.style
+			styleDidChange(newValue.style)
 		}
 		.onChange(of: radial) { newValue in
-			fillStyle = newValue.style
+			styleDidChange(newValue.style)
 		}
 		.onChange(of: image) { newValue in
-			fillStyle = newValue.style
+			styleDidChange(newValue.style)
 		}
 	}
 }

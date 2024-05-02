@@ -16,8 +16,8 @@ struct StyleRadialGradient: Equatable {
 
 	init() {
 		self.gradientStops = [
-			GradientStop(isMovable: false, unit: 0, color: .black),
-			GradientStop(isMovable: false, unit: 1, color: .white),
+			GradientStop(isMovable: false, unit: 0, color: CGColor(gray: 0, alpha: 1)),
+			GradientStop(isMovable: false, unit: 1, color: CGColor(gray: 1, alpha: 1)),
 		]
 	}
 

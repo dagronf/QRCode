@@ -8,14 +8,6 @@
 import SwiftUI
 import QRCode
 
-extension CGPoint {
-	var unitPoint: UnitPoint { UnitPoint(x: max(0, min(1, x)), y: max(0, min(1, y))) }
-}
-
-extension UnitPoint {
-	var cgPoint: CGPoint { CGPoint(x: x, y: y) }
-}
-
 struct StyleLinearGradient: Equatable {
 	var startPoint: UnitPoint = .init(x: 0, y: 0)
 	var endPoint: UnitPoint = .init(x: 1, y: 1)
@@ -25,8 +17,8 @@ struct StyleLinearGradient: Equatable {
 		self.startPoint = .init(x: 0, y: 0)
 		self.endPoint = .init(x: 1, y: 1)
 		self.gradientStops = [
-			GradientStop(isMovable: false, unit: 0, color: .black),
-			GradientStop(isMovable: false, unit: 1, color: .white),
+			GradientStop(isMovable: false, unit: 0, color: CGColor(gray: 0, alpha: 1)),
+			GradientStop(isMovable: false, unit: 1, color: CGColor(gray: 1, alpha: 1)),
 		]
 	}
 
@@ -93,13 +85,4 @@ struct StyleSelectorLinearView: View {
 			}
 		}
 	}
-
-//	func updateGradient() {
-//		let gr = DSFGradient(pins: gradientStops.map { DSFGradient.Pin($0.color, $0.unit) })!
-//		linearGradient = QRCode.FillStyle.LinearGradient(
-//			gr,
-//			startPoint: startPoint.cgPoint,
-//			endPoint: endPoint.cgPoint
-//		)
-//	}
 }

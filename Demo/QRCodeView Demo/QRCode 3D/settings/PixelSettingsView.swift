@@ -52,8 +52,6 @@ struct PixelSettingsView: View {
 	@State var randomRotation = false
 	@State var supportsRandomRotation = false
 
-	@State var fillStyle: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(gray: 0, alpha: 1)
-
 	var body: some View {
 		VStack {
 			FlowLayout {
@@ -75,7 +73,10 @@ struct PixelSettingsView: View {
 
 			Form {
 				LabeledContent("style") {
-					StyleSelectorView(fillStyle: $fillStyle)
+					StyleSelectorView(current: document.qrcode.design.style.onPixels) { newFill in
+						document.qrcode.design.style.onPixels = newFill
+						document.objectWillChange.send()
+					}
 				}
 
 				HStack {

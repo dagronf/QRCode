@@ -10,11 +10,17 @@ import QRCode
 
 struct ContentView: View {
 	@EnvironmentObject var document: QRCode_3DDocument
-
 	var body: some View {
 		#if os(macOS)
 		HSplitView {
-			QRCodePreviewView()
+			ZStack(alignment: .topTrailing) {
+				QRCodePreviewView()
+				Button {
+				} label: {
+					Text("Reset")
+				}
+				.padding(8)
+			}
 			SettingsView()
 				.frame(maxWidth: 310)
 		}

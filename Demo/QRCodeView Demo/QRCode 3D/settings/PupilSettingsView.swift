@@ -59,7 +59,15 @@ struct PupilSettingsView: View {
 			}
 			Divider()
 
-			VStack(alignment: .leading, spacing: 6) {
+			Form {
+			//VStack(alignment: .leading, spacing: 6) {
+				LabeledContent("style") {
+					StyleSelectorView(current: document.qrcode.design.style.actualPupilStyle) { newFill in
+						document.qrcode.design.style.pupil = newFill
+						document.objectWillChange.send()
+					}
+				}
+				
 				Toggle(isOn: $flipped) {
 					Text("flipped")
 				}

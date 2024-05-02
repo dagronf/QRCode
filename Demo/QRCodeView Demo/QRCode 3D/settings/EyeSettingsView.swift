@@ -69,6 +69,13 @@ struct EyeSettingsView: View {
 			Divider()
 
 			Form {
+				LabeledContent("style") {
+					StyleSelectorView(current: document.qrcode.design.style.actualEyeStyle) { newFill in
+						document.qrcode.design.style.eye = newFill
+						document.objectWillChange.send()
+					}
+				}
+
 				Slider(value: $radiusFraction, in: (0 ... 1)) {
 					Text("radius")
 				}
