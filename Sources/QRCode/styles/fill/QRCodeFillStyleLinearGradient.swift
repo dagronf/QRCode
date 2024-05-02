@@ -48,7 +48,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a linear gradient with the specified settings
-		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
 			if let sX = DoubleValue(settings["startX"]),
 				let sY = DoubleValue(settings["startY"]),
 				let eX = DoubleValue(settings["endX"]),
@@ -101,7 +101,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a copy of the style
-		public func copyStyle() -> QRCodeFillStyleGenerator {
+		public func copyStyle() -> any QRCodeFillStyleGenerator {
 			return LinearGradient(
 				self.gradient.copyGradient(),
 				startPoint: self.startPoint,

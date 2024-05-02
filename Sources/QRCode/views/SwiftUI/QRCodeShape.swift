@@ -39,7 +39,7 @@ public struct QRCodeShape: Shape {
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		self.data__ = data
 		self.errorCorrection__ = errorCorrection
@@ -65,7 +65,7 @@ public struct QRCodeShape: Shape {
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		guard let data = text.data(using: .utf8) else { return nil }
 		self.data__ = data
@@ -88,12 +88,12 @@ public struct QRCodeShape: Shape {
 	///   - logoTemplate: The logo to apply to the QR code
 	///   - generator: The generator to use when creating the Shape path
 	public init(
-		message: QRCodeMessageFormatter,
+		message: any QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		self.data__ = message.data
 		self.errorCorrection__ = errorCorrection
@@ -156,7 +156,7 @@ public extension QRCodeShape {
 	}
 
 	/// Change the 'on' pixel shape
-	func onPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeShape {
+	func onPixelShape(_ pixelShape: any QRCodePixelShapeGenerator) -> QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.onPixels = pixelShape
 		return QRCodeShape(
@@ -170,7 +170,7 @@ public extension QRCodeShape {
 	}
 
 	/// Change the 'off' pixel shape
-	func offPixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeShape {
+	func offPixelShape(_ pixelShape: any QRCodePixelShapeGenerator) -> QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.offPixels = pixelShape
 		return QRCodeShape(
@@ -184,7 +184,7 @@ public extension QRCodeShape {
 	}
 
 	/// Change the eye shape to another shape
-	func eyeShape(_ eyeShape: QRCodeEyeShapeGenerator) -> QRCodeShape {
+	func eyeShape(_ eyeShape: any QRCodeEyeShapeGenerator) -> QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.eye = eyeShape
 		return QRCodeShape(
@@ -198,7 +198,7 @@ public extension QRCodeShape {
 	}
 
 	/// Change the shape of the pupil in the shape
-	func pupilShape(_ pupilShape: QRCodePupilShapeGenerator) -> QRCodeShape {
+	func pupilShape(_ pupilShape: any QRCodePupilShapeGenerator) -> QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.pupil = pupilShape
 		return QRCodeShape(
@@ -230,13 +230,13 @@ public extension QRCodeShape {
 public extension QRCodeShape {
 	/// Deprecated. Use `pixelShape` instead.
 	@available(*, deprecated, renamed: "onPixelShape")
-	func dataShape(_ dataShape: QRCodePixelShapeGenerator) -> QRCodeShape {
+	func dataShape(_ dataShape: any QRCodePixelShapeGenerator) -> QRCodeShape {
 		self.pixelShape(dataShape)
 	}
 
 	/// Change the 'on' pixel shape
 	@available(*, deprecated, renamed: "onPixelShape")
-	@inlinable func pixelShape(_ pixelShape: QRCodePixelShapeGenerator) -> QRCodeShape {
+	@inlinable func pixelShape(_ pixelShape: any QRCodePixelShapeGenerator) -> QRCodeShape {
 		self.onPixelShape(pixelShape)
 	}
 

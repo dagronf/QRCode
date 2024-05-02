@@ -39,7 +39,7 @@ public extension QRCode.PixelShape {
 			case useRandomRotation
 		}
 
-		convenience public required init(from decoder: Decoder) throws {
+		convenience public required init(from decoder: any Decoder) throws {
 			let container = try decoder.container(keyedBy: CodingKeys.self)
 			let insetFraction = try container.decodeIfPresent(CGFloat.self, forKey: .insetFraction) ?? 0.0
 			let useRandomInset = try container.decodeIfPresent(Bool.self, forKey: .useRandomInset) ?? false
@@ -55,7 +55,7 @@ public extension QRCode.PixelShape {
 			)
 		}
 
-		public func encode(to encoder: Encoder) throws {
+		public func encode(to encoder: any Encoder) throws {
 			var container = encoder.container(keyedBy: CodingKeys.self)
 			if self.common.insetFraction > 0.0 {
 				try container.encode(self.common.insetFraction, forKey: .insetFraction)
@@ -100,7 +100,7 @@ public extension QRCode.PixelShape {
 		}
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
 			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
 			let rotationFraction = CGFloatValue(settings?[QRCode.SettingsKey.rotationFraction]) ?? 0.0
@@ -114,7 +114,7 @@ public extension QRCode.PixelShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Flower(
 				insetFraction: self.common.insetFraction,
 				useRandomInset: self.common.useRandomInset,

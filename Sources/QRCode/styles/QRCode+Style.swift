@@ -29,32 +29,32 @@ public extension QRCode {
 		@objc public static func create() -> Style { return Style() }
 
 		/// Set the foreground color for all the components of the qr code
-		@inlinable @objc public func setForegroundStyle(_ style: QRCodeFillStyleGenerator) {
+		@inlinable @objc public func setForegroundStyle(_ style: any QRCodeFillStyleGenerator) {
 			self.onPixels = style
 			self.eye = nil
 			self.pupil = nil
 		}
 
 		/// The style for the data component for the QR code. Defaults to black
-		@objc public var onPixels: QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor.commonBlack)
+		@objc public var onPixels: any QRCodeFillStyleGenerator = QRCode.FillStyle.Solid(CGColor.commonBlack)
 
 		/// The background color for the 'on' pixels
 		@objc public var onPixelsBackground: CGColor?
 
 		/// The style for drawing the non-drawn sections for the qr code.
-		@objc public var offPixels: QRCodeFillStyleGenerator?
+		@objc public var offPixels: (any QRCodeFillStyleGenerator)?
 
 		/// The background color for the 'off' pixels
 		@objc public var offPixelsBackground: CGColor?
 
 		/// The border around the eye. By default, this is the same color as the data
-		@objc public var eye: QRCodeFillStyleGenerator?
-		
+		@objc public var eye: (any QRCodeFillStyleGenerator)?
+
 		/// The pupil of the eye. By default, this is the same color as the eye, and failing that the data
-		@objc public var pupil: QRCodeFillStyleGenerator?
+		@objc public var pupil: (any QRCodeFillStyleGenerator)?
 
 		/// The background style for the QR code. If nil, no background is drawn. Defaults to white
-		@objc public var background: QRCodeFillStyleGenerator? = QRCode.FillStyle.Solid(.commonWhite)
+		@objc public var background: (any QRCodeFillStyleGenerator)? = QRCode.FillStyle.Solid(.commonWhite)
 
 		/// A corner radius (in qr pixels) to apply to the background fill
 		@objc public var backgroundFractionalCornerRadius: CGFloat = 0
@@ -83,12 +83,12 @@ public extension QRCode {
 
 public extension QRCode.Style {
 	/// Returns the eye style that will be used when drawing. Handles the case where the eye style is nil
-	@objc var actualEyeStyle: QRCodeFillStyleGenerator {
+	@objc var actualEyeStyle: any QRCodeFillStyleGenerator {
 		return self.eye ?? self.onPixels
 	}
 
 	/// Returns the pupil style that will be used when drawing. Handles the case where the pupil style is nil
-	@objc var actualPupilStyle: QRCodeFillStyleGenerator {
+	@objc var actualPupilStyle: any QRCodeFillStyleGenerator {
 		return self.pupil ?? self.eye ?? self.onPixels
 	}
 }

@@ -120,7 +120,7 @@ public extension QRCode {
 			case masksQRCodePixels
 		}
 
-		public required init(from decoder: Decoder) throws {
+		public required init(from decoder: any Decoder) throws {
 			let container = try decoder.container(keyedBy: Self.CodingKeys)
 			self.image = try container.decode(CGImageCodable.self, forKey: .image).image
 			self.maskImage = try container.decodeIfPresent(CGImageCodable.self, forKey: .maskImage)?.image
@@ -130,7 +130,7 @@ public extension QRCode {
 			self.masksQRCodePixels = try container.decodeIfPresent(Bool.self, forKey: .masksQRCodePixels) ?? true
 		}
 
-		public func encode(to encoder: Encoder) throws {
+		public func encode(to encoder: any Encoder) throws {
 			var container = encoder.container(keyedBy: Self.CodingKeys)
 			try container.encode(useImageMasking, forKey: .useImageMasking)
 			try container.encode(masksQRCodePixels, forKey: .masksQRCodePixels)

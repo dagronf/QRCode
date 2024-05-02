@@ -34,13 +34,13 @@ public extension QRCode.PupilShape {
 
 		@objc public static let DefaultCornerRadius = 0.65
 
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePupilShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Pixels(cornerRadiusFraction: radius)
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator {
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			Pixels(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
 

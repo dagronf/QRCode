@@ -59,12 +59,12 @@ import CoreGraphics
 	}
 
 	/// Return a copy of all the pupil generators
-	@objc public func all() -> [QRCodePupilShapeGenerator] {
+	@objc public func all() -> [any QRCodePupilShapeGenerator] {
 		self.registeredTypes.map { $0.Create(nil) }
 	}
 
 	/// Return a new instance of an eye shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePupilShapeGenerator? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> (any QRCodePupilShapeGenerator)? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
@@ -72,7 +72,7 @@ import CoreGraphics
 	}
 
 	/// Create an eye shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> QRCodePupilShapeGenerator? {
+	@objc public func create(settings: [String: Any]) -> (any QRCodePupilShapeGenerator)? {
 		guard let type = settings[PupilShapeTypeName_] as? String else { return nil }
 		let settings = settings[PupilShapeSettingsName_] as? [String: Any] ?? [:]
 		return self.named(type, settings: settings)
@@ -80,7 +80,7 @@ import CoreGraphics
 
 	// Private
 
-	internal var registeredTypes: [QRCodePupilShapeGenerator.Type]
+	internal var registeredTypes: [any QRCodePupilShapeGenerator.Type]
 }
 
 public extension QRCodePupilShapeFactory {
@@ -92,7 +92,7 @@ public extension QRCodePupilShapeFactory {
 	///   - backgroundColor: The background color (optional)
 	/// - Returns: A CGImage representation of the data
 	func image(
-		pupilGenerator: QRCodePupilShapeGenerator,
+		pupilGenerator: any QRCodePupilShapeGenerator,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil

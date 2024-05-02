@@ -35,11 +35,11 @@ public extension QRCode {
 		///   - eye: The eye shape
 		///   - pupil: The pupil shape
 		@objc public init(
-			onPixels: QRCodePixelShapeGenerator = QRCode.PixelShape.Square(),
-			offPixels: QRCodePixelShapeGenerator? = nil,
+			onPixels: any QRCodePixelShapeGenerator = QRCode.PixelShape.Square(),
+			offPixels: (any QRCodePixelShapeGenerator)? = nil,
 			negatedOnPixelsOnly: Bool = false,
-			eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square(),
-			pupil: QRCodePupilShapeGenerator? = nil
+			eye: any QRCodeEyeShapeGenerator = QRCode.EyeShape.Square(),
+			pupil: (any QRCodePupilShapeGenerator)? = nil
 		) {
 			self.onPixels = onPixels
 			self.offPixels = offPixels
@@ -52,10 +52,10 @@ public extension QRCode {
 		@objc public static func create() -> Shape { return Shape() }
 
 		/// The shape of the 'on' pixels. Defaults to simple square 'pixels'
-		@objc public var onPixels: QRCodePixelShapeGenerator = QRCode.PixelShape.Square()
+		@objc public var onPixels: any QRCodePixelShapeGenerator = QRCode.PixelShape.Square()
 
 		/// The shape for drawing the non-drawn sections of the qr code.
-		@objc public var offPixels: QRCodePixelShapeGenerator?
+		@objc public var offPixels: (any QRCodePixelShapeGenerator)?
 
 		/// If set, the QR code draws the cells that AREN'T set within the QR code using the
 		/// `onPixel` generator and style. All other styles (offPixels, eye, pupil) are ignored.
@@ -66,7 +66,7 @@ public extension QRCode {
 		/// The style of eyes to display
 		///
 		/// Defaults to a simple square eye
-		@objc public var eye: QRCodeEyeShapeGenerator = QRCode.EyeShape.Square() {
+		@objc public var eye: any QRCodeEyeShapeGenerator = QRCode.EyeShape.Square() {
 			didSet {
 				// Reset the pupil shape to match the eye shape
 				pupil = nil
@@ -74,7 +74,7 @@ public extension QRCode {
 		}
 
 		/// The shape of the pupil. If nil, uses the default pupil shape as defined by the eye
-		@objc public var pupil: QRCodePupilShapeGenerator? = nil
+		@objc public var pupil: (any QRCodePupilShapeGenerator)? = nil
 
 		/// Make a copy of the content shape
 		@objc public func copyShape() -> Shape {
@@ -93,7 +93,7 @@ public extension QRCode.Shape {
 	/// Returns the actual shape that will be used when drawing.
 	///
 	/// If the pupil shape is `nil`, falls back to the eye shape
-	@objc var actualPupilShape: QRCodePupilShapeGenerator {
+	@objc var actualPupilShape: any QRCodePupilShapeGenerator {
 		self.pupil ?? self.eye.defaultPupil()
 	}
 }

@@ -40,13 +40,13 @@ extension CGPathCodable {
 }
 
 extension CGPathCodable: Codable {
-	init(from decoder: Decoder) throws {
+	init(from decoder: any Decoder) throws {
 		let container = try decoder.singleValueContainer()
 		let pathData = try container.decode(Data.self)
 		self.path = try Self.decode(pathData)
 	}
 
-	func encode(to encoder: Encoder) throws {
+	func encode(to encoder: any Encoder) throws {
 		var container = encoder.singleValueContainer()
 		let s = try Self.encode(self.path)
 		try container.encode(s)

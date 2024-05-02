@@ -28,7 +28,7 @@ public extension QRCode.EyeShape {
 		@objc public static let Name = "barsHorizontal"
 		@objc public static var Title: String { "Horizontal bars" }
 
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.BarsHorizontal()
 		}
 
@@ -38,7 +38,7 @@ public extension QRCode.EyeShape {
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return Self.Create(self.settings())
 		}
 
@@ -83,7 +83,7 @@ public extension QRCode.EyeShape {
 		}
 
 		private static let _defaultPupil = QRCode.PupilShape.BarsHorizontal()
-		public func defaultPupil() -> QRCodePupilShapeGenerator {
+		public func defaultPupil() -> any QRCodePupilShapeGenerator {
 			Self._defaultPupil
 		}
 	}

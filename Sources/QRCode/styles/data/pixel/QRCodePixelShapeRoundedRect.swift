@@ -61,7 +61,7 @@ public extension QRCode.PixelShape {
 		}
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction]) ?? Self.DefaultInset
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
@@ -77,7 +77,7 @@ public extension QRCode.PixelShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return RoundedRect(
 				cornerRadiusFraction: self.common.cornerRadiusFraction,
 				insetFraction: self.common.insetFraction,

@@ -52,7 +52,7 @@ internal class QRCodeGenerator_None: QRCodeEngine {
 
 extension QRCode {
 	/// Create a default engine for the platform
-	@objc(DefaultEngine) static public func DefaultEngine() -> QRCodeEngine {
+	@objc(DefaultEngine) static public func DefaultEngine() -> any QRCodeEngine {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
 		return QRCodeGenerator_External()

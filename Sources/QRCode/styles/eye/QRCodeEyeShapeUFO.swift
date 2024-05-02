@@ -27,7 +27,7 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeUFO) class UFO: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "ufo"
 		@objc public static var Title: String { "UFO" }
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			if let settings = settings {
 				return QRCode.EyeShape.UFO(settings: settings)
 			}
@@ -63,7 +63,7 @@ public extension QRCode.EyeShape {
 		@objc public var isFlipped = false
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.UFO(isFlipped: self.isFlipped)
 		}
 		
@@ -116,7 +116,7 @@ public extension QRCode.EyeShape {
 			return safeZonePath
 		}
 		
-		public func defaultPupil() -> QRCodePupilShapeGenerator {
+		public func defaultPupil() -> any QRCodePupilShapeGenerator {
 			QRCode.PupilShape.UFO(isFlipped: self.isFlipped)
 		}
 	}

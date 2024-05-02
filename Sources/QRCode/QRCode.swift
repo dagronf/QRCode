@@ -32,7 +32,7 @@ import Foundation
 /// Note that while this can be used on any thread, it is not in itself thread-safe.
 @objc public final class QRCode: NSObject, @unchecked Sendable {
 	/// The generator to use when generating the QR code.
-	@objc public var generator: QRCodeEngine = QRCode.DefaultEngine()
+	@objc public var generator: any QRCodeEngine = QRCode.DefaultEngine()
 
 	/// Create a blank QRCode
 	@objc override public init() {
@@ -40,7 +40,7 @@ import Foundation
 	}
 
 	/// Create a blank QRCode with a custom QR code generation engine
-	@objc public init(generator: QRCodeEngine) {
+	@objc public init(generator: any QRCodeEngine) {
 		self.generator = generator
 		super.init()
 		self.update(data: Data(), errorCorrection: .default)
@@ -54,7 +54,7 @@ import Foundation
 	@objc public init(
 		_ data: Data,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		if let generator = generator { self.generator = generator }
 		super.init()
@@ -65,7 +65,7 @@ import Foundation
 	@objc public init(
 		utf8String: String,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		if let generator = generator { self.generator = generator }
 		super.init()
@@ -74,9 +74,9 @@ import Foundation
 
 	/// Create a QRCode with the given message and error correction
 	@objc public init(
-		message: QRCodeMessageFormatter,
+		message: any QRCodeMessageFormatter,
 		errorCorrection: ErrorCorrection = .default,
-		generator: QRCodeEngine? = nil
+		generator: (any QRCodeEngine)? = nil
 	) {
 		if let generator = generator { self.generator = generator }
 		super.init()
@@ -146,7 +146,7 @@ public extension QRCode {
 	}
 
 	/// Build the QR Code using the given message formatter and error correction
-	@objc func update(message: QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
+	@objc func update(message: any QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
 		self.update(data: message.data, errorCorrection: errorCorrection)
 	}
 

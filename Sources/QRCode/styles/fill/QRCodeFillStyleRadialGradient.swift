@@ -45,7 +45,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a radial gradient with the specified settings
-		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
 			if let cX = DoubleValue(settings["centerX"]),
 				let cY = DoubleValue(settings["centerY"]),
 				let gs = settings["gradient"] as? String,
@@ -92,7 +92,7 @@ public extension QRCode.FillStyle {
 				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
 		}
 
-		public func copyStyle() -> QRCodeFillStyleGenerator {
+		public func copyStyle() -> any QRCodeFillStyleGenerator {
 			return RadialGradient(
 				self.gradient.copyGradient(),
 				centerPoint: self.centerPoint

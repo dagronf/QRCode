@@ -51,9 +51,9 @@ public extension QRCode {
 	/// Get the fill style generator name
 	@objc static var Name: String { get }
 	/// Create a fill style generator using the specified settings
-	static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator?
+	static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)?
 	/// Make a copy of the style
-	@objc func copyStyle() -> QRCodeFillStyleGenerator
+	@objc func copyStyle() -> any QRCodeFillStyleGenerator
 	/// Returns the current settings for the style generator
 	@objc func settings() -> [String: Any]
 	/// Fill the specified rect with the current style settings
@@ -104,7 +104,7 @@ extension QRCodeFillStyleGenerator {
 // MARK: Fill factory
 
 public class QRCodeFillStyleFactory {
-	public static var registeredTypes: [QRCodeFillStyleGenerator.Type] = [
+	public static var registeredTypes: [any QRCodeFillStyleGenerator.Type] = [
 		QRCode.FillStyle.Solid.self,
 		QRCode.FillStyle.LinearGradient.self,
 		QRCode.FillStyle.RadialGradient.self,
@@ -115,7 +115,7 @@ public class QRCodeFillStyleFactory {
 		QRCodeFillStyleFactory.registeredTypes.map { $0.Name }
 	}
 
-	@objc public func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+	@objc public func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
 		guard let type = settings[FillStyleTypeName] as? String else { return nil }
 
 		let sets = settings[FillStyleSettingsName] as? [String: Any] ?? [:]

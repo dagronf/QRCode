@@ -30,9 +30,9 @@ extension QRCode.PupilShape {
 		/// Generator title
 		@objc public static var Title: String { "Seal" }
 		/// Create a seal pupil shape, using the specified settings
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator { Seal() }
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { Seal() }
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { Seal() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { Seal() }
 
 		@objc public func settings() -> [String: Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }

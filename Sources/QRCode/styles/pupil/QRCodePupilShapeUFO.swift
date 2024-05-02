@@ -30,7 +30,7 @@ public extension QRCode.PupilShape {
 		@objc public static var Name: String { "ufo" }
 		/// The generator title
 		@objc public static var Title: String { "UFO" }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
 			if let settings = settings {
 				return UFO(settings: settings)
 			}
@@ -51,7 +51,7 @@ public extension QRCode.PupilShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator {
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			UFO(isFlipped: self.isFlipped)
 		}
 

@@ -55,7 +55,7 @@ extension QRCode {
 			case text
 		}
 
-		public required init(from decoder: Decoder) throws {
+		public required init(from decoder: any Decoder) throws {
 			let container = try decoder.container(keyedBy: Self.CodingKeys)
 			if let data = try container.decodeIfPresent(Data.self, forKey: .data) {
 				self._data = data
@@ -68,7 +68,7 @@ extension QRCode {
 			}
 		}
 
-		public func encode(to encoder: Encoder) throws {
+		public func encode(to encoder: any Encoder) throws {
 			var container = encoder.container(keyedBy: Self.CodingKeys)
 			if let text = self.utf8 {
 				try container.encode(text, forKey: .text)

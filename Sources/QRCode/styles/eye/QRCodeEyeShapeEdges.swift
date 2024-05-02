@@ -30,7 +30,7 @@ public extension QRCode.EyeShape {
 
 		@objc public static let DefaultCornerRadius = 1.0
 
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return Edges(cornerRadiusFraction: radius)
 		}
@@ -57,7 +57,7 @@ public extension QRCode.EyeShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return Self.Create(self.settings())
 		}
 
@@ -76,6 +76,6 @@ public extension QRCode.EyeShape {
 		}
 
 		private static let _defaultPupil = QRCode.PupilShape.Edges()
-		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}
 }

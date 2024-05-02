@@ -135,7 +135,7 @@ public extension QRCode.Design {
 	/// - Parameter fillStyle: The fill style generator
 	/// - Returns: This design object
 	@discardableResult
-	@objc func foregroundStyle(_ fillStyle: QRCodeFillStyleGenerator) -> QRCode.Design {
+	@objc func foregroundStyle(_ fillStyle: any QRCodeFillStyleGenerator) -> QRCode.Design {
 		self.style.setForegroundStyle(fillStyle)
 		return self
 	}

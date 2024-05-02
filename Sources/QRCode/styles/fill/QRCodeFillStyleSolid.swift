@@ -38,7 +38,7 @@ public extension QRCode.FillStyle {
 		/// Create a Solid fill style using the provided settings dictionary
 		/// - Parameter settings: The settings dictionary
 		/// - Returns: A solid fill style object
-		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
 			if let c = settings["color"] as? String,
 				let g = CGColor.UnarchiveSRGBA(c) {
 				return QRCode.FillStyle.Solid(g)
@@ -67,7 +67,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Returns a new copy of the fill style
-		public func copyStyle() -> QRCodeFillStyleGenerator {
+		public func copyStyle() -> any QRCodeFillStyleGenerator {
 			return Solid(self.color.copy()!)
 		}
 

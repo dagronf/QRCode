@@ -39,10 +39,10 @@ public extension QRCode.PupilShape {
 		@objc public static var Name: String { "usePixelShape" }
 		/// The generator title
 		@objc public static var Title: String { "Pixel Shape" }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator { UsePixelShape() }
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { UsePixelShape() }
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { UsePixelShape() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { UsePixelShape() }
 
 		@objc public func settings() -> [String : Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
@@ -55,7 +55,7 @@ public extension QRCode.PupilShape {
 		}
 
 		/// The pixel shape generator assigned to the qr code.
-		internal weak var pixelShape: QRCodePixelShapeGenerator?
+		internal weak var pixelShape: (any QRCodePixelShapeGenerator)?
 	}
 }
 

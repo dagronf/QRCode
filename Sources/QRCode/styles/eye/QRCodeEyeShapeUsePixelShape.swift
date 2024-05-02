@@ -38,7 +38,7 @@ public extension QRCode.EyeShape {
 	/// An eye shape that uses the qrcode's onPixel shape to generate the eye pattern
 	@objc(QRCodeEyeShapeUsePixelShape) class UsePixelShape: NSObject, QRCodeEyeShapeGenerator {
 
-		public func copyShape() -> QRCodeEyeShapeGenerator {
+		public func copyShape() -> any QRCodeEyeShapeGenerator {
 			QRCode.EyeShape.UsePixelShape()
 		}
 
@@ -51,7 +51,7 @@ public extension QRCode.EyeShape {
 			CGPath(rect: CGRect(origin: .zero, size: CGSize(width: 90, height: 90)), transform: nil)
 		}
 
-		public func defaultPupil() -> QRCodePupilShapeGenerator {
+		public func defaultPupil() -> any QRCodePupilShapeGenerator {
 			QRCode.PupilShape.UsePixelShape()
 		}
 
@@ -61,12 +61,12 @@ public extension QRCode.EyeShape {
 
 		@objc public static let Name = "usePixelShape"
 		@objc public static var Title: String { "Pixel Shape" }
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.UsePixelShape()
 		}
 
 		/// The pixel shape generator assigned to the qr code.
-		weak var pixelShape: QRCodePixelShapeGenerator?
+		weak var pixelShape: (any QRCodePixelShapeGenerator)?
 	}
 }
 

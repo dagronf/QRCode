@@ -35,14 +35,14 @@ public extension QRCode.PixelShape {
 		@objc public static let DefaultCornerRadius: CGFloat = 1
 
 		/// Create an instance of this path generator with the specified settings
-		@objc static public func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc static public func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction]) ?? Self.DefaultInset
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
 			return QRCode.PixelShape.Horizontal(insetFraction: insetFraction, cornerRadiusFraction: radius)
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Horizontal(
 				insetFraction: self.insetFraction,
 				cornerRadiusFraction: self.cornerRadiusFraction

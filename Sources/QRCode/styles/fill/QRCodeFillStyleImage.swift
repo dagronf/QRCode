@@ -36,7 +36,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create the fill style from the specified settings
-		@objc public static func Create(settings: [String: Any]) -> QRCodeFillStyleGenerator? {
+		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
 			if let c = settings["imagePNGbase64"] as? String,
 				let d = Data(base64Encoded: c),
 				let i = DSFImage(data: d)
@@ -58,7 +58,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Returns a new copy of the fill style
-		public func copyStyle() -> QRCodeFillStyleGenerator {
+		public func copyStyle() -> any QRCodeFillStyleGenerator {
 			return Image(self.image?.copy())
 		}
 

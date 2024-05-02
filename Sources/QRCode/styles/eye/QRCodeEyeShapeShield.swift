@@ -48,7 +48,7 @@ public extension QRCode.EyeShape {
 		}
 
 		/// Create a shield eye shape using the provided settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			if let value = IntValue(settings?[QRCode.SettingsKey.corners]) {
 				return Shield(corners: QRCode.Corners(rawValue: value))
 			}
@@ -68,7 +68,7 @@ public extension QRCode.EyeShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			Self.Create(self.settings())
 		}
 
@@ -97,7 +97,7 @@ public extension QRCode.EyeShape {
 		}
 
 		/// Returns the default pixel shape for this eye (inherits corners)
-		public func defaultPupil() -> QRCodePupilShapeGenerator {
+		public func defaultPupil() -> any QRCodePupilShapeGenerator {
 			QRCode.PupilShape.Shield(corners: self.corners)
 		}
 	}

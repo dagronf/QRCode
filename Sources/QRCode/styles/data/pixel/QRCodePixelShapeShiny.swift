@@ -31,12 +31,12 @@ public extension QRCode.PixelShape {
 		@objc public static var Title: String { "Shiny" }
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			return Shiny()
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Shiny()
 		}
 

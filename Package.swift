@@ -53,6 +53,10 @@ let package = Package(
 			resources: [
 				.copy("PrivacyInfo.xcprivacy"),
 			]
+//			,
+//			swiftSettings: [
+//				.enableUpcomingFeature("ExistentialAny")
+//			]
 		),
 
 		// The QR code detector library

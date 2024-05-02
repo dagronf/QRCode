@@ -38,7 +38,7 @@ public struct QRCodeDocumentUIView: DSFViewRepresentable {
 	// The document to display
 	@ObservedObject private var document: QRCode.Document
 
-	public init(document: QRCode.Document, generator: QRCodeEngine? = nil) {
+	public init(document: QRCode.Document, generator: (any QRCodeEngine)? = nil) {
 		self.document = document
 	}
 

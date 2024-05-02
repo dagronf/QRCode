@@ -30,12 +30,12 @@ public extension QRCode.PupilShape {
 		@objc public static var Name: String { "roundedRect" }
 		/// The generator title
 		@objc public static var Title: String { "Rounded rectangle" }
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
 			RoundedRect()
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator { RoundedRect() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { RoundedRect() }
 
 		@objc public func settings() -> [String : Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }

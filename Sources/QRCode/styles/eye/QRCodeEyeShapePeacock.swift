@@ -27,7 +27,7 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapePeacock) class Peacock: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "peacock"
 		@objc public static var Title: String { "Peacock" }
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.Peacock()
 		}
 		
@@ -36,7 +36,7 @@ public extension QRCode.EyeShape {
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodeEyeShapeGenerator {
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return Self.Create(self.settings())
 		}
 		
@@ -81,6 +81,6 @@ public extension QRCode.EyeShape {
 		}
 		
 		private static let _defaultPupil = QRCode.PupilShape.Circle()
-		public func defaultPupil() -> QRCodePupilShapeGenerator { Self._defaultPupil }
+		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}
 }

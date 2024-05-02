@@ -33,12 +33,12 @@ public struct QRCodeViewUI: View {
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		foregroundColor: CGColor = CGColor(gray: 0, alpha: 1),
 		backgroundColor: CGColor = CGColor(gray: 1, alpha: 1),
-		pixelStyle: QRCodePixelShapeGenerator? = nil,
-		eyeStyle: QRCodeEyeShapeGenerator? = nil,
-		pupilStyle: QRCodePupilShapeGenerator? = nil,
+		pixelStyle: (any QRCodePixelShapeGenerator)? = nil,
+		eyeStyle: (any QRCodeEyeShapeGenerator)? = nil,
+		pupilStyle: (any QRCodePupilShapeGenerator)? = nil,
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		negatedOnPixelsOnly: Bool? = nil,
-		generator: QRCodeEngine? = nil,
+		generator: (any QRCodeEngine)? = nil,
 		additionalQuietZonePixels: UInt = 0,
 		backgroundFractionalCornerRadius: CGFloat = 0
 	) {

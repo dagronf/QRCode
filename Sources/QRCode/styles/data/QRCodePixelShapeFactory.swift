@@ -53,12 +53,12 @@ import Foundation
 		self.registeredTypes.map { $0.Name }.sorted()
 	}
 
-	@objc public func all() -> [QRCodePixelShapeGenerator] {
+	@objc public func all() -> [any QRCodePixelShapeGenerator] {
 		self.registeredTypes.map { $0.Create(nil) }
 	}
 
 	/// Return a new instance of the data shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> QRCodePixelShapeGenerator? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> (any QRCodePixelShapeGenerator)? {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
 			return nil
 		}
@@ -66,7 +66,7 @@ import Foundation
 	}
 
 	/// Create a data shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> QRCodePixelShapeGenerator? {
+	@objc public func create(settings: [String: Any]) -> (any QRCodePixelShapeGenerator)? {
 		guard let type = settings[PixelShapeTypeName_] as? String else { return nil }
 		let settings = settings[PixelShapeSettingsName_] as? [String: Any]
 		return self.named(type, settings: settings)
@@ -74,7 +74,7 @@ import Foundation
 
 	// Private
 
-	internal var registeredTypes: [QRCodePixelShapeGenerator.Type]
+	internal var registeredTypes: [any QRCodePixelShapeGenerator.Type]
 
 	/// The default matrix to use when generating pixel sample images
 	private static let defaultMatrix = BoolMatrix(dimension: 7, rawFlattenedInt: [
@@ -99,7 +99,7 @@ public extension QRCodePixelShapeFactory {
 	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
 	/// - Returns: A CGImage representation of the data
 	@objc func image(
-		pixelGenerator: QRCodePixelShapeGenerator,
+		pixelGenerator: any QRCodePixelShapeGenerator,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil,

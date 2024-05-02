@@ -56,7 +56,7 @@ public extension QRCode.PupilShape {
 		}
 
 		/// Create a shield pupil shape using the provided settings
-		@objc public static func Create(_ settings: [String : Any]?) -> QRCodePupilShapeGenerator {
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
 			if let value = IntValue(settings?[QRCode.SettingsKey.corners]) {
 				return Shield(corners: QRCode.Corners(rawValue: value))
 			}
@@ -64,7 +64,7 @@ public extension QRCode.PupilShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePupilShapeGenerator {
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			Self.Create(self.settings())
 		}
 

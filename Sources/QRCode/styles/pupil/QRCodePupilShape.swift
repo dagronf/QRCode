@@ -38,8 +38,10 @@ internal let PupilShapeSettingsName_ = "settings"
 	/// The user-facing title for the generator
 	@objc static var Title: String { get }
 	/// Create a pupil shape generator using the provided settings
-	@objc static func Create(_ settings: [String: Any]?) -> QRCodePupilShapeGenerator
-	@objc func copyShape() -> QRCodePupilShapeGenerator
+	@objc static func Create(_ settings: [String: Any]?) -> any QRCodePupilShapeGenerator
+	/// Make a copy of this shape
+	@objc func copyShape() -> any QRCodePupilShapeGenerator
+	/// Return a path representing the pupil
 	@objc func pupilPath() -> CGPath
 
 	@objc func settings() -> [String: Any]

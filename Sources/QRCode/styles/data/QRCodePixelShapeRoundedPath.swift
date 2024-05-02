@@ -34,7 +34,7 @@ public extension QRCode.PixelShape {
 		@objc public static let DefaultHasInnerCorners = true
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadiusValue
 			let hasInnerCorners = BoolValue(settings?[QRCode.SettingsKey.hasInnerCorners]) ?? Self.DefaultHasInnerCorners
 			return RoundedPath(cornerRadiusFraction: radius, hasInnerCorners: hasInnerCorners)
@@ -82,7 +82,7 @@ public extension QRCode.PixelShape {
 		}
 
 		/// Make a copy of the shape
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			RoundedPath(
 				cornerRadiusFraction: self.cornerRadiusFraction,
 				hasInnerCorners: self.hasInnerCorners

@@ -30,7 +30,7 @@ public extension QRCode.PixelShape {
 		@objc public static var Title: String { "Pointy" }
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator {
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			QRCode.PixelShape.Pointy()
 		}
 
@@ -88,9 +88,7 @@ public extension QRCode.PixelShape {
 		}()
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> QRCodePixelShapeGenerator {
-			return Pointy()
-		}
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Pointy() }
 	}
 }
 

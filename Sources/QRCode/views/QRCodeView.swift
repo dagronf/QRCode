@@ -122,7 +122,7 @@ import UIKit
 	}
 
 	/// Set the content of the displayed QR code using the provided message formatter
-	@objc @inlinable func setMessage(_ msgType: QRCodeMessageFormatter) {
+	@objc @inlinable func setMessage(_ msgType: any QRCodeMessageFormatter) {
 		self.data = msgType.data
 	}
 

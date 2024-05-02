@@ -40,11 +40,11 @@ public extension QRCode {
 	@objc static var Name: String { get }
 	/// The user-facing title for the eye shape generator
 	@objc static var Title: String { get }
-	@objc static func Create(_ settings: [String: Any]?) -> QRCodeEyeShapeGenerator
-	@objc func copyShape() -> QRCodeEyeShapeGenerator
+	@objc static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator
+	@objc func copyShape() -> any QRCodeEyeShapeGenerator
 	@objc func eyePath() -> CGPath
 	@objc func eyeBackgroundPath() -> CGPath
-	@objc func defaultPupil() -> QRCodePupilShapeGenerator
+	@objc func defaultPupil() -> any QRCodePupilShapeGenerator
 
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String: Any]

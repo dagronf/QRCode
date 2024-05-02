@@ -42,10 +42,10 @@ public extension QRCode {
 	@objc static var Title: String { get }
 
 	/// Create a pixel shape generator using the provided settings
-	@objc static func Create(_ settings: [String: Any]?) -> QRCodePixelShapeGenerator
+	@objc static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator
 
 	/// Make a copy of the shape object
-	@objc func copyShape() -> QRCodePixelShapeGenerator
+	@objc func copyShape() -> any QRCodePixelShapeGenerator
 
 	/// Generate a path representing the 'on' pixels within the specified matrix
 	/// - Parameters:
