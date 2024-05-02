@@ -24,6 +24,10 @@ import Foundation
 /// A qr code generator that uses QRCodeGenerator (https://github.com/dagronf/swift-qrcode-generator) as its generator.
 /// This is primarily used for WatchOS, which doesn't support CoreImage filters.
 @objc public class QRCodeGenerator_External: NSObject, QRCodeEngine {
+
+	/// The generator name
+	@objc public var name: String { "external" }
+
 	/// Create an engine
 	@objc public override init() {
 		super.init()

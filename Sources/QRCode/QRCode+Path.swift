@@ -75,6 +75,30 @@ public extension QRCode {
 
 	/// Generate a path containing the QR Code components
 	/// - Parameters:
+	///   - dimension: The dimension of the generated path
+	///   - components: The components of the QR code to include in the path
+	///   - shape: The shape definitions for genering the path components
+	///   - logoTemplate: The definition for the logo
+	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
+	/// - Returns: A path containing the components
+	@objc func path(
+		dimension: CGFloat,
+		components: Components = .all,
+		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: LogoTemplate? = nil,
+		additionalQuietSpace: CGFloat = 0
+	) -> CGPath {
+		self.path(
+			.init(dimension: dimension),
+			components: components,
+			shape: shape,
+			logoTemplate: logoTemplate,
+			additionalQuietSpace: additionalQuietSpace
+		)
+	}
+
+	/// Generate a path containing the QR Code components
+	/// - Parameters:
 	///   - size: The dimensions of the generated path
 	///   - components: The components of the QR code to include in the path
 	///   - shape: The shape definitions for genering the path components

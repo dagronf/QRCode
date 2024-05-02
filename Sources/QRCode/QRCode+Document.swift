@@ -139,8 +139,6 @@ public extension QRCode {
 			generator: QRCodeEngine? = nil
 		) {
 			self.content = Content(message.data)
-//			self.rawData = message.data
-//			self.text = nil
 			self.errorCorrection = errorCorrection
 			self.qrcode = QRCode(
 				message.data,
@@ -155,6 +153,79 @@ public extension QRCode {
 
 		/// The content to display
 		internal let content: Content
+	}
+}
+
+// MARK: - Swift-only convenience initializers
+
+public extension QRCode.Document {
+	/// Create a QRCode document
+	/// - Parameters:
+	///   - text: The text to encode
+	///   - encoding: The text encoding to use (eg. .utf8)
+	///   - errorCorrection: The error correction level
+	///   - generator: The generator to use when creating the QR code
+	@inlinable convenience init(
+		_ data: Data,
+		errorCorrection: QRCode.ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil
+	) {
+		self.init(data: data, errorCorrection: errorCorrection, generator: generator)
+	}
+
+	/// Create a QRCode document
+	/// - Parameters:
+	///   - text: The text to encode
+	///   - encoding: The text encoding to use (eg. .utf8)
+	///   - errorCorrection: The error correction level
+	///   - generator: The generator to use when creating the QR code
+	@inlinable convenience init?(
+		_ text: String,
+		encoding: String.Encoding = .utf8,
+		errorCorrection: QRCode.ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil
+	) {
+		if let data = text.data(using: encoding) {
+			self.init(data: data, errorCorrection: errorCorrection, generator: generator)
+		}
+		else {
+			return nil
+		}
+	}
+
+	/// Create a QRCode document containing a url
+	/// - Parameters:
+	///   - url: The url to encode
+	///   - encoding: The text encoding to use for the URL
+	///   - errorCorrection: The error correction level
+	///   - generator: The generator to use when creating the QR code
+	/// - Returns: nil if the url could not be encoded in utf8
+	@inlinable convenience init?(
+		_ url: URL,
+		encoding: String.Encoding = .utf8,
+		errorCorrection: QRCode.ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil
+	) {
+		if let data = url.absoluteString.data(using: .utf8) {
+			self.init(data: data, errorCorrection: errorCorrection, generator: generator)
+		}
+		else {
+			return nil
+		}
+	}
+
+	/// Create a QRCode document containing a url
+	/// - Parameters:
+	///   - message: The formatted message to encode
+	///   - errorCorrection: The error correction level
+	///   - generator: The generator to use when creating the QR code
+	/// - Returns: nil if the url could not be encoded in utf8
+	@inlinable convenience init?(
+		_ message: QRCodeMessageFormatter,
+		errorCorrection: QRCode.ErrorCorrection = .default,
+		generator: QRCodeEngine? = nil
+	) {
+		self.init(message: message, errorCorrection: errorCorrection, generator: generator)
 	}
 }
 

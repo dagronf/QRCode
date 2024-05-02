@@ -17,6 +17,50 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(35, boomat.dimension)
 	}
 
+	func testGenerateBasicQRCode() throws {
+
+		#if os(watchOS)
+		let engines: [QRCodeEngine] = [QRCodeGenerator_External()]
+		#else
+		let engines: [QRCodeEngine] = [QRCodeGenerator_CoreImage(), QRCodeGenerator_External()]
+		#endif
+		try engines.forEach { generator in
+
+			let qrcode = QRCode(utf8String: "This is a test", generator: generator)
+
+			// Generate png
+			do {
+				let image = try XCTUnwrap(qrcode.cgImage(dimension: 300))
+				let data = try image.representation.png()
+				let _ = try outputFolder.write(data, to: "basic-generation-\(generator.name).png")
+			}
+
+			// Generate pdf
+			do {
+				let pdfData = try XCTUnwrap(qrcode.pdfData(dimension: 300))
+				let _ = try outputFolder.write(pdfData, to: "basic-generation-\(generator.name).pdf")
+			}
+
+			// Generate svg
+			do {
+				let svgData = try XCTUnwrap(qrcode.svgData(dimension: 300))
+				let _ = try outputFolder.write(svgData, to: "basic-generation-\(generator.name).svg")
+			}
+
+			// Generate path
+			do {
+				let path = qrcode.path(dimension: 300)
+				let image = CGImage.Create(dimension: 300, flipped: true) { ctx in
+					ctx.addPath(path)
+					ctx.setFillColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+					ctx.fillPath()
+				}!
+				let data = try image.representation.png()
+				let _ = try outputFolder.write(data, to: "basic-generation-path-\(generator.name).png")
+			}
+		}
+	}
+
 	func testAsciiGenerationWorks() throws {
 		let doc = QRCode.Document(generator: __testGenerator)
 		doc.errorCorrection = .low
@@ -454,4 +498,90 @@ final class QRCodeTests: XCTestCase {
 		}
 	}
 	#endif
+
+	func testBuilder() throws {
+		let doc = QRCode.build
+			.text("Testing the qrcode builder")
+			.errorCorrection(.high)
+			.quietZonePixelCount(4)
+			.foreground(CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+
+		try outputFolder.write(
+			try doc.imageData(dimension: 300, representation: .png(scale: 2)),
+			to: "builder-test1.png"
+		)
+
+		do {
+			let doc = QRCode.build
+				.text("Testing the qrcode builder")
+				.foreground(CGColor(srgbRed: 1, green: 1, blue: 0, alpha: 1))
+				.background(CGColor(srgbRed: 0.3, green: 0, blue: 0.3, alpha: 1))
+			try outputFolder.write(
+				try doc.imageData(dimension: 1000, representation: .png(scale: 2)),
+				to: "builder-basic-foreground-background.png"
+			)
+		}
+
+		do {
+			let image = try resourceImage(for: "wwf", extension: "jpeg")
+			let im2 = try QRCode.build
+				.text("Fish and chips")
+				.background(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
+				.logo(image, position: .circleCenter(inset: 5))
+				.image(dimension: 500)
+		
+			try outputFolder.write(
+				try im2.imageData(for: .png()),
+				to: "logo-basic-circle-center.png"
+			)
+		}
+
+		do {
+			let image = try resourceImage(for: "wwf", extension: "jpeg")
+			let im2 = try QRCode.build
+				.text("World Wildlife Foundation")
+				.background.style(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
+				.logo(image, position: .squareBottomRight(inset: 0))
+				.image(dimension: 500)
+
+			try outputFolder.write(
+				try im2.imageData(for: .png()),
+				to: "logo-basic-square-bottom-right.png"
+			)
+		}
+
+		do {
+			let image = try resourceImage(for: "logo-scan", extension: "png")
+			let im2 = try QRCode.build
+				.text("https://www.worldwildlife.org/about")
+				.background(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
+				.background.cornerRadius(2)
+				.onPixels.shape(QRCode.PixelShape.CurvePixel())
+				.offPixels.shape(QRCode.PixelShape.Flower())
+				.offPixels.style(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 0.3))
+				.logo(
+					image: image,
+					unitRect: CGRect(x: 0.3, y: 0.72, width: 0.45, height: 0.22),
+					inset: 10
+				)
+				.image(dimension: 500)
+
+			try outputFolder.write(
+				try im2.imageData(for: .png()),
+				to: "logo-basic-rect-positioning.png"
+			)
+		}
+
+		do {
+			let doc = QRCode.build
+				.text("https://www.worldwildlife.org/about")
+				.document
+
+			let ii = try XCTUnwrap(doc.cgImage(dimension: 758))
+			try outputFolder.write(
+				try ii.imageData(for: .png()),
+				to: "plain.png"
+			)
+		}
+	}
 }

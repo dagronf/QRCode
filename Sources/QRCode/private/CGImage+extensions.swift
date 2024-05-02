@@ -111,6 +111,11 @@ extension CGImage {
 
 extension CGImage {
 	/// Create a CGImage and draw onto it
+	static func Create(dimension: Int, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) -> CGImage? {
+		Self.Create(size: .init(dimension: dimension), flipped: flipped, drawBlock)
+	}
+
+	/// Create a CGImage and draw onto it
 	static func Create(size: CGSize, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) -> CGImage? {
 		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 		guard

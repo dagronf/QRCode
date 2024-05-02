@@ -8,6 +8,17 @@
 import SwiftUI
 import QRCode
 
+class ObservedFillStyle: ObservableObject, Equatable {
+	static func == (lhs: ObservedFillStyle, rhs: ObservedFillStyle) -> Bool {
+		lhs.style === rhs.style
+	}
+
+	@Published var style: QRCodeFillStyleGenerator?
+	init(style: QRCodeFillStyleGenerator) {
+		self.style = style
+	}
+}
+
 struct CommonSettingsView: View {
 	@EnvironmentObject var document: QRCode_3DDocument
 	
@@ -16,7 +27,8 @@ struct CommonSettingsView: View {
 	@State var cornerRadius: Double = 0
 	@State var negate: Bool = false
 	@State var correction: QRCode.ErrorCorrection = .quantize
-	
+	@State var fillStyle = ObservedFillStyle(style: QRCode.FillStyle.Solid(gray: 0))
+
 	var body: some View {
 		Form {
 			TextField("text", text: $text)
@@ -32,6 +44,9 @@ struct CommonSettingsView: View {
 			Slider(value: $cornerRadius, in: 0 ... 1) {
 				Text("corner radius")
 			}
+			LabeledContent("style") {
+				StyleSelectorView(fillStyle: $fillStyle.style, supportsNoFill: true)
+			}
 			Toggle(isOn: $negate, label: {
 				Text("negate")
 			})
@@ -42,6 +57,7 @@ struct CommonSettingsView: View {
 			correction = document.qrcode.errorCorrection
 			negate = document.qrcode.design.shape.negatedOnPixelsOnly
 			cornerRadius = document.qrcode.design.style.backgroundFractionalCornerRadius
+			fillStyle.style = document.qrcode.design.style.background
 		}
 		.onChange(of: text) { newValue in
 			document.qrcode.utf8String = text
@@ -61,6 +77,10 @@ struct CommonSettingsView: View {
 		}
 		.onChange(of: cornerRadius) { newValue in
 			document.qrcode.design.style.backgroundFractionalCornerRadius = newValue
+			document.objectWillChange.send()
+		}
+		.onChange(of: fillStyle) { newValue in
+			document.qrcode.design.style.background = newValue.style
 			document.objectWillChange.send()
 		}
 	}

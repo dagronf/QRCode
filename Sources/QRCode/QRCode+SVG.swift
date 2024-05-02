@@ -36,7 +36,7 @@ public extension QRCode {
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svg(
 		dimension: Int,
-		design: QRCode.Design,
+		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> String {
 		//let totalSize = CGSize(dimension: dimension)
@@ -246,7 +246,7 @@ public extension QRCode {
 	/// The string always uses Unix newlines (\n), regardless of the platform.
 	@objc func svgData(
 		dimension: Int,
-		design: QRCode.Design,
+		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) -> Data? {
 		let str = self.svg(dimension: dimension, design: design, logoTemplate: logoTemplate)

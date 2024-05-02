@@ -41,6 +41,16 @@
 
 /* Begin PBXBuildFile section */
 		230812F42BDB3CF7004BB42D /* CornerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812F32BDB3CF7004BB42D /* CornerPicker.swift */; };
+		230812F62BDB57C6004BB42D /* StyleSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812F52BDB57C6004BB42D /* StyleSelectorView.swift */; };
+		230812FD2BDB5B75004BB42D /* StyleSelectorLinearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812F82BDB5B75004BB42D /* StyleSelectorLinearView.swift */; };
+		230812FE2BDB5B75004BB42D /* StyleSelectorRadialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812F92BDB5B75004BB42D /* StyleSelectorRadialView.swift */; };
+		230813002BDB5B75004BB42D /* StyleSelectorSolidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812FB2BDB5B75004BB42D /* StyleSelectorSolidView.swift */; };
+		230813012BDB5B75004BB42D /* StyleSelectorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230812FC2BDB5B75004BB42D /* StyleSelectorImageView.swift */; };
+		230813082BDB5CBA004BB42D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230813032BDB5CBA004BB42D /* utils.swift */; };
+		230813092BDB5CBA004BB42D /* GradientEditorViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230813042BDB5CBA004BB42D /* GradientEditorViews.swift */; };
+		2308130A2BDB5CBA004BB42D /* GradientFlatLinearEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230813052BDB5CBA004BB42D /* GradientFlatLinearEditor.swift */; };
+		2308130B2BDB5CBA004BB42D /* GradientLinearEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230813062BDB5CBA004BB42D /* GradientLinearEditor.swift */; };
+		2308130C2BDB5CBA004BB42D /* GradientRadialEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230813072BDB5CBA004BB42D /* GradientRadialEditor.swift */; };
 		2309F89E28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */; };
 		2309F8A028ED33F8009666A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309F89F28ED33F8009666A1 /* ContentView.swift */; };
 		2309F8A228ED33F9009666A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2309F8A128ED33F9009666A1 /* Assets.xcassets */; };
@@ -54,6 +64,7 @@
 		2322B0AD276348310085B5EB /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2322B0AC276348310085B5EB /* ComplicationController.swift */; };
 		2322B0AF276348320085B5EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0AE276348320085B5EB /* Assets.xcassets */; };
 		2322B0B2276348320085B5EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2322B0B1276348320085B5EB /* Preview Assets.xcassets */; };
+		232B791E2BE099C500A3D692 /* GradientStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B791D2BE099C500A3D692 /* GradientStop.swift */; };
 		232C19322BD63A680079E11E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C19312BD63A680079E11E /* AppDelegate.swift */; };
 		232C19342BD63A680079E11E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C19332BD63A680079E11E /* ViewController.swift */; };
 		232C19362BD63A690079E11E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 232C19352BD63A690079E11E /* Assets.xcassets */; };
@@ -276,6 +287,16 @@
 
 /* Begin PBXFileReference section */
 		230812F32BDB3CF7004BB42D /* CornerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerPicker.swift; sourceTree = "<group>"; };
+		230812F52BDB57C6004BB42D /* StyleSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSelectorView.swift; sourceTree = "<group>"; };
+		230812F82BDB5B75004BB42D /* StyleSelectorLinearView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSelectorLinearView.swift; sourceTree = "<group>"; };
+		230812F92BDB5B75004BB42D /* StyleSelectorRadialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSelectorRadialView.swift; sourceTree = "<group>"; };
+		230812FB2BDB5B75004BB42D /* StyleSelectorSolidView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSelectorSolidView.swift; sourceTree = "<group>"; };
+		230812FC2BDB5B75004BB42D /* StyleSelectorImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSelectorImageView.swift; sourceTree = "<group>"; };
+		230813032BDB5CBA004BB42D /* utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
+		230813042BDB5CBA004BB42D /* GradientEditorViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientEditorViews.swift; sourceTree = "<group>"; };
+		230813052BDB5CBA004BB42D /* GradientFlatLinearEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientFlatLinearEditor.swift; sourceTree = "<group>"; };
+		230813062BDB5CBA004BB42D /* GradientLinearEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientLinearEditor.swift; sourceTree = "<group>"; };
+		230813072BDB5CBA004BB42D /* GradientRadialEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientRadialEditor.swift; sourceTree = "<group>"; };
 		2309F89B28ED33F8009666A1 /* Simple tvOS QRCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple tvOS QRCode.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2309F89D28ED33F8009666A1 /* Simple_tvOS_QRCodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_tvOS_QRCodeApp.swift; sourceTree = "<group>"; };
 		2309F89F28ED33F8009666A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -291,6 +312,7 @@
 		2322B0AE276348320085B5EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2322B0B1276348320085B5EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2322B0B3276348320085B5EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		232B791D2BE099C500A3D692 /* GradientStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientStop.swift; sourceTree = "<group>"; };
 		232C192F2BD63A680079E11E /* 3D QRCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3D QRCode.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		232C19312BD63A680079E11E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		232C19332BD63A680079E11E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -482,6 +504,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		230812F72BDB5B63004BB42D /* styles */ = {
+			isa = PBXGroup;
+			children = (
+				230813022BDB5CAC004BB42D /* gradientui */,
+				230812FC2BDB5B75004BB42D /* StyleSelectorImageView.swift */,
+				230812F82BDB5B75004BB42D /* StyleSelectorLinearView.swift */,
+				230812F92BDB5B75004BB42D /* StyleSelectorRadialView.swift */,
+				230812FB2BDB5B75004BB42D /* StyleSelectorSolidView.swift */,
+				230812F52BDB57C6004BB42D /* StyleSelectorView.swift */,
+			);
+			path = styles;
+			sourceTree = "<group>";
+		};
+		230813022BDB5CAC004BB42D /* gradientui */ = {
+			isa = PBXGroup;
+			children = (
+				230813042BDB5CBA004BB42D /* GradientEditorViews.swift */,
+				230813052BDB5CBA004BB42D /* GradientFlatLinearEditor.swift */,
+				230813062BDB5CBA004BB42D /* GradientLinearEditor.swift */,
+				230813072BDB5CBA004BB42D /* GradientRadialEditor.swift */,
+				232B791D2BE099C500A3D692 /* GradientStop.swift */,
+				230813032BDB5CBA004BB42D /* utils.swift */,
+			);
+			path = gradientui;
+			sourceTree = "<group>";
+		};
 		2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,6 +750,7 @@
 		23DA09C42BD9CF69009EDB38 /* QRCode 3D */ = {
 			isa = PBXGroup;
 			children = (
+				230812F72BDB5B63004BB42D /* styles */,
 				23DA09DE2BD9F336009EDB38 /* utils */,
 				23DA09DD2BD9F32F009EDB38 /* settings */,
 				23DA09C52BD9CF69009EDB38 /* QRCode_3DApp.swift */,
@@ -1378,21 +1427,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				230812FE2BDB5B75004BB42D /* StyleSelectorRadialView.swift in Sources */,
 				23C444882BDA42F200AD8F6C /* debounce.swift in Sources */,
 				23DA09E02BD9F366009EDB38 /* CommonSettingsView.swift in Sources */,
+				230813002BDB5B75004BB42D /* StyleSelectorSolidView.swift in Sources */,
 				23DA09E22BD9F3AB009EDB38 /* SettingsView.swift in Sources */,
+				2308130B2BDB5CBA004BB42D /* GradientLinearEditor.swift in Sources */,
+				230813012BDB5B75004BB42D /* StyleSelectorImageView.swift in Sources */,
 				23C444862BDA3F4A00AD8F6C /* PupilSettingsView.swift in Sources */,
+				2308130C2BDB5CBA004BB42D /* GradientRadialEditor.swift in Sources */,
+				232B791E2BE099C500A3D692 /* GradientStop.swift in Sources */,
 				23DA09D82BD9D3DB009EDB38 /* QRCodePreviewView.swift in Sources */,
 				23DA09C62BD9CF69009EDB38 /* QRCode_3DApp.swift in Sources */,
 				23C444822BDA313200AD8F6C /* EyeSettingsView.swift in Sources */,
 				23DA09DA2BD9D9E1009EDB38 /* CGPath+extensions.swift in Sources */,
 				230812F42BDB3CF7004BB42D /* CornerPicker.swift in Sources */,
+				2308130A2BDB5CBA004BB42D /* GradientFlatLinearEditor.swift in Sources */,
 				23DA09C82BD9CF69009EDB38 /* QRCode_3DDocument.swift in Sources */,
 				23DA09DC2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift in Sources */,
+				230812FD2BDB5B75004BB42D /* StyleSelectorLinearView.swift in Sources */,
+				230813082BDB5CBA004BB42D /* utils.swift in Sources */,
 				23DA09E62BD9FD0D009EDB38 /* FlowLayout.swift in Sources */,
 				23DA09CA2BD9CF69009EDB38 /* ContentView.swift in Sources */,
 				23C444842BDA363100AD8F6C /* MultiSelectPickerView.swift in Sources */,
 				23DA09E42BD9F469009EDB38 /* PixelSettingsView.swift in Sources */,
+				230812F62BDB57C6004BB42D /* StyleSelectorView.swift in Sources */,
+				230813092BDB5CBA004BB42D /* GradientEditorViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
