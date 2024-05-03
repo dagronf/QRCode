@@ -32,6 +32,7 @@ import CoreGraphics
 		self.registeredTypes = [
 			QRCode.PupilShape.Circle.self,
 			QRCode.PupilShape.CorneredPixels.self,
+			QRCode.PupilShape.Cross.self,
 			QRCode.PupilShape.Edges.self,
 			QRCode.PupilShape.RoundedRect.self,
 			QRCode.PupilShape.RoundedPointingIn.self,

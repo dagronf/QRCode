@@ -37,6 +37,9 @@ struct PupilSettingsView: View {
 	@State var flipped = false
 	@State var supportsFlipped = false
 
+	@State var hasInnerCorners = false
+	@State var supportsHasInnerCorners = false
+
 	@State var corners = QRCode.Corners.all
 	@State var supportsCorners = false
 
@@ -77,6 +80,15 @@ struct PupilSettingsView: View {
 					document.objectWillChange.send()
 				}
 
+				Toggle(isOn: $hasInnerCorners) {
+					Text("inner corners")
+				}
+				.disabled(!supportsHasInnerCorners)
+				.onChange(of: hasInnerCorners) { newValue in
+					_ = document.qrcode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.hasInnerCorners)
+					document.objectWillChange.send()
+				}
+
 				LabeledContent("corners") {
 					CornerPicker(corners: $corners)
 				}
@@ -99,6 +111,9 @@ struct PupilSettingsView: View {
 
 		supportsFlipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
 		flipped = generator.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
+
+		supportsHasInnerCorners = generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
+		hasInnerCorners = generator.settingsValue(forKey: QRCode.SettingsKey.hasInnerCorners) ?? false
 
 		supportsCorners = generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
 		let cnrs = generator.settingsValue(forKey: QRCode.SettingsKey.corners) ?? 0
