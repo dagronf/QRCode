@@ -161,11 +161,11 @@ You can use this class to generate a QR Code and present the result as a `CGPath
 You can create a basic black-and-white QR code image very easily.
 
 ```swift
-let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high)
-let generated = doc.cgImage(CGSize(width: 800, height: 800))
+let doc = QRCode.Document("Hi there!")
+let generated = doc.cgImage(dimension: 800)
 ```
 
-Generates
+Generates the basic black and white QR code below
 
 <img src="./Art/images/simple-generated-qrcode.png" width="80"/>
 
@@ -175,9 +175,7 @@ You can further style the qr code (see below)
 <summary>tl;dr Simple Example</summary>
  
 ```swift
-let doc = QRCode.Document()
-doc.utf8String = "This is a test"
-doc.errorCorrection = .high
+let doc = QRCode.Document("This is a test")
 
 // Set the background color to clear
 doc.design.backgroundColor(CGColor.clear)
@@ -209,22 +207,40 @@ There are also some extensions on `CGImage` to help making qr codes even easier
 let qrCodeImage = CGImage.qrCode("Hi there!", dimension: 800)
 ```
 
-## Settings
+### QRCode builder
 
-### Set the data content
+`QRCode.Builder` is a lightweight Swift-only convenience shim for the QRCode Document.
 
 ```swift
-/// Set raw data
-@objc public var data: Data
+let image = try QRCode.build
+   .text("https://www.worldwildlife.org/about")
+   .quietZonePixelCount(3)
+   .foregroundColor(CGColor(srgbRed: 1, green: 0, blue: 0.6, alpha: 1))
+   .backgroundColor(CGColor(srgbRed: 0, green: 0, blue: 0.2, alpha: 1))
+   .background.cornerRadius(3)
+   .onPixels.shape(QRCode.PixelShape.CurvePixel())
+   .eye.shape(QRCode.EyeShape.Teardrop())
+   .generate.image(dimension: 600, representation: .png())
+```
 
-/// Set a string
-public func setString(
-   _ string: String, 
-   encoding: String.Encoding = .utf8, 
-   allowLossyConversion: Bool = false) -> Bool
+<a href="./Art/images/builder-shim.png"><img src="./Art/images/builder-shim.png" width="150"/></a>
 
-/// Set raw data using a qrcode message formatter
-@objc func setMessage(_ message: QRCodeMessageFormatter)
+## Settings
+
+### Set the QR code's encoded content
+
+```swift
+let doc = QRCode.Document()
+
+// Setting raw data
+doc.data = Data(...)
+
+// Setting text
+doc.utf8String = "This is my text"
+doc.setText("This is my text", textEncoding: .ascii)
+
+// Setting a message
+doc.setMessage(...)
 ```
 
 ### Set the error correction
@@ -257,7 +273,7 @@ The higher the error correction level, the larger the QR code will be.
 
 The design comprises two components :-
 
-|        | Description    |
+|        | Description                                                               |
 |--------|:--------------------------------------------------------------------------|
 | shape  | The shape of each of the individual components within the QR code         |
 | style  | The fill styles for each of the individual components within the QR code  |

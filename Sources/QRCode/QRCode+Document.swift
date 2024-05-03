@@ -27,10 +27,8 @@ import SwiftUI
 #endif
 
 public extension QRCode {
-
 	/// A QR Code document
 	@objc(QRCodeDocument) class Document: NSObject {
-
 		/// The correction level to use when generating the QR code
 		@objc public var errorCorrection: QRCode.ErrorCorrection = .quantize {
 			didSet {
@@ -176,17 +174,21 @@ public extension QRCode.Document {
 	/// Create a QRCode document
 	/// - Parameters:
 	///   - text: The text to encode
-	///   - encoding: The text encoding to use (eg. .utf8)
+	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
 	@inlinable convenience init?(
 		_ text: String,
-		encoding: String.Encoding = .utf8,
+		textEncoding: String.Encoding = .utf8,
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		generator: (any QRCodeEngine)? = nil
 	) {
-		if let data = text.data(using: encoding) {
-			self.init(data: data, errorCorrection: errorCorrection, generator: generator)
+		if let data = text.data(using: textEncoding) {
+			self.init(
+				data: data,
+				errorCorrection: errorCorrection,
+				generator: generator
+			)
 		}
 		else {
 			return nil
@@ -196,18 +198,22 @@ public extension QRCode.Document {
 	/// Create a QRCode document containing a url
 	/// - Parameters:
 	///   - url: The url to encode
-	///   - encoding: The text encoding to use for the URL
+	///   - textEncoding: The text encoding to use for the URL
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
 	/// - Returns: nil if the url could not be encoded in utf8
 	@inlinable convenience init?(
 		_ url: URL,
-		encoding: String.Encoding = .utf8,
+		textEncoding: String.Encoding = .utf8,
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		generator: (any QRCodeEngine)? = nil
 	) {
-		if let data = url.absoluteString.data(using: .utf8) {
-			self.init(data: data, errorCorrection: errorCorrection, generator: generator)
+		if let data = url.absoluteString.data(using: textEncoding) {
+			self.init(
+				data: data,
+				errorCorrection: errorCorrection,
+				generator: generator
+			)
 		}
 		else {
 			return nil
@@ -225,7 +231,11 @@ public extension QRCode.Document {
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		generator: (any QRCodeEngine)? = nil
 	) {
-		self.init(message: message, errorCorrection: errorCorrection, generator: generator)
+		self.init(
+			message: message,
+			errorCorrection: errorCorrection,
+			generator: generator
+		)
 	}
 }
 
@@ -242,6 +252,17 @@ public extension QRCode.Document {
 }
 
 public extension QRCode.Document {
+	/// Set the text to encode in the document
+	/// - Parameters:
+	///   - text: The text
+	///   - textEncoding: The text encoding to use
+	/// - Returns: True if the text was successfully set, false otherwise
+	func setText(_ text: String, textEncoding: String.Encoding = .utf8) -> Bool {
+		guard let data = text.data(using: textEncoding) else { return false }
+		self.data = data
+		return true
+	}
+
 	/// Set the QR code data using a message formatter
 	@objc func setMessage(_ message: any QRCodeMessageFormatter) {
 		self.data = message.data
@@ -561,10 +582,10 @@ public extension QRCode.Document {
 		/// Returns the extension for the export type
 		var fileExtension: String {
 			switch self {
-			case .png(_): return "png"
-			case .jpg(_,_): return "jpg"
-			case .tiff(_): return "tiff"
-			case .pdf(_): return "pdf"
+			case .png: return "png"
+			case .jpg: return "jpg"
+			case .tiff: return "tiff"
+			case .pdf: return "pdf"
 			case .svg: return "svg"
 			}
 		}
@@ -577,15 +598,15 @@ public extension QRCode.Document {
 	/// - Returns: Data representation of the image
 	@inlinable func imageData(_ type: ExportType, dimension: Int) -> Data? {
 		switch type {
-		case .png(let dpi):
+		case let .png(dpi):
 			return self.pngData(dimension: dimension, dpi: dpi)
-		case .jpg(let dpi, let compression):
+		case let .jpg(dpi, compression):
 			return self.jpegData(dimension: dimension, dpi: dpi, compression: compression)
-		case .pdf(let resolution):
+		case let .pdf(resolution):
 			return self.pdfData(dimension: dimension, pdfResolution: resolution)
 		case .svg:
 			return self.svgData(dimension: dimension)
-		case .tiff(let dpi):
+		case let .tiff(dpi):
 			return self.tiffData(dimension: dimension, dpi: dpi)
 		}
 	}

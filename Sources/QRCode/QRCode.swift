@@ -40,6 +40,8 @@ import Foundation
 	}
 
 	/// Create a blank QRCode with a custom QR code generation engine
+	/// - Parameters:
+	///   - generator: The QR engine to use. Specify nil to use the default generator.
 	@objc public init(generator: any QRCodeEngine) {
 		self.generator = generator
 		super.init()
@@ -61,7 +63,11 @@ import Foundation
 		self.update(data: data, errorCorrection: errorCorrection)
 	}
 
-	/// Create a QRCode with the given text and error correction
+	/// Create a QRCode
+	/// - Parameters:
+	///   - utf8String: The text to encode
+	///   - errorCorrection: The error correction to apply
+	///   - generator: A qr code generator, or nil to use the default generator
 	@objc public init(
 		utf8String: String,
 		errorCorrection: ErrorCorrection = .default,
@@ -72,7 +78,29 @@ import Foundation
 		self.update(text: utf8String, errorCorrection: errorCorrection)
 	}
 
+	/// Create a QR code
+	/// - Parameters:
+	///   - text: The text to encode in the qr code
+	///   - textEncoding: The text encoding
+	///   - errorCorrection: The error correction to apply
+	///   - generator: A qr code generator, or nil to use the default generator
+	public init(
+		_ text: String,
+		textEncoding: String.Encoding = .utf8,
+		errorCorrection: ErrorCorrection = .default,
+		generator: (any QRCodeEngine)? = nil
+	) {
+		if let generator = generator { self.generator = generator }
+		let data = text.data(using: textEncoding) ?? Data()
+		super.init()
+		self.update(data: data, errorCorrection: errorCorrection)
+	}
+
 	/// Create a QRCode with the given message and error correction
+	/// - Parameters:
+	///   - message: The message to encode
+	///   - errorCorrection: The error correction to apply
+	///   - generator: A qr code generator, or nil to use the default generator
 	@objc public init(
 		message: any QRCodeMessageFormatter,
 		errorCorrection: ErrorCorrection = .default,

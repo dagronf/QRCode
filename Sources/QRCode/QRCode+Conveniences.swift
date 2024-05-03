@@ -28,6 +28,7 @@ public extension CGImage {
 	/// Create a CGImage containing a qr code
 	/// - Parameters:
 	///   - text: The text to encode in the qr code
+	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - dimension: The size in pixels of the output image
 	///   - errorCorrection: The error correction
 	///   - shape: The shape to use, or nil for default
@@ -35,12 +36,21 @@ public extension CGImage {
 	/// - Returns: The image representation of the qr code, or nil if an error occurred
 	static func qrCode(
 		_ text: String,
+		textEncoding: String.Encoding = .utf8,
 		dimension: Int,
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Shape? = nil,
 		style: QRCode.Style? = nil
 	) -> CGImage? {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
+		guard 
+			let doc = QRCode.Document(
+				text,
+				textEncoding: textEncoding,
+				errorCorrection: errorCorrection
+			)
+		else {
+			return nil
+		}
 		if let shape = shape { doc.design.shape = shape }
 		if let style = style { doc.design.style = style }
 		return doc.cgImage(dimension: dimension)

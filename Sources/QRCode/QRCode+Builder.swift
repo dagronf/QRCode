@@ -49,7 +49,10 @@ public extension QRCode {
 	class Builder {
 		/// Errors that can be thrown by the builder
 		public enum BuilderError: Error {
+			/// Cannot create
 			case cannotCreate
+			/// The provided text could not be encoded using the specified string encoding
+			case unableToEncodeText
 		}
 
 		/// Create a builder
@@ -65,20 +68,37 @@ public extension QRCode {
 // MARK: - Setting content
 
 public extension QRCode.Builder {
-	/// Set the utf8 text for the qr code
-	/// - Parameter text: The text to encode in the qr code
+	/// Set the text to encode
+	/// - Parameters:
+	///   - text: The text
+	///   - textEncoding: The string encoding to use when generating the qr code
 	/// - Returns: self
-	@discardableResult func text(_ utf8Text: String) -> Self {
-		self.document.utf8String = utf8Text
-		return self
+	@discardableResult func text(
+		_ text: String,
+		textEncoding: String.Encoding = .utf8
+	) throws -> QRCode.Builder {
+		try self.content.text(text, textEncoding: textEncoding)
 	}
 
-	/// The content for the QR code
+	/// Set the URL to encode
+	/// - Parameters:
+	///   - url: The url
+	///   - encoding: The string encoding to use when generating the qr code
+	/// - Returns: self
+	@discardableResult func url(
+		_ url: URL,
+		textEncoding: String.Encoding = .utf8
+	) throws -> QRCode.Builder {
+		try self.content.url(url, textEncoding: textEncoding)
+	}
+
+	/// The content settings for the QR Code
 	var content: Content { Content(builder: self) }
 
+	/// Content settings for the QR code
 	struct Content {
 		/// Set the data for the qr code
-		/// - Parameter data: The data to encode in the qr code
+		/// - Parameter data: The data
 		/// - Returns: self
 		@discardableResult func data(_ data: Data) -> QRCode.Builder {
 			self.builder.document.data = data
@@ -86,27 +106,39 @@ public extension QRCode.Builder {
 		}
 
 		/// Set text content
-		/// - Parameter color: The color
+		/// - Parameters:
+		///   - text: The text
+		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-		///
-		/// Text is encoded within the QR code as utf8 text
-		@discardableResult func text(_ text: String) -> QRCode.Builder {
-			self.builder.document.utf8String = text
+		@discardableResult func text(
+			_ text: String,
+			textEncoding: String.Encoding = .utf8
+		) throws -> QRCode.Builder {
+			guard let data = text.data(using: textEncoding) else {
+				throw QRCode.Builder.BuilderError.unableToEncodeText
+			}
+			self.builder.document.data = data
 			return self.builder
 		}
 
 		/// Set the URL to be encoded within the QR code
-		/// - Parameter url: The url
+		/// - Parameters:
+		///   - url: The url
+		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-		@discardableResult func url(_ url: URL) -> QRCode.Builder {
-			self.builder.document.data = url.absoluteString.data(using: .utf8)
-			return self.builder
+		@discardableResult func url(
+			_ url: URL,
+			textEncoding: String.Encoding = .utf8
+		) throws -> QRCode.Builder {
+			try self.text(url.absoluteString, textEncoding: textEncoding)
 		}
 
 		/// Set the message for the qr code
 		/// - Parameter message: The message
 		/// - Returns: self
-		@discardableResult func message(_ message: any QRCodeMessageFormatter) -> QRCode.Builder {
+		@discardableResult func message(
+			_ message: any QRCodeMessageFormatter
+		) -> QRCode.Builder {
 			self.builder.document.update(message: message)
 			return self.builder
 		}
@@ -121,7 +153,9 @@ public extension QRCode.Builder {
 	/// Set the error correction
 	/// - Parameter errorCorrection: The error correction
 	/// - Returns: self
-	@discardableResult func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> Self {
+	@discardableResult func errorCorrection(
+		_ errorCorrection: QRCode.ErrorCorrection
+	) -> Self {
 		self.document.errorCorrection = errorCorrection
 		return self
 	}
@@ -141,19 +175,24 @@ public extension QRCode.Builder {
 	/// Set the foreground color for the qr code
 	/// - Parameter color: The color
 	/// - Returns: self
-	@discardableResult func foreground(_ color: CGColor) -> Self {
+	@discardableResult func foregroundColor(_ color: CGColor) -> Self {
 		self.document.design.foregroundColor(color)
 		return self
 	}
 
-	/// The foreground for the QR code
-	///
-	/// ```swift
-	/// QRCode.build
-	///    .foreground.style(...)
-	/// ```
+	/// The QR code's foreground settings
 	var foreground: Foreground { Foreground(builder: self) }
+
+	/// Available settings for the QR code's foreground
 	struct Foreground {
+		/// Set the foreground image for the qr code
+		/// - Parameter color: The color
+		/// - Returns: self
+		@discardableResult func style(_ color: CGColor) -> QRCode.Builder {
+			self.builder.document.design.style.setForegroundStyle(QRCode.FillStyle.Solid(color))
+			return self.builder
+		}
+
 		/// Set the foreground image for the qr code
 		/// - Parameter color: The color
 		/// - Returns: self
@@ -165,15 +204,9 @@ public extension QRCode.Builder {
 		/// Set a linear gradient as a background fill
 		/// - Parameter gradient: The gradient
 		/// - Returns: self
-		@discardableResult func style(_ gradient: QRCode.FillStyle.LinearGradient) -> QRCode.Builder {
-			self.builder.document.design.style.setForegroundStyle(gradient)
-			return self.builder
-		}
-
-		/// Set a radial gradient as a background fill
-		/// - Parameter gradient: The gradient
-		/// - Returns: self
-		@discardableResult func style(_ gradient: QRCode.FillStyle.RadialGradient) -> QRCode.Builder {
+		@discardableResult func style(
+			_ gradient: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.style.setForegroundStyle(gradient)
 			return self.builder
 		}
@@ -190,13 +223,15 @@ public extension QRCode.Builder {
 	/// Set the background color for the qr code
 	/// - Parameter color: The color
 	/// - Returns: self
-	@discardableResult func background(_ color: CGColor) -> Self {
+	@discardableResult func backgroundColor(_ color: CGColor) -> Self {
 		self.document.design.backgroundColor(color)
 		return self
 	}
 
-	/// The background for the QR code
+	/// The QR code's background settings
 	var background: Background { Background(builder: self) }
+
+	/// Available settings for the QR code's background
 	struct Background {
 		/// Set the background color for the qr code
 		/// - Parameter color: The color
@@ -214,26 +249,22 @@ public extension QRCode.Builder {
 			return self.builder
 		}
 
-		/// Set a linear gradient as a background fill
+		/// Set a fill style as a background fill
 		/// - Parameter gradient: The gradient
 		/// - Returns: self
-		@discardableResult func style(_ gradient: QRCode.FillStyle.LinearGradient) -> QRCode.Builder {
-			self.builder.document.design.style.background = gradient
-			return self.builder
-		}
-
-		/// Set a radial gradient as a background fill
-		/// - Parameter gradient: The gradient
-		/// - Returns: self
-		@discardableResult func style(_ gradient: QRCode.FillStyle.RadialGradient) -> QRCode.Builder {
-			self.builder.document.design.style.background = gradient
+		@discardableResult func style(
+			_ fillStyle: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
+			self.builder.document.design.style.background = fillStyle
 			return self.builder
 		}
 
 		/// A corner radius (in qr pixels) to apply to the background fill
 		/// - Parameter pixelCount: The number of pixels to set for the radius
 		/// - Returns: self
-		@discardableResult func cornerRadius(_ pixelCount: Double) -> QRCode.Builder {
+		@discardableResult func cornerRadius(
+			_ pixelCount: Double
+		) -> QRCode.Builder {
 			self.builder.document.design.style.backgroundFractionalCornerRadius = pixelCount
 			return self.builder
 		}
@@ -249,11 +280,15 @@ public extension QRCode.Builder {
 public extension QRCode.Builder {
 	/// The on-pixels for the QR code
 	var onPixels: OnPixels { OnPixels(builder: self) }
+
+	/// Available settings for the QR code's 'on' pixels
 	struct OnPixels {
 		/// The shape to apply to the on pixels
 		/// - Parameter shape: The pixel shape
 		/// - Returns: self
-		@discardableResult public func shape(_ shape: any QRCodePixelShapeGenerator) -> QRCode.Builder {
+		@discardableResult public func shape(
+			_ shape: any QRCodePixelShapeGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.shape.onPixels = shape
 			return self.builder
 		}
@@ -261,7 +296,9 @@ public extension QRCode.Builder {
 		/// The flat color to use for the on pixels
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ color: CGColor
+		) -> QRCode.Builder {
 			self.builder.document.design.style.onPixels = QRCode.FillStyle.Solid(color)
 			return self.builder
 		}
@@ -269,7 +306,9 @@ public extension QRCode.Builder {
 		/// The style to apply to the on pixels
 		/// - Parameter style: The style
 		/// - Returns: self
-		@discardableResult public func style(_ style: any QRCodeFillStyleGenerator) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ style: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.style.onPixels = style
 			return self.builder
 		}
@@ -277,7 +316,9 @@ public extension QRCode.Builder {
 		/// Set the color behind the on-pixels
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func backgroundColor(_ color: CGColor?) -> QRCode.Builder {
+		@discardableResult public func backgroundColor(
+			_ color: CGColor?
+		) -> QRCode.Builder {
 			self.builder.document.design.style.onPixelsBackground = color
 			return self.builder
 		}
@@ -293,11 +334,15 @@ public extension QRCode.Builder {
 public extension QRCode.Builder {
 	/// The eye for the QR code
 	var eye: Eye { Eye(builder: self) }
+
+	/// Available settings for the QR code's eye
 	struct Eye {
 		/// The shape to use for the eye
 		/// - Parameter shape: The eye shape
 		/// - Returns: self
-		@discardableResult public func shape(_ shape: any QRCodeEyeShapeGenerator) -> QRCode.Builder {
+		@discardableResult public func shape(
+			_ shape: any QRCodeEyeShapeGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.shape.eye = shape
 			return self.builder
 		}
@@ -305,7 +350,9 @@ public extension QRCode.Builder {
 		/// The color to use when drawing the eye
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ color: CGColor
+		) -> QRCode.Builder {
 			self.builder.document.design.style.eye = QRCode.FillStyle.Solid(color)
 			return self.builder
 		}
@@ -313,7 +360,9 @@ public extension QRCode.Builder {
 		/// The style to apply to the eye
 		/// - Parameter style: The style
 		/// - Returns: self
-		@discardableResult public func style(_ style: any QRCodeFillStyleGenerator) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ style: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.style.eye = style
 			return self.builder
 		}
@@ -321,7 +370,9 @@ public extension QRCode.Builder {
 		/// The color to draw behind the eye shape
 		/// - Parameter color: The color to draw
 		/// - Returns: self
-		@discardableResult public func backgroundColor(_ color: CGColor?) -> QRCode.Builder {
+		@discardableResult public func backgroundColor(
+			_ color: CGColor?
+		) -> QRCode.Builder {
 			self.builder.document.design.style.eyeBackground = color
 			return self.builder
 		}
@@ -337,11 +388,15 @@ public extension QRCode.Builder {
 public extension QRCode.Builder {
 	/// The pupil for the QR code
 	var pupil: Pupil { Pupil(builder: self) }
+
+	/// Available settings for the QR code's pupil
 	struct Pupil {
 		/// The shape to use for the pupil
 		/// - Parameter shape: The pupil shape
 		/// - Returns: self
-		@discardableResult public func shape(_ shape: any QRCodePupilShapeGenerator) -> QRCode.Builder {
+		@discardableResult public func shape(
+			_ shape: any QRCodePupilShapeGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.shape.pupil = shape
 			return self.builder
 		}
@@ -357,7 +412,9 @@ public extension QRCode.Builder {
 		/// The style to use when drawing the pupil
 		/// - Parameter style: The style
 		/// - Returns: self
-		@discardableResult public func style(_ style: any QRCodeFillStyleGenerator) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ style: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.style.pupil = style
 			return self.builder
 		}
@@ -373,11 +430,15 @@ public extension QRCode.Builder {
 public extension QRCode.Builder {
 	/// The off-pixels for the QR code
 	var offPixels: OffPixels { OffPixels(builder: self) }
+
+	/// Available settings for the QR code's 'off' pixels
 	struct OffPixels {
 		/// The shape to use for off-pixels
 		/// - Parameter shape: The shape
 		/// - Returns: self
-		@discardableResult public func shape(_ shape: any QRCodePixelShapeGenerator) -> QRCode.Builder {
+		@discardableResult public func shape(
+			_ shape: any QRCodePixelShapeGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.shape.offPixels = shape
 			return self.builder
 		}
@@ -393,7 +454,9 @@ public extension QRCode.Builder {
 		/// The style to apply to off pixels
 		/// - Parameter style: The style
 		/// - Returns: self
-		@discardableResult public func style(_ style: any QRCodeFillStyleGenerator) -> QRCode.Builder {
+		@discardableResult public func style(
+			_ style: any QRCodeFillStyleGenerator
+		) -> QRCode.Builder {
 			self.builder.document.design.style.offPixels = style
 			return self.builder
 		}
@@ -401,7 +464,9 @@ public extension QRCode.Builder {
 		/// Set the color behind the off-pixels
 		/// - Parameter color: The color to draw behind the off-pixels
 		/// - Returns: self
-		@discardableResult public func backgroundColor(_ color: CGColor?) -> QRCode.Builder {
+		@discardableResult public func backgroundColor(
+			_ color: CGColor?
+		) -> QRCode.Builder {
 			self.builder.document.design.style.offPixelsBackground = color
 			return self.builder
 		}
@@ -426,7 +491,9 @@ public extension QRCode.Builder {
 	/// The logo to use
 	/// - Parameter logotemplate: The logo template
 	/// - Returns: self
-	@discardableResult func logo(_ logotemplate: QRCode.LogoTemplate) -> QRCode.Builder {
+	@discardableResult func logo(
+		_ logotemplate: QRCode.LogoTemplate
+	) -> QRCode.Builder {
 		self.document.logoTemplate = logotemplate
 		return self
 	}
@@ -436,7 +503,10 @@ public extension QRCode.Builder {
 	///   - image: The image
 	///   - position: The position to apply the image
 	/// - Returns: self
-	@discardableResult func logo(_ image: CGImage, position: LogoPosition) -> QRCode.Builder {
+	@discardableResult func logo(
+		_ image: CGImage,
+		position: LogoPosition
+	) -> QRCode.Builder {
 		switch position {
 		case let .circleCenter(inset: inset):
 			self.logo(QRCode.LogoTemplate.CircleCenter(image: image, inset: inset))
@@ -455,7 +525,10 @@ public extension QRCode.Builder {
 	///   - image: The logo image
 	///   - maskImage: (optional) The mask to apply for the image.
 	/// - Returns: self
-	@discardableResult func logo(image: CGImage, maskImage: CGImage? = nil) -> QRCode.Builder {
+	@discardableResult func logo(
+		image: CGImage,
+		maskImage: CGImage? = nil
+	) -> QRCode.Builder {
 		self.logo(QRCode.LogoTemplate(image: image, maskImage: maskImage))
 	}
 
@@ -465,9 +538,17 @@ public extension QRCode.Builder {
 	///   - unitRect: The destination unit rectangle to position within the qr code
 	///   - inset: The inset to the destination
 	/// - Returns: self
-	@discardableResult func logo(image: CGImage, unitRect: CGRect, inset: Double = 0) -> QRCode.Builder {
+	@discardableResult func logo(
+		image: CGImage,
+		unitRect: CGRect,
+		inset: Double = 0
+	) -> QRCode.Builder {
 		self.logo(
-			QRCode.LogoTemplate(image: image, path: CGPath(rect: unitRect, transform: nil), inset: inset)
+			QRCode.LogoTemplate(
+				image: image,
+				path: CGPath(rect: unitRect, transform: nil),
+				inset: inset
+			)
 		)
 	}
 }
@@ -502,7 +583,10 @@ public extension QRCode.Builder.Generate {
 	///   - dimension: The dimension of the image
 	///   - representation: The image representation to use when generating the image data
 	/// - Returns: Image data
-	@discardableResult func image(dimension: Int, representation: ImageExportType) throws -> Data {
+	@discardableResult func image(
+		dimension: Int,
+		representation: ImageExportType
+	) throws -> Data {
 		try self.image(dimension: dimension).imageData(for: representation)
 	}
 
@@ -511,8 +595,16 @@ public extension QRCode.Builder.Generate {
 	///   - dimension: The dimension of the resulting pdf
 	///   - pdfResolution: The resolution to use when generating the pdf
 	/// - Returns: pdf data
-	@discardableResult func pdf(dimension: Int, pdfResolution: CGFloat = 72.0) throws -> Data {
-		guard let result = builder.document.pdfData(dimension: dimension, pdfResolution: pdfResolution) else {
+	@discardableResult func pdf(
+		dimension: Int,
+		pdfResolution: CGFloat = 72.0
+	) throws -> Data {
+		guard
+			let result = builder.document.pdfData(
+				dimension: dimension,
+				pdfResolution: pdfResolution
+			)
+		else {
 			throw QRCode.Builder.BuilderError.cannotCreate
 		}
 		return result
@@ -539,19 +631,19 @@ public extension QRCode.Builder.Generate {
 		builder.document.path(dimension: dimension)
 	}
 
-#if os(macOS)
+	#if os(macOS)
 	/// Generate an NSBezierPath
 	/// - Parameter dimension: The dimension of the resulting path
 	/// - Returns: A path
 	@discardableResult func nsBezierPath(dimension: Int) -> NSBezierPath {
 		NSBezierPath(cgPath: self.path(dimension: dimension))
 	}
-#else
+	#else
 	/// Generate a UIBezierPath
 	/// - Parameter dimension: The dimension of the resulting path
 	/// - Returns: A path
 	@discardableResult func uiBezierPath(dimension: Int) -> UIBezierPath {
 		UIBezierPath(cgPath: self.path(dimension: dimension))
 	}
-#endif
+	#endif
 }

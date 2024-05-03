@@ -114,9 +114,23 @@ import UIKit
 	}
 #endif
 
-	/// Text content to display in the QR code
-	@objc @inlinable public func setString(_ text: String) -> Bool {
+	/// Set UTF8-encoded text to display in the QR code
+	/// - Parameters:
+	///   - text: The text
+	/// - Returns: true if the string was able to set, false otherwise
+	@objc public func setString(_ text: String) -> Bool {
 		guard let msg = text.data(using: .utf8) else { return false }
+		self.data = msg
+		return true
+	}
+
+	/// Text content to display in the QR code
+	/// - Parameters:
+	///   - text: The text
+	///   - textEncoding: The encoding for the text
+	/// - Returns: true if the string was able to set, false otherwise
+	public func setString(_ text: String, textEncoding: String.Encoding = .utf8) -> Bool {
+		guard let msg = text.data(using: textEncoding) else { return false }
 		self.data = msg
 		return true
 	}
