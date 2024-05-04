@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name                       = 'DSF_QRCode'
-s.version                    = '18.6.0'
+s.version                    = '19.0.0'
 s.summary                    = 'A simple drop-in macOS/iOS/tvOS/watchOS QR Code generator view for Swift, Objective-C and SwiftUI.'
 s.homepage                   = 'https://github.com/dagronf/QRCode'
 s.license                    = { :type => 'MIT', :file => 'LICENSE' }
@@ -25,6 +25,6 @@ s.tvos.framework             = 'UIKit'
 s.watchos.framework          = 'UIKit'
 
 s.source_files               = 'Sources/QRCode/**/*.swift'
-s.swift_versions             = ['5.4', '5.5', '5.6', '5.7', '5.8', '5.9']
+s.swift_versions             = ['5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '5.10']
 
 end

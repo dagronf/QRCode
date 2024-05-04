@@ -9,17 +9,15 @@ import SwiftUI
 
 import QRCode
 
-let qrcode: QRCode.Document = {
-	let d = QRCode.Document(generator: QRCodeGenerator_External())
-	d.utf8String = "https://www.apple.com.au"
-	d.design.foregroundColor(CGColor(gray: 1, alpha: 1))
-	d.design.style.background = nil
-	d.design.shape.eye = QRCode.EyeShape.Leaf()
-	d.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.5)
-	return d
-}()
-
 struct ContentView: View {
+	let qrcode = try! QRCode.build
+		.generator(QRCodeGenerator_External())
+		.url(URL(string: "https://www.apple.com.au")!)
+		.foregroundColor(CGColor(gray: 1, alpha: 1))
+		.backgroundColor(CGColor(gray: 0, alpha: 0))
+		.eye.shape(QRCode.EyeShape.Leaf())
+		.document
+
     var body: some View {
         VStack {
 			  QRCodeDocumentUIView(document: qrcode)

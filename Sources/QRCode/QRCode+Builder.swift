@@ -68,6 +68,14 @@ public extension QRCode {
 // MARK: - Setting content
 
 public extension QRCode.Builder {
+	/// Set a custom generator for the builder
+	/// - Parameter generator: The QR code generator
+	/// - Returns: self
+	func generator(_ generator: any QRCodeEngine) -> QRCode.Builder {
+		self.document.qrcode.generator = generator
+		return self
+	}
+
 	/// Set the text to encode
 	/// - Parameters:
 	///   - text: The text
