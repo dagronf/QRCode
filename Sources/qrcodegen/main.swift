@@ -93,6 +93,9 @@ Examples:
 
 	// On Pixels
 
+	@Option(name: [.long], help: "Print all the available pixel shapes.")
+	var allPixelShapes: Bool?
+
 	@Option(name: [.customShort("d"), .long], help: "The onPixels shape to use. Available shapes are \(QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var onPixelShape: String?
 
@@ -110,6 +113,9 @@ Examples:
 
 	// Eye shape
 
+	@Option(name: [.long], help: "Print all the available eye shapes.")
+	var allEyeShapes: Bool?
+
 	@Option(name: [.customShort("e"), .long], help: "The eye shape to use. Available shapes are \(QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var eyeShape: String?
 
@@ -117,6 +123,9 @@ Examples:
 	var eyeShapeCornerRadius: Double?
 
 	// Pupil shape
+
+	@Option(name: [.long], help: "Print all the available pupil shapes.")
+	var allPupilShapes: Bool?
 
 	@Option(name: [.customShort("p"), .long], help: "The pupil shape to use. Available shapes are \(QRCodePupilShapeFactory.shared.availableGeneratorNames.joined(separator: ", ")).")
 	var pupilShape: String?
@@ -392,6 +401,24 @@ Examples:
 
 // Remove the application name
 let args = [String](CommandLine.arguments.dropFirst())
+
+if args.contains("--all-eye-shapes") {
+	let names = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: " ")
+	Swift.print(names)
+	QRCodeGen.exit()
+}
+
+if args.contains("--all-pixel-shapes") {
+	let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: " ")
+	Swift.print(names)
+	QRCodeGen.exit()
+}
+
+if args.contains("--all-pupil-shapes") {
+	let names = QRCodePupilShapeFactory.shared.availableGeneratorNames.joined(separator: " ")
+	Swift.print(names)
+	QRCodeGen.exit()
+}
 
 let command = QRCodeGen.parseOrExit(args)
 do {
