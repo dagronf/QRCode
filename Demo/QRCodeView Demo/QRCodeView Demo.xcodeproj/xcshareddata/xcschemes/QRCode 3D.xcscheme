@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "232C192E2BD63A680079E11E"
-               BuildableName = "3D QRCode.app"
-               BlueprintName = "3D QRCode"
+               BlueprintIdentifier = "23DA09C22BD9CF69009EDB38"
+               BuildableName = "QRCode 3D.app"
+               BlueprintName = "QRCode 3D"
                ReferencedContainer = "container:QRCodeView Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,13 +27,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:3D QRCode/3D QRCode.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -49,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "232C192E2BD63A680079E11E"
-            BuildableName = "3D QRCode.app"
-            BlueprintName = "3D QRCode"
+            BlueprintIdentifier = "23DA09C22BD9CF69009EDB38"
+            BuildableName = "QRCode 3D.app"
+            BlueprintName = "QRCode 3D"
             ReferencedContainer = "container:QRCodeView Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -66,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "232C192E2BD63A680079E11E"
-            BuildableName = "3D QRCode.app"
-            BlueprintName = "3D QRCode"
+            BlueprintIdentifier = "23DA09C22BD9CF69009EDB38"
+            BuildableName = "QRCode 3D.app"
+            BlueprintName = "QRCode 3D"
             ReferencedContainer = "container:QRCodeView Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
