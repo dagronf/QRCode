@@ -74,4 +74,16 @@ extension CGPath {
 	}
 }
 
+#if os(macOS)
+import AppKit.NSBezierPath
+func osPath(cgPath: CGPath) -> NSBezierPath {
+	return NSBezierPath(cgPath: cgPath)
+}
+#else
+import UIKit.NSBezierPath
+func osPath(cgPath: CGPath) -> UIBezierPath {
+	return UIBezierPath(cgPath: cgPath)
+}
+#endif
+
 #endif

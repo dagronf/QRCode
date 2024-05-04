@@ -54,16 +54,6 @@ struct QRCodePreviewView: UIViewRepresentable {
 }
 #endif
 
-#if os(macOS)
-func osPath(cgPath: CGPath) -> NSBezierPath {
-	return NSBezierPath(cgPath: cgPath)
-}
-#else
-func osPath(cgPath: CGPath) -> UIBezierPath {
-	return UIBezierPath(cgPath: cgPath)
-}
-#endif
-
 extension QRCodePreviewView {
 	class Coordinator {
 		init() { }
@@ -76,6 +66,8 @@ extension QRCodePreviewView {
 				self.configure()
 			}
 		}
+
+		private let extrusionDepth = 20.0
 
 		private var qrOnPupilShape: SCNShape?
 		private var qrEyeShape: SCNShape?
@@ -151,11 +143,11 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				let p = osPath(cgPath: mx)
-				let shape = SCNShape(path: p, extrusionDepth: 20)
+				let shape = SCNShape(path: p, extrusionDepth: extrusionDepth)
 				self.qrOnPupilShape = shape
 
 				let n = SCNNode(geometry: shape)
-				n.position = SCNVector3(x: -500, y: -500, z: 0)
+				n.position = SCNVector3(x: -500, y: -500, z: -extrusionDepth / 2)
 
 				scene.rootNode.addChildNode(n)
 			}
@@ -165,11 +157,11 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				let p = osPath(cgPath: mx)
-				let shape = SCNShape(path: p, extrusionDepth: 20)
+				let shape = SCNShape(path: p, extrusionDepth: extrusionDepth)
 				self.qrEyeShape = shape
 
 				let n = SCNNode(geometry: shape)
-				n.position = SCNVector3(x: -500, y: -500, z: 0)
+				n.position = SCNVector3(x: -500, y: -500, z: -extrusionDepth / 2)
 
 				scene.rootNode.addChildNode(n)
 			}
@@ -179,11 +171,11 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				let p = osPath(cgPath: mx)
-				let shape = SCNShape(path: p, extrusionDepth: 20)
+				let shape = SCNShape(path: p, extrusionDepth: extrusionDepth)
 				self.qrPupilShape = shape
 
 				let n = SCNNode(geometry: shape)
-				n.position = SCNVector3(x: -500, y: -500, z: 0)
+				n.position = SCNVector3(x: -500, y: -500, z: -extrusionDepth / 2)
 
 				scene.rootNode.addChildNode(n)
 			}
