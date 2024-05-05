@@ -326,7 +326,7 @@ You can provide an override to the default `EyeShape` pupil shape to change just
 If you don't override the pupil shape, it defaults to the eye shape's pupil shape.
 
 | Preview | Name | Class | Description |
-|:---:|---|---|---|
+|:-----:|-----|-----|-----|
 |<img src="./Art/images/pupil_square.png" width="30"/>           |"square"|`QRCode.PupilShape.Square`|Simple square (default)|
 |<img src="./Art/images/pupil_Circle.png" width="30"/>           |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
 |<img src="./Art/images/pupil_roundedRect.png" width="30"/>      |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
@@ -346,6 +346,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_teardrop.png" width="30" />        |"teardrop"|`QRCode.PixelShape.Teardrop` | A teardrop shape |
 |<img src="./Art/images/pupil_ufo.png" width="30" />             |"ufo"|`QRCode.PixelShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
 |<img src="./Art/images/pupil_cross.png" width="30"/>            |"cross"|`QRCode.PupilShape.Cross`| A cross |
+|<img src="./Art/images/pupil_crossCurved.png" width="30"/>      |"crossCurved"|`QRCode.PupilShape.CrossCurved`| A cross with curved insets |
 |<img src="./Art/images/pupil_pinch.png" width="30"/>            |"pinch"|`QRCode.PupilShape.Pinch`| A square pinched in at the sides |
 |                                                                |"usePixelShape"|`QRCode.PupilShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the pupils |
 

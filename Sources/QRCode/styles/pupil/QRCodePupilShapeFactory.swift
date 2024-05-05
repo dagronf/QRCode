@@ -33,6 +33,7 @@ import CoreGraphics
 			QRCode.PupilShape.Circle.self,
 			QRCode.PupilShape.CorneredPixels.self,
 			QRCode.PupilShape.Cross.self,
+			QRCode.PupilShape.CrossCurved.self,
 			QRCode.PupilShape.Edges.self,
 			QRCode.PupilShape.RoundedRect.self,
 			QRCode.PupilShape.RoundedPointingIn.self,
