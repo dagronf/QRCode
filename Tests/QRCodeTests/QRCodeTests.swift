@@ -438,11 +438,13 @@ final class QRCodeTests: XCTestCase {
 		let o1 = try im4.representation.png(dpi: 144.0)
 		try outputFolder.write(o1, to: "custom-pixelssample-4x4-36x36@2x.png")
 
-		#if os(iOS) || os(tvOS) || os(watchOS)
+		#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+		
 		// Convert to a @2x UIImage
 		let uii = try XCTUnwrap(UIImage(cgImage: im4, scale: 2, orientation: .up))
 		XCTAssertEqual(CGSize(dimension: 36), uii.size)
 		XCTAssertEqual(2, uii.scale)
+
 		#elseif os(macOS)
 		// Convert to a @2x NSImage
 
@@ -455,6 +457,7 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(nsi.representations.count, 1)
 		XCTAssertEqual(nsi.representations[0].pixelsWide, 72)
 		XCTAssertEqual(nsi.representations[0].pixelsHigh, 72)
+		
 		#endif
 	}
 

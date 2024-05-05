@@ -22,7 +22,7 @@
 // Basic document view for both AppKit/UIKit/tvOS. It provides no additional functionality.
 // If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 
 import UIKit
 

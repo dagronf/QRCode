@@ -27,7 +27,7 @@ import SwiftUI
 
 // MARK: - macOS/iOS/tvOS implementation
 
-#if os(macOS) || os(iOS) || os(tvOS)
+#if os(macOS) || os(iOS) || os(tvOS) || os(visionOS)
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
 /// A SwiftUI view for display the content of a QRCode.Document

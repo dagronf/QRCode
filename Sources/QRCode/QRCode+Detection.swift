@@ -110,7 +110,7 @@ public extension QRCode {
 	}
 }
 
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(visionOS)
 
 import UIKit
 public extension QRCode {

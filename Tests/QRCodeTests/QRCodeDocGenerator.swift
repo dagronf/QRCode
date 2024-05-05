@@ -35,7 +35,9 @@ let osstring: String = {
 	"iOS"
 #elseif os(tvOS)
 	"tvOS"
-	#endif
+#elseif os(visionOS)
+	"visionOS"
+#endif
 }()
 
 final class QRCodeDocGeneratorTests: XCTestCase {

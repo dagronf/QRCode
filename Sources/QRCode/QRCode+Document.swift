@@ -724,7 +724,7 @@ public extension QRCode.Document {
 		)
 	}
 
-#elseif os(iOS) || os(tvOS) || os(watchOS)
+#elseif os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 	/// Returns a platform specific representation of the qr code document
 	/// - Parameters:
 	///   - dimension: The pixel dimension of the image to generate

@@ -42,7 +42,7 @@ typealias DSFViewRepresentable = NSViewRepresentable
 extension NSView {
 	@inlinable func setNeedsDisplay() { self.needsDisplay = true }
 }
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(visionOS)
 public typealias DSFView = UIView
 @available(iOS 13.0, tvOS 13.0, *)
 typealias DSFViewRepresentable = UIViewRepresentable
@@ -99,7 +99,7 @@ public extension QRCode {
 }
 #endif
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 public extension QRCode {
 	/// Returns a UIImage representation of the qr code using the specified style
 	/// - Parameters:
