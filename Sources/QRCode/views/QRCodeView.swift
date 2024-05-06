@@ -102,7 +102,7 @@ import UIKit
 		self.rebuildQRCode()
 	}
 
-#if os(iOS) || os(visionOS) || os(tvOS)
+#if os(iOS)
 	public override func didMoveToWindow() {
 		super.didMoveToWindow()
 		if self.supportsDrag {
@@ -370,7 +370,7 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 }
 #endif
 
-#if os(iOS) || os(tvOS) || os(visionOS)
+#if os(iOS)
 
 extension QRCodeView: UIDragInteractionDelegate {
 	public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {

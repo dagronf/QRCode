@@ -37,12 +37,13 @@ import Foundation
 			QRCode.PixelShape.Vertical.self,
 			QRCode.PixelShape.Flower.self,
 			QRCode.PixelShape.Horizontal.self,
-			QRCode.PixelShape.RoundedPath.self,
 			QRCode.PixelShape.Pointy.self,
 			QRCode.PixelShape.CurvePixel.self,
+			QRCode.PixelShape.Razor.self,
+			QRCode.PixelShape.RoundedEndIndent.self,
+			QRCode.PixelShape.RoundedPath.self,
 			QRCode.PixelShape.Sharp.self,
 			QRCode.PixelShape.Star.self,
-			QRCode.PixelShape.RoundedEndIndent.self,
 			QRCode.PixelShape.Shiny.self,
 		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
