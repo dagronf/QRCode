@@ -67,24 +67,37 @@ public extension QRCode {
 		pasteboard: NSPasteboard = NSPasteboard.general
 	) {
 		pasteboard.clearContents()
-		if let pdfData = self.pdfData(size, pdfResolution: dpi, design: design, logoTemplate: logoTemplate) {
+
+		do {
+			let pdfData = try self.pdfData(size, pdfResolution: dpi, design: design, logoTemplate: logoTemplate)
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
+		catch {
+		}
 
-		if let tiffData = self.tiffData(size, dpi: dpi, design: design, logoTemplate: logoTemplate) {
+		do {
+			let tiffData = try self.tiffData(size, dpi: dpi, design: design, logoTemplate: logoTemplate)
 			pasteboard.setData(tiffData, forType: .tiff)
 		}
-
-		if let pngData = self.pngData(size, dpi: dpi, design: design, logoTemplate: logoTemplate) {
-			pasteboard.setData(pngData, forType: .png)
+		catch {
 		}
 
-		if let svgData = self.svgData(
-			dimension: Int(size.width.rounded(.towardZero)),
-			design: design,
-			logoTemplate: logoTemplate
-		) {
+		do {
+			let pngData = try self.pngData(size, dpi: dpi, design: design, logoTemplate: logoTemplate)
+			pasteboard.setData(pngData, forType: .png)
+		}
+		catch {
+		}
+
+		do {
+			let svgData = try self.svgData(
+				dimension: Int(size.width.rounded(.towardZero)),
+				design: design,
+				logoTemplate: logoTemplate
+			)
 			pasteboard.setData(svgData, forType: NSPasteboard.PasteboardType(rawValue: "public.svg-image"))
+		}
+		catch {
 		}
 	}
 
@@ -123,12 +136,18 @@ public extension QRCode {
 		pasteboard: UIPasteboard = UIPasteboard.general
 	) {
 		pasteboard.items = []
-		if let pdfData = self.pdfData(size, pdfResolution: dpi, design: design, logoTemplate: logoTemplate) {
+		do {
+			let pdfData = try self.pdfData(size, pdfResolution: dpi, design: design, logoTemplate: logoTemplate)
 			pasteboard.setData(pdfData, forPasteboardType: String("com.adobe.pdf"))
 		}
+		catch {
+		}
 
-		if let pngData = self.pngData(size, dpi: dpi, design: design, logoTemplate: logoTemplate) {
+		do {
+			let pngData = try self.pngData(size, dpi: dpi, design: design, logoTemplate: logoTemplate)
 			pasteboard.setData(pngData, forPasteboardType: String("public.png"))
+		}
+		catch {
 		}
 	}
 #endif

@@ -41,19 +41,11 @@ public extension CGImage {
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Shape? = nil,
 		style: QRCode.Style? = nil
-	) -> CGImage? {
-		guard 
-			let doc = QRCode.Document(
-				text,
-				textEncoding: textEncoding,
-				errorCorrection: errorCorrection
-			)
-		else {
-			return nil
-		}
+	) throws -> CGImage {
+		let doc = try QRCode.Document(text, textEncoding: textEncoding, errorCorrection: errorCorrection)
 		if let shape = shape { doc.design.shape = shape }
 		if let style = style { doc.design.style = style }
-		return doc.cgImage(dimension: dimension)
+		return try doc.cgImage(dimension: dimension)
 	}
 
 	/// Create a CGImage containing a qr code
@@ -71,11 +63,11 @@ public extension CGImage {
 		backgroundColor: CGColor? = nil,
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Style? = nil
-	) -> CGImage? {
+	) throws -> CGImage {
 		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
 		doc.design.foregroundColor(foregroundColor)
 		doc.design.backgroundColor(backgroundColor)
-		return doc.cgImage(dimension: dimension)
+		return try doc.cgImage(dimension: dimension)
 	}
 }
 

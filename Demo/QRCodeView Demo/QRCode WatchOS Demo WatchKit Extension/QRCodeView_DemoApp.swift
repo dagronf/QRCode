@@ -14,7 +14,7 @@ class testing {
 		document.errorCorrection = .quantize
 		document.data = "Generating a QR Code using watchOS".data(using: .utf8)!
 
-		let generatedImage = document.uiImage(CGSize(width: 400, height: 400))!
+		let generatedImage = try! document.uiImage(CGSize(width: 400, height: 400))
 		Swift.print(generatedImage)
 	}
 }

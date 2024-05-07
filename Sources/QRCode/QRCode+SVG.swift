@@ -240,8 +240,11 @@ public extension QRCode {
 		dimension: Int,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> Data? {
+	) throws -> Data {
 		let str = self.svg(dimension: dimension, design: design, logoTemplate: logoTemplate)
-		return str.data(using: .utf8, allowLossyConversion: false)
+		guard let data = str.data(using: .utf8, allowLossyConversion: false) else {
+			throw QRCodeError.unableToConvertTextToRequestedEncoding
+		}
+		return data
 	}
 }

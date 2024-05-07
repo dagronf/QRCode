@@ -187,10 +187,10 @@ doc.design.foregroundColor(CGColor.blue)
 let path = doc.path(CGSize(width: 400, height: 400))
 
 // Generate an image using the default styling (square, black foreground, white background) with 3x resolution
-let image = doc.uiImage(CGSize(width: 400, height: 400), dpi: 216)
+let image = try doc.uiImage(CGSize(width: 400, height: 400), dpi: 216)
 
 // Generate pdf data containing the qr code
-let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
+let pdfdata = try doc.pdfData(CGSize(width: 400, height: 400))
 
 // Save a JSON representation of the qrcode document
 let jsonData = try doc.jsonData()
@@ -230,7 +230,7 @@ let image = try QRCode.build
 ### Set the QR code's encoded content
 
 ```swift
-let doc = QRCode.Document()
+let doc = QRCode.Document("This is a test")
 
 // Setting raw data
 doc.data = Data(...)
@@ -415,7 +415,7 @@ doc1.design.style.offPixels = QRCode.FillStyle.Solid(NSColor.systemGreen.withAlp
 doc1.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
 // Generate a image for the QRCode
-let cgImage = doc1.cgImage(CGSize(width: 300, height: 300))
+let cgImage = try doc1.cgImage(CGSize(width: 300, height: 300))
 ```
 
 </details>
@@ -450,7 +450,7 @@ doc2.design.style.pupil = QRCode.FillStyle.Solid(NSColor.systemBlue.cgColor)
 doc2.design.style.onPixels = QRCode.FillStyle.Solid(NSColor.systemBrown.cgColor)
 
 // Generate a image for the QRCode
-let cgImage = doc2.cgImage(CGSize(width: 300, height: 300))
+let cgImage = try doc2.cgImage(CGSize(width: 300, height: 300))
 ```
 
 </details>
@@ -486,7 +486,7 @@ let radial = QRCode.FillStyle.RadialGradient(
 doc3.design.style.onPixels = radial
 
 // Generate a image for the QRCode
-let cgImage = doc3.cgImage(CGSize(width: 300, height: 300))
+let cgImage = try doc3.cgImage(CGSize(width: 300, height: 300))
 ```
 
 </details>
@@ -604,7 +604,7 @@ doc.logoTemplate = QRCode.LogoTemplate(
    image: UIImage(named: "square-logo")?.cgImage
 )
 
-let qrCodeWithLogo = doc.nsImage(dimension: 300)
+let qrCodeWithLogo = try doc.nsImage(dimension: 300)
 ```
 
 generates
@@ -622,7 +622,7 @@ doc.logoTemplate = QRCode.LogoTemplate(
    inset: 8
 )
 let image = NSImage(named: "instagram-icon")!
-let qrCodeWithLogo = doc.uiImage(dimension: 300, image: image)
+let qrCodeWithLogo = try doc.uiImage(dimension: 300, image: image)
 ```
 
 generates
@@ -647,7 +647,7 @@ By default, the quiet zone is set to 0 pixels.
 let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
 doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 doc.design.additionalQuietZonePixels = 4
-let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
+let qrcodeImage = try doc.cgImage(CGSize(width: 300, height: 300))
 ```
 
 ## Background Corner Radius
@@ -669,7 +669,7 @@ doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
 doc.design.additionalQuietZonePixels = 2
 doc.design.style.backgroundFractionalCornerRadius = 3.0
-let qrcodeImage = doc.cgImage(CGSize(width: 300, height: 300))
+let qrcodeImage = try doc.cgImage(CGSize(width: 300, height: 300))
 ```
 
 <a href="./Art/images/corner-radius-example.png"><img src="./Art/images/corner-radius-example.png" width="150"/></a>
@@ -718,19 +718,19 @@ let qrcodePath = CGPath.qrCode("This is a test!!!", dimension: 800)
 ### Generating a styled image
 
 ```swift
-@objc func cgImage(_ size: CGSize, dpi: CGFloat = 72.0) -> CGImage?
+@objc func cgImage(_ size: CGSize, dpi: CGFloat = 72.0) throws -> CGImage
 ```
 
 Generate an CGImage from the QR Code, using an (optional) design object for styling the QR code
 
 ```swift
-@objc func nsImage(_ size: CGSize, dpi: CGFloat = 72.0) -> NSImage?
+@objc func nsImage(_ size: CGSize, dpi: CGFloat = 72.0) throws -> NSImage
 ```
 
 *(macOS only)* Generate an NSImage from the QR Code, using an (optional) design object for styling the QR code
 
 ```swift
-@objc func uiImage(_ size: CGSize, dpi: CGFloat = 72.0) -> UIImage?
+@objc func uiImage(_ size: CGSize, dpi: CGFloat = 72.0) throws -> UIImage
 ```
 
 *(iOS/tvOS/watchOS/macCatalyst only)* Generate an UIImage from the QR Code, using an (optional) design object for styling the QR code
@@ -738,7 +738,7 @@ Generate an CGImage from the QR Code, using an (optional) design object for styl
 ### Generate a styled, scalable PDF representation of the QR Code
 
 ```swift
-@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat) -> Data?
+@objc func pdfData(_ size: CGSize, pdfResolution: CGFloat) throws -> Data
 ```
 
 Generate a scalable PDF from the QRCode using an (optional) design object for styling the QR code and resolution

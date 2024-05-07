@@ -84,9 +84,9 @@ extension QRCodeFillStyleGenerator {
 	///   - height: The image height
 	///   - isFlipped: Flip the image
 	/// - Returns: The image
-	public func makeImage(width: Int, height: Int, isFlipped: Bool = false) -> CGImage? {
+	public func makeImage(width: Int, height: Int, isFlipped: Bool = false) throws -> CGImage {
 		let sz = CGSize(width: width, height: height)
-		return CGImage.Create(size: sz, flipped: isFlipped) { ctx in
+		return try CGImage.Create(size: sz, flipped: isFlipped) { ctx in
 			self.fill(ctx: ctx, rect: CGRect(origin: .zero, size: sz))
 		}
 	}
@@ -96,8 +96,8 @@ extension QRCodeFillStyleGenerator {
 	///   - dimension: The dimension of the resulting image
 	///   - isFlipped: Flip the image
 	/// - Returns: The image
-	public func makeImage(dimension: Int, isFlipped: Bool = false) -> CGImage? {
-		self.makeImage(width: dimension, height: dimension, isFlipped: isFlipped)
+	public func makeImage(dimension: Int, isFlipped: Bool = false) throws -> CGImage {
+		try self.makeImage(width: dimension, height: dimension, isFlipped: isFlipped)
 	}
 }
 

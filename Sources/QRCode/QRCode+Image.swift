@@ -36,8 +36,8 @@ public extension QRCode {
 		dimension: Int,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> CGImage? {
-		self.cgImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate)
+	) throws -> CGImage {
+		try self.cgImage(CGSize(dimension: dimension), design: design, logoTemplate: logoTemplate)
 	}
 
 	/// Returns a CGImage representation of the qr code using the specified style
@@ -49,7 +49,7 @@ public extension QRCode {
 		_ size: CGSize,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> CGImage? {
+	) throws -> CGImage {
 		let width = Int(size.width)
 		let height = Int(size.height)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -64,7 +64,7 @@ public extension QRCode {
 			bitmapInfo: bitmapInfo.rawValue
 		)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		context.scaleBy(x: 1, y: -1)
@@ -73,7 +73,9 @@ public extension QRCode {
 		// Draw the qr with the required styles
 		self.draw(ctx: context, rect: CGRect(origin: .zero, size: size), design: design, logoTemplate: logoTemplate)
 
-		let im = context.makeImage()
+		guard let im = context.makeImage() else {
+			throw QRCodeError.cannotGenerateImage
+		}
 		return im
 	}
 }
@@ -92,8 +94,8 @@ public extension QRCode {
 		pdfResolution: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> Data? {
-		self.pdfData(
+	) throws -> Data {
+		try self.pdfData(
 			CGSize(dimension: dimension),
 			pdfResolution: pdfResolution,
 			design: design,
@@ -113,9 +115,9 @@ public extension QRCode {
 		pdfResolution: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> Data? {
+	) throws -> Data {
 		// Create a PDF context with a single page, and draw into that
-		return UsingSinglePagePDFContext(size: size, pdfResolution: pdfResolution) { ctx, drawRect in
+		return try UsingSinglePagePDFContext(size: size, pdfResolution: pdfResolution) { ctx, drawRect in
 
 			// Need to flip the PDF context as it begins at the bottom right. We want top left.
 			let af = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: drawRect.height)
@@ -142,13 +144,8 @@ public extension QRCode {
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> Data? {
-		return self.pngData(
-			CGSize(dimension: dimension),
-			dpi: dpi,
-			design: design,
-			logoTemplate: logoTemplate
-		)
+	) throws -> Data {
+		try self.pngData(CGSize(dimension: dimension), dpi: dpi, design: design, logoTemplate: logoTemplate)
 	}
 
 	/// Return a PNG representation of the QR code
@@ -163,11 +160,9 @@ public extension QRCode {
 		dpi: CGFloat = 72,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> Data? {
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
-			return try? image.representation.png(dpi: dpi)
-		}
-		return nil
+	) throws -> Data {
+		let image = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
+		return try image.representation.png(dpi: dpi)
 	}
 }
 
@@ -188,8 +183,8 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		compression: Double = .infinity
-	) -> Data? {
-		return self.tiffData(
+	) throws -> Data {
+		try self.tiffData(
 			CGSize(dimension: dimension),
 			dpi: dpi,
 			design: design,
@@ -211,12 +206,10 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		compression: Double = .infinity
-	) -> Data? {
+	) throws -> Data {
 		let compression: CGFloat? = (compression == .infinity) ? nil : compression
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
-			return try? image.representation.tiff(dpi: dpi, compression: compression)
-		}
-		return nil
+		let image = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
+		return try image.representation.tiff(dpi: dpi, compression: compression)
 	}
 }
 
@@ -237,8 +230,8 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		compression: Double = .infinity
-	) -> Data? {
-		return self.jpegData(
+	) throws -> Data {
+		try self.jpegData(
 			CGSize(dimension: dimension),
 			dpi: dpi,
 			design: design,
@@ -261,11 +254,9 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		compression: Double = .infinity
-	) -> Data? {
+	) throws -> Data {
 		let compression: CGFloat? = (compression == .infinity) ? nil : compression
-		if let image = self.cgImage(size, design: design, logoTemplate: logoTemplate) {
-			return try? image.representation.jpeg(dpi: dpi, compression: compression)
-		}
-		return nil
+		let image = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
+		return try image.representation.jpeg(dpi: dpi, compression: compression)
 	}
 }

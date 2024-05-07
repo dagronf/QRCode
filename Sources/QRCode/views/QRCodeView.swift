@@ -303,7 +303,7 @@ extension QRCodeView {
 
 			// Generate drag representation
 			let sz = CGSize(width: 128, height: 128)
-			let image = self._document.nsImage(sz, dpi: 144)
+			let image = try? self._document.nsImage(sz, dpi: 144)
 
 			draggingItem.setDraggingFrame(CGRect(origin: .zero, size: sz), contents: image)
 
@@ -329,15 +329,15 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 		}
 
 		if type == .pdf {
-			let pdfData = self._document.pdfData(self.dragImageSize)
+			let pdfData = try? self._document.pdfData(self.dragImageSize)
 			pasteboard.setData(pdfData, forType: .pdf)
 		}
 		else if type == .tiff,
-			let imageData = self._document.nsImage(self.dragImageSize, dpi: 144)?.tiffRepresentation {
+			let imageData = try? self._document.nsImage(self.dragImageSize, dpi: 144).tiffRepresentation {
 			pasteboard.setData(imageData, forType: .tiff)
 		}
 		else if type == .png,
-			let pngdata = self._document.nsImage(self.dragImageSize, dpi: 144)?.pngRepresentation() {
+			let pngdata = try? self._document.nsImage(self.dragImageSize, dpi: 144).pngRepresentation() {
 			pasteboard.setData(pngdata, forType: .png)
 		}
 		else if type == PasteboardFilePromiseContent {
@@ -355,7 +355,7 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 			// Make sure we have a unique name for the dropped file
 			let dest = FileManager.UniqueFileURL(for: "Dropped QRCode.pdf", in: destinationFolderURL)
 			
-			let pdfData = self._document.pdfData(self.dragImageSize)
+			let pdfData = try? self._document.pdfData(self.dragImageSize)
 			do {
 				try pdfData?.write(to: dest, options: .atomic)
 
@@ -374,7 +374,9 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 
 extension QRCodeView: UIDragInteractionDelegate {
 	public func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-		let qrCodeData = QRCodeItemProvider(document: self._document, size: self.dragImageSize)
+		guard let qrCodeData = try? QRCodeItemProvider(document: self._document, size: self.dragImageSize) else {
+			return []
+		}
 		return [UIDragItem(itemProvider: NSItemProvider(object: qrCodeData))]
 	}
 }
@@ -395,11 +397,11 @@ internal class QRCodeItemProvider: NSObject, NSItemProviderWriting {
 		return nil
 	}
 
-	let pdfData: Data?
-	let pngData: Data?
-	init(document: QRCode.Document, size: CGSize) {
-		self.pdfData = document.pdfData(size)
-		self.pngData = document.uiImage(size)?.pngData()
+	let pdfData: Data
+	let pngData: Data
+	init(document: QRCode.Document, size: CGSize) throws {
+		self.pdfData = try document.pdfData(size)
+		self.pngData = try document.uiImage(size).pngData() ?? Data()
 		super.init()
 	}
 }

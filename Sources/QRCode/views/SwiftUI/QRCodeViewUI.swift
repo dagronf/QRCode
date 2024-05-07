@@ -78,7 +78,7 @@ public struct QRCodeViewUI: View {
 #if DEBUG
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6, *)
-let __logoTemplate = CGColor(red: 1, green: 0, blue: 0, alpha: 1).swatch()!
+let __logoTemplate = try! CGColor(red: 1, green: 0, blue: 0, alpha: 1).swatch()
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6, *)
 struct QRCodeViewUI_Previews: PreviewProvider {

@@ -30,31 +30,31 @@ final class QRCodeTests: XCTestCase {
 
 			// Generate png
 			do {
-				let image = try XCTUnwrap(qrcode.cgImage(dimension: 300))
+				let image = try qrcode.cgImage(dimension: 300)
 				let data = try image.representation.png()
 				let _ = try outputFolder.write(data, to: "basic-generation-\(generator.name).png")
 			}
 
 			// Generate pdf
 			do {
-				let pdfData = try XCTUnwrap(qrcode.pdfData(dimension: 300))
+				let pdfData = try qrcode.pdfData(dimension: 300)
 				let _ = try outputFolder.write(pdfData, to: "basic-generation-\(generator.name).pdf")
 			}
 
 			// Generate svg
 			do {
-				let svgData = try XCTUnwrap(qrcode.svgData(dimension: 300))
+				let svgData = try qrcode.svgData(dimension: 300)
 				let _ = try outputFolder.write(svgData, to: "basic-generation-\(generator.name).svg")
 			}
 
 			// Generate path
 			do {
 				let path = qrcode.path(dimension: 300)
-				let image = CGImage.Create(dimension: 300, flipped: true) { ctx in
+				let image = try CGImage.Create(dimension: 300, flipped: true) { ctx in
 					ctx.addPath(path)
 					ctx.setFillColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
 					ctx.fillPath()
-				}!
+				}
 				let data = try image.representation.png()
 				let _ = try outputFolder.write(data, to: "basic-generation-path-\(generator.name).png")
 			}
@@ -131,7 +131,7 @@ final class QRCodeTests: XCTestCase {
 			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
 			doc.design.backgroundColor(CGColor.commonClear)
 			doc.design.foregroundColor(CGColor.commonWhite)
-			let image = doc.cgImage(CGSize(width: 800, height: 800))
+			let image = try doc.cgImage(CGSize(width: 800, height: 800))
 			let _ = try XCTUnwrap(image)
 		}
 	}
@@ -151,7 +151,7 @@ final class QRCodeTests: XCTestCase {
 		doc.design.shape.offPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1)
 		doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0.9)
 
-		let cgi = doc.cgImage(dimension: 600)!
+		let cgi = try doc.cgImage(dimension: 600)
 		Swift.print(cgi)
 		#if os(macOS)
 		let nsi = NSImage(cgImage: cgi, size: CGSize(dimension: 300))
@@ -162,12 +162,12 @@ final class QRCodeTests: XCTestCase {
 	#if canImport(CoreImage)
 	func testDiff() throws {
 		let g1 = QRCode.Document(utf8String: "This is a test", errorCorrection: .high)
-		let i1 = g1.cgImage(.init(width: 300, height: 300))!
+		let i1 = try g1.cgImage(.init(width: 300, height: 300))
 		let g2 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
-		let i2 = g2.cgImage(.init(width: 300, height: 300))!
+		let i2 = try g2.cgImage(.init(width: 300, height: 300))
 		let g3 = QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
 		g3.design.backgroundColor(CGColor.gray(1, 0.9))
-		let i3 = g3.cgImage(.init(width: 300, height: 300))!
+		let i3 = try g3.cgImage(.init(width: 300, height: 300))
 
 		do {
 			// Check exact match
@@ -531,4 +531,12 @@ final class QRCodeTests: XCTestCase {
 		}
 	}
 	#endif
+
+	func testBasicGeneration() throws {
+
+		let code = try QRCode.Document("https://wildcaretas.org.au/tasmanian-nature-conservation-fund-grants/")
+
+		let png = try code.cgImage(dimension: 300).representation.png(scale: 2)
+		try outputFolder.write(png, to: "basic-qrcode-no-styling.png")
+	}
 }

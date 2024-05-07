@@ -52,7 +52,7 @@ final class QRCodeSVGTests: XCTestCase {
 			XCTAssertTrue(svg1.contains("fill=\"#ff00ff\""))
 			try outputFolder.write(svg1, to: "solidFillGeneration.svg")
 
-			let image = code.platformImage(dimension: 300, dpi: 144)!
+			let image = try code.platformImage(dimension: 300, dpi: 144)
 			let data = image.pngRepresentation()!
 			try outputFolder.write(data, to: "solidFillGeneration.png")
 		}
@@ -92,7 +92,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let svg1 = code.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportLinearFill.svg")
 
-		let image = code.platformImage(dimension: 300, dpi: 144)!
+		let image = try code.platformImage(dimension: 300, dpi: 144)
 		let data = image.pngRepresentation()!
 		try outputFolder.write(data, to: "svgExportLinearFill.png")
 	}
@@ -127,7 +127,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let svg1 = code.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportRadialFill.svg")
 
-		let image = code.platformImage(dimension: 300, dpi: 144)!
+		let image = try code.platformImage(dimension: 300, dpi: 144)
 		let data = image.pngRepresentation()!
 		try outputFolder.write(data, to: "svgExportRadialFill.png")
 	}

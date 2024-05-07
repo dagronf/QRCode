@@ -720,7 +720,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		// Do all first
 
 		do {
-			let image = CGImage.Create(size: rect.size, flipped: true) { ctx in
+			let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
 				ctx.saveGState()
 				ctx.setFillColor(CGColor.gray(0, 0.05))
 				ctx.fill([rect])
@@ -737,7 +737,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				}
 			}//.flipping(.horizontally)
 
-			let content = try XCTUnwrap(image?.representation.png())
+			let content = try image.representation.png()
 			let filename = "components-all.png"
 			let link = try imageStore.store(content, filename: filename)
 			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
@@ -747,7 +747,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		for item in items.enumerated() {
 			let path = doc.path(dimension: dimension, components: item.element.0)
-			let image = CGImage.Create(size: rect.size, flipped: true) { ctx in
+			let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
 				ctx.saveGState()
 				ctx.setFillColor(CGColor.gray(0, 0.05))
 				ctx.fill([rect])
@@ -761,7 +761,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				ctx.fillPath()
 			}
 
-			let content = try XCTUnwrap(image?.representation.png())
+			let content = try image.representation.png()
 			let filename = "components-\(item.offset).png"
 			let link = try imageStore.store(content, filename: filename)
 			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
@@ -795,7 +795,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|\(name)|"
 
 			for item in items.enumerated() {
-				let image = CGImage.Create(size: rect.size, flipped: true) { ctx in
+				let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
 					ctx.saveGState()
 					ctx.setFillColor(CGColor.gray(0, 0.05))
 					ctx.fill([rect])
@@ -830,7 +830,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					ctx.restoreGState()
 				}//.flipping(.horizontally)
 
-				let content = try XCTUnwrap(image?.representation.png())
+				let content = try image.representation.png()
 				let filename = "onpathcheck-\(name)-\(item.offset).png"
 				let link = try imageStore.store(content, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a>|"

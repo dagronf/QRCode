@@ -348,7 +348,7 @@ struct QRCodeShape_Previews: PreviewProvider {
 
 				let logoTemplate1: QRCode.LogoTemplate = {
 					QRCode.LogoTemplate(
-						image: CGColor(gray: 0.5, alpha: 1).swatch()!,
+						image: try! CGColor(gray: 0.5, alpha: 1).swatch(),
 						path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
 						inset: 0
 					)
@@ -356,7 +356,7 @@ struct QRCodeShape_Previews: PreviewProvider {
 
 				let logoTemplate2: QRCode.LogoTemplate = {
 					QRCode.LogoTemplate(
-						image: CGColor(gray: 0.2, alpha: 1).swatch()!,
+						image: try! CGColor(gray: 0.2, alpha: 1).swatch(),
 						path: CGPath(rect: CGRect(x: 0.40, y: 0.60, width: 0.55, height: 0.30), transform: nil),
 						inset: 0
 					)

@@ -44,7 +44,7 @@ class ViewController: NSViewController {
 			)
 			doc.logoTemplate = logoTemplate
 
-			let pdfData = doc.pdfData(dimension: 512)!
+			let pdfData = try! doc.pdfData(dimension: 512)
 			try! pdfData.write(to: URL(string: "file:///tmp/output.pdf")!)
 
 			let svg = doc.svg(dimension: 512)
@@ -118,7 +118,7 @@ class ViewController: NSViewController {
 			let ssss = doc.svg(dimension: 512)
 			try! ssss.write(to: URL(string: "file:///tmp/logotype3.svg")!, atomically: true, encoding: .utf8)
 
-			let ssss2 = doc.pdfData(dimension: 512)!
+			let ssss2 = try! doc.pdfData(dimension: 512)
 			try! ssss2.write(to: URL(string: "file:///tmp/logotype3.pdf")!)
 		}
 	}

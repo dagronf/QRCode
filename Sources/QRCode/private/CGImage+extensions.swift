@@ -111,12 +111,12 @@ extension CGImage {
 
 extension CGImage {
 	/// Create a CGImage and draw onto it
-	static func Create(dimension: Int, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) -> CGImage? {
-		Self.Create(size: .init(dimension: dimension), flipped: flipped, drawBlock)
+	static func Create(dimension: Int, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) throws -> CGImage {
+		try Self.Create(size: .init(dimension: dimension), flipped: flipped, drawBlock)
 	}
 
 	/// Create a CGImage and draw onto it
-	static func Create(size: CGSize, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) -> CGImage? {
+	static func Create(size: CGSize, flipped: Bool = false, _ drawBlock: (CGContext) -> Void) throws -> CGImage {
 		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 		guard
 			let space = CGColorSpace(name: CGColorSpace.sRGB),
@@ -130,7 +130,7 @@ extension CGImage {
 				bitmapInfo: bitmapInfo.rawValue
 			)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		if flipped {
@@ -140,14 +140,17 @@ extension CGImage {
 
 		drawBlock(ctx)
 
-		return ctx.makeImage()
+		guard let image = ctx.makeImage() else {
+			throw QRCodeError.cannotGenerateImage
+		}
+		return image
 	}
 }
 
 extension CGColor {
 	/// Create a CGImage containing a color
-	func swatch(size: CGSize = .init(width: 100, height: 100)) -> CGImage? {
-		return CGImage.Create(size: size) { ctx in
+	func swatch(size: CGSize = .init(width: 100, height: 100)) throws -> CGImage {
+		try CGImage.Create(size: size) { ctx in
 			ctx.saveGState()
 			ctx.setFillColor(self)
 			ctx.fill([CGRect(origin: .zero, size: size)])

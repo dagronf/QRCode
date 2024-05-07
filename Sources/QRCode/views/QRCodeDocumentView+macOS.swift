@@ -119,7 +119,7 @@ private extension QRCodeDocumentView {
 		// Generate the image on a background thread to make the UI more responsive
 		let workItem = DispatchWorkItem { [weak self] in
 			if
-				let data = document?.pdfData(dimension: 512),
+				let data = try? document?.pdfData(dimension: 512),
 				let image = NSImage(data: data)
 			{
 				self?.updateDisplay(with: image)

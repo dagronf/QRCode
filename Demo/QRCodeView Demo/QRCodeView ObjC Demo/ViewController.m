@@ -40,7 +40,7 @@
 	[document setLogoTemplate:templ];
 
 	// Generate the image (with a 216dpi resolution)
-	CGImageRef image = [document cgImage: CGSizeMake(900, 900)];
+	CGImageRef image = [document cgImage: CGSizeMake(900, 900) error: nil];
 	NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeMake(300, 300)];
 	NSLog(@"Image -> %@", nsImage);
 }

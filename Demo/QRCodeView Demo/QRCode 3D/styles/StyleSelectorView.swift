@@ -78,6 +78,11 @@ struct StyleSelectorView: View {
 		}
 		.frame(minHeight: 28)
 
+		.onChange(of: fillStyleSelector) { newValue in
+			if newValue == 0 {
+				styleDidChange(QRCode.FillStyle.Solid(CGColor(gray: 0, alpha: 0)))
+			}
+		}
 		.onChange(of: solid) { newValue in
 			styleDidChange(QRCode.FillStyle.Solid(solid.cgColor ?? CGColor(gray: 0, alpha: 1)))
 		}

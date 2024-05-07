@@ -9,8 +9,8 @@ final class QRCodeWatchOSTests: XCTestCase {
 
 	func testBasic() throws {
 		do {
-			let doc = QRCode.Document(
-				utf8String: "Hi there from external generator (watchOS)",
+			let doc = try QRCode.Document(
+				"Hi there from external generator (watchOS)",
 				errorCorrection: .high,
 				generator: QRCodeGenerator_External()
 			)
@@ -21,8 +21,7 @@ final class QRCodeWatchOSTests: XCTestCase {
 
 			try outputFolder.write(svg, to: "BasicCreateWatchImage.svg")
 
-			let image = doc.uiImage(dimension: 800)!
-			let data = image.pngRepresentation()!
+			let data = try XCTUnwrap(doc.uiImage(dimension: 800).pngData())
 			try outputFolder.write(data, to: "BasicCreateWatchImage.png")
 		}
 	}

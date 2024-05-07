@@ -73,12 +73,12 @@ final class QRCodeImageFillTests: XCTestCase {
 		doc.design.style.pupil = pupilImage
 		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
-		let im1 = try XCTUnwrap(doc.platformImage(dimension: 600))
+		let im1 = try doc.platformImage(dimension: 600)
 		Swift.print(im1)
 
 		let encoded = try doc.jsonData()
-		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: encoded, generator: QRCodeGenerator_External()))
-		let im2 = try XCTUnwrap(doc2.platformImage(dimension: 600))
+		let doc2 = try QRCode.Document.init(jsonData: encoded, generator: QRCodeGenerator_External())
+		let im2 = try doc2.platformImage(dimension: 600)
 		Swift.print(im2)
 	}
 }

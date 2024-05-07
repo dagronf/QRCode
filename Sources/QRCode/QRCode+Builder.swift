@@ -580,10 +580,7 @@ public extension QRCode.Builder.Generate {
 	/// - Parameter dimension: The dimension of the resulting image
 	/// - Returns: The image
 	@discardableResult func image(dimension: Int) throws -> CGImage {
-		guard let result = builder.document.cgImage(dimension: dimension) else {
-			throw QRCode.Builder.BuilderError.cannotCreate
-		}
-		return result
+		try builder.document.cgImage(dimension: dimension)
 	}
 
 	/// Generate an image with a specifed format
@@ -607,25 +604,14 @@ public extension QRCode.Builder.Generate {
 		dimension: Int,
 		pdfResolution: CGFloat = 72.0
 	) throws -> Data {
-		guard
-			let result = builder.document.pdfData(
-				dimension: dimension,
-				pdfResolution: pdfResolution
-			)
-		else {
-			throw QRCode.Builder.BuilderError.cannotCreate
-		}
-		return result
+		try builder.document.pdfData(dimension: dimension, pdfResolution: pdfResolution)
 	}
 
 	/// Generate an SVG representation
 	/// - Parameter dimension: The dimension of the resulting svg
 	/// - Returns: SVG data
 	@discardableResult func svg(dimension: Int) throws -> Data {
-		guard let result = builder.document.svgData(dimension: dimension) else {
-			throw QRCode.Builder.BuilderError.cannotCreate
-		}
-		return result
+		try builder.document.svgData(dimension: dimension)
 	}
 }
 
@@ -654,4 +640,14 @@ public extension QRCode.Builder.Generate {
 		UIBezierPath(cgPath: self.path(dimension: dimension))
 	}
 	#endif
+}
+
+// MARK: ASCII
+
+public extension QRCode.Builder.Generate {
+	/// An ascii representation for the QR code
+	var asciiRepresentation: String { builder.document.asciiRepresentation }
+
+	/// A compact ascii representation for the QR code
+	var smallAsciiRepresentation: String { builder.document.smallAsciiRepresentation }
 }

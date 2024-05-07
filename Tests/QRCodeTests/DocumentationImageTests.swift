@@ -487,7 +487,7 @@ final class DocumentationImageTests: XCTestCase {
 			let svg = doc.svg(dimension: 200)
 			try outputFolder.write(svg, to: "qrcode-with-basic-logo.svg")
 
-			let pdfData = doc.pdfData(dimension: 200)!
+			let pdfData = try doc.pdfData(dimension: 200)
 			try outputFolder.write(pdfData, to: "qrcode-with-basic-logo.pdf")
 		}
 	}
@@ -509,10 +509,10 @@ final class DocumentationImageTests: XCTestCase {
 		let data = try XCTUnwrap(cg1.representation.jpeg(dpi: 144, compression: 0.65))
 		try outputFolder.write(data, to: "beach-peacock.jpg")
 
-		let pdfData = doc.pdfData(dimension: 300)!
+		let pdfData = try doc.pdfData(dimension: 300)
 		try outputFolder.write(pdfData, to: "beach-peacock.pdf")
 
-		let svgData = doc.svgData(dimension: 300)!
+		let svgData = try doc.svgData(dimension: 300)
 		try outputFolder.write(svgData, to: "beach-peacock.svg")
 	}
 }

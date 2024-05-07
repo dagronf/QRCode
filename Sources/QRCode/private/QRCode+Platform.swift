@@ -70,7 +70,7 @@ extension UIImage {
 
 extension CGImage {
 	/// Generate an platform-specific image
-	func platformImage() -> DSFImage? {
+	func platformImage() -> DSFImage {
 		DSFImage(cgImage: self)
 	}
 }
@@ -90,8 +90,8 @@ public extension QRCode {
 		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> NSImage? {
-		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
+	) throws -> NSImage {
+		let qrImage = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
 		let dpid = size * (72.0 / dpi)
 		let image = NSImage(cgImage: qrImage, size: dpid)
 		return image
@@ -112,10 +112,9 @@ public extension QRCode {
 		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
-	) -> UIImage? {
-		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
-		let im = UIImage(cgImage: qrImage, scale: (dpi / 72.0), orientation: .up)
-		return im
+	) throws -> UIImage {
+		let qrImage = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
+		return UIImage(cgImage: qrImage, scale: (dpi / 72.0), orientation: .up)
 	}
 }
 #endif
@@ -135,9 +134,9 @@ public extension QRCode {
 		dpi: CGFloat = 72.0,
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		label: Text) -> SwiftUI.Image?
+		label: Text) throws -> SwiftUI.Image
 	{
-		guard let qrImage = self.cgImage(size, design: design, logoTemplate: logoTemplate) else { return nil }
+		let qrImage = try self.cgImage(size, design: design, logoTemplate: logoTemplate)
 		return SwiftUI.Image(qrImage, scale: dpi / 72.0, label: label)
 	}
 }

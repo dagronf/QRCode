@@ -43,11 +43,9 @@ extension AppDelegate {
 		assert(!path.isEmpty)
 
 		// Generate an image using the default styling (square, black foreground, white background) with 3x resolution
-		let image = doc.uiImage(CGSize(width: 400, height: 400), dpi: 216)
-		assert(image != nil)
+		let image = try! doc.uiImage(CGSize(width: 400, height: 400), dpi: 216)
 
 		// Generate pdf data containing the qr code
-		let pdfdata = doc.pdfData(CGSize(width: 400, height: 400))
-		assert(pdfdata != nil)
+		let pdfdata = try! doc.pdfData(CGSize(width: 400, height: 400))
 	}
 }
