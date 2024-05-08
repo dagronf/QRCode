@@ -19,7 +19,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let t = QRCode.LogoTemplate(image: image, path: p)
 			code.logoTemplate = t
 
-			let svg = code.svg(dimension: 600)
+			let svg = try code.svg(dimension: 600)
 			try outputFolder.write(svg, to: "testBasicMask1.svg")
 
 			let image = try code.platformImage(dimension: 300, dpi: 144)
@@ -32,7 +32,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let t = QRCode.LogoTemplate(image: image, path: p)
 			code.logoTemplate = t
 
-			let svg = code.svg(dimension: 600)
+			let svg = try code.svg(dimension: 600)
 			try outputFolder.write(svg, to: "testBasicMask2.svg")
 
 			let image = try code.platformImage(dimension: 300, dpi: 144)
@@ -104,7 +104,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
 			try outputFolder.write(data2, to: "logo-lower-right-logo-larger.png")
 
-			let str = code.svg(dimension: 512)
+			let str = try code.svg(dimension: 512)
 			try outputFolder.write(str, to: "logo-lower-right-logo-larger.svg")
 		}
 
@@ -150,7 +150,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
 			try outputFolder.write(data2, to: "logo-rectangular-non-centered-large.png")
 
-			let str = code.svg(dimension: 3000)
+			let str = try code.svg(dimension: 3000)
 			try outputFolder.write(str, to: "logo-rectangular-non-centered-large.svg")
 		}
 	}

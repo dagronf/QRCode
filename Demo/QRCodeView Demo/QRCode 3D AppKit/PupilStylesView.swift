@@ -32,11 +32,11 @@ class PupilStylesView: Element {
 	private lazy var body: Element =
 		VStack {
 			Flow(minimumInteritemSpacing: 1, minimumLineSpacing: 1, ForEach(allPupilStyles.wrappedValue, { item in
-				let image = QRCodePupilShapeFactory.shared.image(
+				let image = try! QRCodePupilShapeFactory.shared.image(
 					pupilGenerator: item,
 					dimension: 80,
 					foregroundColor: NSColor.textColor.cgColor
-				)!
+				)
 				return Button(
 					image: NSImage(cgImage: image, size: .init(width: 40, height: 40)),
 					type: .onOff,

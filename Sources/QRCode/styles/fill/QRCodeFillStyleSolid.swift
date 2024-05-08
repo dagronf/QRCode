@@ -38,12 +38,14 @@ public extension QRCode.FillStyle {
 		/// Create a Solid fill style using the provided settings dictionary
 		/// - Parameter settings: The settings dictionary
 		/// - Returns: A solid fill style object
-		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
-			if let c = settings["color"] as? String,
-				let g = CGColor.UnarchiveSRGBA(c) {
-				return QRCode.FillStyle.Solid(g)
+		@objc public static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
+			guard
+				let c = settings["color"] as? String,
+				let g = CGColor.UnarchiveSRGBA(c) 
+			else {
+				throw QRCodeError.cannotCreateGenerator
 			}
-			return nil
+			return QRCode.FillStyle.Solid(g)
 		}
 
 		/// Create with a color
@@ -89,8 +91,10 @@ public extension QRCode.FillStyle {
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.Solid {
-	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
-		guard let fill = self.color.hexRGBCode() else { return nil }
+	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
+		guard let fill = self.color.hexRGBCode() else {
+			throw QRCodeError.unsupportedColor
+		}
 		return QRCode.FillStyle.SVGDefinition(
 			styleAttribute: "fill=\"\(fill)\" fill-opacity=\"\(self.color.alpha)\"",
 			styleDefinition: nil

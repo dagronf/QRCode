@@ -1,5 +1,5 @@
 //
-//  QRCode+Error.swift
+//  QRCodeFillStyleFactory.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -19,16 +19,39 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
-public enum QRCodeError: Error {
-	case cannotGenerateQRCode
-	case unableToConvertTextToRequestedEncoding
-	case cannotGenerateImage
-	case noGeneratorSet
-	case noImageSet
-	case cannotCreateGenerator
-	case unsupportedGeneratorName
-	case unsupportedColor
+private let FillStyleTypeName = "type"
+private let FillStyleSettingsName = "settings"
+
+public class QRCodeFillStyleFactory {
+	/// A shared fill style factory
+	public static let shared = QRCodeFillStyleFactory()
+
+	/// The names of the known fill style generators
+	@objc public var knownTypes: [String] {
+		QRCodeFillStyleFactory.registeredTypes.map { $0.Name }
+	}
+
+	@objc public func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
+		guard
+			let type = settings[FillStyleTypeName] as? String else {
+			throw QRCodeError.cannotCreateGenerator
+		}
+
+		let sets = settings[FillStyleSettingsName] as? [String: Any] ?? [:]
+		guard let f = QRCodeFillStyleFactory.registeredTypes.first(where: { $0.Name == type }) else {
+			throw QRCodeError.cannotCreateGenerator
+		}
+		return try f.Create(settings: sets)
+	}
+
+	// private
+
+	private static var registeredTypes: [any QRCodeFillStyleGenerator.Type] = [
+		QRCode.FillStyle.Solid.self,
+		QRCode.FillStyle.LinearGradient.self,
+		QRCode.FillStyle.RadialGradient.self,
+		QRCode.FillStyle.Image.self
+	]
 }

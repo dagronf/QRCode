@@ -51,7 +51,7 @@ public extension QRCode {
 	/// Get the fill style generator name
 	@objc static var Name: String { get }
 	/// Create a fill style generator using the specified settings
-	static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)?
+	static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator)
 	/// Make a copy of the style
 	@objc func copyStyle() -> any QRCodeFillStyleGenerator
 	/// Returns the current settings for the style generator
@@ -61,7 +61,7 @@ public extension QRCode {
 	/// Fill the specified path with the current style settings
 	func fill(ctx: CGContext, rect: CGRect, path: CGPath)
 	/// Returns an SVG fill definition object for the fill style
-	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition?
+	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition
 }
 
 private let FillStyleTypeName = "type"
@@ -100,30 +100,3 @@ extension QRCodeFillStyleGenerator {
 		try self.makeImage(width: dimension, height: dimension, isFlipped: isFlipped)
 	}
 }
-
-// MARK: Fill factory
-
-public class QRCodeFillStyleFactory {
-	public static var registeredTypes: [any QRCodeFillStyleGenerator.Type] = [
-		QRCode.FillStyle.Solid.self,
-		QRCode.FillStyle.LinearGradient.self,
-		QRCode.FillStyle.RadialGradient.self,
-		QRCode.FillStyle.Image.self
-	]
-
-	@objc public var knownTypes: [String] {
-		QRCodeFillStyleFactory.registeredTypes.map { $0.Name }
-	}
-
-	@objc public func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
-		guard let type = settings[FillStyleTypeName] as? String else { return nil }
-
-		let sets = settings[FillStyleSettingsName] as? [String: Any] ?? [:]
-		guard let f = QRCodeFillStyleFactory.registeredTypes.first(where: { $0.Name == type }) else {
-			return nil
-		}
-		return f.Create(settings: sets)
-	}
-}
-
-public let FillStyleFactory = QRCodeFillStyleFactory()

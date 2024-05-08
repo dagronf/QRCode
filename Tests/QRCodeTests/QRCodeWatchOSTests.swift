@@ -15,7 +15,7 @@ final class QRCodeWatchOSTests: XCTestCase {
 				generator: QRCodeGenerator_External()
 			)
 
-			let svg = doc.svg(dimension: 800)
+			let svg = try doc.svg(dimension: 800)
 
 			XCTAssertEqual(3, svg.termCount("fill=\"#000000\""))
 

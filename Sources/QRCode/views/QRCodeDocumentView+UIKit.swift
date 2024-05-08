@@ -1,5 +1,5 @@
 //
-//  QRCodeDocumentView.swift
+//  QRCodeDocumentView+UIKit.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -19,7 +19,7 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Basic document view for both AppKit/UIKit/tvOS. It provides no additional functionality.
+// Basic document view for UIKit. It provides no additional functionality.
 // If you want built-in drag/drop, pasteboard support and customising settings use QRCodeView instead.
 
 #if os(iOS) || os(tvOS) || os(visionOS)

@@ -28,15 +28,23 @@ struct CommonSettingsView: View {
 	@State var negate: Bool = false
 	@State var correction: QRCode.ErrorCorrection = .quantize
 
+	@State var generator: Int = 0
+
 	var body: some View {
 		Form {
 			TextField("text", text: $text)
-			Picker("error correction", selection: $correction) {
-				Text("Low").tag(QRCode.ErrorCorrection.low)
-				Text("Medium").tag(QRCode.ErrorCorrection.medium)
-				Text("Quantize").tag(QRCode.ErrorCorrection.quantize)
-				Text("High").tag(QRCode.ErrorCorrection.high)
+			Picker("correction", selection: $correction) {
+				Text("low").tag(QRCode.ErrorCorrection.low)
+				Text("medium").tag(QRCode.ErrorCorrection.medium)
+				Text("quantize").tag(QRCode.ErrorCorrection.quantize)
+				Text("high").tag(QRCode.ErrorCorrection.high)
 			}
+			Divider()
+			Picker("generator", selection: $generator) {
+				Text("core image").tag(0)
+				Text("external").tag(1)
+			}
+			Divider()
 			Slider(value: $quietSpace, in: 0 ... 10, step: 1) {
 				Text("quiet space")
 			}
@@ -79,6 +87,14 @@ struct CommonSettingsView: View {
 		}
 		.onChange(of: cornerRadius) { newValue in
 			document.qrcode.design.style.backgroundFractionalCornerRadius = newValue
+			document.objectWillChange.send()
+		}
+		.onChange(of: generator) { newValue in
+			switch newValue {
+			case 0: document.qrcode.generator = nil
+			case 1: document.qrcode.generator = QRCodeGenerator_External()
+			default: fatalError()
+			}
 			document.objectWillChange.send()
 		}
 	}

@@ -109,7 +109,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let ctc = try XCTUnwrap(c.color.sRGBAComponents())
 		let core = c.coreSettings()
 
-		let st: QRCode.FillStyle.Solid = try XCTUnwrap(FillStyleFactory.Create(settings: core) as? QRCode.FillStyle.Solid)
+		let st: QRCode.FillStyle.Solid = try XCTUnwrap(QRCodeFillStyleFactory.shared.Create(settings: core) as? QRCode.FillStyle.Solid)
 		XCTAssertEqual(st.color.alpha, c.color.alpha)
 		let stc = try XCTUnwrap(st.color.sRGBAComponents())
 
@@ -132,7 +132,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 		let core = c.coreSettings()
 
-		let st: QRCode.FillStyle.RadialGradient = try XCTUnwrap(FillStyleFactory.Create(settings: core) as? QRCode.FillStyle.RadialGradient)
+		let st: QRCode.FillStyle.RadialGradient = try XCTUnwrap(QRCodeFillStyleFactory.shared.Create(settings: core) as? QRCode.FillStyle.RadialGradient)
 		XCTAssertEqual(0.2, st.centerPoint.x, accuracy: 0.0001)
 		XCTAssertEqual(0.8, st.centerPoint.y, accuracy: 0.0001)
 		XCTAssertEqual(c.gradient.pins.count, st.gradient.pins.count)

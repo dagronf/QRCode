@@ -95,7 +95,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testGenerateEyeShapeDocumentationImages() throws {
 		// Eye sample images
-		let eyeShapes = QRCodeEyeShapeFactory.shared.generateSampleImages(
+		let eyeShapes = try QRCodeEyeShapeFactory.shared.generateSampleImages(
 			dimension: imageSize * 2,
 			foregroundColor: .commonBlack,
 			backgroundColor: CGColor.gray(0.9)
@@ -113,7 +113,7 @@ final class DocumentationImageTests: XCTestCase {
 			QRCode.SettingsKey.insetFraction: 0.1,
 			QRCode.SettingsKey.cornerRadiusFraction: 0.75
 		]
-		let pixelShapes = QRCodePixelShapeFactory.shared.generateSampleImages(
+		let pixelShapes = try QRCodePixelShapeFactory.shared.generateSampleImages(
 			dimension: imageSize * 2,
 			foregroundColor: .commonBlack,
 			backgroundColor: CGColor.gray(0.9),
@@ -128,7 +128,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testGeneratePupilShapeDocumentationImages() throws {
 		// Pupil sample images
-		let pupilShapes = QRCodePupilShapeFactory.shared.generateSampleImages(
+		let pupilShapes = try QRCodePupilShapeFactory.shared.generateSampleImages(
 			dimension: imageSize * 2,
 			foregroundColor: .commonBlack,
 			backgroundColor: CGColor.gray(0.9)
@@ -364,7 +364,7 @@ final class DocumentationImageTests: XCTestCase {
 			d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
 			d.design.style.offPixelsBackground = CGColor.sRGBA(0, 0, 0, 0.2)
 
-			let svg = d.svg(dimension: 600)
+			let svg = try d.svg(dimension: 600)
 			try outputFolder.write(svg, to: "svgExportPixelBackgroundColors.svg")
 		}
 
@@ -419,7 +419,7 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
 			// Generate the image
-			let svg = doc.svg(dimension: 300)
+			let svg = try doc.svg(dimension: 300)
 			try outputFolder.write(svg, to: "wwf.svg")
 		}
 
@@ -484,7 +484,7 @@ final class DocumentationImageTests: XCTestCase {
 				inset: 4
 			)
 
-			let svg = doc.svg(dimension: 200)
+			let svg = try doc.svg(dimension: 200)
 			try outputFolder.write(svg, to: "qrcode-with-basic-logo.svg")
 
 			let pdfData = try doc.pdfData(dimension: 200)

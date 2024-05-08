@@ -34,12 +34,14 @@ internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 	private let context = CIContext()
 	private let filter = CIFilter(name: "CIQRCodeGenerator")!
 
-	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
-		guard let data = text.data(using: .utf8) else { return nil }
-		return self.generate(data: data, errorCorrection: errorCorrection)
+	@objc func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
+		guard let data = text.data(using: .utf8) else {
+			throw QRCodeError.unableToConvertTextToRequestedEncoding
+		}
+		return try self.generate(data: data, errorCorrection: errorCorrection)
 	}
 
-	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	@objc func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
 		self.filter.setValue(data, forKey: "inputMessage")
 		self.filter.setValue(errorCorrection.ECLevel, forKey: "inputCorrectionLevel")
 
@@ -47,7 +49,7 @@ internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 			let outputImage = filter.outputImage,
 			let qrImage = context.createCGImage(outputImage, from: outputImage.extent)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		let w = qrImage.width
@@ -55,9 +57,9 @@ internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 		let colorspace = CGColorSpaceCreateDeviceGray()
 
 		var rawData = [UInt8](repeating: 0, count: w * h)
-		rawData.withUnsafeMutableBytes { rawBufferPointer in
+		try rawData.withUnsafeMutableBytes { rawBufferPointer in
 			let rawPtr = rawBufferPointer.baseAddress!
-			let context = CGContext(
+			guard let context = CGContext(
 				data: rawPtr,
 				width: w,
 				height: h,
@@ -66,7 +68,10 @@ internal class QRCodeGenerator_CoreImage: QRCodeEngine {
 				space: colorspace,
 				bitmapInfo: 0
 			)
-			context?.draw(qrImage, in: CGRect(x: 0, y: 0, width: w, height: h))
+			else {
+				throw QRCodeError.cannotGenerateImage
+			}
+			context.draw(qrImage, in: CGRect(x: 0, y: 0, width: w, height: h))
 		}
 
 		return BoolMatrix(dimension: w, flattened: rawData.map { $0 == 0 ? true : false })

@@ -229,14 +229,16 @@ Examples:
 			if let cf = eyeShapeCornerRadius {
 				settings[QRCode.SettingsKey.cornerRadiusFraction] = cf
 			}
-
-			guard let shape = QRCodeEyeShapeFactory.shared.named(name, settings: settings) else {
+			
+			do {
+				design.shape.eye = try QRCodeEyeShapeFactory.shared.named(name, settings: settings)
+			}
+			catch {
 				Swift.print("Unknown eye style '\(name)'.")
 				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 				Swift.print("Available eye styles are \(known)")
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
-			design.shape.eye = shape
 		}
 
 		if let cf = eyeShapeCornerRadius {
@@ -246,13 +248,15 @@ Examples:
 		// Pupil shape
 
 		if let name = pupilShape {
-			guard let shape = QRCodePupilShapeFactory.shared.named(name) else {
+			do {
+				design.shape.pupil = try QRCodePupilShapeFactory.shared.named(name)
+			}
+			catch {
 				Swift.print("Unknown pupil style '\(name)'.")
 				let known = QRCodeEyeShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 				Swift.print("Available pupil styles are \(known)")
 				QRCodeGen.exit(withError: ExitCode(-2))
 			}
-			design.shape.pupil = shape
 		}
 
 		if let cf = pupilShapeCornerRadius {
@@ -273,13 +277,15 @@ Examples:
 			settings[QRCode.SettingsKey.hasInnerCorners] = v
 		}
 
-		guard let shape = QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings) else {
+		do {
+			design.shape.onPixels = try QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings)
+		}
+		catch {
 			Swift.print("Unknown 'onPixels' style '\(dataShapeName)'.")
 			let known = QRCodePixelShapeFactory.shared.availableGeneratorNames.joined(separator: ",")
 			Swift.print("Available 'onPixels' styles are \(known)")
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}
-		design.shape.onPixels = shape
 
 		// Error correction
 
@@ -374,8 +380,8 @@ Examples:
 			}
 
 		case .svg:
-			let str = qrCode.svg(dimension: Int(outputSize.width), design: design, logoTemplate: logoTemplate)
 			do {
+				let str = try qrCode.svg(dimension: Int(outputSize.width), design: design, logoTemplate: logoTemplate)
 				try str.write(to: outURL, atomically: true, encoding: .utf8)
 			}
 			catch {

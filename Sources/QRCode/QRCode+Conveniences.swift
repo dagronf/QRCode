@@ -28,6 +28,28 @@ public extension CGImage {
 	/// Create a CGImage containing a qr code
 	/// - Parameters:
 	///   - text: The text to encode in the qr code
+	///   - dimension: The size in pixels of the output image
+	///   - foregroundColor: The foreground color
+	///   - foregroundColor: The background color, or nil for default
+	///   - errorCorrection: The error correction
+	/// - Returns: The image representation of the qr code, or nil if an error occurred
+	static func qrCode(
+		_ text: String,
+		dimension: Int,
+		foregroundColor: CGColor,
+		backgroundColor: CGColor? = nil,
+		errorCorrection: QRCode.ErrorCorrection = .high,
+		shape: QRCode.Style? = nil
+	) throws -> CGImage {
+		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
+		doc.design.foregroundColor(foregroundColor)
+		doc.design.backgroundColor(backgroundColor)
+		return try doc.cgImage(dimension: dimension)
+	}
+
+	/// Create a CGImage containing a qr code
+	/// - Parameters:
+	///   - text: The text to encode in the qr code
 	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - dimension: The size in pixels of the output image
 	///   - errorCorrection: The error correction
@@ -47,46 +69,28 @@ public extension CGImage {
 		if let style = style { doc.design.style = style }
 		return try doc.cgImage(dimension: dimension)
 	}
-
-	/// Create a CGImage containing a qr code
-	/// - Parameters:
-	///   - text: The text to encode in the qr code
-	///   - dimension: The size in pixels of the output image
-	///   - foregroundColor: The foreground color
-	///   - foregroundColor: The background color, or nil for default
-	///   - errorCorrection: The error correction
-	/// - Returns: The image representation of the qr code, or nil if an error occurred
-	static func qrCode(
-		_ text: String,
-		dimension: Int,
-		foregroundColor: CGColor,
-		backgroundColor: CGColor? = nil,
-		errorCorrection: QRCode.ErrorCorrection = .high,
-		shape: QRCode.Style? = nil
-	) throws -> CGImage {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
-		doc.design.foregroundColor(foregroundColor)
-		doc.design.backgroundColor(backgroundColor)
-		return try doc.cgImage(dimension: dimension)
-	}
 }
 
 public extension CGPath {
 	/// Simple convenience for creating a CGPath representation of a qr code
 	/// - Parameters:
 	///   - text: The text to encode in the qr code
+	///   - textEncoding: The text encoding to use (eg. .utf8)
+	///   - components: The components of the qr code to generate (default all)
 	///   - dimension: The size in pixels of the output image
 	///   - errorCorrection: The error correction
 	///   - shape: The shape to use, or nil for default
 	/// - Returns: The path representation of the qr code, or nil if an error occurred
 	static func qrCode(
 		_ text: String,
+		textEncoding: String.Encoding = .utf8,
 		dimension: Int,
+		components: QRCode.Components = .all,
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Shape? = nil
-	) -> CGPath? {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
+	) throws -> CGPath {
+		let doc = try QRCode.Document(text, textEncoding: textEncoding, errorCorrection: errorCorrection)
 		if let shape = shape { doc.design.shape = shape }
-		return doc.path(dimension: dimension)
+		return doc.path(dimension: dimension, components: components)
 	}
 }

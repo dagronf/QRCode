@@ -84,7 +84,7 @@ extension QRCodePreviewView {
 			guard let qrcode = document else { return }
 			do {
 				// background
-				let bgi = qrcode.design.style.background?.makeImage(dimension: 1000, isFlipped: true)
+				let bgi = try? qrcode.design.style.background?.makeImage(dimension: 1000, isFlipped: true)
 				qrBackgroundPlane?.materials.first?.diffuse.contents = bgi ?? CGColor(gray: 0, alpha: 0)
 				qrBackgroundPlane?.cornerRadius = qrcode.design.style.backgroundFractionalCornerRadius * 1000
 			}
@@ -94,7 +94,7 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				qrOnPupilShape?.path = osPath(cgPath: mx)
-				qrOnPupilShape?.materials.first?.diffuse.contents = qrcode.design.style.onPixels.makeImage(dimension: 1000, isFlipped: true)
+				qrOnPupilShape?.materials.first?.diffuse.contents = try? qrcode.design.style.onPixels.makeImage(dimension: 1000, isFlipped: true)
 			}
 			do {
 				// Eye
@@ -102,7 +102,7 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				qrEyeShape?.path = osPath(cgPath: mx)
-				qrEyeShape?.materials.first?.diffuse.contents = qrcode.design.style.actualEyeStyle.makeImage(dimension: 1000, isFlipped: true)
+				qrEyeShape?.materials.first?.diffuse.contents = try? qrcode.design.style.actualEyeStyle.makeImage(dimension: 1000, isFlipped: true)
 			}
 			do {
 				// Pupil
@@ -110,7 +110,7 @@ extension QRCodePreviewView {
 				let mx = CGMutablePath()
 				mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 				qrPupilShape?.path = osPath(cgPath: mx)
-				qrPupilShape?.materials.first?.diffuse.contents = qrcode.design.style.actualPupilStyle.makeImage(dimension: 1000, isFlipped: true)
+				qrPupilShape?.materials.first?.diffuse.contents = try? qrcode.design.style.actualPupilStyle.makeImage(dimension: 1000, isFlipped: true)
 			}
 		}
 

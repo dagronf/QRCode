@@ -14,7 +14,6 @@ import DSFValueBinders
 import DSFMenuBuilder
 
 class CommonSettingsView: Element {
-
 	init(qrCode: Observable<QRCode.Document>, _ updateBlock: @escaping () -> Void ) {
 		self.qrCodeObject = qrCode
 		self.updateBlock = updateBlock
@@ -32,46 +31,66 @@ class CommonSettingsView: Element {
 	override func view() -> NSView { return self.body.view() }
 	lazy var body: Element =
 	VStack {
-		HStack {
-			Label("Text:").font(.callout)
+		HStack(alignment: .firstBaseline) {
+			Label("text:").font(.callout)
 			TextField(qrText)
+				.height(72)
+				.width(250)
 		}
-		HStack {
-			Label("Quiet space:").font(.callout)
-			Slider(quietSpacePixels, range: 0.0 ... 10.0)
+		.hugging(h: 1)
+
+		Grid {
+			GridRow {
+				Label("error correction:").font(.callout)
+				PopupButton {
+					MenuItem("Low")
+					MenuItem("Medium")
+					MenuItem("Quantize")
+					MenuItem("High")
+				}
 				.controlSize(.small)
-				.numberOfTickMarks(9, allowsTickMarkValuesOnly: true)
-				.horizontalCompressionResistancePriority(.defaultHigh)
-		}
-		HStack {
-			Label("Corner radius:").font(.callout)
-			Slider(backgroundCornerRadius, range: 0.0 ... 1.0)
-				.controlSize(.small)
-				.horizontalCompressionResistancePriority(.defaultHigh)
-		}
-		HStack {
-			Label("Negate:").font(.callout)
-			Toggle()
-				.controlSize(.small)
-				.bindOnOff(negatePixels)
-			EmptyView()
-		}
-		HStack(alignment: .centerY) {
-			Label("Error Correction:").font(.callout)
-			PopupButton {
-				MenuItem("Low")
-				MenuItem("Medium")
-				MenuItem("Quantize")
-				MenuItem("High")
+				.bindSelection(self.errorCorrection.transform { $0.rawValue })
+				.onChange { popupIndex in
+					self.errorCorrection.wrappedValue = QRCode.ErrorCorrection(rawValue: popupIndex)!
+				}
 			}
-			.bindSelection(self.errorCorrection.transform { $0.rawValue })
-			.onChange { popupIndex in
-				self.errorCorrection.wrappedValue = QRCode.ErrorCorrection(rawValue: popupIndex)!
+
+			GridRow {
+				Label("generator:").font(.callout)
+				PopupButton {
+					MenuItem("core image")
+					MenuItem("external")
+				}
+				.controlSize(.small)
+				.bindSelection(generatorSelection)
+				.horizontalHuggingPriority(.init(1))
 			}
-			EmptyView()
+
+			GridRow {
+				Label("quiet space:").font(.callout)
+				Slider(quietSpacePixels, range: 0.0 ... 10.0)
+					.controlSize(.small)
+					.numberOfTickMarks(9, allowsTickMarkValuesOnly: true)
+					.horizontalCompressionResistancePriority(.defaultHigh)
+			}
+			GridRow {
+				Label("corner radius:").font(.callout)
+				Slider(backgroundCornerRadius, range: 0.0 ... 1.0)
+					.controlSize(.small)
+					.horizontalCompressionResistancePriority(.defaultHigh)
+			}
+			GridRow {
+				Label("negate:").font(.callout)
+				Toggle()
+					.controlSize(.small)
+					.bindOnOff(negatePixels)
+			}
 		}
+		.columnFormatting(xPlacement: .trailing, atColumn: 0)
+		.rowSpacing(6)
 	}
 	.edgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+	.hugging(h: 10)
 
 	private func update() {
 		self.updateBlock()
@@ -112,6 +131,15 @@ class CommonSettingsView: Element {
 
 	private lazy var errorCorrection: ValueBinder<QRCode.ErrorCorrection> = .init(.high) { newValue in
 		_ = self.qrCode.errorCorrection = newValue
+		self.update()
+	}
+
+	private lazy var generatorSelection = ValueBinder<Int>(0) { newValue in
+		switch newValue {
+		case 0: self.qrCode.generator = nil
+		case 1: self.qrCode.generator = QRCodeGenerator_External()
+		default: fatalError()
+		}
 		self.update()
 	}
 }

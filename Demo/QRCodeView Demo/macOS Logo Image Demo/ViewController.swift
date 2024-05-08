@@ -47,12 +47,12 @@ class ViewController: NSViewController {
 			let pdfData = try! doc.pdfData(dimension: 512)
 			try! pdfData.write(to: URL(string: "file:///tmp/output.pdf")!)
 
-			let svg = doc.svg(dimension: 512)
+			let svg = try! doc.svg(dimension: 512)
 			try! svg.write(to: URL(string: "file:///tmp/output.svg")!, atomically: true, encoding: .utf8)
 
 			qrcodeView.document = doc
 
-			let ssss = doc.svg(dimension: 512)
+			let ssss = try! doc.svg(dimension: 512)
 			try! ssss.write(to: URL(string: "file:///tmp/logotype1.svg")!, atomically: true, encoding: .utf8)
 
 			try! doc.jsonData().write(to: URL(string: "file:///tmp/logotype1.jsontemplate")!)
@@ -78,7 +78,7 @@ class ViewController: NSViewController {
 
 			qrcodeView2.document = doc
 
-			let ssss = doc.svg(dimension: 512)
+			let ssss = try! doc.svg(dimension: 512)
 			try! ssss.write(to: URL(string: "file:///tmp/logotype2.svg")!, atomically: true, encoding: .utf8)
 		}
 
@@ -115,7 +115,7 @@ class ViewController: NSViewController {
 
 			qrcodeView3.document = doc
 
-			let ssss = doc.svg(dimension: 512)
+			let ssss = try! doc.svg(dimension: 512)
 			try! ssss.write(to: URL(string: "file:///tmp/logotype3.svg")!, atomically: true, encoding: .utf8)
 
 			let ssss2 = try! doc.pdfData(dimension: 512)

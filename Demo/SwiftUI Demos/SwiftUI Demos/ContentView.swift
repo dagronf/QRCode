@@ -96,14 +96,14 @@ struct ItemView: View {
 	var body: some View {
 		VStack {
 			Text("Example of using the SwiftUI shape component")
-			QRCodeShape(
+			try! QRCodeShape(
 				text: "Wombling, wombling happy time",
 				errorCorrection: .high,
 				shape: QRCode.Shape(
 					onPixels: QRCode.PixelShape.RoundedPath(),
 					eye: QRCode.EyeShape.Leaf()
 				)
-			)!
+			)
 			.fill(.blue) //.shadow(.drop(color: .gray, radius: 3, x: 2, y: 2)))
 			.aspectRatio(contentMode: .fit)
 			.rotation3DEffect(.degrees(xdegrees), axis: (x: 0, y: 1, z: 0))

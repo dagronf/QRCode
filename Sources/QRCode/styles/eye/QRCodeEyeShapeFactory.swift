@@ -29,58 +29,62 @@ import Foundation
 
 	/// Create
 	@objc override public init() {
-		self.registeredTypes = [
-			QRCode.EyeShape.Circle.self,
-			QRCode.EyeShape.Edges.self,
-			QRCode.EyeShape.RoundedRect.self,
-			QRCode.EyeShape.RoundedPointingIn.self,
-			QRCode.EyeShape.Squircle.self,
-			QRCode.EyeShape.RoundedOuter.self,
-			QRCode.EyeShape.Square.self,
-			QRCode.EyeShape.Leaf.self,
-			QRCode.EyeShape.BarsVertical.self,
-			QRCode.EyeShape.BarsHorizontal.self,
-			QRCode.EyeShape.Pixels.self,
-			QRCode.EyeShape.CorneredPixels.self,
-			QRCode.EyeShape.RoundedPointingOut.self,
-			QRCode.EyeShape.Shield.self,
-			QRCode.EyeShape.UsePixelShape.self,
-			QRCode.EyeShape.Teardrop.self,
-			QRCode.EyeShape.Fireball.self,
-			QRCode.EyeShape.Peacock.self,
-			QRCode.EyeShape.UFO.self,
-			QRCode.EyeShape.Pinch.self,
-		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
 
+	/// The available eye shape generator names
 	@objc public var availableGeneratorNames: [String] {
-		self.registeredTypes.map { $0.Name }.sorted()
+		self.registeredTypes.map { $0.Name }
+	}
+
+	/// Return all of the eye generators (with default settings) in name sorted order
+	@objc public func all() -> [any QRCodeEyeShapeGenerator] {
+		self.registeredTypes.map { $0.Create(nil) }
 	}
 
 	/// Return a new instance of an eye shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> (any QRCodeEyeShapeGenerator)? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) throws -> (any QRCodeEyeShapeGenerator) {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
-			return nil
+			throw QRCodeError.unsupportedGeneratorName
 		}
 		return f.Create(settings)
 	}
 
 	/// Create an eye shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> (any QRCodeEyeShapeGenerator)? {
-		guard let type = settings[EyeShapeTypeName_] as? String else { return nil }
+	@objc public func create(settings: [String: Any]) throws -> (any QRCodeEyeShapeGenerator) {
+		guard let type = settings[EyeShapeTypeName_] as? String else {
+			throw QRCodeError.cannotCreateGenerator
+		}
 		let settings = settings[EyeShapeSettingsName_] as? [String: Any] ?? [:]
-		return self.named(type, settings: settings)
-	}
-
-	/// Return all of the eye generators
-	@objc public func all() -> [any QRCodeEyeShapeGenerator] {
-		self.registeredTypes.map { $0.Create(nil) }
+		return try self.named(type, settings: settings)
 	}
 
 	// Private
 
-	internal var registeredTypes: [any QRCodeEyeShapeGenerator.Type]
+	// The registered eye shapes in name sorted order
+	private let registeredTypes: [any QRCodeEyeShapeGenerator.Type] = [
+		QRCode.EyeShape.Circle.self,
+		QRCode.EyeShape.Edges.self,
+		QRCode.EyeShape.RoundedRect.self,
+		QRCode.EyeShape.RoundedPointingIn.self,
+		QRCode.EyeShape.Squircle.self,
+		QRCode.EyeShape.RoundedOuter.self,
+		QRCode.EyeShape.Square.self,
+		QRCode.EyeShape.Leaf.self,
+		QRCode.EyeShape.BarsVertical.self,
+		QRCode.EyeShape.BarsHorizontal.self,
+		QRCode.EyeShape.Pixels.self,
+		QRCode.EyeShape.CorneredPixels.self,
+		QRCode.EyeShape.RoundedPointingOut.self,
+		QRCode.EyeShape.Shield.self,
+		QRCode.EyeShape.UsePixelShape.self,
+		QRCode.EyeShape.Teardrop.self,
+		QRCode.EyeShape.Fireball.self,
+		QRCode.EyeShape.Peacock.self,
+		QRCode.EyeShape.UFO.self,
+		QRCode.EyeShape.Pinch.self,
+	].sorted(by: { a, b in a.Title < b.Title })
+
 }
 
 public extension QRCodeEyeShapeFactory {
@@ -98,7 +102,7 @@ public extension QRCodeEyeShapeFactory {
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil
-	) -> CGImage? {
+	) throws -> CGImage {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -113,7 +117,7 @@ public extension QRCodeEyeShapeFactory {
 			bitmapInfo: bitmapInfo.rawValue
 		)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		// fill the background color
@@ -150,7 +154,9 @@ public extension QRCodeEyeShapeFactory {
 		context.setFillColor(foregroundColor)
 		context.fillPath()
 
-		let im = context.makeImage()
+		guard let im = context.makeImage() else {
+			throw QRCodeError.cannotGenerateImage
+		}
 		return im
 	}
 }
@@ -168,22 +174,16 @@ public extension QRCodeEyeShapeFactory {
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil,
 		isOn: Bool = true
-	) -> [(name: String, image: CGImage)] {
-		QRCodeEyeShapeFactory.shared.availableGeneratorNames
-			.sorted()
-			.compactMap { name in
-				guard
-					let eyeGenerator = QRCodeEyeShapeFactory.shared.named(name),
-					let eyeImage = QRCodeEyeShapeFactory.shared.image(
-						eyeGenerator: eyeGenerator,
-						dimension: dimension,
-						foregroundColor: foregroundColor,
-						backgroundColor: backgroundColor
-					)
-				else {
-					return nil
-				}
-				return (name: name, image: eyeImage)
+	) throws -> [(name: String, image: CGImage)] {
+		try QRCodeEyeShapeFactory.shared.all()
+			.map {
+				let eyeImage = try QRCodeEyeShapeFactory.shared.image(
+					eyeGenerator: $0,
+					dimension: dimension,
+					foregroundColor: foregroundColor,
+					backgroundColor: backgroundColor
+				)
+				return (name: $0.name, image: eyeImage)
 			}
 	}
 }

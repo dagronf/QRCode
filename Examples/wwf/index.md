@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "https://www.worldwildlife.org")
+let doc = try QRCode.Document("https://www.worldwildlife.org")
 
 let backgroundImage = NSImage(named: "wwf")
 doc.design.style.background = QRCode.FillStyle.Image(image: backgroundImage)
@@ -24,7 +24,7 @@ doc.design.shape.eye = QRCode.EyeShape.Leaf()
 doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
 
 // Generate the image
-let svg = doc.svg(dimension: 300)
+let svg = try doc.svg(dimension: 300)
 ```
 
 ## Background Image

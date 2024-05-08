@@ -10,10 +10,11 @@ import SwiftUI
 import QRCode
 
 struct ContentView: View {
-	let fixedCode = QRCodeShape(
+	let fixedCode = try! QRCodeShape(
 		text: "QRCode WatchOS Demo",
 		errorCorrection: .quantize,
-		generator: QRCodeGenerator_External())!
+		generator: QRCodeGenerator_External()
+	)
 
 	@State var number: CGFloat = 0
 

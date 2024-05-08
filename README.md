@@ -96,6 +96,14 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 * Basic qr code video detection (via importing `QRCodeDetector`).
 
+## **NOTES FOR THE v20.0.0 RELEASE**
+
+The public API has standardised on throwing errors instead of returning `nil` for failing calls. This was done to
+remove the inconsistency of handling errors between different calls.
+
+If you're upgrading your code to a v20+ release, you will need to make some (minor) code changes to support the new APIs
+to handle the throwing calls.
+
 ## Installing
 
 ### Swift Package Manager
@@ -161,8 +169,8 @@ You can use this class to generate a QR Code and present the result as a `CGPath
 You can create a basic black-and-white QR code image very easily.
 
 ```swift
-let doc = QRCode.Document("Hi there!")
-let generated = doc.cgImage(dimension: 800)
+let doc = try QRCode.Document("Hi there!")
+let generated = try doc.cgImage(dimension: 800)
 ```
 
 Generates the basic black and white QR code below
@@ -175,7 +183,7 @@ You can further style the qr code (see below)
 <summary>tl;dr Simple Example</summary>
  
 ```swift
-let doc = QRCode.Document("This is a test")
+let doc = try QRCode.Document("This is a test")
 
 // Set the background color to clear
 doc.design.backgroundColor(CGColor.clear)
@@ -354,7 +362,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 <summary>Example</summary>
 
 ```swift
-let doc = QRCode.Document(utf8String: "Custom pupil")
+let doc = try QRCode.Document(utf8String: "Custom pupil")
 doc.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
 doc.design.shape.eye = QRCode.EyeShape.Squircle()
 doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
@@ -403,7 +411,7 @@ It's really important to make sure that there is a high color contrast between t
 <summary>QRCode source</summary>
 
 ```swift
-let doc1 = QRCode.Document(utf8String: "Hi there noodle")
+let doc1 = try QRCode.Document(utf8String: "Hi there noodle")
 doc1.design.backgroundColor(NSColor.white.cgColor)
 doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
@@ -437,7 +445,7 @@ You can provide a custom fill for any of the individual components of the qr cod
 <summary>QRCode source</summary>
 
 ```swift
-let doc2 = QRCode.Document(utf8String: "Github example for colors")
+let doc2 = try QRCode.Document(utf8String: "Github example for colors")
 doc2.design.backgroundColor(NSColor.white.cgColor)
 doc2.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
@@ -472,7 +480,7 @@ A simple QRCode with a red radial fill.
 <summary>QRCode source</summary>
 
 ```swift
-let doc3 = QRCode.Document(utf8String: "Github example for colors")
+let doc3 = try QRCode.Document(utf8String: "Github example for colors")
 doc3.design.style.background = QRCode.FillStyle.Solid(CGColor.white)
 
 // Set the fill color for the data to radial gradient
@@ -523,7 +531,7 @@ The image and mask image should be the same size and square for the best results
 #### Logo and mask
 
 ```swift
-let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a mask image", errorCorrection: .high)
+let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a mask image", errorCorrection: .high)
 let logoImage = ... some logo image ...
 let logoMaskImage = ... some mask image ...
 doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage, maskImage: logoMaskImage)
@@ -536,7 +544,7 @@ doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage, maskImage: logoMask
 #### Logo only
 
 ```swift
-let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
+let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
 let logoImage = ... some logo image ...
 doc.logoTemplate = QRCode.LogoTemplate(logoImage: logoImage)
 ```
@@ -596,7 +604,7 @@ There are a number of pre-built `LogoTemplate` creators for the 'standard' logo 
 
 ```swift
 // Define a rectangle mask within the bounds of the QR code. A centered square, 30% of the qr code size.
-let doc = QRCode.Document(...)
+let doc = try QRCode.Document(...)
 
 doc.logoTemplate = QRCode.LogoTemplate(
    path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil), 
@@ -616,7 +624,7 @@ generates
 A round logo in the lower right of the qr code
 
 ```swift
-let doc = QRCode.Document(...)
+let doc = try QRCode.Document(...)
 doc.logoTemplate = QRCode.LogoTemplate(
    path: CGPath(ellipseIn: CGRect(x: 0.7, y: 0.7, width: 0.30, height: 0.30), transform: nil),
    inset: 8
@@ -644,7 +652,7 @@ By default, the quiet zone is set to 0 pixels.
 | <a href="./Art/images/quiet-space-0.png"><img src="./Art/images/quiet-space-0.png" width="150"/></a> | <a href="./Art/images/quiet-space-5.png"><img src="./Art/images/quiet-space-5.png" width="150"/></a> | <a href="./Art/images/quiet-space-10.png"><img src="./Art/images/quiet-space-10.png" width="150"/></a> | <a href="./Art/images/quiet-space-15.png"><img src="./Art/images/quiet-space-15.png" width="150"/></a> | <a href="./Art/images/quiet-space-background-image.png"><img src="./Art/images/quiet-space-background-image.png" width="150"/></a> |
 
 ```swift
-let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
+let doc = try QRCode.Document("https://www.swift.org/about/")
 doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 doc.design.additionalQuietZonePixels = 4
 let qrcodeImage = try doc.cgImage(CGSize(width: 300, height: 300))
@@ -664,7 +672,7 @@ By default, the corner radius is set to 0.
 <summary>Background corner radius example</summary>
 
 ```swift
-let doc = QRCode.Document(utf8String: "Corner radius checking")
+let doc = try QRCode.Document("Corner radius checking")
 doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
 doc.design.additionalQuietZonePixels = 2
@@ -842,7 +850,7 @@ For example, you can use `.fill` to set the color content (eg. a linear gradient
 <summary>Example</summary> 
 
 ```swift
-let qrContent = QRCodeShape(myData)
+let qrContent = try QRCodeShape(myData)
 ...
 ZStack {
    qrContent
@@ -962,7 +970,7 @@ NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
 The `QRCode.Document` class has methods for loading/saving QRCode definitions to a JSON format
 
 ```swift
-let qrCode = QRCode.Document()
+let qrCode = try QRCode.Document()
 qrCode.data = "this is a test".data(using: .utf8)!
 qrCode.design.shape.onPixels = QRCode.PixelShape.Circle()
 qrCode.design.shape.eye = QRCode.EyeShape.Leaf()

@@ -29,53 +29,56 @@ import Foundation
 
 	/// Create
 	@objc override public init() {
-		self.registeredTypes = [
-			QRCode.PixelShape.Square.self,
-			QRCode.PixelShape.Circle.self,
-			QRCode.PixelShape.RoundedRect.self,
-			QRCode.PixelShape.Squircle.self,
-			QRCode.PixelShape.Vertical.self,
-			QRCode.PixelShape.Flower.self,
-			QRCode.PixelShape.Horizontal.self,
-			QRCode.PixelShape.Pointy.self,
-			QRCode.PixelShape.CurvePixel.self,
-			QRCode.PixelShape.Razor.self,
-			QRCode.PixelShape.RoundedEndIndent.self,
-			QRCode.PixelShape.RoundedPath.self,
-			QRCode.PixelShape.Sharp.self,
-			QRCode.PixelShape.Star.self,
-			QRCode.PixelShape.Shiny.self,
-		].sorted(by: { a, b in a.Title < b.Title })
 		super.init()
 	}
 
 	/// The available pixel shape generator names
 	@objc public var availableGeneratorNames: [String] {
-		self.registeredTypes.map { $0.Name }.sorted()
+		self.registeredTypes.map { $0.Name }
 	}
 
+	/// Return all of the pixel generators (with default settings) in name sorted order
 	@objc public func all() -> [any QRCodePixelShapeGenerator] {
 		self.registeredTypes.map { $0.Create(nil) }
 	}
 
 	/// Return a new instance of the data shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> (any QRCodePixelShapeGenerator)? {
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) throws -> (any QRCodePixelShapeGenerator) {
 		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
-			return nil
+			throw QRCodeError.unsupportedGeneratorName
 		}
 		return f.Create(settings)
 	}
 
 	/// Create a data shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> (any QRCodePixelShapeGenerator)? {
-		guard let type = settings[PixelShapeTypeName_] as? String else { return nil }
+	@objc public func create(settings: [String: Any]) throws -> (any QRCodePixelShapeGenerator) {
+		guard let type = settings[PixelShapeTypeName_] as? String else {
+			throw QRCodeError.cannotCreateGenerator
+		}
 		let settings = settings[PixelShapeSettingsName_] as? [String: Any]
-		return self.named(type, settings: settings)
+		return try self.named(type, settings: settings)
 	}
 
 	// Private
 
-	internal var registeredTypes: [any QRCodePixelShapeGenerator.Type]
+	// The registered pixel shapes in name sorted order
+	private let registeredTypes: [any QRCodePixelShapeGenerator.Type] = [
+		QRCode.PixelShape.Square.self,
+		QRCode.PixelShape.Circle.self,
+		QRCode.PixelShape.RoundedRect.self,
+		QRCode.PixelShape.Squircle.self,
+		QRCode.PixelShape.Vertical.self,
+		QRCode.PixelShape.Flower.self,
+		QRCode.PixelShape.Horizontal.self,
+		QRCode.PixelShape.Pointy.self,
+		QRCode.PixelShape.CurvePixel.self,
+		QRCode.PixelShape.Razor.self,
+		QRCode.PixelShape.RoundedEndIndent.self,
+		QRCode.PixelShape.RoundedPath.self,
+		QRCode.PixelShape.Sharp.self,
+		QRCode.PixelShape.Star.self,
+		QRCode.PixelShape.Shiny.self,
+	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images
 	private static let defaultMatrix = BoolMatrix(dimension: 7, rawFlattenedInt: [
@@ -106,7 +109,7 @@ public extension QRCodePixelShapeFactory {
 		backgroundColor: CGColor? = nil,
 		samplePixelMatrix: BoolMatrix? = nil,
 		isOn: Bool = true
-	) -> CGImage? {
+	) throws -> CGImage {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -121,7 +124,7 @@ public extension QRCodePixelShapeFactory {
 			bitmapInfo: bitmapInfo.rawValue
 		)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		// fill the background color
@@ -156,7 +159,9 @@ public extension QRCodePixelShapeFactory {
 		context.setFillColor(foregroundColor)
 		context.fillPath()
 
-		let im = context.makeImage()
+		guard let im = context.makeImage() else {
+			throw QRCodeError.cannotGenerateImage
+		}
 		return im
 	}
 }
@@ -178,23 +183,17 @@ public extension QRCodePixelShapeFactory {
 		isOn: Bool = true,
 		samplePixelMatrix: BoolMatrix? = nil,
 		commonSettings: [String: Any]? = nil
-	) -> [(name: String, image: CGImage)] {
-		QRCodePixelShapeFactory.shared.availableGeneratorNames
-			.sorted()
-			.compactMap { name in
-				guard
-					let gen = QRCodePixelShapeFactory.shared.named(name, settings: commonSettings),
-					let pixelImage = QRCodePixelShapeFactory.shared.image(
-						pixelGenerator: gen,
-						dimension: dimension,
-						foregroundColor: foregroundColor,
-						backgroundColor: backgroundColor,
-						samplePixelMatrix: samplePixelMatrix
-					)
-				else {
-					return nil
-				}
-				return (name: name, image: pixelImage)
+	) throws -> [(name: String, image: CGImage)] {
+		try QRCodePixelShapeFactory.shared.all()
+			.map {
+				let pixelImage = try QRCodePixelShapeFactory.shared.image(
+					pixelGenerator: $0,
+					dimension: dimension,
+					foregroundColor: foregroundColor,
+					backgroundColor: backgroundColor,
+					samplePixelMatrix: samplePixelMatrix
+				)
+				return (name: $0.name, image: pixelImage)
 			}
 	}
 }

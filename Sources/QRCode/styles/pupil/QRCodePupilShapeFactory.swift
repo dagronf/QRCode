@@ -29,7 +29,40 @@ import CoreGraphics
 
 	/// Create
 	@objc override public init() {
-		self.registeredTypes = [
+		super.init()
+	}
+
+	/// The available pupil shape generator names
+	@objc public var availableGeneratorNames: [String] {
+		self.registeredTypes.map { $0.Name }
+	}
+
+	/// Return all of the pupil generators (with default settings) in name sorted order
+	@objc public func all() -> [any QRCodePupilShapeGenerator] {
+		self.registeredTypes.map { $0.Create(nil) }
+	}
+
+	/// Return a new instance of an eye shape generator with the specified name and optional settings
+	@objc public func named(_ name: String, settings: [String: Any]? = nil) throws -> (any QRCodePupilShapeGenerator) {
+		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
+			throw QRCodeError.unsupportedGeneratorName
+		}
+		return f.Create(settings)
+	}
+
+	/// Create an eye shape generator from the specified shape settings
+	@objc public func create(settings: [String: Any]) throws -> (any QRCodePupilShapeGenerator) {
+		guard let type = settings[PupilShapeTypeName_] as? String else {
+			throw QRCodeError.cannotCreateGenerator
+		}
+		let settings = settings[PupilShapeSettingsName_] as? [String: Any] ?? [:]
+		return try self.named(type, settings: settings)
+	}
+
+	// Private
+
+	// The registered pupil shapes in name sorted order
+	private var registeredTypes: [any QRCodePupilShapeGenerator.Type] = [
 			QRCode.PupilShape.Circle.self,
 			QRCode.PupilShape.CorneredPixels.self,
 			QRCode.PupilShape.Cross.self,
@@ -53,37 +86,7 @@ import CoreGraphics
 			QRCode.PupilShape.Teardrop.self,
 			QRCode.PupilShape.UFO.self,
 			QRCode.PupilShape.Pinch.self,
-		].sorted(by: { a, b in a.Title < b.Title })
-		super.init()
-	}
-
-	@objc public var availableGeneratorNames: [String] {
-		self.registeredTypes.map { $0.Name }.sorted()
-	}
-
-	/// Return a copy of all the pupil generators
-	@objc public func all() -> [any QRCodePupilShapeGenerator] {
-		self.registeredTypes.map { $0.Create(nil) }
-	}
-
-	/// Return a new instance of an eye shape generator with the specified name and optional settings
-	@objc public func named(_ name: String, settings: [String: Any]? = nil) -> (any QRCodePupilShapeGenerator)? {
-		guard let f = self.registeredTypes.first(where: { $0.Name == name }) else {
-			return nil
-		}
-		return f.Create(settings)
-	}
-
-	/// Create an eye shape generator from the specified shape settings
-	@objc public func create(settings: [String: Any]) -> (any QRCodePupilShapeGenerator)? {
-		guard let type = settings[PupilShapeTypeName_] as? String else { return nil }
-		let settings = settings[PupilShapeSettingsName_] as? [String: Any] ?? [:]
-		return self.named(type, settings: settings)
-	}
-
-	// Private
-
-	internal var registeredTypes: [any QRCodePupilShapeGenerator.Type]
+	].sorted(by: { a, b in a.Title < b.Title })
 }
 
 public extension QRCodePupilShapeFactory {
@@ -99,7 +102,7 @@ public extension QRCodePupilShapeFactory {
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil
-	) -> CGImage? {
+	) throws -> CGImage {
 		let width = Int(dimension)
 		let height = Int(dimension)
 		let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -114,7 +117,7 @@ public extension QRCodePupilShapeFactory {
 			bitmapInfo: bitmapInfo.rawValue
 		)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		// fill the background color
@@ -153,7 +156,9 @@ public extension QRCodePupilShapeFactory {
 		context.setFillColor(foregroundColor)
 		context.fillPath()
 
-		let im = context.makeImage()
+		guard let im = context.makeImage() else {
+			throw QRCodeError.cannotGenerateImage
+		}
 		return im
 	}
 }
@@ -170,22 +175,16 @@ public extension QRCodePupilShapeFactory {
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil
-	) -> [(name: String, image: CGImage)] {
-		QRCodePupilShapeFactory.shared.availableGeneratorNames
-			.sorted()
-			.compactMap { name in
-				guard
-					let pupilGenerator = QRCodePupilShapeFactory.shared.named(name),
-					let pupilImage = QRCodePupilShapeFactory.shared.image(
-						pupilGenerator: pupilGenerator,
-						dimension: dimension,
-						foregroundColor: foregroundColor,
-						backgroundColor: backgroundColor
-					)
-				else {
-					return nil
-				}
-				return (name: name, image: pupilImage)
+	) throws -> [(name: String, image: CGImage)] {
+		try QRCodePupilShapeFactory.shared.all()
+			.map {
+				let pupilImage = try QRCodePupilShapeFactory.shared.image(
+					pupilGenerator: $0,
+					dimension: dimension,
+					foregroundColor: foregroundColor,
+					backgroundColor: backgroundColor
+				)
+				return (name: $0.name, image: pupilImage)
 			}
 	}
 }

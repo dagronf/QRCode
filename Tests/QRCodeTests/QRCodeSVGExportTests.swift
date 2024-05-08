@@ -21,7 +21,7 @@ final class QRCodeSVGTests: XCTestCase {
 				image: image,
 				path: CGPath(ellipseIn: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil)
 			)
-			let svg = doc.svg(dimension: 800)
+			let svg = try doc.svg(dimension: 800)
 			XCTAssertGreaterThan(svg.count, 0)
 
 			try outputFolder.write(svg, to: "basicSVG1-mask-no-image.svg")
@@ -29,7 +29,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 		do {
 			doc.design.foregroundColor(CGColor.RGBA(0, 0.3, 0, 1))
-			let svg = doc.svg(dimension: 512)
+			let svg = try doc.svg(dimension: 512)
 			XCTAssertGreaterThan(svg.count, 0)
 			try outputFolder.write(svg, to: "basicSVG2-mask-no-image.svg")
 		}
@@ -47,7 +47,7 @@ final class QRCodeSVGTests: XCTestCase {
 			// Flat color
 			code.design.style.onPixels = QRCode.FillStyle.Solid(CGColor.sRGBA(1, 0, 1, 1))
 
-			let svg1 = code.svg(dimension: 600)
+			let svg1 = try code.svg(dimension: 600)
 
 			XCTAssertTrue(svg1.contains("fill=\"#ff00ff\""))
 			try outputFolder.write(svg1, to: "solidFillGeneration.svg")
@@ -89,7 +89,7 @@ final class QRCodeSVGTests: XCTestCase {
 				]
 			)!
 		)
-		let svg1 = code.svg(dimension: 600)
+		let svg1 = try code.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportLinearFill.svg")
 
 		let image = try code.platformImage(dimension: 300, dpi: 144)
@@ -124,7 +124,7 @@ final class QRCodeSVGTests: XCTestCase {
 		)
 
 		code.design.style.onPixels = c
-		let svg1 = code.svg(dimension: 600)
+		let svg1 = try code.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportRadialFill.svg")
 
 		let image = try code.platformImage(dimension: 300, dpi: 144)
@@ -150,7 +150,7 @@ final class QRCodeSVGTests: XCTestCase {
 		d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
 		d.design.style.offPixelsBackground = CGColor.sRGBA(0, 0, 0, 0.2)
 
-		let svg1 = d.svg(dimension: 600)
+		let svg1 = try d.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportPixelBackgroundColors.svg")
 	}
 
@@ -161,6 +161,93 @@ final class QRCodeSVGTests: XCTestCase {
 		XCTAssertEqual(_SVGF(1.4), "1.4")
 		XCTAssertEqual(_SVGF(1024.56), "1024.56")
 		XCTAssertEqual(_SVGF(123456789.789), "123456789.789")
+	}
+
+	func testExportSVGWithImage() throws {
+		let fillImage = try resourceImage(for: "lego", extension: "jpeg")
+
+		let d = QRCode.Document(generator: __testGenerator)
+		try d.setText("https://www.apple.com/au/mac-studio/")
+		d.design.backgroundColor(.commonBlack)
+		d.design.shape.onPixels = QRCode.PixelShape.Razor()
+
+		let qs = [0, 2, 4, 6]
+
+		do {
+			try qs.forEach { index in
+				d.design.style.onPixels = QRCode.FillStyle.Image(fillImage)
+				d.design.additionalQuietZonePixels = UInt(index)
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-All-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-All-q\(index).pdf")
+			}
+		}
+
+		do {
+			try qs.forEach { index in
+				d.design.additionalQuietZonePixels = UInt(index)
+				d.design.style.setForegroundStyle(QRCode.FillStyle.Solid(.commonWhite))
+				d.design.style.eye = QRCode.FillStyle.Image(fillImage)
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-Eye-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-Eye-q\(index).pdf")
+			}
+		}
+
+		do {
+			try qs.forEach { index in
+				d.design.additionalQuietZonePixels = UInt(index)
+
+				d.design.style.setForegroundStyle(QRCode.FillStyle.Solid(.commonWhite))
+				d.design.style.eye = QRCode.FillStyle.Image(fillImage)
+				d.design.style.pupil = QRCode.FillStyle.Solid(.commonWhite)
+
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-EyeOuter-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-EyeOuter-q\(index).pdf")
+			}
+		}
+
+		do {
+			try qs.forEach { index in
+				d.design.additionalQuietZonePixels = UInt(index)
+				d.design.style.setForegroundStyle(QRCode.FillStyle.Solid(.commonWhite))
+				d.design.style.pupil = QRCode.FillStyle.Image(fillImage)
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-Pupil-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-Pupil-q\(index).pdf")
+			}
+		}
+
+		do {
+			try qs.forEach { index in
+				d.design.additionalQuietZonePixels = UInt(index)
+				d.design.style.setForegroundStyle(QRCode.FillStyle.Solid(.commonWhite))
+				d.design.style.background = QRCode.FillStyle.Image(fillImage)
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-Background-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-Background-q\(index).pdf")
+			}
+		}
+
+		do {
+			let backgroundImage = try resourceImage(for: "photo-logo", extension: "jpg")
+
+			try qs.forEach { index in
+				d.design.additionalQuietZonePixels = UInt(index)
+				d.design.style.setForegroundStyle(QRCode.FillStyle.Image(fillImage))
+				d.design.style.background = QRCode.FillStyle.Image(backgroundImage)
+				let data = try d.svgData(dimension: 400)
+				try outputFolder.write(data, to: "testExportSVGWithImage-Mixed-q\(index).svg")
+				let data2 = try d.pdfData(dimension: 400)
+				try outputFolder.write(data2, to: "testExportSVGWithImage-Mixed-q\(index).pdf")
+			}
+		}
 	}
 
 	#if os(macOS)
@@ -174,7 +261,7 @@ final class QRCodeSVGTests: XCTestCase {
 		d.errorCorrection = .low
 		d.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 		d.design.shape.onPixels = QRCode.PixelShape.Circle()
-		let str = d.svg(dimension: 989)
+		let str = try d.svg(dimension: 989)
 		
 		//		try str.write(
 		//			to: URL(fileURLWithPath: "/tmp/qrcode19.svg"),

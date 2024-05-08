@@ -25,10 +25,10 @@ final class QRCodeImageFillTests: XCTestCase {
 
 		// Write out json data -- the image should be encoded as base64 PNG
 		let rawData = try doc.jsonData()
-		let svgData = doc.svg(dimension: 300)
+		let svgData = try doc.svg(dimension: 300)
 		try outputFolder.write(svgData, to: "svgdata-orig.svg")
 
-		let svgDataSuperLarge = doc.svg(dimension: 3000)
+		let svgDataSuperLarge = try doc.svg(dimension: 3000)
 		try outputFolder.write(svgDataSuperLarge, to: "svgdata-superlarge.svg")
 
 		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: rawData, generator: QRCodeGenerator_External()))
@@ -40,7 +40,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		let im2 = try XCTUnwrap(doc2.platformImage(dimension: 600))
 		Swift.print(im2)
 
-		let svgData2 = doc2.svg(dimension: 300)
+		let svgData2 = try doc2.svg(dimension: 300)
 		try outputFolder.write(svgData2, to: "svgdata-recon.svg")
 
 		XCTAssertEqual(svgData, svgData2)

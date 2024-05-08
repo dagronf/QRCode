@@ -48,21 +48,23 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a linear gradient with the specified settings
-		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
-			if let sX = DoubleValue(settings["startX"]),
+		@objc public static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
+			guard
+				let sX = DoubleValue(settings["startX"]),
 				let sY = DoubleValue(settings["startY"]),
 				let eX = DoubleValue(settings["endX"]),
 				let eY = DoubleValue(settings["endY"]),
 				let gs = settings["gradient"] as? String,
 				let grad = DSFGradient.FromRGBAGradientString(gs)
-			{
-				return QRCode.FillStyle.LinearGradient(
-					grad,
-					startPoint: CGPoint(x: sX, y: sY),
-					endPoint: CGPoint(x: eX, y: eY)
-				)
+			else {
+				throw QRCodeError.cannotCreateGenerator
 			}
-			return nil
+
+			return QRCode.FillStyle.LinearGradient(
+				grad,
+				startPoint: CGPoint(x: sX, y: sY),
+				endPoint: CGPoint(x: eX, y: eY)
+			)
 		}
 
 		/// Fill the specified path/rect with a gradient
@@ -124,7 +126,7 @@ public extension QRCode.FillStyle {
 
 public extension QRCode.FillStyle.LinearGradient {
 
-	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
 
 		/*
 		 <linearGradient id="Gradient" x1="0%" x2="0%" y1="0%" y2="100%">
@@ -143,7 +145,9 @@ public extension QRCode.FillStyle.LinearGradient {
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
 
 		for pin in sorted {
-			guard let rgbColor = pin.color.hexRGBCode() else { return nil }
+			guard let rgbColor = pin.color.hexRGBCode() else {
+				throw QRCodeError.unsupportedColor
+			}
 			svg += "<stop offset=\"\(pin.position)\" stop-color=\"\(rgbColor)\" stop-opacity=\"\(pin.color.alpha)\" />\n"
 		}
 		svg += "</linearGradient>\n"

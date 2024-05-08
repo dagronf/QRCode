@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
+let doc = try QRCode.Document("https://www.qrcode.com/en/history/", errorCorrection: .high)
 
 doc.design.shape.eye = QRCode.EyeShape.Squircle()
 doc.design.style.eye = QRCode.FillStyle.Solid(108.0 / 255.0, 76.0 / 255.0, 191.0 / 255.0)

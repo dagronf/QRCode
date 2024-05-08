@@ -27,10 +27,10 @@ import Foundation
 	@objc var name: String { get }
 
 	/// Generate QR Code matrix from the specified data
-	@objc func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
+	@objc func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix
 
 	/// Generate QR Code matrix from the specified string
-	@objc func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix?
+	@objc func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix
 }
 
 // An 'empty' qr code generator which does nothing
@@ -39,14 +39,14 @@ internal class QRCodeGenerator_None: QRCodeEngine {
 	@objc public var name: String { "none" }
 
 	/// Generate the QR code using the custom generator
-	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
 		assert(false, "Warning: QRCode generator is not set...")
-		return nil
+		throw QRCodeError.noGeneratorSet
 	}
 
-	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
 		assert(false, "Warning: QRCode generator is not set...")
-		return nil
+		throw QRCodeError.noGeneratorSet
 	}
 }
 

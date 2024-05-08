@@ -138,7 +138,7 @@ final class QRCodeTests: XCTestCase {
 
 	func testNewGeneratePath() throws {
 		let g = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
-		let image = QRCodePixelShapeFactory.shared.image(
+		let image = try QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: g,
 			dimension: 300,
 			foregroundColor: CGColor.commonBlack
@@ -332,7 +332,7 @@ final class QRCodeTests: XCTestCase {
 
 	func testCustomPixelMatrixDefault() throws {
 		// Default
-		let im = QRCodePixelShapeFactory.shared.image(
+		let im = try QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.5, hasInnerCorners: true),
 			dimension: 36,
 			foregroundColor: CGColor.RGBA(1, 0, 0, 0.5)
@@ -352,7 +352,7 @@ final class QRCodeTests: XCTestCase {
 				0, 1 ,0
 			])
 
-		let im = QRCodePixelShapeFactory.shared.image(
+		let im = try QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true),
 			dimension: 96,
 			foregroundColor: CGColor.commonBlack,
@@ -427,7 +427,7 @@ final class QRCodeTests: XCTestCase {
 
 			markdownText += "## Matrix check\n\n"
 
-			let allImages = QRCodePixelShapeFactory.shared.generateSampleImages(
+			let allImages = try QRCodePixelShapeFactory.shared.generateSampleImages(
 				dimension: 300,
 				foregroundColor: .commonBlack,
 				backgroundColor: CGColor.sRGBA(1, 0, 0, 1),
@@ -457,7 +457,7 @@ final class QRCodeTests: XCTestCase {
 				0, 1, 1, 1,
 			])
 
-		let im = QRCodePixelShapeFactory.shared.image(
+		let im = try QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1),
 			dimension: 72,
 			foregroundColor: CGColor.commonBlack,

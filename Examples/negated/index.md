@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(
+let doc = try QRCode.Document(
    utf8String: "QRCode drawing only the 'off' pixels of the qr code with quiet space", 
    errorCorrection: .high
 )

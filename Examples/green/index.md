@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let d = QRCode.Document(generator: QRCodeGenerator_External())
+let d = try QRCode.Document(generator: QRCodeGenerator_External())
 d.utf8String = "https://www.swift.org"
 
 d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))
@@ -23,5 +23,5 @@ d.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.7)
 d.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0)
 d.design.style.offPixelsBackground = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0.2)
 
-let svg = d.svg(dimension: 600)
+let svg = try d.svg(dimension: 600)
 ```

@@ -135,25 +135,25 @@ public extension QRCode.Style {
 		let style = QRCode.Style()
 
 		if let d = settings["onPixels"] as? [String: Any],
-		   let pixelShape = FillStyleFactory.Create(settings: d)
+			let pixelShape = try? QRCodeFillStyleFactory.shared.Create(settings: d)
 		{
 			style.onPixels = pixelShape
 		}
 
 		if let e = settings["eye"] as? [String: Any],
-		   let eye = FillStyleFactory.Create(settings: e)
+		   let eye = try? QRCodeFillStyleFactory.shared.Create(settings: e)
 		{
 			style.eye = eye
 		}
 
 		if let e = settings["pupil"] as? [String: Any],
-		   let pupil = FillStyleFactory.Create(settings: e)
+		   let pupil = try? QRCodeFillStyleFactory.shared.Create(settings: e)
 		{
 			style.pupil = pupil
 		}
 
 		if let e = settings["background"] as? [String: Any],
-		   let background = FillStyleFactory.Create(settings: e)
+		   let background = try? QRCodeFillStyleFactory.shared.Create(settings: e)
 		{
 			style.background = background
 		}
@@ -166,7 +166,7 @@ public extension QRCode.Style {
 		}
 
 		if let e = settings["offPixels"] as? [String: Any],
-		   let offPixels = FillStyleFactory.Create(settings: e)
+		   let offPixels = try? QRCodeFillStyleFactory.shared.Create(settings: e)
 		{
 			style.offPixels = offPixels
 		}

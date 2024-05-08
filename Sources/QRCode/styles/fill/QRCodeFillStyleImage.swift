@@ -32,18 +32,19 @@ public extension QRCode.FillStyle {
 
 		/// Return the save settings for the fill style
 		@objc public func settings() -> [String: Any] {
-			return ["imagePNGbase64": getPngImageBase64() ?? ""]
+			["imagePNGbase64": self.getPngImageBase64() ?? ""]
 		}
 
 		/// Create the fill style from the specified settings
-		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
-			if let c = settings["imagePNGbase64"] as? String,
+		@objc public static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
+			guard
+				let c = settings["imagePNGbase64"] as? String,
 				let d = Data(base64Encoded: c),
 				let i = DSFImage(data: d)
-			{
-				return QRCode.FillStyle.Image(i.cgImage())
+			else {
+				throw QRCodeError.cannotCreateGenerator
 			}
-			return nil
+			return QRCode.FillStyle.Image(i.cgImage())
 		}
 
 		/// Create with an image
@@ -95,31 +96,36 @@ public extension QRCode.FillStyle {
 				}
 			}
 		}
+	}
+}
 
-		// Return a PNG base64 representation for the image
-		private func getPngImageBase64() -> String? {
-			if let b64Data = try? self.image?.representation.png().base64EncodedData() {
-				return String(data: b64Data, encoding: .ascii)
-			}
+internal extension QRCode.FillStyle.Image {
+	// Return a PNG base64 representation for the image
+	func getPngImageBase64() -> String? {
+		guard
+			let pngData = try? image?.representation.png().base64EncodedData(),
+			let str = String(data: pngData, encoding: .ascii)
+		else {
 			return nil
 		}
+		return str
 	}
 }
 
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.Image {
-	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
 		guard
 			let image = self.image,
 			let jpegData = try? self.image?.representation.jpeg()
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImage
 		}
 
 		let imageb64d = jpegData.base64EncodedData(options: [.lineLength64Characters, .endLineWithLineFeed])
 		guard let strImage = String(data: imageb64d, encoding: .ascii) else {
-			return nil
+			throw QRCodeError.unableToConvertTextToRequestedEncoding
 		}
 
 		var def = "<pattern id=\"\(styleIdentifier)\" "

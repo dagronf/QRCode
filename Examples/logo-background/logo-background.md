@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "This is an image background")
+let doc = try QRCode.Document("This is an image background")
 
 doc.design.style.background = QRCode.FillStyle.Image(NSImage(named: "background-fill-image"))
 doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.5)

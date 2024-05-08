@@ -34,11 +34,11 @@ class PixelStylesView: Element {
 	VStack {
 
 		Flow(minimumInteritemSpacing: 1, minimumLineSpacing: 1, ForEach(allPixelStyles.wrappedValue, { item in
-			let image = QRCodePixelShapeFactory.shared.image(
+			let image = try! QRCodePixelShapeFactory.shared.image(
 				pixelGenerator: item,
 				dimension: 120,
 				foregroundColor: NSColor.textColor.cgColor
-			)!
+			)
 			return Button(
 				image: NSImage(cgImage: image, size: .init(width: 60, height: 60)),
 				type: .onOff,

@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
+let doc = try QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
 
 let pixelFill = QRCode.FillStyle.LinearGradient(
    DSFGradient(pins: [
@@ -34,7 +34,7 @@ let logo = QRCode.LogoTemplate(image: NSImage(named: "wombles")!.cgImage(forProp
 logo.path = CGPath(rect: CGRect(x: 0.70, y: 0.375, width: 0.25, height: 0.25), transform: nil)
 doc.logoTemplate = logo
 
-let qrCodeImage = doc.cgImage(dimension: 400)
+let qrCodeImage = try doc.cgImage(dimension: 400)
 ```
 
 ## Logo template image

@@ -7,10 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(
-   utf8String: "http://www.bom.gov.au/products/IDR022.loop.shtml", 
-   errorCorrection: .high
-)
+let doc = try QRCode.Document("http://www.bom.gov.au/products/IDR022.loop.shtml", errorCorrection: .high)
 
 // Set the background image
 let backgroundImage = /* load "b-image.jpg" */
@@ -34,7 +31,7 @@ doc.design.style.offPixels = QRCode.FillStyle.Solid(red_color)
 doc.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.5)
 
 // Generate the image
-let qrCodeImage = doc.cgImage(dimension: 600)
+let qrCodeImage = try doc.cgImage(dimension: 600)
 ```
 
 ## Background Image

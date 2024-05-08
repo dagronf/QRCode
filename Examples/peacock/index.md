@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
+let doc = try QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
 
 let background = CGColor(srgbRed: 0.018, green:0.086, blue:0.15, alpha:1)
 doc.design.backgroundColor(background)
@@ -18,8 +18,8 @@ doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4, useRand
 let image = NSImage(named: "beach-square")
 doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
 
-let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)
-let pdfData = doc.pdfData(dimension: 300)!
+let logoQRCode = try doc.platformImage(dimension: 300, dpi: 144)
+let pdfData = try doc.pdfData(dimension: 300)!
 ```
 
 ## Logo Image

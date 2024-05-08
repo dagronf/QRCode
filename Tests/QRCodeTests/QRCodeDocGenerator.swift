@@ -75,7 +75,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				markdownText += "### Generators\n\n"
 
 				// Generate sample images for each type
-				let samples = QRCodePixelShapeFactory.shared.generateSampleImages(
+				let samples = try QRCodePixelShapeFactory.shared.generateSampleImages(
 					dimension: 200, foregroundColor: .commonBlack, backgroundColor: .commonWhite)
 
 				markdownText += "| Generator Name | Sample Image   |\n"
@@ -102,7 +102,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			for name in names {
 				doc.design.shape.negatedOnPixelsOnly = false
 				markdownText += "|\(name)|"
-				let generator = QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)!
+				let generator = try QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)
 				for enc in QRCode.ErrorCorrection.allCases {
 					doc.errorCorrection = enc
 					doc.design.shape.onPixels = generator
@@ -121,7 +121,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				}
 
 				do {
-					let svgImage = doc.svg(dimension: dimension)
+					let svgImage = try doc.svg(dimension: dimension)
 					let filename = "pixelint - \(name).svg"
 					let link = try imageStore.store(svgImage, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
@@ -154,7 +154,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
 		for name in names {
 			markdownText += "|\(name)|"
-			let generator = QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)!
+			let generator = try QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)
 			for enc in QRCode.ErrorCorrection.allCases {
 				doc.errorCorrection = enc
 				doc.design.shape.onPixels = generator
@@ -173,7 +173,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>\(detect)|"
 			}
 			do {
-				let svgImage = doc.svg(dimension: dimension)
+				let svgImage = try doc.svg(dimension: dimension)
 				let filename = "pixelext - \(name).svg"
 				let link = try imageStore.store(svgImage, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
@@ -203,7 +203,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "### Generators\n\n"
 
 			// Generate sample images for each type
-			let samples = QRCodeEyeShapeFactory.shared.generateSampleImages(
+			let samples = try QRCodeEyeShapeFactory.shared.generateSampleImages(
 				dimension: 200, foregroundColor: .commonBlack, backgroundColor: .commonWhite)
 
 			markdownText += "| Generator Name | Sample Image   |\n"
@@ -228,7 +228,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "| \(name) |"
 
-			let generator = QRCodeEyeShapeFactory.shared.named(name)!
+			let generator = try QRCodeEyeShapeFactory.shared.named(name)
 			doc.design.shape.eye = generator
 			doc.design.style.eye = QRCode.FillStyle.Solid(0.6, 0, 0)
 
@@ -250,7 +250,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let filename = "eye - \(name).svg"
-				let svgImage = doc.svg(dimension: dimension)
+				let svgImage = try doc.svg(dimension: dimension)
 				let link = try imageStore.store(svgImage, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>svg|"
 			}
@@ -280,7 +280,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "### Generators\n\n"
 
 			// Generate sample images for each type
-			let samples = QRCodePupilShapeFactory.shared.generateSampleImages(
+			let samples = try QRCodePupilShapeFactory.shared.generateSampleImages(
 				dimension: 200, foregroundColor: .commonBlack, backgroundColor: .commonWhite)
 
 			markdownText += "| Generator Name | Sample Image   |\n"
@@ -305,7 +305,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "| \(name) |"
 
-			let generator = QRCodePupilShapeFactory.shared.named(name)!
+			let generator = try QRCodePupilShapeFactory.shared.named(name)
 			doc.design.shape.pupil = generator
 			doc.design.style.pupil = QRCode.FillStyle.Solid(0.6, 0, 0)
 
@@ -328,7 +328,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let filename = "pupil - \(name).svg"
-				let svg = doc.svg(dimension: dimension)
+				let svg = try doc.svg(dimension: dimension)
 				let link = try imageStore.store(svg, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>svg|"
 			}
@@ -383,7 +383,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " svg |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let svgImage = doc.svg(dimension: dimension)
+				let svgImage = try doc.svg(dimension: dimension)
 				let filename = "fillstyle-solid-\(item.offset).svg"
 				let link = try imageStore.store(svgImage, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
@@ -453,7 +453,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.design.style.setForegroundStyle(item.element)
-					let svgImage = doc.svg(dimension: dimension)
+					let svgImage = try doc.svg(dimension: dimension)
 					let filename = "fillstyle-linear-\(item.offset)-qs\(aqs).svg"
 					let link = try imageStore.store(svgImage, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -532,7 +532,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.style.setForegroundStyle(item.element.1)
 					doc.design.additionalQuietZonePixels = UInt(aqs)
-					let svgcontent = doc.svg(dimension: dimension)
+					let svgcontent = try doc.svg(dimension: dimension)
 					let filename = "fillstyle-radial-\(item.offset)-\(item.element.0)-qs\(aqs).svg"
 					let link = try imageStore.store(svgcontent, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -605,7 +605,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.logoTemplate = item.element
-					let svgcontent = doc.svg(dimension: dimension)
+					let svgcontent = try doc.svg(dimension: dimension)
 					let filename = "logo-\(item.offset)-aqs\(aqs).svg"
 					let link = try imageStore.store(svgcontent, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -788,7 +788,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
 		for name in names {
 
-			let generator = QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)!
+			let generator = try QRCodePixelShapeFactory.shared.named(name, settings: commonsettings)
 			doc.design.shape.onPixels = generator
 			doc.design.shape.offPixels = generator
 
@@ -850,7 +850,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		let names = QRCodePixelShapeFactory.shared.availableGeneratorNames
 		for name in names {
-			guard let g = QRCodePixelShapeFactory.shared.named(name) else { continue }
+			let g = try QRCodePixelShapeFactory.shared.named(name)
 			_ = g.setSettingValue(0.1, forKey: QRCode.SettingsKey.insetFraction)
 			_ = g.setSettingValue(1, forKey: QRCode.SettingsKey.cornerRadiusFraction)
 			doc.design.shape.onPixels = g

@@ -26,11 +26,11 @@ let textColor = UIColor.darkText.cgColor
 
 let availableEyeGenerators: [EyeGenerator] = {
 	QRCodeEyeShapeFactory.shared.all().map { gen in
-		let image = QRCodeEyeShapeFactory.shared.image(
+		let image = try! QRCodeEyeShapeFactory.shared.image(
 			eyeGenerator: gen,
 			dimension: 100,
 			foregroundColor: textColor
-		)!
+		)
 		return EyeGenerator(gen, image)
 	}
 }()

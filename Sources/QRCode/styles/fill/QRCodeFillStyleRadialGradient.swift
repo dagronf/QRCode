@@ -45,15 +45,16 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a radial gradient with the specified settings
-		@objc public static func Create(settings: [String: Any]) -> (any QRCodeFillStyleGenerator)? {
-			if let cX = DoubleValue(settings["centerX"]),
+		@objc public static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
+			guard
+				let cX = DoubleValue(settings["centerX"]),
 				let cY = DoubleValue(settings["centerY"]),
 				let gs = settings["gradient"] as? String,
 				let grad = DSFGradient.FromRGBAGradientString(gs)
-			{
-				return QRCode.FillStyle.RadialGradient(grad, centerPoint: CGPoint(x: cX, y: cY))
+			else {
+				throw QRCodeError.cannotCreateGenerator
 			}
-			return nil
+			return QRCode.FillStyle.RadialGradient(grad, centerPoint: CGPoint(x: cX, y: cY))
 		}
 
 		/// Fill the specified path/rect with a gradient
@@ -112,7 +113,7 @@ public extension QRCode.FillStyle {
 
 public extension QRCode.FillStyle.RadialGradient {
 
-	func svgRepresentation(styleIdentifier: String) -> QRCode.FillStyle.SVGDefinition? {
+	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
 
 		var svg = "<radialGradient "
 		svg += "id=\"\(styleIdentifier)\" "
@@ -122,7 +123,9 @@ public extension QRCode.FillStyle.RadialGradient {
 
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
 		for pin in sorted {
-			guard let rgbColor = pin.color.hexRGBCode() else { return nil }
+			guard let rgbColor = pin.color.hexRGBCode() else {
+				throw QRCodeError.unsupportedColor
+			}
 			svg += "   <stop offset=\"\(pin.position)\" stop-color=\"\(rgbColor)\" stop-opacity=\"\(pin.color.alpha)\" />\n"
 		}
 		svg += "</radialGradient>\n"

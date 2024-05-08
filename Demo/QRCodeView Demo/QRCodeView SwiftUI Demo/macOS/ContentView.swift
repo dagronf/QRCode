@@ -15,21 +15,21 @@ struct StyleIdentifier {
 
 let pixelGenerators: [StyleIdentifier] = {
 	QRCodePixelShapeFactory.shared.availableGeneratorNames.map {
-		let gen = QRCodePixelShapeFactory.shared.named($0)!
+		let gen = try! QRCodePixelShapeFactory.shared.named($0)
 		return StyleIdentifier(identifier: gen.name, title: gen.title)
 	}
 }()
 
 let eyeGenerators: [StyleIdentifier] = {
 	QRCodeEyeShapeFactory.shared.availableGeneratorNames.map {
-		let gen = QRCodeEyeShapeFactory.shared.named($0)!
+		let gen = try! QRCodeEyeShapeFactory.shared.named($0)
 		return StyleIdentifier(identifier: gen.name, title: gen.title)
 	}
 }()
 
 let pupilGenerators: [StyleIdentifier] = {
 	QRCodePupilShapeFactory.shared.availableGeneratorNames.map {
-		let gen = QRCodePupilShapeFactory.shared.named($0)!
+		let gen = try! QRCodePupilShapeFactory.shared.named($0)
 		return StyleIdentifier(identifier: gen.name, title: gen.title)
 	}
 }()

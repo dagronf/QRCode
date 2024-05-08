@@ -20,11 +20,11 @@ struct PixelGenerator: Identifiable {
 
 let availablePixelGenerators: [PixelGenerator] = {
 	QRCodePixelShapeFactory.shared.all().map { gen in
-		let image = QRCodePixelShapeFactory.shared.image(
+		let image = try! QRCodePixelShapeFactory.shared.image(
 			pixelGenerator: gen,
 			dimension: 120,
 			foregroundColor: textColor
-		)!
+		)
 		return PixelGenerator(gen, image)
 	}
 }()

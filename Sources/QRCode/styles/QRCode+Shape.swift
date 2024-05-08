@@ -132,12 +132,12 @@ public extension QRCode.Shape {
 
 		// Backwards compatibility. Upgrade from old data type
 		if let data = settings["data"] as? [String: Any],
-			let shape = QRCodePixelShapeFactory.shared.create(settings: data)
+			let shape = try? QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.onPixels = shape
 		}
 		else if let data = settings["onPixels"] as? [String: Any],
-				  let shape = QRCodePixelShapeFactory.shared.create(settings: data)
+				  let shape = try? QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.onPixels = shape
 		}
@@ -145,7 +145,7 @@ public extension QRCode.Shape {
 		// The eye
 
 		if let eye = settings["eye"] as? [String: Any],
-			let shape = QRCodeEyeShapeFactory.shared.create(settings: eye)
+			let shape = try? QRCodeEyeShapeFactory.shared.create(settings: eye)
 		{
 			result.eye = shape
 		}
@@ -154,18 +154,18 @@ public extension QRCode.Shape {
 
 		// Load from the old version if it is available
 		if let data = settings["dataInverted"] as? [String: Any],
-			let shape = QRCodePixelShapeFactory.shared.create(settings: data)
+			let shape = try? QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.offPixels = shape
 		}
 		else if let data = settings["offPixels"] as? [String: Any],
-				  let shape = QRCodePixelShapeFactory.shared.create(settings: data)
+				  let shape = try? QRCodePixelShapeFactory.shared.create(settings: data)
 		{
 			result.offPixels = shape
 		}
 
 		if let data = settings["pupil"] as? [String: Any],
-			let pupil = QRCodePupilShapeFactory.shared.create(settings: data)
+			let pupil = try? QRCodePupilShapeFactory.shared.create(settings: data)
 		{
 			result.pupil = pupil
 		}

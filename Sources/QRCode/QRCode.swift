@@ -168,8 +168,11 @@ public extension QRCode {
 	/// Build the QR Code using the given data and error correction
 	@objc func update(data: Data, errorCorrection: ErrorCorrection) {
 		self.currentErrorCorrection = errorCorrection
-		if let result = self.generator.generate(data: data, errorCorrection: errorCorrection) {
-			self.current = result
+		do {
+			self.current = try self.generator.generate(data: data, errorCorrection: errorCorrection)
+		}
+		catch {
+			// Do nothing
 		}
 	}
 
@@ -181,8 +184,11 @@ public extension QRCode {
 	/// Build the QR Code using the given text and error correction
 	@objc func update(text: String, errorCorrection: ErrorCorrection = .default) {
 		self.currentErrorCorrection = errorCorrection
-		if let result = self.generator.generate(text: text, errorCorrection: errorCorrection) {
-			self.current = result
+		do {
+			self.current = try self.generator.generate(text: text, errorCorrection: errorCorrection)
+		}
+		catch {
+			// Do nothing
 		}
 	}
 }

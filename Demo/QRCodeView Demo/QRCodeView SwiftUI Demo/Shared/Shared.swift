@@ -15,18 +15,18 @@ func pixelShapeHandler(
 	rotationFraction: Double = 0,
 	randomInset: Bool = false
 ) -> QRCodePixelShapeGenerator {
-	QRCodePixelShapeFactory.shared.named(pixelShape, settings: [
+	try! QRCodePixelShapeFactory.shared.named(pixelShape, settings: [
 		QRCode.SettingsKey.insetFraction: insetFraction,
 		QRCode.SettingsKey.cornerRadiusFraction: cornerRadiusFraction,
 		QRCode.SettingsKey.rotationFraction: rotationFraction,
 		QRCode.SettingsKey.useRandomInset: randomInset
-	])!
+	])
 }
 
 func eyeShapeHandler(_ eyeStyle: String) -> QRCodeEyeShapeGenerator {
-	QRCodeEyeShapeFactory.shared.named(eyeStyle)!
+	try! QRCodeEyeShapeFactory.shared.named(eyeStyle)
 }
 
 func pupilShapeHandler(_ pupilShape: String) -> QRCodePupilShapeGenerator {
-	QRCodePupilShapeFactory.shared.named(pupilShape)!
+	try! QRCodePupilShapeFactory.shared.named(pupilShape)
 }

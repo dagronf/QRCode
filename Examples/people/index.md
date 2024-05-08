@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
+let doc = try QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
 doc.design.backgroundColor(CGColor(srgbRed: 0.149, green: 0.137, blue: 0.208, alpha: 1.000))
 doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 doc.design.style.onPixels = QRCode.FillStyle.Solid(1.000, 0.733, 0.424, alpha: 1.000)
@@ -26,8 +26,8 @@ doc.logoTemplate = QRCode.LogoTemplate(
    inset: 2
 )
 
-let logoQRCode = doc.platformImage(dimension: 300, dpi: 144)
-let pdfData = doc.pdfData(dimension: 300)!
+let logoQRCode = try doc.platformImage(dimension: 300, dpi: 144)
+let pdfData = try doc.pdfData(dimension: 300)!
 ```
 
 ## Logo Image

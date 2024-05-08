@@ -32,11 +32,11 @@ class EyeStylesView: Element {
 	lazy var body: Element =
 	VStack {
 		Flow(minimumInteritemSpacing: 1, minimumLineSpacing: 1, ForEach(allEyeStyles.wrappedValue, { item in
-			let image = QRCodeEyeShapeFactory.shared.image(
+			let image = try! QRCodeEyeShapeFactory.shared.image(
 				eyeGenerator: item,
 				dimension: 96,
 				foregroundColor: NSColor.textColor.cgColor
-			)!
+			)
 			return Button(
 				image: NSImage(cgImage: image, size: .init(width: 48, height: 48)),
 				type: .onOff,

@@ -17,21 +17,21 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		let eGen = QRCodeGenerator_External()
 
 		// A string that's purely uppercase alphanumeric. This is optimizable (thus should be smaller)
-		let g1 = eGen.generate(text: "THIS IS A TEST THIS IS A TEST THIS IS A TEST", errorCorrection: .quantize)
-		XCTAssertEqual(g1?.dimension, 31)
-		let g2 = eGen.generate(text: "this IS A TEST THIS IS A TEST THIS IS A TEST", errorCorrection: .quantize)
-		XCTAssertEqual(g2?.dimension, 35)
+		let g1 = try eGen.generate(text: "THIS IS A TEST THIS IS A TEST THIS IS A TEST", errorCorrection: .quantize)
+		XCTAssertEqual(g1.dimension, 31)
+		let g2 = try eGen.generate(text: "this IS A TEST THIS IS A TEST THIS IS A TEST", errorCorrection: .quantize)
+		XCTAssertEqual(g2.dimension, 35)
 
 		// A string that is purely uppercase ascii, which the external generator can optimize to produce
 		// a smaller QR code
 		let s1 = "THIS IS A TEST THIS IS A TEST THIS IS A TEST "
 		let docG1 = QRCode.Document(utf8String: s1, generator: QRCodeGenerator_External())
-		XCTAssertEqual(g1?.dimension, docG1.boolMatrix.dimension)
+		XCTAssertEqual(g1.dimension, docG1.boolMatrix.dimension)
 
 		// The first 4 characters are NOT compatible with text optimizations, so the QR code should be larger
 		let s2 = "this IS A TEST THIS IS A TEST THIS IS A TEST "
 		let docG2 = QRCode.Document(utf8String: s2, generator: QRCodeGenerator_External())
-		XCTAssertEqual(g2?.dimension, docG2.boolMatrix.dimension)
+		XCTAssertEqual(g2.dimension, docG2.boolMatrix.dimension)
 	}
 
 	func testNumericEncoding() throws {
@@ -51,8 +51,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		// Only numbers. The external encoder should be able to optimize this more
 		let m31 = "0123456789012345678901234567890123456789"
-		let g31 = eGen.generate(text: m31, errorCorrection: .quantize)
-		XCTAssertEqual(g31?.dimension, 27)
+		let g31 = try eGen.generate(text: m31, errorCorrection: .quantize)
+		XCTAssertEqual(g31.dimension, 27)
 		let d31 = QRCode.Document(utf8String: m31, generator: eGen)
 		XCTAssertEqual(27, d31.boolMatrix.dimension)
 		let data31 = try XCTUnwrap(d31.imageData(.png(), dimension: 300))
@@ -73,8 +73,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// Adding a non-numeric should expand the QRCode dimensions (cannot optimize as strongly due to the 'A')
 		// However, because the character is an upper case ascii value, it can optimize further than the generic case
 		let m32 = "012345678901234567890123456789012345678A"
-		let g32 = eGen.generate(text: m32, errorCorrection: .quantize)
-		XCTAssertEqual(g32?.dimension, 31)
+		let g32 = try eGen.generate(text: m32, errorCorrection: .quantize)
+		XCTAssertEqual(g32.dimension, 31)
 		let d32 = QRCode.Document(utf8String: m32, generator: eGen)
 		XCTAssertEqual(31, d32.boolMatrix.dimension)
 		let d32d = try XCTUnwrap(d32.imageData(.png(), dimension: 300))
@@ -94,8 +94,8 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		// Adding a non-numeric should expand the QRCode dimensions (cannot optimize due to the 'a')
 		let m33 = "012345678901234567890123456789012345678a"
-		let g33 = eGen.generate(text: m33, errorCorrection: .quantize)
-		XCTAssertEqual(g33?.dimension, 35)
+		let g33 = try eGen.generate(text: m33, errorCorrection: .quantize)
+		XCTAssertEqual(g33.dimension, 35)
 		let d33 = QRCode.Document(utf8String: m33, generator: eGen)
 		XCTAssertEqual(35, d33.boolMatrix.dimension)
 		let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))

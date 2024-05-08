@@ -1,5 +1,5 @@
 //
-//  QRCodeDocumentView+macOS.swift
+//  QRCodeDocumentView+AppKit.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //

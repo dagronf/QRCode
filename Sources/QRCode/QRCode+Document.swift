@@ -70,6 +70,15 @@ public extension QRCode {
 			didSet { self.regenerate() }
 		}
 
+		/// The engine used to generate the QR code
+		@objc public var generator: (any QRCodeEngine)? {
+			get { self.qrcode.generator }
+			set {
+				self.qrcode.generator = newValue ?? QRCode.DefaultEngine()
+				self.regenerate()
+			}
+		}
+
 		/// Create a QR code
 		@objc override public init() {
 			self.content = Content()
@@ -159,8 +168,7 @@ public extension QRCode {
 public extension QRCode.Document {
 	/// Create a QRCode document
 	/// - Parameters:
-	///   - text: The text to encode
-	///   - encoding: The text encoding to use (eg. .utf8)
+	///   - data: The data to encode
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
 	@inlinable convenience init(
@@ -177,7 +185,7 @@ public extension QRCode.Document {
 	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
-	@inlinable convenience init(
+	convenience init(
 		_ text: String,
 		textEncoding: String.Encoding = .utf8,
 		errorCorrection: QRCode.ErrorCorrection = .default,
@@ -200,23 +208,18 @@ public extension QRCode.Document {
 	///   - textEncoding: The text encoding to use for the URL
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
-	/// - Returns: nil if the url could not be encoded in utf8
-	@inlinable convenience init?(
+	@inlinable convenience init(
 		_ url: URL,
 		textEncoding: String.Encoding = .utf8,
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		generator: (any QRCodeEngine)? = nil
-	) {
-		if let data = url.absoluteString.data(using: textEncoding) {
-			self.init(
-				data: data,
-				errorCorrection: errorCorrection,
-				generator: generator
-			)
-		}
-		else {
-			return nil
-		}
+	) throws {
+		try self.init(
+			url.absoluteString,
+			textEncoding: textEncoding,
+			errorCorrection: errorCorrection,
+			generator: generator
+		)
 	}
 
 	/// Create a QRCode document containing a url
@@ -256,10 +259,19 @@ public extension QRCode.Document {
 	///   - text: The text
 	///   - textEncoding: The text encoding to use
 	/// - Returns: True if the text was successfully set, false otherwise
-	func setText(_ text: String, textEncoding: String.Encoding = .utf8) -> Bool {
-		guard let data = text.data(using: textEncoding) else { return false }
+	func setText(_ text: String, textEncoding: String.Encoding = .utf8) throws {
+		guard let data = text.data(using: textEncoding) else {
+			throw QRCodeError.unableToConvertTextToRequestedEncoding
+		}
 		self.data = data
-		return true
+	}
+
+	/// Set the content of the QR code to the specified URL
+	/// - Parameters:
+	///   - url: The url to encode
+	///   - textEncoding: The string encoding to use
+	func setURL(_ url: URL, textEncoding: String.Encoding = .utf8) throws {
+		try self.setText(url.absoluteString, textEncoding: textEncoding)
 	}
 
 	/// Set the QR code data using a message formatter
@@ -334,7 +346,7 @@ public extension QRCode.Document {
 		self.errorCorrection = ec
 
 		if let design = settings["design"] as? [String: Any],
-			let d = QRCode.Design.Create(settings: design)
+			let d = try? QRCode.Design.Create(settings: design)
 		{
 			self.design = d
 		}
@@ -517,12 +529,8 @@ public extension QRCode.Document {
 	/// - Returns: An SVG representation of the QR code
 	///
 	/// The string always uses Unix newlines (\n), regardless of the platform.
-	@objc func svg(dimension: Int) -> String {
-		self.qrcode.svg(
-			dimension: dimension,
-			design: self.design,
-			logoTemplate: self.logoTemplate
-		)
+	@objc func svg(dimension: Int) throws -> String {
+		try self.qrcode.svg(dimension: dimension, design: self.design, logoTemplate: self.logoTemplate)
 	}
 
 	/// Returns an SVG data representation of the QR Code.

@@ -34,23 +34,23 @@ import Foundation
 	}
 
 	/// Generate the QR code using the custom generator
-	@objc public func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	@objc public func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
 		let qrCode = self._generate(data, errorCorrection: errorCorrection.ECLevel)
-		return mapResult(qrCode)
+		return try mapResult(qrCode)
 	}
 
-	@objc public func generate(text: String, errorCorrection: QRCode.ErrorCorrection) -> BoolMatrix? {
+	@objc public func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
 		let qrCode = self._generate(text, errorCorrection: errorCorrection.ECLevel)
-		return mapResult(qrCode)
+		return try mapResult(qrCode)
 	}
 
-	private func mapResult(_ qrCode: [[Bool]]?) -> BoolMatrix? {
+	private func mapResult(_ qrCode: [[Bool]]?) throws -> BoolMatrix {
 		guard
 			let qrCode = qrCode,
 			qrCode.count > 0,
 			qrCode[0].count > 0
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateQRCode
 		}
 
 		let sz = qrCode[0].count

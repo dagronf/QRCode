@@ -20,11 +20,11 @@ struct PupilGenerator: Identifiable {
 
 let availablePupilGenerators: [PupilGenerator] = {
 	QRCodePupilShapeFactory.shared.all().map { gen in
-		let image = QRCodePupilShapeFactory.shared.image(
+		let image = try! QRCodePupilShapeFactory.shared.image(
 			pupilGenerator: gen,
 			dimension: 80,
 			foregroundColor: textColor
-		)!
+		)
 		return PupilGenerator(gen, image)
 	}
 }()

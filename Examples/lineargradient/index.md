@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let doc = QRCode.Document(utf8String: "https://developer.apple.com/swift/")
+let doc = try QRCode.Document(utf8String: "https://developer.apple.com/swift/")
 
 doc.design.additionalQuietZonePixels = 1
 doc.design.style.backgroundFractionalCornerRadius = 3
@@ -34,5 +34,5 @@ doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.05, corn
 doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.1)
 doc.design.shape.offPixels = QRCode.PixelShape.Vertical(insetFraction: 0.05, cornerRadiusFraction: 1)
 
-let imageData = doc.pngData(dimension: 400)
+let imageData = try doc.pngData(dimension: 400)
 ```
