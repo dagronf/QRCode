@@ -367,28 +367,63 @@ final class QRCodeTests: XCTestCase {
 
 		var markdownText = "# Pixel alignment checks\n\n"
 
-		let d4x4 = BoolMatrix(
-			dimension: 4,
-			rawFlattenedInt: [
-				1, 1, 1, 0,
-				0, 0, 1, 1,
-				1, 0, 1, 1,
-				1, 1, 0, 1,
-			])
-
-		let d5x5 = BoolMatrix(
-			dimension: 5,
-			rawFlattenedInt: [
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1,
-			])
+		let matrices: [BoolMatrix] = [
+			BoolMatrix(
+				dimension: 3,
+				rawFlattenedInt: [
+					1, 1, 1,
+					1, 0, 1,
+					1, 1, 1,
+				]
+			),
+			BoolMatrix(
+				dimension: 3,
+				rawFlattenedInt: [
+					1, 0, 1,
+					0, 1, 0,
+					1, 0, 1,
+				]
+			),
+			BoolMatrix(
+				dimension: 3,
+				rawFlattenedInt: [
+					1, 0, 0,
+					1, 1, 1,
+					0, 0, 1,
+				]
+			),
+			BoolMatrix(
+				dimension: 3,
+				rawFlattenedInt: [
+					1, 0, 1,
+					1, 0, 1,
+					1, 0, 1,
+				]
+			),
+			BoolMatrix(
+				dimension: 4,
+				rawFlattenedInt: [
+					1, 1, 1, 0,
+					0, 0, 1, 1,
+					1, 0, 1, 1,
+					1, 1, 0, 1,
+				]
+			),
+			BoolMatrix(
+				dimension: 5,
+				rawFlattenedInt: [
+					1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1,
+				]
+			)
+		]
 
 		let outputFolder = try outputFolder.subfolder(with: "pixel-alignment")
 
-		try [d4x4, d5x5].forEach { matrix in
+		try matrices.enumerated().forEach { matrix in
 
 			markdownText += "## Matrix check\n\n"
 
@@ -397,16 +432,11 @@ final class QRCodeTests: XCTestCase {
 				foregroundColor: .commonBlack,
 				backgroundColor: CGColor.sRGBA(1, 0, 0, 1),
 				isOn: true,
-				samplePixelMatrix: matrix,
-				commonSettings: [
-					QRCode.SettingsKey.insetFraction: 0.2,
-					QRCode.SettingsKey.cornerRadiusFraction: 0.8,
-					QRCode.SettingsKey.hasInnerCorners: true,
-				]
+				samplePixelMatrix: matrix.element
 			)
 
 			try allImages.forEach { item in
-				let n = "pixel-alignment-check-\(matrix.dimension)-\(item.name).jpg"
+				let n = "pixel-alignment-check-\(matrix.offset)-\(item.name).jpg"
 				try outputFolder.write(try item.image.representation.jpeg(scale: 2, compression: 0.5), to: n)
 				markdownText += "<img src=\"./\(n)\" width=\"150\" /> &nbsp;"
 			}

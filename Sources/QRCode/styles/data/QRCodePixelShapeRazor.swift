@@ -33,59 +33,6 @@ public extension QRCode.PixelShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Razor() }
-
-		static let templateSquare: CGPath = {
-			CGPath(rect: CGRect(origin: .zero, size: .init(width: 10, height: 10)), transform: nil)
-		}()
-
-		static let templatePointingDown: CGPath = {
-			let p = CGMutablePath()
-			p.move(to: CGPoint(x: 0, y: 0))
-			p.line(to: CGPoint(x: 10, y: 0))
-			p.line(to: CGPoint(x: 10, y: 10))
-			p.curve(to: CGPoint(x: 2, y: 8), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 4.5, y: 9.5))
-			p.curve(to: CGPoint(x: 0, y: 4), controlPoint1: CGPoint(x: -0.5, y: 6.5), controlPoint2: CGPoint(x: 0, y: 4))
-			p.line(to: CGPoint(x: 0, y: 0))
-			p.close()
-			return p
-		}()
-
-		static let templatePointingUp: CGPath = {
-			let p = CGMutablePath()
-			p.move(to: CGPoint(x: 0, y: 0))
-			p.curve(to: CGPoint(x: 8, y: 2), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 5.5, y: 0.5))
-			p.curve(to: CGPoint(x: 10, y: 6), controlPoint1: CGPoint(x: 10.5, y: 3.5), controlPoint2: CGPoint(x: 10, y: 6))
-			p.line(to: CGPoint(x: 10, y: 10))
-			p.line(to: CGPoint(x: 0, y: 10))
-			p.line(to: CGPoint(x: 0, y: 0))
-			p.close()
-			return p
-		}()
-
-		static let templatePointingRight: CGPath = {
-			let p = CGMutablePath()
-			p.move(to: CGPoint(x: 0, y: 0))
-			p.line(to: CGPoint(x: 10, y: 0))
-			p.curve(to: CGPoint(x: 8, y: 8), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 9.5, y: 5.5))
-			p.curve(to: CGPoint(x: 4, y: 10), controlPoint1: CGPoint(x: 6.5, y: 10.5), controlPoint2: CGPoint(x: 4, y: 10))
-			p.line(to: CGPoint(x: 0, y: 10))
-			p.line(to: CGPoint(x: 0, y: 0))
-			p.close()
-			return p
-		}()
-
-		static let templatePointingLeft: CGPath = {
-			let p = CGMutablePath()
-			p.move(to: CGPoint(x: 2, y: 2))
-			p.curve(to: CGPoint(x: 6, y: 0), controlPoint1: CGPoint(x: 3.5, y: -0.5), controlPoint2: CGPoint(x: 6, y: 0))
-			p.line(to: CGPoint(x: 10, y: 0))
-			p.line(to: CGPoint(x: 10, y: 10))
-			p.line(to: CGPoint(x: 0, y: 10))
-			p.curve(to: CGPoint(x: 2, y: 2), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 0.5, y: 4.5))
-
-			p.close()
-			return p
-		}()
 	}
 }
 
@@ -111,57 +58,91 @@ public extension QRCode.PixelShape.Razor {
 
 		for row in 0 ..< matrix.dimension {
 			for col in 0 ..< matrix.dimension {
-				guard matrix[row, col] == true else { continue }
-
-				let hasLeft: Bool = {
-					if col == 0 { return false }
-					return (col - 1) >= 0 ? matrix[row, col - 1] : false
-				}()
-				let hasRight: Bool = {
-					if col == (matrix.dimension - 1) { return false }
-					return (col + 1) < matrix.dimension ? matrix[row, col + 1] : false
-				}()
-				let hasTop: Bool = {
-					if row == 0 { return false }
-					return (row - 1) >= 0 ? matrix[row - 1, col] : false
-				}()
-				let hasBottom: Bool = {
-					if row == (matrix.dimension - 1) { return false }
-					return (row + 1) < matrix.dimension ? matrix[row + 1, col] : false
-				}()
+				//guard matrix[row, col] == true else { continue }
 
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 
-				if !hasLeft, !hasRight, !hasTop, !hasBottom {
-					// isolated block
+				let ne = Neighbours(matrix: matrix, row: row, col: col)
+
+				if matrix[row, col] == false {
+					// Attach inner corners if needed
+					if ne.leading, ne.top, ne.topLeading {
+						path.addPath(
+							Self.templateRoundTopLeft,
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if ne.trailing, ne.top, ne.topTrailing {
+						path.addPath(
+							Self.templateRoundTopRight,
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if ne.leading, ne.bottom, ne.bottomLeading {
+						path.addPath(
+							Self.templateRoundBottomLeft,
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					if ne.trailing, ne.bottom, ne.bottomTrailing {
+						path.addPath(
+							Self.templateRoundBottomRight,
+							transform: scaleTransform.concatenating(translate)
+						)
+					}
+					continue
+				}
+
+				if !ne.bottom, !ne.trailing, !ne.top, !ne.leading {
 					path.addPath(
-						Self.templateSquare,
+						Self.templateIsolated,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-				else if !hasLeft, !hasRight, !hasTop, hasBottom {
-					// pointing up block
+				else if ne.bottom, ne.trailing, !ne.top, !ne.leading {
+					path.addPath(
+						Self.templatePointingUpperLeft,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if ne.bottom, ne.leading, !ne.trailing, !ne.top {
+					path.addPath(
+						Self.templatePointingUpperRight,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if ne.top, ne.trailing, !ne.leading, !ne.bottom {
+					path.addPath(
+						Self.templatePointingLowerLeft,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+				else if ne.top, ne.leading, !ne.bottom, !ne.trailing {
+					path.addPath(
+						Self.templatePointingLowerRight,
+						transform: scaleTransform.concatenating(translate)
+					)
+				}
+
+				else if ne.bottom, !ne.trailing, !ne.top, !ne.leading {
 					path.addPath(
 						Self.templatePointingUp,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-				else if !hasLeft, !hasRight, !hasBottom, hasTop {
-					// pointing down block
+				else if ne.top, !ne.trailing, !ne.bottom, !ne.leading  {
 					path.addPath(
 						Self.templatePointingDown,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-				else if !hasTop, !hasRight, !hasBottom, hasLeft {
-					// pointing right block
+				else if ne.leading, !ne.trailing, !ne.bottom, !ne.top {
 					path.addPath(
 						Self.templatePointingRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
-				else if !hasTop, !hasLeft, !hasBottom, hasRight {
-					// pointing left block
+				else if ne.trailing, !ne.leading, !ne.bottom, !ne.top {
 					path.addPath(
 						Self.templatePointingLeft,
 						transform: scaleTransform.concatenating(translate)
@@ -188,4 +169,164 @@ public extension QRCode.PixelShape.Razor {
 	@objc func settings() -> [String: Any] { return [:] }
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+}
+
+// MARK: - Shapes
+
+private extension QRCode.PixelShape.Razor {
+	/// A square
+	static let templateSquare =
+		CGPath(rect: CGRect(origin: .zero, size: .init(width: 10, height: 10)), transform: nil)
+
+	/// A pixel that's isolated
+	static let templateIsolated =
+		CGPath(roundedRect: CGRect(x: 0, y: 0, width: 10, height: 10), cornerWidth: 3, cornerHeight: 3, transform: nil)
+
+	static let templatePointingDown =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 0, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.curve(to: CGPoint(x: 2, y: 8), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 4.5, y: 9.5))
+			$0.curve(to: CGPoint(x: 0, y: 4), controlPoint1: CGPoint(x: -0.5, y: 6.5), controlPoint2: CGPoint(x: 0, y: 4))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.close()
+		}
+
+	static let templatePointingUp =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 0, y: 0))
+			$0.curve(to: CGPoint(x: 8, y: 2), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 5.5, y: 0.5))
+			$0.curve(to: CGPoint(x: 10, y: 6), controlPoint1: CGPoint(x: 10.5, y: 3.5), controlPoint2: CGPoint(x: 10, y: 6))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.close()
+		}
+
+	static let templatePointingRight =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 0, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.curve(to: CGPoint(x: 8, y: 8), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 9.5, y: 5.5))
+			$0.curve(to: CGPoint(x: 4, y: 10), controlPoint1: CGPoint(x: 6.5, y: 10.5), controlPoint2: CGPoint(x: 4, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.close()
+		}
+
+	static let templatePointingLeft =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 2, y: 2))
+			$0.curve(to: CGPoint(x: 6, y: 0), controlPoint1: CGPoint(x: 3.5, y: -0.5), controlPoint2: CGPoint(x: 6, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.curve(to: CGPoint(x: 2, y: 2), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 0.5, y: 4.5))
+			$0.close()
+		}
+}
+
+private extension QRCode.PixelShape.Razor {
+	static let templatePointingUpperLeft =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 10, y: 10))
+			$0.curve(to: CGPoint(x: 10, y: 3), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 10, y: 3))
+			$0.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 10, y: 1.32), controlPoint2: CGPoint(x: 10, y: 0))
+			$0.line(to: CGPoint(x: 3, y: 0))
+			$0.curve(to: CGPoint(x: 1.22, y: 0.58), controlPoint1: CGPoint(x: 2.34, y: 0), controlPoint2: CGPoint(x: 1.72, y: 0.22))
+			$0.curve(to: CGPoint(x: 0, y: 3), controlPoint1: CGPoint(x: 0.48, y: 1.13), controlPoint2: CGPoint(x: 0, y: 2.01))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.close()
+		}
+
+	static let templatePointingUpperRight =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 0, y: 10))
+			$0.curve(to: CGPoint(x: 0, y: 3), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 0, y: 3))
+			$0.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 0, y: 1.32), controlPoint2: CGPoint(x: 0, y: 0))
+			$0.line(to: CGPoint(x: 7, y: 0))
+			$0.curve(to: CGPoint(x: 8.78, y: 0.58), controlPoint1: CGPoint(x: 7.66, y: 0), controlPoint2: CGPoint(x: 8.28, y: 0.22))
+			$0.curve(to: CGPoint(x: 10, y: 3), controlPoint1: CGPoint(x: 9.52, y: 1.13), controlPoint2: CGPoint(x: 10, y: 2.01))
+			$0.line(to: CGPoint(x: 10, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.line(to: CGPoint(x: 0, y: 10))
+			$0.close()
+		}
+
+	static let templatePointingLowerLeft =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 10, y: 0))
+			$0.curve(to: CGPoint(x: 10, y: 7), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 10, y: 7))
+			$0.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 10, y: 8.68), controlPoint2: CGPoint(x: 10, y: 10))
+			$0.line(to: CGPoint(x: 3, y: 10))
+			$0.curve(to: CGPoint(x: 1.22, y: 9.42), controlPoint1: CGPoint(x: 2.34, y: 10), controlPoint2: CGPoint(x: 1.72, y: 9.78))
+			$0.curve(to: CGPoint(x: 0, y: 7), controlPoint1: CGPoint(x: 0.48, y: 8.87), controlPoint2: CGPoint(x: 0, y: 7.99))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.close()
+		}
+
+	static let templatePointingLowerRight =
+		CGPath.make {
+			$0.move(to: CGPoint(x: 0, y: 0))
+			$0.curve(to: CGPoint(x: 0, y: 7), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: 7))
+			$0.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 0, y: 8.68), controlPoint2: CGPoint(x: 0, y: 10))
+			$0.line(to: CGPoint(x: 7, y: 10))
+			$0.curve(to: CGPoint(x: 8.78, y: 9.42), controlPoint1: CGPoint(x: 7.66, y: 10), controlPoint2: CGPoint(x: 8.28, y: 9.78))
+			$0.curve(to: CGPoint(x: 10, y: 7), controlPoint1: CGPoint(x: 9.52, y: 8.87), controlPoint2: CGPoint(x: 10, y: 7.99))
+			$0.line(to: CGPoint(x: 10, y: 0))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.close()
+		}
+}
+
+// Inner corner templates
+
+private extension QRCode.PixelShape.Razor {
+	static let templateRoundTopLeft =
+		CGPath.make {
+			let fr = 1.25
+			$0.move(to: CGPoint(x: fr, y: 0))
+			$0.line(to: CGPoint(x: 0, y: 0))
+			$0.curve(to: CGPoint(x: 0, y: fr), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 0, y: fr / 2))
+			$0.curve(to: CGPoint(x: fr, y: 0), controlPoint1: CGPoint(x: 0, y: fr / 2), controlPoint2: CGPoint(x: fr / 2, y: 0))
+			$0.close()
+		}
+
+	static let templateRoundTopRight =
+		CGPath.make {
+			$0.addPath(
+				QRCode.PixelShape.Razor.templateRoundTopLeft,
+				transform:
+					CGAffineTransform(scaleX: -1, y: 1)
+					.concatenating(
+						CGAffineTransform(translationX: 10, y: 0)
+					)
+			)
+		}
+
+	static let templateRoundBottomLeft =
+		CGPath.make {
+			$0.addPath(
+				QRCode.PixelShape.Razor.templateRoundTopLeft,
+				transform:
+					CGAffineTransform(scaleX: 1, y: -1)
+					.concatenating(.init(translationX: 0, y: 10))
+			)
+		}
+
+	static let templateRoundBottomRight =
+		CGPath.make {
+			$0.addPath(
+				QRCode.PixelShape.Razor.templateRoundTopLeft,
+				transform:
+					CGAffineTransform(scaleX: -1, y: -1)
+					.concatenating(.init(translationX: 10, y: 10))
+			)
+	}
 }
