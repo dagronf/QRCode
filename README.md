@@ -111,7 +111,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'DSF_QRCode', '~> 18.0.0'
+pod 'DSF_QRCode', '~> 19.0.0'
 ```
 
 ### Usage

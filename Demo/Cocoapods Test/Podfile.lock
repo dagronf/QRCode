@@ -1,8 +1,8 @@
 PODS:
-  - DSF_QRCode (18.1.1):
-    - SwiftImageReadWrite (~> 1.6.1)
+  - DSF_QRCode (19.2.0):
+    - SwiftImageReadWrite (~> 1.7.2)
     - SwiftQRCodeGenerator (~> 2.0.2)
-  - SwiftImageReadWrite (1.6.1)
+  - SwiftImageReadWrite (1.7.2)
   - SwiftQRCodeGenerator (2.0.2)
 
 DEPENDENCIES:
@@ -18,8 +18,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  DSF_QRCode: e2029dc77d1a60ec1edea66fcc99995768f47e36
-  SwiftImageReadWrite: 69f6521a74fdddbb61b2cc844150ec64de2cb4c7
+  DSF_QRCode: e8fb78ccbb99162134286944bfb0dfbcfbe47836
+  SwiftImageReadWrite: ef6dfb4a78a0142a62c89cacf549623b26961fd3
   SwiftQRCodeGenerator: cc02fed209335064d0b0dd61b2a0874b9bc6bd5a
 
 PODFILE CHECKSUM: 8bc17f7e1b88bd77e3f248afa8c852e64fc65d8d
