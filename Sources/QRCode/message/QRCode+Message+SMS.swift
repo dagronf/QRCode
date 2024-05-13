@@ -26,12 +26,33 @@ public extension QRCode.Message {
 	///
 	/// SMSTO:+401274159:This is the message
 	@objc(QRCodeMessageSMS) class SMS: NSObject, QRCodeMessageFormatter {
+		/// The encoded data
 		public let data: Foundation.Data
-		@objc public init(_ mobileNumber: String, message: String) {
+		/// The content to be displayed in the qr code
+		public let content: String
+
+		/// Create a message containing an SMS message
+		/// - Parameters:
+		///   - mobileNumber: The mobile number in the format `(+)12342341234`
+		///   - message: The message to encode
+		@objc public convenience init(_ mobileNumber: String, message: String) throws {
+			try self.init(mobileNumber, message: message, textEncoding: .utf8)
+		}
+
+		/// Create a message containing an SMS message
+		/// - Parameters:
+		///   - mobileNumber: The mobile number in the format `(+)12342341234`
+		///   - message: The message to encode
+		public init(_ mobileNumber: String, message: String, textEncoding: String.Encoding) throws {
 			let numbersOnly = mobileNumber.filter { $0.isNumber || $0 == "+" }
 			// TEL:(+)12342341234
-			let msg = "SMSTO:\(numbersOnly):\(message)"
-			self.data = msg.data(using: .utf8) ?? Foundation.Data()
+			self.content = "SMSTO:\(numbersOnly):\(message)"
+
+			guard let msgData = self.content.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
+			}
+
+			self.data = msgData
 		}
 	}
 }

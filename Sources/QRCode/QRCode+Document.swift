@@ -228,11 +228,11 @@ public extension QRCode.Document {
 	///   - errorCorrection: The error correction level
 	///   - generator: The generator to use when creating the QR code
 	/// - Returns: nil if the url could not be encoded in utf8
-	@inlinable convenience init?(
+	@inlinable convenience init(
 		_ message: any QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		generator: (any QRCodeEngine)? = nil
-	) {
+	) throws {
 		self.init(
 			message: message,
 			errorCorrection: errorCorrection,

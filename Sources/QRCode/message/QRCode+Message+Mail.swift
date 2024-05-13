@@ -21,13 +21,36 @@
 
 import Foundation
 
+// qr format
+// mailto:blah%40noodle.com?subject=This%20is%20a%20test&cc=zomb%40att.com&bcc=catpirler%40superbalh.eu&body=Noodles%20and%20fish%21
+
 public extension QRCode.Message {
 	/// A formattter for a generating a QRCode containing a link for generating an email
 	@objc(QRCodeMessageMail) class Mail: NSObject, QRCodeMessageFormatter {
+		/// The encoded data
 		public let data: Foundation.Data
-		@objc public init?(mailTo: String, subject: String? = nil, body: String? = nil) {
-			// mailto:blah%40noodle.com?subject=This%20is%20a%20test&cc=zomb%40att.com&bcc=catpirler%40superbalh.eu&body=Noodles%20and%20fish%21
-			guard let mt = mailTo.urlQuerySafe else { return nil }
+		/// The content to be displayed in the qr code
+		public let content: String
+
+		/// Create a message containing a mail message (utf8 encoded)
+		/// - Parameters:
+		///   - mailTo: The mail destination
+		///   - subject: The mail subject
+		///   - body: The body of the email
+		@objc public convenience init(mailTo: String, subject: String? = nil, body: String? = nil) throws {
+			try self.init(mailTo: mailTo, subject: subject, body: body, textEncoding: .utf8)
+		}
+
+		/// Create a message containing a mail message (utf8 encoded)
+		/// - Parameters:
+		///   - mailTo: The mail destination
+		///   - subject: The mail subject
+		///   - body: The body of the email
+		///   - textEncoding: The string encoding to use
+		public init(mailTo: String, subject: String? = nil, body: String? = nil, textEncoding: String.Encoding) throws {
+			guard let mt = mailTo.urlQuerySafe else {
+				throw QRCodeError.invalidURL
+			}
 			var msg = "mailto:\(mt)"
 
 			var queryItems: [URLQueryItem] = []
@@ -39,7 +62,13 @@ public extension QRCode.Message {
 			if let q = u.query, q.count > 0 {
 				msg += "?\(q)"
 			}
-			self.data = msg.data(using: .utf8) ?? Foundation.Data()
+
+			guard let msgData = msg.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
+			}
+
+			self.data = msgData
+			self.content = msg
 		}
 	}
 }

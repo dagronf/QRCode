@@ -24,12 +24,32 @@ import Foundation
 public extension QRCode.Message {
 	/// A formattter for a generating a QRCode with a telephone number
 	@objc(QRCodeMessagePhone) class Phone: NSObject, QRCodeMessageFormatter {
+		/// The encoded data
 		public let data: Foundation.Data
-		@objc public init(_ phoneNumber: String) {
+		/// The content to be displayed in the qr code
+		public let content: String
+
+		/// Create a message containing a phone number (utf8 encoded)
+		/// - Parameter phoneNumber: The phone number to encode
+		///
+		/// Phone number format: (+)12342341234
+		@objc public convenience init(_ phoneNumber: String) throws {
+			try self.init(phoneNumber, textEncoding: .utf8)
+		}
+
+		/// Create a message containing a phone number (utf8 encoded)
+		/// - Parameters:
+		///   - phoneNumber: The phone number to encode
+		///   - textEncoding: The string encoding to use
+		///
+		/// Phone number format: (+)12342341234
+		public init(_ phoneNumber: String, textEncoding: String.Encoding) throws {
 			let numbersOnly = phoneNumber.filter { $0.isNumber || $0 == "+" }
-			// TEL:(+)12342341234
-			let msg = "TEL:\(numbersOnly)"
-			self.data = msg.data(using: .utf8) ?? Foundation.Data()
+			self.content = "TEL:\(numbersOnly)"
+			guard let msgData = self.content.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
+			}
+			self.data = msgData
 		}
 	}
 }

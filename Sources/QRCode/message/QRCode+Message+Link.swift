@@ -24,22 +24,36 @@ import Foundation
 public extension QRCode.Message {
 	/// A formattter for a generating a QRCode with a url (link)
 	@objc(QRCodeMessageLink) class Link: NSObject, QRCodeMessageFormatter {
+		/// The encoded data
 		public let data: Foundation.Data
-		/// Create using a url
-		@objc public init(_ url: URL) {
-			let msg = url.absoluteString
-			self.data = msg.data(using: .utf8) ?? Foundation.Data()
+		/// The content to be displayed in the qr code
+		public let content: String
+
+		/// Create a message containing a URL (utf8 encoded)
+		/// - Parameter url: The url
+		@objc public convenience init(_ url: URL) throws {
+			try self.init(url, textEncoding: .utf8)
 		}
 
-		/// Create using the string representation of a URL
-		@objc public init?(string: String) {
-			guard
-				let url = URL(string: string),
-				let msg = url.absoluteString.data(using: .utf8)
-			else {
-				return nil
+		/// Create a message containing a URL
+		/// - Parameters:
+		///   - url: The URL to encode
+		///   - textEncoding: The string encoding to use
+		public init(_ url: URL, textEncoding: String.Encoding) throws {
+			self.content = url.absoluteString
+			guard let msgData = self.content.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
-			self.data = msg
+			self.data = msgData
+		}
+
+		/// Create using the string representation of a URL (utf8 encoded)
+		/// - Parameter string: The string representation of the URL to encode
+		@objc public convenience init(string: String) throws {
+			guard let url = URL(string: string) else {
+				throw QRCodeError.invalidURL
+			}
+			try self.init(url)
 		}
 	}
 }

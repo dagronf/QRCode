@@ -11,7 +11,7 @@ final class QRCodeTests: XCTestCase {
 	func testBasicQRCode() throws {
 		let doc = QRCode(generator: __testGenerator)
 		let url = URL(string: "https://www.apple.com.au/")!
-		doc.update(message: QRCode.Message.Link(url), errorCorrection: .high)
+		doc.update(message: try QRCode.Message.Link(url), errorCorrection: .high)
 
 		let boomat = doc.boolMatrix
 		XCTAssertEqual(35, boomat.dimension)

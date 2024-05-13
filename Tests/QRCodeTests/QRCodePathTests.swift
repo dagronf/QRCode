@@ -31,7 +31,7 @@ final class QRCodePathTests: XCTestCase {
 
 		let doc = QRCode.Document()
 		let url = URL(string: "https://www.apple.com.au/")!
-		doc.update(message: QRCode.Message.Link(url), errorCorrection: .high)
+		doc.update(message: try QRCode.Message.Link(url), errorCorrection: .high)
 
 		let cs: [(QRCode.Components, String)] = [
 			(.all, "all"),
@@ -100,7 +100,7 @@ final class QRCodePathTests: XCTestCase {
 
 		let doc = QRCode.Document()
 		let url = URL(string: "https://www.apple.com.au/")!
-		doc.update(message: QRCode.Message.Link(url), errorCorrection: .high)
+		doc.update(message: try QRCode.Message.Link(url), errorCorrection: .high)
 
 		markdown += "| on/off pixels registration | on/off background registration |\n"
 		markdown += "|------|-------|\n"
@@ -165,7 +165,7 @@ final class QRCodePathTests: XCTestCase {
 	func testEyeBackground() throws {
 		let doc = QRCode.Document()
 		let url = URL(string: "https://www.apple.com.au/")!
-		doc.update(message: QRCode.Message.Link(url), errorCorrection: .high)
+		doc.update(message: try QRCode.Message.Link(url, textEncoding: .ascii), errorCorrection: .high)
 
 		try QRCodeEyeShapeFactory.shared.all().forEach { generator in
 			doc.design.shape.eye = generator

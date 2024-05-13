@@ -24,10 +24,27 @@ import Foundation
 public extension QRCode.Message {
 	/// A simple text formatter.
 	@objc(QRCodeMessageText) class Text: NSObject, QRCodeMessageFormatter {
+		/// The encoded data
 		public let data: Foundation.Data
-		@objc public init?(_ content: String) {
-			guard let msg = content.data(using: .utf8) else { return nil }
-			self.data = msg
+		/// The content to be displayed in the qr code
+		public let content: String
+
+		/// Create a message containing utf8 text
+		/// - Parameter content: The text to encode
+		@objc public convenience init(_ content: String) throws {
+			try self.init(content, textEncoding: .utf8)
+		}
+
+		/// Create a message containing text
+		/// - Parameters:
+		///   - content: The text to encode
+		///   - textEncoding: The string encoding to use
+		public init(_ content: String, textEncoding: String.Encoding) throws {
+			guard let msgData = content.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
+			}
+			self.data = msgData
+			self.content = content
 		}
 	}
 }

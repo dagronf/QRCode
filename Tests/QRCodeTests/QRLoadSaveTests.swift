@@ -151,14 +151,14 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 		let settings = doc.settings()
 
-		let doc2 = try QRCode.Document(dictionary: settings, generator: generator)
+		let doc2 = try QRCode.Document(settings: settings, generator: generator)
 		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
 		let data1 = try XCTUnwrap(doc2.imageData(.jpg(compression: 0.2), dimension: 300))
 		try outputFolder.write(data1, to: "NegatedQRCodeTestFile-on.jpg")
 
 		doc2.design.shape.negatedOnPixelsOnly = false
 		let settings3 = doc2.settings()
-		let doc3 = try QRCode.Document(dictionary: settings3, generator: generator)
+		let doc3 = try QRCode.Document(settings: settings3, generator: generator)
 		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
 
 		let data2 = try XCTUnwrap(doc3.imageData(.jpg(compression: 0.5), dimension: 300))

@@ -138,7 +138,7 @@ public extension QRCode.Message {
 		///   - email: An array of email addresses (simple text, not validated)
 		///   - urls: Associated URLs
 		///   - notes: Some text to be attached to the card
-		@objc public init?(
+		@objc public convenience init(
 			name: Contact.Name,
 			formattedName: String,
 			addresses: [Contact.Address] = [],
@@ -148,7 +148,45 @@ public extension QRCode.Message {
 			email: [String] = [],
 			urls: [URL] = [],
 			notes: [String] = []
-		) {
+		) throws {
+			try self.init(
+				name: name,
+				formattedName: formattedName,
+				addresses: addresses,
+				organization: organization,
+				title: title,
+				telephone: telephone,
+				email: email,
+				urls: urls,
+				notes: notes,
+				textEncoding: .utf8
+			)
+		}
+
+		/// Create a QR Code that contains a VCard
+		/// - Parameters:
+		///   - name: The name to be used for the card
+		///   - formattedName: The name as it is to be displayed
+		///   - addresses: User's addresses
+		///   - organization: User's organization
+		///   - title: Job title, functional position or function
+		///   - telephone: An array of phone numbers. Format is (+)number, eg. +61000000000
+		///   - email: An array of email addresses (simple text, not validated)
+		///   - urls: Associated URLs
+		///   - notes: Some text to be attached to the card
+		///   - textEncoding: The string encoding to use
+		public init(
+			name: Contact.Name,
+			formattedName: String,
+			addresses: [Contact.Address] = [],
+			organization: String?,
+			title: String? = nil,
+			telephone: [String] = [],
+			email: [String] = [],
+			urls: [URL] = [],
+			notes: [String] = [],
+			textEncoding: String.Encoding
+		) throws {
 			var msg: String = "BEGIN:VCARD\nVERSION:3.0\n"
 			
 			// name (semicolon separated: LASTNAME; FIRSTNAME; ADDITIONAL NAME; NAME PREFIX(Mr.,Mrs.); NAME SUFFIX) (*required)
@@ -186,8 +224,11 @@ public extension QRCode.Message {
 			
 			msg += "END:VCARD"
 
+			guard let vcardData = msg.data(using: textEncoding) else {
+				throw QRCodeError.unableToConvertTextToRequestedEncoding
+			}
+
 			self.vcard = msg
-			guard let vcardData = msg.data(using: .utf8) else { return nil }
 			self.data = vcardData
 		}
 	}
