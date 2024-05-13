@@ -111,7 +111,7 @@ to handle the throwing calls.
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "19.0.0")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "20.0.0")
 ```
 
 ### Cocoapods
@@ -119,7 +119,7 @@ To use in your project, add the following dependency to your Package.swift:
 To install it, simply add the following line to your Podfile
 
 ```ruby
-pod 'DSF_QRCode', '~> 19.0.0'
+pod 'DSF_QRCode', '~> 20.0.0'
 ```
 
 ### Usage
@@ -1070,24 +1070,33 @@ OPTIONS:
   -c, --error-correction <error-correction>
                           The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize),
                           "H" (high) 
+  --all-pixel-shapes <all-pixel-shapes>
+                          Print all the available pixel shapes. 
   -d, --on-pixel-shape <on-pixel-shape>
                           The onPixels shape to use. Available shapes are circle, curvePixel, flower, horizontal,
-                          pointy, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle, star,
-                          vertical. 
+                          pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle,
+                          star, vertical. 
   -n, --on-pixel-inset-fraction <on-pixel-inset-fraction>
                           The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>
                           The onPixels shape corner radius fractional value (0.0 -> 1.0) 
+  -a, --on-pixel-shape-has-inner-corners <on-pixel-shape-has-inner-corners>
+                          The onPixels 'has inner corners' value (true/false) 
+  --all-eye-shapes <all-eye-shapes>
+                          Print all the available eye shapes. 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are barsHorizontal, barsVertical, circle,
-                          corneredPixels, edges, leaf, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
-                          roundedRect, shield, square, squircle, usePixelShape. 
+                          The eye shape to use. Available shapes are circle, corneredPixels, edges, fireball,
+                          barsHorizontal, leaf, peacock, pinch, usePixelShape, pixels, roundedOuter, roundedPointingIn,
+                          roundedPointingOut, roundedRect, shield, square, squircle, teardrop, ufo, barsVertical. 
   --eye-shape-corner-radius <eye-shape-corner-radius>
                           The fractional (0 ... 1) corner radius to use for the eye shape IF the eye shape supports it. 
+  --all-pupil-shapes <all-pupil-shapes>
+                          Print all the available pupil shapes. 
   -p, --pupil-shape <pupil-shape>
-                          The pupil shape to use. Available shapes are barsHorizontal, barsVertical, circle,
-                          corneredPixels, edges, hexagonLeaf, leaf, pixels, roundedOuter, roundedPointingIn,
-                          roundedPointingOut, roundedRect, shield, square, squircle, usePixelShape. 
+                          The pupil shape to use. Available shapes are blobby, circle, corneredPixels, cross,
+                          crossCurved, edges, hexagonLeaf, barsHorizontal, leaf, pinch, usePixelShape, pixels,
+                          roundedOuter, roundedPointingIn, roundedPointingOut, roundedRect, seal, shield, square,
+                          squircle, teardrop, ufo, barsVertical. 
   --pupil-shape-corner-radius <pupil-shape-corner-radius>
                           The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape
                           supports it. 

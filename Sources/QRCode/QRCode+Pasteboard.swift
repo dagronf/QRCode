@@ -34,8 +34,10 @@ public extension QRCode {
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
 	///   - dimension: The dimensions of the image to create
-	///   - pasteboard: The pasteboard to receive the representations
 	///   - dpi: The DPI for the image added to the pasteboard
+	///   - design: The qr code design
+	///   - logoTemplate: The logo template
+	///   - pasteboard: The pasteboard to receive the representations
 	@objc func addToPasteboard(
 		dimension: Int,
 		dpi: CGFloat = 72.0,
@@ -55,7 +57,7 @@ public extension QRCode {
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
 	///   - size: The size of the QRCode to generate
-	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
+	///   - dpi: The DPI for the image added to the pasteboard
 	///   - design: The design for the QR code
 	///   - logoTemplate: The logo to overlay on the qr code
 	///   - pasteboard: The pasteboard to receive the representations
@@ -160,7 +162,7 @@ public extension QRCode.Document {
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
 	///   - pasteboard: The pasteboard to receive the representations
-	///   - size: The size of the QRCode to generate
+	///   - dimension: The dimensions of the image to create
 	///   - dpi: The DPI for the resulting image
 	@objc func addToPasteboard(
 		dimension: Int,
@@ -179,7 +181,7 @@ public extension QRCode.Document {
 	/// Add QRCode representations to the specified pasteboard
 	/// - Parameters:
 	///   - size: The size of the QRCode to generate
-	///   - scale: The scale (eg. scale=2 -> retina -> 144dpi)
+	///   - dpi: The DPI for the image added to the pasteboard
 	///   - pasteboard: The pasteboard to receive the representations
 	@objc func addToPasteboard(
 		_ size: CGSize,

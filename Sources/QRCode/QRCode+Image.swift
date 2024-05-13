@@ -85,7 +85,7 @@ public extension QRCode {
 public extension QRCode {
 	/// Returns an pdf representation of the qr code using the specified style
 	/// - Parameters:
-	///   - size: The page size of the generated PDF
+	///   - dimension: The dimension of the image to generate
 	///   - pdfResolution: The resolution of the pdf output
 	///   - design: The design to use when generating the pdf output
 	/// - Returns: A data object containing the PDF representation of the QR code

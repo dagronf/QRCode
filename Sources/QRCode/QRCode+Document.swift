@@ -304,9 +304,12 @@ public extension QRCode.Document {
 	}
 
 	/// Create a QRCode document using the QRCode settings defined in `dictionary`
-	@objc convenience init(dictionary: [String: Any], generator: (any QRCodeEngine)? = nil) throws {
+	/// - Parameters:
+	///   - settings: The dictionary of settings to apply to the document
+	///   - generator: The qr code generator to use, or `nil` to use default
+	@objc convenience init(settings: [String: Any], generator: (any QRCodeEngine)? = nil) throws {
 		self.init(generator: generator)
-		try self.load(settings: dictionary)
+		try self.load(settings: settings)
 	}
 
 	/// Load the QRCode content from the specified JSON data
@@ -364,7 +367,7 @@ public extension QRCode.Document {
 
 	/// Create a QRCode.Document object from the specified settings
 	/// - Parameters:
-	///   - jsonData: The qr code settings
+	///   - settings: The dictionary of settings to apply to the document
 	///   - generator: The generator to use, or nil to use the default (watchOS requires QRCode
 	/// - Returns: A QRCode document
 	@objc static func Create(settings: [String: Any], generator: (any QRCodeEngine)? = nil) throws -> QRCode.Document {
