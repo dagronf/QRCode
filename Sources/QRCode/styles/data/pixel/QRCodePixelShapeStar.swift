@@ -30,52 +30,14 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Star" }
 
-		//////// Codable
-
-		enum CodingKeys: CodingKey {
-			case insetFraction
-			case useRandomInset
-			case rotationFraction
-			case useRandomRotation
-		}
-
-		convenience public required init(from decoder: any Decoder) throws {
-			let container = try decoder.container(keyedBy: CodingKeys.self)
-			let insetFraction = try container.decodeIfPresent(CGFloat.self, forKey: .insetFraction) ?? 0.0
-			let useRandomInset = try container.decodeIfPresent(Bool.self, forKey: .useRandomInset) ?? false
-
-			let rotationFraction = try container.decodeIfPresent(CGFloat.self, forKey: .rotationFraction) ?? 0.0
-			let useRandomRotation = try container.decodeIfPresent(Bool.self, forKey: .useRandomRotation) ?? false
-
-			self.init(
-				insetFraction: insetFraction,
-				useRandomInset: useRandomInset,
-				rotationFraction: rotationFraction,
-				useRandomRotation: useRandomRotation
-			)
-		}
-
-		public func encode(to encoder: any Encoder) throws {
-			var container = encoder.container(keyedBy: CodingKeys.self)
-			if self.common.insetFraction > 0.0 {
-				try container.encode(self.common.insetFraction, forKey: .insetFraction)
-			}
-			if self.common.useRandomInset {
-				try container.encode(self.common.useRandomInset, forKey: .useRandomInset)
-			}
-
-			if self.common.rotationFraction > 0.0 {
-				try container.encode(self.common.rotationFraction, forKey: .rotationFraction)
-			}
-			if self.common.useRandomRotation {
-				try container.encode(self.common.useRandomRotation, forKey: .useRandomRotation)
-			}
-		}
-
-		//////// Codable
-
-		/// The fractional inset for the pixel
-		@objc public var insetFraction: CGFloat { common.insetFraction }
+		/// The fractional inset for the pixel (0.0 -> 1.0)
+		@objc public var insetFraction: CGFloat { self.common.insetFraction }
+		/// If true, randomly sets the inset to create a "wobble"
+		@objc public var useRandomInset: Bool { self.common.useRandomInset }
+		/// The rotation for each pixel (0.0 -> 1.0)
+		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
+		/// If true, randomly chooses a rotation for each pixel
+		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
 
 		/// Create
 		/// - Parameters:
@@ -132,24 +94,72 @@ public extension QRCode.PixelShape {
 			common.generatePath(from: matrix, size: size)
 		}
 
-		// A 10x10 'pixel' representation of a star pixel
-		internal static func star10x10() -> CGPath {
-			let starPath = CGMutablePath()
-			starPath.move(to: CGPoint(x: 5, y: 0))
-			starPath.line(to: CGPoint(x: 6.85, y: 2.83))
-			starPath.line(to: CGPoint(x: 9.99, y: 3.8))
-			starPath.line(to: CGPoint(x: 8, y: 6.52))
-			starPath.line(to: CGPoint(x: 8.09, y: 9.95))
-			starPath.line(to: CGPoint(x: 5, y: 8.8))
-			starPath.line(to: CGPoint(x: 1.91, y: 9.95))
-			starPath.line(to: CGPoint(x: 2, y: 6.52))
-			starPath.line(to: CGPoint(x: 0.01, y: 3.8))
-			starPath.line(to: CGPoint(x: 3.15, y: 2.83))
-			starPath.close()
-			return starPath
+		//////// Codable
+
+		enum CodingKeys: CodingKey {
+			case insetFraction
+			case useRandomInset
+			case rotationFraction
+			case useRandomRotation
 		}
 
+		convenience public required init(from decoder: any Decoder) throws {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			let insetFraction = try container.decodeIfPresent(CGFloat.self, forKey: .insetFraction) ?? 0.0
+			let useRandomInset = try container.decodeIfPresent(Bool.self, forKey: .useRandomInset) ?? false
+
+			let rotationFraction = try container.decodeIfPresent(CGFloat.self, forKey: .rotationFraction) ?? 0.0
+			let useRandomRotation = try container.decodeIfPresent(Bool.self, forKey: .useRandomRotation) ?? false
+
+			self.init(
+				insetFraction: insetFraction,
+				useRandomInset: useRandomInset,
+				rotationFraction: rotationFraction,
+				useRandomRotation: useRandomRotation
+			)
+		}
+
+		public func encode(to encoder: any Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			if self.common.insetFraction > 0.0 {
+				try container.encode(self.common.insetFraction, forKey: .insetFraction)
+			}
+			if self.common.useRandomInset {
+				try container.encode(self.common.useRandomInset, forKey: .useRandomInset)
+			}
+
+			if self.common.rotationFraction > 0.0 {
+				try container.encode(self.common.rotationFraction, forKey: .rotationFraction)
+			}
+			if self.common.useRandomRotation {
+				try container.encode(self.common.useRandomRotation, forKey: .useRandomRotation)
+			}
+		}
+
+		//////// Codable
+
 		private let common: CommonPixelGenerator
+	}
+}
+
+// MARK: - Drawing
+
+internal extension QRCode.PixelShape.Star {
+	// A 10x10 'pixel' representation of a star pixel
+	static func star10x10() -> CGPath {
+		let starPath = CGMutablePath()
+		starPath.move(to: CGPoint(x: 5, y: 0))
+		starPath.line(to: CGPoint(x: 6.85, y: 2.83))
+		starPath.line(to: CGPoint(x: 9.99, y: 3.8))
+		starPath.line(to: CGPoint(x: 8, y: 6.52))
+		starPath.line(to: CGPoint(x: 8.09, y: 9.95))
+		starPath.line(to: CGPoint(x: 5, y: 8.8))
+		starPath.line(to: CGPoint(x: 1.91, y: 9.95))
+		starPath.line(to: CGPoint(x: 2, y: 6.52))
+		starPath.line(to: CGPoint(x: 0.01, y: 3.8))
+		starPath.line(to: CGPoint(x: 3.15, y: 2.83))
+		starPath.close()
+		return starPath
 	}
 }
 

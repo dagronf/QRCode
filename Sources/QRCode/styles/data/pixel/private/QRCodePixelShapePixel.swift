@@ -39,9 +39,9 @@ internal extension QRCode.PixelShape {
 
 		let pixelType: PixelType
 
-		// The fractional inset for the pixel
+		// The fractional inset for the pixel (0.0 -> 1.0)
 		var insetFraction: CGFloat
-		// The fractional corner radius for the pixel
+		// The fractional corner radius for the pixel (0.0 -> 1.0)
 		var cornerRadiusFraction: CGFloat
 		// If true, randomly sets the inset to create a "wobble"
 		var useRandomInset: Bool = false

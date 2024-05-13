@@ -31,16 +31,11 @@ public extension QRCode.PixelShape {
 		@objc public static var Title: String { "Shiny" }
 
 		/// Create an instance of this path generator with the specified settings
-		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
-			return Shiny()
-		}
-
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator { Shiny() }
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
-			return Shiny()
-		}
+		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Shiny() }
 
-		@objc public override init() {
+		@objc override public init() {
 			self.common = CommonPixelGenerator(pixelType: .shiny)
 			super.init()
 		}
@@ -51,7 +46,7 @@ public extension QRCode.PixelShape {
 		///   - size: The size of the resulting CGPath
 		/// - Returns: A path
 		public func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
-			common.generatePath(from: matrix, size: size)
+			self.common.generatePath(from: matrix, size: size)
 		}
 
 		// A 10x10 'pixel' representation of a star pixel
@@ -97,7 +92,7 @@ public extension QRCode.PixelShape.Shiny {
 	@objc func supportsSettingValue(forKey key: String) -> Bool { false }
 
 	/// Returns the current settings for the shape
-	@objc func settings() -> [String : Any] { [:] }
+	@objc func settings() -> [String: Any] { [:] }
 
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }

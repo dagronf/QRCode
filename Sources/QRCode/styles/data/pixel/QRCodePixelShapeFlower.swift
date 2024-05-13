@@ -30,52 +30,16 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Flower" }
 
-		//////// Codable
+		// Properties
 
-		enum CodingKeys: CodingKey {
-			case insetFraction
-			case useRandomInset
-			case rotationFraction
-			case useRandomRotation
-		}
-
-		convenience public required init(from decoder: any Decoder) throws {
-			let container = try decoder.container(keyedBy: CodingKeys.self)
-			let insetFraction = try container.decodeIfPresent(CGFloat.self, forKey: .insetFraction) ?? 0.0
-			let useRandomInset = try container.decodeIfPresent(Bool.self, forKey: .useRandomInset) ?? false
-
-			let rotationFraction = try container.decodeIfPresent(CGFloat.self, forKey: .rotationFraction) ?? 0.0
-			let useRandomRotation = try container.decodeIfPresent(Bool.self, forKey: .useRandomRotation) ?? false
-
-			self.init(
-				insetFraction: insetFraction,
-				useRandomInset: useRandomInset,
-				rotationFraction: rotationFraction,
-				useRandomRotation: useRandomRotation
-			)
-		}
-
-		public func encode(to encoder: any Encoder) throws {
-			var container = encoder.container(keyedBy: CodingKeys.self)
-			if self.common.insetFraction > 0.0 {
-				try container.encode(self.common.insetFraction, forKey: .insetFraction)
-			}
-			if self.common.useRandomInset {
-				try container.encode(self.common.useRandomInset, forKey: .useRandomInset)
-			}
-
-			if self.common.rotationFraction > 0.0 {
-				try container.encode(self.common.rotationFraction, forKey: .rotationFraction)
-			}
-			if self.common.useRandomRotation {
-				try container.encode(self.common.useRandomRotation, forKey: .useRandomRotation)
-			}
-		}
-
-		//////// Codable
-
-		/// The fractional inset for the pixel
-		@objc public var insetFraction: CGFloat { common.insetFraction }
+		/// The fractional inset for the pixel (0.0 -> 1.0)
+		@objc public var insetFraction: CGFloat { self.common.insetFraction }
+		/// If true, randomly sets the inset to create a "wobble"
+		@objc public var useRandomInset: Bool { self.common.useRandomInset }
+		/// The rotation for each pixel (0.0 -> 1.0)
+		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
+		/// If true, randomly chooses a rotation for each pixel
+		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
 
 		/// Create
 		/// - Parameters:
@@ -132,38 +96,86 @@ public extension QRCode.PixelShape {
 			common.generatePath(from: matrix, size: size)
 		}
 
-		// A 10x10 'pixel' representation of a flower pixel
-		internal static func flower10x10() -> CGPath {
-			let flowerPath = CGMutablePath()
-			flowerPath.move(to: CGPoint(x: 10, y: 7.5))
-			flowerPath.curve(to: CGPoint(x: 8.49, y: 5.21), controlPoint1: CGPoint(x: 10, y: 6.47), controlPoint2: CGPoint(x: 9.38, y: 5.59))
-			flowerPath.curve(to: CGPoint(x: 8.5, y: 5), controlPoint1: CGPoint(x: 8.5, y: 5.14), controlPoint2: CGPoint(x: 8.5, y: 5.07))
-			flowerPath.curve(to: CGPoint(x: 8.49, y: 4.79), controlPoint1: CGPoint(x: 8.5, y: 4.93), controlPoint2: CGPoint(x: 8.5, y: 4.86))
-			flowerPath.curve(to: CGPoint(x: 10, y: 2.5), controlPoint1: CGPoint(x: 9.38, y: 4.41), controlPoint2: CGPoint(x: 10, y: 3.53))
-			flowerPath.curve(to: CGPoint(x: 7.5, y: 0), controlPoint1: CGPoint(x: 10, y: 1.12), controlPoint2: CGPoint(x: 8.88, y: 0))
-			flowerPath.curve(to: CGPoint(x: 5.36, y: 1.2), controlPoint1: CGPoint(x: 6.59, y: 0), controlPoint2: CGPoint(x: 5.8, y: 0.48))
-			flowerPath.curve(to: CGPoint(x: 5.21, y: 1.51), controlPoint1: CGPoint(x: 5.3, y: 1.3), controlPoint2: CGPoint(x: 5.25, y: 1.4))
-			flowerPath.curve(to: CGPoint(x: 5, y: 1.5), controlPoint1: CGPoint(x: 5.14, y: 1.5), controlPoint2: CGPoint(x: 5.07, y: 1.5))
-			flowerPath.curve(to: CGPoint(x: 4.79, y: 1.51), controlPoint1: CGPoint(x: 4.93, y: 1.5), controlPoint2: CGPoint(x: 4.86, y: 1.5))
-			flowerPath.curve(to: CGPoint(x: 2.5, y: 0), controlPoint1: CGPoint(x: 4.41, y: 0.62), controlPoint2: CGPoint(x: 3.53, y: 0))
-			flowerPath.curve(to: CGPoint(x: 1.04, y: 0.47), controlPoint1: CGPoint(x: 1.96, y: 0), controlPoint2: CGPoint(x: 1.45, y: 0.17))
-			flowerPath.line(to: CGPoint(x: 0.95, y: 0.54))
-			flowerPath.curve(to: CGPoint(x: 0, y: 2.5), controlPoint1: CGPoint(x: 0.37, y: 0.99), controlPoint2: CGPoint(x: 0, y: 1.7))
-			flowerPath.curve(to: CGPoint(x: 1.51, y: 4.79), controlPoint1: CGPoint(x: 0, y: 3.53), controlPoint2: CGPoint(x: 0.62, y: 4.41))
-			flowerPath.curve(to: CGPoint(x: 1.5, y: 5), controlPoint1: CGPoint(x: 1.5, y: 4.86), controlPoint2: CGPoint(x: 1.5, y: 4.93))
-			flowerPath.curve(to: CGPoint(x: 1.51, y: 5.21), controlPoint1: CGPoint(x: 1.5, y: 5.07), controlPoint2: CGPoint(x: 1.5, y: 5.14))
-			flowerPath.curve(to: CGPoint(x: 0, y: 7.5), controlPoint1: CGPoint(x: 0.62, y: 5.59), controlPoint2: CGPoint(x: 0, y: 6.47))
-			flowerPath.curve(to: CGPoint(x: 2.5, y: 10), controlPoint1: CGPoint(x: 0, y: 8.88), controlPoint2: CGPoint(x: 1.12, y: 10))
-			flowerPath.curve(to: CGPoint(x: 4.79, y: 8.49), controlPoint1: CGPoint(x: 3.53, y: 10), controlPoint2: CGPoint(x: 4.41, y: 9.38))
-			flowerPath.curve(to: CGPoint(x: 5, y: 8.5), controlPoint1: CGPoint(x: 4.86, y: 8.5), controlPoint2: CGPoint(x: 4.93, y: 8.5))
-			flowerPath.curve(to: CGPoint(x: 5.21, y: 8.49), controlPoint1: CGPoint(x: 5.07, y: 8.5), controlPoint2: CGPoint(x: 5.14, y: 8.5))
-			flowerPath.curve(to: CGPoint(x: 7.5, y: 10), controlPoint1: CGPoint(x: 5.59, y: 9.38), controlPoint2: CGPoint(x: 6.47, y: 10))
-			flowerPath.curve(to: CGPoint(x: 10, y: 7.5), controlPoint1: CGPoint(x: 8.88, y: 10), controlPoint2: CGPoint(x: 10, y: 8.88))
-			flowerPath.close()
-			return flowerPath
+		//////// Codable
+
+		enum CodingKeys: CodingKey {
+			case insetFraction
+			case useRandomInset
+			case rotationFraction
+			case useRandomRotation
 		}
 
+		convenience public required init(from decoder: any Decoder) throws {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			let insetFraction = try container.decodeIfPresent(CGFloat.self, forKey: .insetFraction) ?? 0.0
+			let useRandomInset = try container.decodeIfPresent(Bool.self, forKey: .useRandomInset) ?? false
+
+			let rotationFraction = try container.decodeIfPresent(CGFloat.self, forKey: .rotationFraction) ?? 0.0
+			let useRandomRotation = try container.decodeIfPresent(Bool.self, forKey: .useRandomRotation) ?? false
+
+			self.init(
+				insetFraction: insetFraction,
+				useRandomInset: useRandomInset,
+				rotationFraction: rotationFraction,
+				useRandomRotation: useRandomRotation
+			)
+		}
+
+		public func encode(to encoder: any Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			if self.common.insetFraction > 0.0 {
+				try container.encode(self.common.insetFraction, forKey: .insetFraction)
+			}
+			if self.common.useRandomInset {
+				try container.encode(self.common.useRandomInset, forKey: .useRandomInset)
+			}
+
+			if self.common.rotationFraction > 0.0 {
+				try container.encode(self.common.rotationFraction, forKey: .rotationFraction)
+			}
+			if self.common.useRandomRotation {
+				try container.encode(self.common.useRandomRotation, forKey: .useRandomRotation)
+			}
+		}
+
+		//////// Codable
+
 		private let common: CommonPixelGenerator
+	}
+}
+
+// MARK: - Drawing
+
+internal extension QRCode.PixelShape.Flower {
+	// A 10x10 'pixel' representation of a flower pixel
+	static func flower10x10() -> CGPath {
+		let flowerPath = CGMutablePath()
+		flowerPath.move(to: CGPoint(x: 10, y: 7.5))
+		flowerPath.curve(to: CGPoint(x: 8.49, y: 5.21), controlPoint1: CGPoint(x: 10, y: 6.47), controlPoint2: CGPoint(x: 9.38, y: 5.59))
+		flowerPath.curve(to: CGPoint(x: 8.5, y: 5), controlPoint1: CGPoint(x: 8.5, y: 5.14), controlPoint2: CGPoint(x: 8.5, y: 5.07))
+		flowerPath.curve(to: CGPoint(x: 8.49, y: 4.79), controlPoint1: CGPoint(x: 8.5, y: 4.93), controlPoint2: CGPoint(x: 8.5, y: 4.86))
+		flowerPath.curve(to: CGPoint(x: 10, y: 2.5), controlPoint1: CGPoint(x: 9.38, y: 4.41), controlPoint2: CGPoint(x: 10, y: 3.53))
+		flowerPath.curve(to: CGPoint(x: 7.5, y: 0), controlPoint1: CGPoint(x: 10, y: 1.12), controlPoint2: CGPoint(x: 8.88, y: 0))
+		flowerPath.curve(to: CGPoint(x: 5.36, y: 1.2), controlPoint1: CGPoint(x: 6.59, y: 0), controlPoint2: CGPoint(x: 5.8, y: 0.48))
+		flowerPath.curve(to: CGPoint(x: 5.21, y: 1.51), controlPoint1: CGPoint(x: 5.3, y: 1.3), controlPoint2: CGPoint(x: 5.25, y: 1.4))
+		flowerPath.curve(to: CGPoint(x: 5, y: 1.5), controlPoint1: CGPoint(x: 5.14, y: 1.5), controlPoint2: CGPoint(x: 5.07, y: 1.5))
+		flowerPath.curve(to: CGPoint(x: 4.79, y: 1.51), controlPoint1: CGPoint(x: 4.93, y: 1.5), controlPoint2: CGPoint(x: 4.86, y: 1.5))
+		flowerPath.curve(to: CGPoint(x: 2.5, y: 0), controlPoint1: CGPoint(x: 4.41, y: 0.62), controlPoint2: CGPoint(x: 3.53, y: 0))
+		flowerPath.curve(to: CGPoint(x: 1.04, y: 0.47), controlPoint1: CGPoint(x: 1.96, y: 0), controlPoint2: CGPoint(x: 1.45, y: 0.17))
+		flowerPath.line(to: CGPoint(x: 0.95, y: 0.54))
+		flowerPath.curve(to: CGPoint(x: 0, y: 2.5), controlPoint1: CGPoint(x: 0.37, y: 0.99), controlPoint2: CGPoint(x: 0, y: 1.7))
+		flowerPath.curve(to: CGPoint(x: 1.51, y: 4.79), controlPoint1: CGPoint(x: 0, y: 3.53), controlPoint2: CGPoint(x: 0.62, y: 4.41))
+		flowerPath.curve(to: CGPoint(x: 1.5, y: 5), controlPoint1: CGPoint(x: 1.5, y: 4.86), controlPoint2: CGPoint(x: 1.5, y: 4.93))
+		flowerPath.curve(to: CGPoint(x: 1.51, y: 5.21), controlPoint1: CGPoint(x: 1.5, y: 5.07), controlPoint2: CGPoint(x: 1.5, y: 5.14))
+		flowerPath.curve(to: CGPoint(x: 0, y: 7.5), controlPoint1: CGPoint(x: 0.62, y: 5.59), controlPoint2: CGPoint(x: 0, y: 6.47))
+		flowerPath.curve(to: CGPoint(x: 2.5, y: 10), controlPoint1: CGPoint(x: 0, y: 8.88), controlPoint2: CGPoint(x: 1.12, y: 10))
+		flowerPath.curve(to: CGPoint(x: 4.79, y: 8.49), controlPoint1: CGPoint(x: 3.53, y: 10), controlPoint2: CGPoint(x: 4.41, y: 9.38))
+		flowerPath.curve(to: CGPoint(x: 5, y: 8.5), controlPoint1: CGPoint(x: 4.86, y: 8.5), controlPoint2: CGPoint(x: 4.93, y: 8.5))
+		flowerPath.curve(to: CGPoint(x: 5.21, y: 8.49), controlPoint1: CGPoint(x: 5.07, y: 8.5), controlPoint2: CGPoint(x: 5.14, y: 8.5))
+		flowerPath.curve(to: CGPoint(x: 7.5, y: 10), controlPoint1: CGPoint(x: 5.59, y: 9.38), controlPoint2: CGPoint(x: 6.47, y: 10))
+		flowerPath.curve(to: CGPoint(x: 10, y: 7.5), controlPoint1: CGPoint(x: 8.88, y: 10), controlPoint2: CGPoint(x: 10, y: 8.88))
+		flowerPath.close()
+		return flowerPath
 	}
 }
 
