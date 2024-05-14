@@ -7,7 +7,7 @@
 ## Code
 
 ```swift
-let d = try QRCode.Document(generator: QRCodeGenerator_External())
+let d = try QRCode.Document(engine: QRCodeEngine_External())
 d.utf8String = "https://www.swift.org"
 
 d.design.backgroundColor(CGColor(srgbRed: 0, green: 0.6, blue: 0, alpha: 1))

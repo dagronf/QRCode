@@ -325,7 +325,8 @@ Examples:
 			}
 		}()
 
-		let qrCode = QRCode(data, errorCorrection: errorCorrection)
+		// Generate the QR Code
+		let qrCode = try QRCode(data, errorCorrection: errorCorrection)
 
 		switch outputType {
 		case .clipboard:

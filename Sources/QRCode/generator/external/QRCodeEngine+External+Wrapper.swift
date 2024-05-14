@@ -25,7 +25,7 @@ import QRCodeGenerator
 // We have to separate this out as there is a namespace clash between our QRCode module
 // and the QRCodeGenerator module's class type.
 
-extension QRCodeGenerator_External {
+extension QRCodeEngine_External {
 
 	func _generate(_ data: Data, errorCorrection: String) -> [[Bool]]? {
 		guard

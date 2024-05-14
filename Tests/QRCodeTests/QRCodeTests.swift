@@ -9,9 +9,9 @@ final class QRCodeTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeTests")
 
 	func testBasicQRCode() throws {
-		let doc = QRCode(generator: __testGenerator)
+		let doc = try QRCode(engine: __testEngine)
 		let url = URL(string: "https://www.apple.com.au/")!
-		doc.update(message: try QRCode.Message.Link(url), errorCorrection: .high)
+		try doc.update(message: try QRCode.Message.Link(url), errorCorrection: .high)
 
 		let boomat = doc.boolMatrix
 		XCTAssertEqual(35, boomat.dimension)
@@ -20,31 +20,31 @@ final class QRCodeTests: XCTestCase {
 	func testGenerateBasicQRCode() throws {
 
 		#if os(watchOS)
-		let engines: [QRCodeEngine] = [QRCodeGenerator_External()]
+		let engines: [QRCodeEngine] = [QRCodeEngine_External()]
 		#else
-		let engines: [QRCodeEngine] = [QRCodeGenerator_CoreImage(), QRCodeGenerator_External()]
+		let engines: [QRCodeEngine] = [QRCodeEngine_CoreImage(), QRCodeEngine_External()]
 		#endif
-		try engines.forEach { generator in
+		try engines.forEach { engine in
 
-			let qrcode = QRCode(utf8String: "This is a test", generator: generator)
+			let qrcode = try QRCode(utf8String: "This is a test", engine: engine)
 
 			// Generate png
 			do {
 				let image = try qrcode.cgImage(dimension: 300)
 				let data = try image.representation.png()
-				let _ = try outputFolder.write(data, to: "basic-generation-\(generator.name).png")
+				let _ = try outputFolder.write(data, to: "basic-generation-\(engine.name).png")
 			}
 
 			// Generate pdf
 			do {
 				let pdfData = try qrcode.pdfData(dimension: 300)
-				let _ = try outputFolder.write(pdfData, to: "basic-generation-\(generator.name).pdf")
+				let _ = try outputFolder.write(pdfData, to: "basic-generation-\(engine.name).pdf")
 			}
 
 			// Generate svg
 			do {
 				let svgData = try qrcode.svgData(dimension: 300)
-				let _ = try outputFolder.write(svgData, to: "basic-generation-\(generator.name).svg")
+				let _ = try outputFolder.write(svgData, to: "basic-generation-\(engine.name).svg")
 			}
 
 			// Generate path
@@ -56,19 +56,19 @@ final class QRCodeTests: XCTestCase {
 					ctx.fillPath()
 				}
 				let data = try image.representation.png()
-				let _ = try outputFolder.write(data, to: "basic-generation-path-\(generator.name).png")
+				let _ = try outputFolder.write(data, to: "basic-generation-path-\(engine.name).png")
 			}
 		}
 	}
 
 	func testAsciiGenerationWorks() throws {
-		let doc = QRCode.Document(generator: __testGenerator)
+		let doc = QRCode.Document(engine: __testEngine)
 		doc.errorCorrection = .low
 		doc.data = "testing".data(using: .utf8)!
 		let ascii = doc.asciiRepresentation
 		Swift.print(ascii)
 
-		let doc2 = QRCode.Document(generator: __testGenerator)
+		let doc2 = QRCode.Document(engine: __testEngine)
 		doc2.errorCorrection = .low
 		doc2.data = "testing".data(using: .utf8)!
 		let ascii2 = doc2.smallAsciiRepresentation
@@ -77,17 +77,17 @@ final class QRCodeTests: XCTestCase {
 
 	func testBasicEncodeDecode() throws {
 		do {
-			let doc1 = QRCode.Document(generator: __testGenerator)
+			let doc1 = QRCode.Document(engine: __testEngine)
 			doc1.data = "this is a test".data(using: .utf8)!
 
 			let s = doc1.settings()
-			let doc11 = try QRCode.Document.Create(settings: s, generator: __testGenerator)
+			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
 			let data = try XCTUnwrap(doc1.jsonData())
 			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
 
-			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, generator: __testGenerator))
+			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, engine: __testEngine))
 			XCTAssertNotNil(doc111)
 			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
 			XCTAssertEqual(dataStr, data111Str)
@@ -99,18 +99,18 @@ final class QRCodeTests: XCTestCase {
 
 	func testBasicEncodeDecodeWithCustomPupil() throws {
 		do {
-			let doc1 = QRCode.Document(generator: __testGenerator)
+			let doc1 = QRCode.Document(engine: __testEngine)
 			doc1.data = "this is a test".data(using: .utf8)!
 			doc1.design.shape.pupil = QRCode.PupilShape.Circle()
 
 			let s = doc1.settings()
-			let doc11 = try QRCode.Document.Create(settings: s, generator: __testGenerator)
+			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
 			let data = try XCTUnwrap(doc1.jsonData())
 			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
 
-			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, generator: __testGenerator))
+			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, engine: __testEngine))
 			XCTAssertNotNil(doc111)
 			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
 			XCTAssertEqual(dataStr, data111Str)
@@ -128,7 +128,7 @@ final class QRCodeTests: XCTestCase {
 
 	func testBasicCreate() throws {
 		do {
-			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 			doc.design.backgroundColor(CGColor.commonClear)
 			doc.design.foregroundColor(CGColor.commonWhite)
 			let image = try doc.cgImage(CGSize(width: 800, height: 800))
@@ -145,7 +145,7 @@ final class QRCodeTests: XCTestCase {
 		)
 		XCTAssertNotNil(image)
 
-		let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+		let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
 
 		doc.design.shape.offPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 1)
@@ -190,7 +190,7 @@ final class QRCodeTests: XCTestCase {
 	#endif
 
 	func testGenerateImagesAtDifferentResolutions() throws {
-		let doc = QRCode.Document(utf8String: "Generate content QR", errorCorrection: .high, generator: __testGenerator)
+		let doc = QRCode.Document(utf8String: "Generate content QR", errorCorrection: .high, engine: __testEngine)
 		doc.design.shape.onPixels = QRCode.PixelShape.Circle()
 
 		let dpis = [(300, 72.0, "", 300), (600, 144.0, "@2x", 300), (900, 216.0, "@3x", 300)]
@@ -262,7 +262,7 @@ final class QRCodeTests: XCTestCase {
 	func testQuietSpace() throws {
 
 		do {
-			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4)
 			//doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 0, 0)
 			doc.design.style.onPixelsBackground = CGColor.commonBlack
@@ -317,7 +317,7 @@ final class QRCodeTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, generator: __testGenerator)
+			let doc = QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 			//doc.design.additionalQuietSpace = 100
 
 			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))

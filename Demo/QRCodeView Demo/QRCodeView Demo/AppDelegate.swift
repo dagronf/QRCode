@@ -47,7 +47,7 @@ extension AppDelegate {
 		design.shape = contentShape
 
 		let c = QRCode()
-		c.update(message: QRCode.Message.Link(string: "https://www.apple.com.au")!, errorCorrection: .high)
+		try! c.update(message: try! QRCode.Message.Link(string: "https://www.apple.com.au"), errorCorrection: .high)
 		let iii = try! c.nsImage(CGSize(width: 400, height: 400), dpi: 216, design: design)
 		Swift.print(iii)
 	}

@@ -300,9 +300,15 @@ public extension QRCode {
 	}
 }
 
-public extension QRCode {
+// MARK: - Sample generating
 
-	func pathForSample(size: CGSize, pixelShape: any QRCodePixelShapeGenerator) -> CGPath {
+public extension QRCode {
+	/// Generate a basic path for a pixel generator
+	/// - Parameters:
+	///   - size: The size of the resulting path
+	///   - pixelShape: The pixel shape generator
+	/// - Returns: A path
+	func pathForSample(size: CGSize, pixelShape: any QRCodePixelShapeGenerator) throws -> CGPath {
 		let DummyData = BoolMatrix(dimension: 5, flattened: [
 			false, false, true, true, false,
 			false, false, false, true, false,
@@ -310,11 +316,17 @@ public extension QRCode {
 			true, true, true, true, false,
 			false, false, true, false, true
 		])
-		return pathForSample(DummyData, size: size, pixelShape: pixelShape)
+		return try self.pathForSample(DummyData, size: size, pixelShape: pixelShape)
 	}
 
-	func pathForSample(_ matrix: BoolMatrix, size: CGSize, pixelShape: any QRCodePixelShapeGenerator) -> CGPath {
-		let qr = QRCode(generator: self.generator)
+	/// Generate a path for a bool matrix
+	/// - Parameters:
+	///   - matrix: The matrix
+	///   - size: The resulting path size
+	///   - pixelShape: The pixel shape generator to use
+	/// - Returns: A path
+	func pathForSample(_ matrix: BoolMatrix, size: CGSize, pixelShape: any QRCodePixelShapeGenerator) throws -> CGPath {
+		let qr = try QRCode(engine: self.engine)
 		qr.current = matrix
 		let sh = QRCode.Shape()
 		sh.onPixels = pixelShape

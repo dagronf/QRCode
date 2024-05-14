@@ -1,5 +1,5 @@
 //
-//  QRCodeGenerator+CoreImage.swift
+//  QRCodeEngine+CoreImage.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -25,8 +25,8 @@ import CoreGraphics
 import CoreImage
 import Foundation
 
-/// A QR Code generator that uses Core Image filters to generate a QR Code
-internal class QRCodeGenerator_CoreImage: QRCodeEngine {
+/// A QR Code engine that uses Core Image filters to generate a QR Code
+internal class QRCodeEngine_CoreImage: QRCodeEngine {
 
 	/// The generator name
 	@objc public var name: String { "coreimage" }

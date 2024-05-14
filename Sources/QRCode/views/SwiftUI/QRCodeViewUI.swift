@@ -38,14 +38,14 @@ public struct QRCodeViewUI: View {
 		pupilStyle: (any QRCodePupilShapeGenerator)? = nil,
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		negatedOnPixelsOnly: Bool? = nil,
-		generator: (any QRCodeEngine)? = nil,
+		engine: (any QRCodeEngine)? = nil,
 		additionalQuietZonePixels: UInt = 0,
 		backgroundFractionalCornerRadius: CGFloat = 0
 	) {
 		self.content = QRCode.Document(
 			utf8String: content,
 			errorCorrection: errorCorrection,
-			generator: generator
+			engine: engine
 		)
 		self.content.design.foregroundColor(foregroundColor)
 		self.content.design.backgroundColor(backgroundColor)

@@ -1,5 +1,5 @@
 //
-//  QRCodeGenerator+Engine.swift
+//  QRCodeEngine.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -23,7 +23,7 @@ import Foundation
 
 /// A protocol for qr code generation
 @objc public protocol QRCodeEngine {
-	/// The generator name
+	/// The engine name
 	@objc var name: String { get }
 
 	/// Generate QR Code matrix from the specified data
@@ -34,8 +34,8 @@ import Foundation
 }
 
 // An 'empty' qr code generator which does nothing
-internal class QRCodeGenerator_None: QRCodeEngine {
-	/// The generator name
+internal class QRCodeEngine_None: QRCodeEngine {
+	/// The engine name
 	@objc public var name: String { "none" }
 
 	/// Generate the QR code using the custom generator
@@ -55,9 +55,9 @@ extension QRCode {
 	@objc(DefaultEngine) static public func DefaultEngine() -> any QRCodeEngine {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
-		return QRCodeGenerator_External()
+		return QRCodeEngine_External()
 #else
-		return QRCodeGenerator_CoreImage()
+		return QRCodeEngine_CoreImage()
 #endif
 	}
 }

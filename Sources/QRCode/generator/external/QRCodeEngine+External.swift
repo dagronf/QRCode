@@ -1,5 +1,5 @@
 //
-//  QRCodeGenerator+QRGenerator.swift
+//  QRCodeEngine+External.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -23,7 +23,7 @@ import Foundation
 
 /// A qr code generator that uses QRCodeGenerator (https://github.com/dagronf/swift-qrcode-generator) as its generator.
 /// This is primarily used for WatchOS, which doesn't support CoreImage filters.
-@objc public class QRCodeGenerator_External: NSObject, QRCodeEngine {
+@objc public class QRCodeEngine_External: NSObject, QRCodeEngine {
 
 	/// The generator name
 	@objc public var name: String { "external" }

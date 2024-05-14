@@ -56,8 +56,8 @@ public extension QRCode {
 		}
 
 		/// Create a builder
-		public init(_ generator: (any QRCodeEngine)? = nil) {
-			self.document = QRCode.Document(generator: generator)
+		public init(_ engine: (any QRCodeEngine)? = nil) {
+			self.document = QRCode.Document(engine: engine)
 		}
 
 		/// The generated document
@@ -69,10 +69,10 @@ public extension QRCode {
 
 public extension QRCode.Builder {
 	/// Set a custom generator for the builder
-	/// - Parameter generator: The QR code generator
+	/// - Parameter engine: The QR code generator
 	/// - Returns: self
-	func generator(_ generator: any QRCodeEngine) -> QRCode.Builder {
-		self.document.qrcode.generator = generator
+	func engine(_ engine: any QRCodeEngine) -> QRCode.Builder {
+		self.document.qrcode.engine = engine
 		return self
 	}
 
@@ -146,8 +146,8 @@ public extension QRCode.Builder {
 		/// - Returns: self
 		@discardableResult public func message(
 			_ message: any QRCodeMessageFormatter
-		) -> QRCode.Builder {
-			self.builder.document.update(message: message)
+		) throws -> QRCode.Builder {
+			try self.builder.document.update(message: message)
 			return self.builder
 		}
 

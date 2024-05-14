@@ -11,7 +11,7 @@ import QRCode
 
 struct ContentView: View {
 	let qrcode = try! QRCode.build
-		.generator(QRCodeGenerator_External())
+		.engine(QRCodeEngine_External())
 		.url(URL(string: "https://www.apple.com.au")!)
 		.foregroundColor(CGColor(gray: 1, alpha: 1))
 		.backgroundColor(CGColor(gray: 0, alpha: 0))

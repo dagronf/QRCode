@@ -32,7 +32,7 @@ import Foundation
 /// Note that while this can be used on any thread, it is not in itself thread-safe.
 @objc public final class QRCode: NSObject, @unchecked Sendable {
 	/// The generator to use when generating the QR code.
-	@objc public var generator: any QRCodeEngine = QRCode.DefaultEngine()
+	@objc public var engine: any QRCodeEngine = QRCode.DefaultEngine()
 
 	/// Create a blank QRCode
 	@objc override public init() {
@@ -41,41 +41,41 @@ import Foundation
 
 	/// Create a blank QRCode with a custom QR code generation engine
 	/// - Parameters:
-	///   - generator: The QR engine to use. Specify nil to use the default generator.
-	@objc public init(generator: any QRCodeEngine) {
-		self.generator = generator
+	///   - engine: The QR engine to use. Specify nil to use the default generator.
+	@objc public init(engine: any QRCodeEngine) throws {
+		self.engine = engine
 		super.init()
-		self.update(data: Data(), errorCorrection: .default)
+		try self.update(data: Data(), errorCorrection: self.currentErrorCorrection)
 	}
 
 	/// Create a QRCode with the given data and error correction
 	/// - Parameters:
 	///   - data: The initial data to display
 	///   - errorCorrection: The initial error correction to use
-	///   - generator: The QR engine to use. Specify nil to use the default generator.
+	///   - engine: The QR engine to use. Specify nil to use the default generator.
 	@objc public init(
 		_ data: Data,
 		errorCorrection: ErrorCorrection = .default,
-		generator: (any QRCodeEngine)? = nil
-	) {
-		if let generator = generator { self.generator = generator }
+		engine: (any QRCodeEngine)? = nil
+	) throws {
+		if let engine = engine { self.engine = engine }
 		super.init()
-		self.update(data: data, errorCorrection: errorCorrection)
+		try self.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode
 	/// - Parameters:
 	///   - utf8String: The text to encode
 	///   - errorCorrection: The error correction to apply
-	///   - generator: A qr code generator, or nil to use the default generator
+	///   - engine: A qr code engine, or nil to use the default generator
 	@objc public init(
 		utf8String: String,
 		errorCorrection: ErrorCorrection = .default,
-		generator: (any QRCodeEngine)? = nil
-	) {
-		if let generator = generator { self.generator = generator }
+		engine: (any QRCodeEngine)? = nil
+	) throws {
+		if let engine = engine { self.engine = engine }
 		super.init()
-		self.update(text: utf8String, errorCorrection: errorCorrection)
+		try self.update(text: utf8String, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QR code
@@ -83,32 +83,32 @@ import Foundation
 	///   - text: The text to encode in the qr code
 	///   - textEncoding: The text encoding
 	///   - errorCorrection: The error correction to apply
-	///   - generator: A qr code generator, or nil to use the default generator
+	///   - engine: A qr code engine, or nil to use the default generator
 	public init(
 		_ text: String,
 		textEncoding: String.Encoding = .utf8,
 		errorCorrection: ErrorCorrection = .default,
-		generator: (any QRCodeEngine)? = nil
-	) {
-		if let generator = generator { self.generator = generator }
+		engine: (any QRCodeEngine)? = nil
+	) throws {
+		if let engine = engine { self.engine = engine }
 		let data = text.data(using: textEncoding) ?? Data()
 		super.init()
-		self.update(data: data, errorCorrection: errorCorrection)
+		try self.update(data: data, errorCorrection: errorCorrection)
 	}
 
 	/// Create a QRCode with the given message and error correction
 	/// - Parameters:
 	///   - message: The message to encode
 	///   - errorCorrection: The error correction to apply
-	///   - generator: A qr code generator, or nil to use the default generator
+	///   - engine: A qr code engine, or nil to use the default generator
 	@objc public init(
 		message: any QRCodeMessageFormatter,
 		errorCorrection: ErrorCorrection = .default,
-		generator: (any QRCodeEngine)? = nil
-	) {
-		if let generator = generator { self.generator = generator }
+		engine: (any QRCodeEngine)? = nil
+	) throws {
+		if let engine = engine { self.engine = engine }
 		super.init()
-		self.update(message: message, errorCorrection: errorCorrection)
+		try self.update(message: message, errorCorrection: errorCorrection)
 	}
 
 	/// The QR code content as a 2D array of bool values
@@ -166,30 +166,25 @@ extension QRCode: NSCopying {
 
 public extension QRCode {
 	/// Build the QR Code using the given data and error correction
-	@objc func update(data: Data, errorCorrection: ErrorCorrection) {
+	@objc func update(data: Data, errorCorrection: ErrorCorrection) throws {
+		self.current = try self.engine.generate(data: data, errorCorrection: errorCorrection)
 		self.currentErrorCorrection = errorCorrection
-		do {
-			self.current = try self.generator.generate(data: data, errorCorrection: errorCorrection)
-		}
-		catch {
-			// Do nothing
-		}
 	}
 
 	/// Build the QR Code using the given message formatter and error correction
-	@objc func update(message: any QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) {
-		self.update(data: message.data, errorCorrection: errorCorrection)
+	@objc func update(message: any QRCodeMessageFormatter, errorCorrection: ErrorCorrection = .default) throws {
+		try self.update(data: message.data, errorCorrection: errorCorrection)
 	}
 
 	/// Build the QR Code using the given text and error correction
-	@objc func update(text: String, errorCorrection: ErrorCorrection = .default) {
+	@objc func update(text: String, errorCorrection: ErrorCorrection = .default) throws {
+		try self.update(text: text, textEncoding: .utf8, errorCorrection: errorCorrection)
+	}
+
+	/// Build the QR Code using the given text and error correction
+	func update(text: String, textEncoding: String.Encoding, errorCorrection: ErrorCorrection = .default) throws {
+		self.current = try self.engine.generate(text: text, errorCorrection: errorCorrection)
 		self.currentErrorCorrection = errorCorrection
-		do {
-			self.current = try self.generator.generate(text: text, errorCorrection: errorCorrection)
-		}
-		catch {
-			// Do nothing
-		}
 	}
 }
 

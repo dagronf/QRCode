@@ -13,7 +13,7 @@ let savedDocument: QRCode.Document = {
 	let data = NSDataAsset(name: "saved-document")!
 	return try! QRCode.Document(
 		jsonData: data.data,
-		generator: QRCodeGenerator_External()
+		engine: QRCodeEngine_External()
 	)
 }()
 
@@ -21,8 +21,7 @@ let savedDocument: QRCode.Document = {
 struct ContentView: View {
 	let fixedCode = try! QRCodeShape(
 		text: "Generating a QR Code using watchOS - wheeeee!",
-		errorCorrection: .quantize,
-		generator: QRCodeGenerator_External()
+		errorCorrection: .quantize
 	)
 
 	var dataColor: Color = Color(red: 1.0, green: 1.0, blue: 0.5)

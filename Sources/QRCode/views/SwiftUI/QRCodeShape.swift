@@ -39,17 +39,22 @@ public struct QRCodeShape: Shape {
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: (any QRCodeEngine)? = nil
+		engine: (any QRCodeEngine)? = nil
 	) {
-		self.data__ = data
-		self.errorCorrection__ = errorCorrection
-		self.components__ = components
-		self.shape__ = shape
-		self.logoTemplate__ = logoTemplate
-		if let g = generator {
-			self.qrCodeGenerator__.generator = g
+		do {
+			self.data__ = data
+			self.errorCorrection__ = errorCorrection
+			self.components__ = components
+			self.shape__ = shape
+			self.logoTemplate__ = logoTemplate
+			if let e = engine {
+				self.qrCodeGenerator__.engine = e
+			}
+			try self.qrCodeGenerator__.update(data: data, errorCorrection: errorCorrection)
 		}
-		self.qrCodeGenerator__.update(data: data, errorCorrection: errorCorrection)
+		catch {
+			Swift.print("QRCodeShape: Error creating shape. Error was '\(error)'")
+		}
 	}
 
 	/// Create a QRCode shape using the specified text
@@ -69,7 +74,7 @@ public struct QRCodeShape: Shape {
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: (any QRCodeEngine)? = nil
+		engine: (any QRCodeEngine)? = nil
 	) throws {
 		guard let data = text.data(using: textEncoding) else {
 			throw QRCodeError.unableToConvertTextToRequestedEncoding
@@ -80,7 +85,7 @@ public struct QRCodeShape: Shape {
 			components: components,
 			shape: shape,
 			logoTemplate: logoTemplate,
-			generator: generator
+			engine: engine
 		)
 	}
 
@@ -91,14 +96,14 @@ public struct QRCodeShape: Shape {
 	///   - components: The components of the QR Code to include within the Shape path
 	///   - shape: The shape object to describle the style of the generated path
 	///   - logoTemplate: The logo to apply to the QR code
-	///   - generator: The generator to use when creating the Shape path
+	///   - engine: The engine to use when creating the Shape path
 	public init(
 		message: any QRCodeMessageFormatter,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
-		generator: (any QRCodeEngine)? = nil
+		engine: (any QRCodeEngine)? = nil
 	) {
 		self.init(
 			data: message.data,
@@ -106,7 +111,7 @@ public struct QRCodeShape: Shape {
 			components: components,
 			shape: shape,
 			logoTemplate: logoTemplate,
-			generator: generator
+			engine: engine
 		)
 	}
 
@@ -131,7 +136,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: self.shape__.copyShape(),
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -143,7 +148,7 @@ public extension QRCodeShape {
 			components: components,
 			shape: self.shape__.copyShape(),
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -155,7 +160,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: shape.copyShape(),
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -169,7 +174,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: shape,
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -183,7 +188,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: shape,
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -197,7 +202,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: shape,
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -211,7 +216,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: shape,
 			logoTemplate: self.logoTemplate__?.copyLogoTemplate(),
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 
@@ -223,7 +228,7 @@ public extension QRCodeShape {
 			components: self.components__,
 			shape: self.shape__.copyShape(),
 			logoTemplate: logoTemplate,
-			generator: self.qrCodeGenerator__.generator
+			engine: self.qrCodeGenerator__.engine
 		)
 	}
 }

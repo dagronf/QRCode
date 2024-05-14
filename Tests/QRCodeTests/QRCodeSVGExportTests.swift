@@ -10,7 +10,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let doc = QRCode.Document(
 			utf8String: "This is a test This is a test This is a test This is a test",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		do {
@@ -39,7 +39,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 		code.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 
@@ -62,7 +62,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		// Draw without a background
@@ -101,7 +101,7 @@ final class QRCodeSVGTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 		code.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 
@@ -134,7 +134,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 	func testExportSVGWithBackgroundPixelColors() throws {
 
-		let d = QRCode.Document(generator: QRCodeGenerator_External())
+		let d = QRCode.Document(engine: QRCodeEngine_External())
 		d.utf8String = "https://www.swift.org"
 
 		d.design.backgroundColor(CGColor.sRGBA(0, 0.6, 0, 1))
@@ -166,7 +166,7 @@ final class QRCodeSVGTests: XCTestCase {
 	func testExportSVGWithImage() throws {
 		let fillImage = try resourceImage(for: "lego", extension: "jpeg")
 
-		let d = QRCode.Document(generator: __testGenerator)
+		let d = QRCode.Document(engine: __testEngine)
 		try d.setText("https://www.apple.com/au/mac-studio/")
 		d.design.backgroundColor(.commonBlack)
 		d.design.shape.onPixels = QRCode.PixelShape.Razor()

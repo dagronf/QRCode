@@ -6,12 +6,12 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeLoadSaveTests")
 
 	func testBasic() throws {
-		let doc1 = QRCode.Document(generator: __testGenerator)
+		let doc1 = QRCode.Document(engine: __testEngine)
 		doc1.data = "this is a test".data(using: .utf8)!
 
 		let data = try XCTUnwrap(doc1.jsonData())
 
-		let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+		let doc2 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 
 		// Data should be the same
 		XCTAssertEqual(doc2.data, doc1.data)
@@ -23,14 +23,14 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasicPixelEncodeDecode() throws {
 
 		do {
-			let doc = QRCode.Document(generator: __testGenerator)
+			let doc = QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.2)
 			doc.design.shape.eye = QRCode.EyeShape.Leaf()
 
 			let data = try XCTUnwrap(doc.jsonData())
 
-			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+			let doc2 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 
 			// Make sure the data shape comes back out
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Circle)
@@ -41,22 +41,22 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(generator: __testGenerator)
+			let doc = QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(cornerRadiusFraction: 0.8, insetFraction: 0.2)
 			let data = try XCTUnwrap(doc.jsonData())
-			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+			let doc2 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.RoundedRect)
 			XCTAssertEqual(shape.insetFraction, 0.2, accuracy: 0.0001)
 			XCTAssertEqual(shape.cornerRadiusFraction, 0.8, accuracy: 0.0001)
 		}
 
 		do {
-			let doc = QRCode.Document(generator: __testGenerator)
+			let doc = QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test and fishes like squircles".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.6)
 			let data = try XCTUnwrap(doc.jsonData())
-			let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+			let doc2 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 			let shape = try XCTUnwrap(doc2.design.shape.onPixels as? QRCode.PixelShape.Squircle)
 			XCTAssertEqual(shape.insetFraction, 0.6, accuracy: 0.0001)
 		}
@@ -71,7 +71,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		"""
 
 		let data = json.data(using: .utf8)!
-		let doc = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+		let doc = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 
 		let msg = try XCTUnwrap(String(data: try XCTUnwrap(doc.data), encoding: .utf8))
 		XCTAssertEqual("this is a test", msg)
@@ -81,7 +81,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testSimpleFillStyleEncoding() throws {
 
-		let doc1 = QRCode.Document(generator: __testGenerator)
+		let doc1 = QRCode.Document(engine: __testEngine)
 		doc1.data = "simple colors".data(using: .utf8)!
 		doc1.errorCorrection = .quantize
 
@@ -99,7 +99,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 		let data = try XCTUnwrap(doc1.jsonData())
 
-		let doc2 = try QRCode.Document.Create(jsonData: data, generator: __testGenerator)
+		let doc2 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 		XCTAssertEqual(doc1.data, doc2.data)
 		XCTAssertEqual(doc1.errorCorrection, doc2.errorCorrection)
 	}
@@ -141,24 +141,24 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testLoadSaveNegatedOnPixelsOnly() throws {
 		#if os(watchOS)
-		let generator = QRCodeGenerator_External()
+		let engine = QRCodeEngine_External()
 		#else
-		let generator: QRCodeEngine? = nil
+		let engine: QRCodeEngine? = nil
 		#endif
 
-		let doc = QRCode.Document(utf8String: "checking negative value set", generator: generator)
+		let doc = QRCode.Document(utf8String: "checking negative value set", engine: engine)
 		doc.design.shape.negatedOnPixelsOnly = true
 
 		let settings = doc.settings()
 
-		let doc2 = try QRCode.Document(settings: settings, generator: generator)
+		let doc2 = try QRCode.Document(settings: settings, engine: engine)
 		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
 		let data1 = try XCTUnwrap(doc2.imageData(.jpg(compression: 0.2), dimension: 300))
 		try outputFolder.write(data1, to: "NegatedQRCodeTestFile-on.jpg")
 
 		doc2.design.shape.negatedOnPixelsOnly = false
 		let settings3 = doc2.settings()
-		let doc3 = try QRCode.Document(settings: settings3, generator: generator)
+		let doc3 = try QRCode.Document(settings: settings3, engine: engine)
 		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
 
 		let data2 = try XCTUnwrap(doc3.imageData(.jpg(compression: 0.5), dimension: 300))

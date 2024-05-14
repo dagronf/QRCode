@@ -7,7 +7,7 @@ final class QRCodeImageFillTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeImageFillTests")
 
 	func testBasic() throws {
-		let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
+		let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngine_External())
 
 		let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "swift-logo", withExtension: "png"))
 		let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)).cgImage()!
@@ -31,7 +31,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		let svgDataSuperLarge = try doc.svg(dimension: 3000)
 		try outputFolder.write(svgDataSuperLarge, to: "svgdata-superlarge.svg")
 
-		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: rawData, generator: QRCodeGenerator_External()))
+		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: rawData, engine: QRCodeEngine_External()))
 		let fillStyle = try XCTUnwrap(doc2.design.style.background as? QRCode.FillStyle.Image)
 		XCTAssertNotNil(fillStyle.image)
 		XCTAssertEqual(fillStyle.image?.width, logoImage.width)
@@ -47,7 +47,7 @@ final class QRCodeImageFillTests: XCTestCase {
 	}
 
 	func testBasic2() throws {
-		let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
+		let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngine_External())
 
 		doc.design.backgroundColor(.commonBlack)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
@@ -77,7 +77,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		Swift.print(im1)
 
 		let encoded = try doc.jsonData()
-		let doc2 = try QRCode.Document.init(jsonData: encoded, generator: QRCodeGenerator_External())
+		let doc2 = try QRCode.Document(jsonData: encoded, engine: QRCodeEngine_External())
 		let im2 = try doc2.platformImage(dimension: 600)
 		Swift.print(im2)
 	}

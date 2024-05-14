@@ -9,7 +9,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		let image = try resourceImage(for: "colored-fill", extension: "jpg")
@@ -45,7 +45,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		let image2 = try resourceImage(for: "colored-fill", extension: "jpg")
@@ -80,7 +80,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		code.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.9)
@@ -159,7 +159,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		let code = QRCode.Document(
 			utf8String: "Verifying that pre-built logo templates work as expected",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		do {
@@ -211,7 +211,7 @@ final class QRCodeMaskingTests: XCTestCase {
 		let doc = QRCode.Document(
 			utf8String: "Verifying logo image masking works",
 			errorCorrection: .high,
-			generator: __testGenerator
+			engine: __testEngine
 		)
 
 		let image = try resourceImage(for: "logo", extension: "png")

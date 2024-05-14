@@ -13,7 +13,7 @@ final class QRCodeDetectionTests: XCTestCase {
 	func test3rdPartyGenerator() throws {
 
 		// Make sure the third party generator can generate a qr code
-		let doc = QRCode.Document(generator: QRCodeGenerator_External())
+		let doc = QRCode.Document(engine: QRCodeEngine_External())
 
 		doc.utf8String = "This is a test"
 
@@ -141,8 +141,8 @@ final class QRCodeDetectionTests: XCTestCase {
 
 	func testBasicDetection() throws {
 
-		let qrCode = QRCode(generator: __testGenerator)
-		qrCode.update(text: "https://www.apple.com.au/", errorCorrection: .high)
+		let qrCode = try QRCode(engine: __testEngine)
+		try qrCode.update(text: "https://www.apple.com.au/", errorCorrection: .high)
 
 		// Convert to image and detect qr codes
 		do {

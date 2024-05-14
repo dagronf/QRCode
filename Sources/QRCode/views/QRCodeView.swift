@@ -271,13 +271,18 @@ public extension QRCodeView {
 extension QRCodeView {
 	// Build up the qr representation
 	private func rebuildDocumentUsingStoredProperties() {
-		self._document.update(data: self.data, errorCorrection: self.errorCorrection)
-		self._document.design.shape.onPixels = (try? QRCodePixelShapeFactory.shared.named(_pixelShape)) ?? QRCode.PixelShape.Square()
-		self._document.design.shape.eye = (try? QRCodeEyeShapeFactory.shared.named(_eyeShape)) ?? QRCode.EyeShape.Square()
-		self._document.design.shape.pupil = (_pupilShape.count > 0) ? (try? QRCodePupilShapeFactory.shared.named(_pupilShape)) : nil
-		self._document.logoTemplate = logoTemplate
-		// Push the document to the document viewer
-		self.rebuildQRCode()
+		do {
+			try self._document.update(data: self.data, errorCorrection: self.errorCorrection)
+			self._document.design.shape.onPixels = (try? QRCodePixelShapeFactory.shared.named(_pixelShape)) ?? QRCode.PixelShape.Square()
+			self._document.design.shape.eye = (try? QRCodeEyeShapeFactory.shared.named(_eyeShape)) ?? QRCode.EyeShape.Square()
+			self._document.design.shape.pupil = (_pupilShape.count > 0) ? (try? QRCodePupilShapeFactory.shared.named(_pupilShape)) : nil
+			self._document.logoTemplate = logoTemplate
+			// Push the document to the document viewer
+			self.rebuildQRCode()
+		}
+		catch {
+			Swift.print(error)
+		}
 	}
 }
 

@@ -3,9 +3,9 @@ import Foundation
 @testable import QRCode
 
 #if os(watchOS)
-let __testGenerator = QRCodeGenerator_External()
+let __testEngine = QRCodeEngine_External()
 #else
-let __testGenerator = QRCodeGenerator_CoreImage()
+let __testEngine = QRCodeEngine_CoreImage()
 #endif
 
 #if os(macOS)

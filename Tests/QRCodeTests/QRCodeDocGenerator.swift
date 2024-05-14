@@ -142,7 +142,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	}
 
 	func testPixelShapesExternalGenerator() throws {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: .high, generator: QRCodeGenerator_External())
+		let doc = QRCode.Document(utf8String: text, errorCorrection: .high, engine: QRCodeEngine_External())
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(0.6, 0, 0)
 		doc.design.style.eye = QRCode.FillStyle.Solid(0, 0, 0)
 
@@ -1209,7 +1209,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		try [0, 4].forEach { (aqs: UInt) in
 			do {
-				let doc = QRCode.Document(utf8String: "This is a test", generator: QRCodeGenerator_External())
+				let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngine_External())
 				doc.design.additionalQuietZonePixels = aqs
 
 				doc.design.backgroundColor(CGColor.gray(0, 1))
@@ -1249,7 +1249,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let logoImage = try resourceImage(for: "swift-logo", extension: "png")
 				let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
-				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", generator: QRCodeGenerator_External())
+				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", engine: QRCodeEngine_External())
 				doc.design.additionalQuietZonePixels = UInt(aqs)
 				doc.design.style.background = backgroundImage
 
@@ -1343,7 +1343,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(data: data, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-basictext-external-noopt.jpg"
@@ -1354,7 +1354,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-basictext-external.jpg"
@@ -1389,7 +1389,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(data: data, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-numerics-external-noopt.jpg"
@@ -1400,7 +1400,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-numerics-external.jpg"
@@ -1435,7 +1435,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(data: data, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external-noopt.jpg"
@@ -1446,7 +1446,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external.jpg"
@@ -1482,7 +1482,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(data: data, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external-noopt.jpg"
@@ -1493,7 +1493,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, generator: QRCodeGenerator_External())
+				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngine_External())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external.jpg"
