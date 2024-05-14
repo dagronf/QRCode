@@ -21,60 +21,41 @@
 
 import Foundation
 
-extension QRCode {
-	/// Content class for wrapping QR code 'data'
-	internal class Content: Codable {
-		@inlinable var data: Data {
-			get { _data }
-			set { self._data = newValue }
-		}
-
-		@inlinable var utf8: String? {
-			get {
-				String(data: _data, encoding: .utf8)
-			}
-			set {
-				_data = newValue?.data(using: .utf8) ?? Data()
-			}
-		}
-
-		@inlinable init(_ data: Data = Data()) {
-			self._data = data
-		}
-
-		@inlinable init(_ utf8Text: String) {
-			self._data = utf8Text.data(using: .utf8) ?? Data()
-		}
-
-		private var _data: Data
-
-		// MARK: Codable
+internal extension QRCode {
+	/// QR Code content
+	///
+	/// Note that data and text are held separately as there are additional compression options
+	/// available to text content.
+	enum Content: Codable {
+		case data(Data)
+		case text(String)
 
 		enum CodingKeys: CodingKey {
 			case data
 			case text
 		}
 
-		public required init(from decoder: any Decoder) throws {
-			let container = try decoder.container(keyedBy: Self.CodingKeys)
+		init(from decoder: any Decoder) throws {
+			let container = try decoder.container(keyedBy: QRCode.Content.CodingKeys.self)
+
 			if let data = try container.decodeIfPresent(Data.self, forKey: .data) {
-				self._data = data
+				self = .data(data)
 			}
 			else if let text = try container.decodeIfPresent(String.self, forKey: .text) {
-				self._data = text.data(using: .utf8) ?? Data()
+				self = .text(text)
 			}
 			else {
-				self._data = Data()
+				throw QRCodeError.invalidContent
 			}
 		}
 
-		public func encode(to encoder: any Encoder) throws {
-			var container = encoder.container(keyedBy: Self.CodingKeys)
-			if let text = self.utf8 {
-				try container.encode(text, forKey: .text)
-			}
-			else {
-				try container.encode(_data, forKey: .data)
+		func encode(to encoder: any Encoder) throws {
+			var container = encoder.container(keyedBy: QRCode.Content.CodingKeys.self)
+			switch self {
+			case let .data(a0):
+				try container.encode(a0, forKey: .data)
+			case let .text(a0):
+				try container.encode(a0, forKey: .text)
 			}
 		}
 	}

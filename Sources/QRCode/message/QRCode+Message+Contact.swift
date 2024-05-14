@@ -121,47 +121,11 @@ public extension QRCode.Message {
 			}
 		}
 
-		/// The VCard encoding
-		@objc public let vcard: String
-
 		/// The VCard utf8 data encoding
 		@objc public let data: Foundation.Data
-		
-		/// Create a QR Code that contains a VCard
-		/// - Parameters:
-		///   - name: The name to be used for the card
-		///   - formattedName: The name as it is to be displayed
-		///   - addresses: User's addresses
-		///   - organization: User's organization
-		///   - title: Job title, functional position or function
-		///   - telephone: An array of phone numbers. Format is (+)number, eg. +61000000000
-		///   - email: An array of email addresses (simple text, not validated)
-		///   - urls: Associated URLs
-		///   - notes: Some text to be attached to the card
-		@objc public convenience init(
-			name: Contact.Name,
-			formattedName: String,
-			addresses: [Contact.Address] = [],
-			organization: String?,
-			title: String? = nil,
-			telephone: [String] = [],
-			email: [String] = [],
-			urls: [URL] = [],
-			notes: [String] = []
-		) throws {
-			try self.init(
-				name: name,
-				formattedName: formattedName,
-				addresses: addresses,
-				organization: organization,
-				title: title,
-				telephone: telephone,
-				email: email,
-				urls: urls,
-				notes: notes,
-				textEncoding: .utf8
-			)
-		}
+
+		/// The VCard text representation
+		@objc public let text: String?
 
 		/// Create a QR Code that contains a VCard
 		/// - Parameters:
@@ -174,7 +138,6 @@ public extension QRCode.Message {
 		///   - email: An array of email addresses (simple text, not validated)
 		///   - urls: Associated URLs
 		///   - notes: Some text to be attached to the card
-		///   - textEncoding: The string encoding to use
 		public init(
 			name: Contact.Name,
 			formattedName: String,
@@ -184,8 +147,7 @@ public extension QRCode.Message {
 			telephone: [String] = [],
 			email: [String] = [],
 			urls: [URL] = [],
-			notes: [String] = [],
-			textEncoding: String.Encoding
+			notes: [String] = []
 		) throws {
 			var msg: String = "BEGIN:VCARD\nVERSION:3.0\n"
 			
@@ -224,11 +186,11 @@ public extension QRCode.Message {
 			
 			msg += "END:VCARD"
 
-			guard let vcardData = msg.data(using: textEncoding) else {
+			guard let vcardData = msg.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 
-			self.vcard = msg
+			self.text = msg
 			self.data = vcardData
 		}
 	}

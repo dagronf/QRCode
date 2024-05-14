@@ -6,7 +6,7 @@ final class QRCodeMaskingTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeMaskingTests")
 
 	func testBasicMask() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -42,7 +42,7 @@ final class QRCodeMaskingTests: XCTestCase {
 	}
 
 	func testAbsolutePositioningMask() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -77,7 +77,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 	func testOverlayImage() throws {
 
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -156,7 +156,7 @@ final class QRCodeMaskingTests: XCTestCase {
 	}
 
 	func testFixedTemplates() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "Verifying that pre-built logo templates work as expected",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -208,7 +208,7 @@ final class QRCodeMaskingTests: XCTestCase {
 	}
 
 	func testLogoImageMasking() throws {
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "Verifying logo image masking works",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -235,7 +235,7 @@ final class QRCodeMaskingTests: XCTestCase {
 	}
 
 	func testLogoQRMasking() throws {
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "Verifying logo image masking works",
 			errorCorrection: .high
 		)

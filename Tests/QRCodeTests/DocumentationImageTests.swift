@@ -43,7 +43,7 @@ final class DocumentationImageTests: XCTestCase {
 	}
 
 	func testQuietSpace() throws {
-		let doc = QRCode.Document(utf8String: "https://www.swift.org/about/")
+		let doc = try QRCode.Document(utf8String: "https://www.swift.org/about/")
 		doc.design.style.background = QRCode.FillStyle.Solid(0.410, 1.000, 0.375)
 
 		try [0, 5, 10, 15].forEach { aqs in
@@ -65,7 +65,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testCornerRadius() throws {
 		do {
-			let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
 			doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
 			doc.design.additionalQuietZonePixels = 4
@@ -78,7 +78,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "Corner radius checking")
+			let doc = try QRCode.Document(utf8String: "Corner radius checking")
 			doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.7)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
 			doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
@@ -141,7 +141,7 @@ final class DocumentationImageTests: XCTestCase {
 	}
 
 	func testOffPixelImageGeneration() throws {
-		let doc1 = QRCode.Document(utf8String: "Testing off-pixels")
+		let doc1 = try QRCode.Document(utf8String: "Testing off-pixels")
 		doc1.design.backgroundColor(.commonWhite)
 		doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 		doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
@@ -155,7 +155,7 @@ final class DocumentationImageTests: XCTestCase {
 	}
 
 	func testEyeColorStyles() throws {
-		let doc2 = QRCode.Document(utf8String: "Github example for colors")
+		let doc2 = try QRCode.Document(utf8String: "Github example for colors")
 		doc2.design.backgroundColor(.commonWhite)
 		doc2.design.shape.eye = QRCode.EyeShape.Leaf()
 		doc2.design.style.eye = QRCode.FillStyle.Solid(systemGreen)
@@ -171,7 +171,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testRadialFillStyle() throws {
 		// Set the background color to a solid white
-		let doc3 = QRCode.Document(utf8String: "Github example for colors")
+		let doc3 = try QRCode.Document(utf8String: "Github example for colors")
 		doc3.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
 
 		// Set the fill color for the data to radial gradient
@@ -190,7 +190,7 @@ final class DocumentationImageTests: XCTestCase {
 	}
 
 	func testCustomPupilUsage() throws {
-		let doc = QRCode.Document(utf8String: "Custom pupil")
+		let doc = try QRCode.Document(utf8String: "Custom pupil")
 		doc.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
 		doc.design.shape.eye = QRCode.EyeShape.Squircle()
 		doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
@@ -205,7 +205,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testLogoUsage() throws {
 		do {
-			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "QR Code with overlaid logo", errorCorrection: .high)
 			doc.design.backgroundColor(CGColor.sRGBA(0.149, 0.137, 0.208))
 			doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(1.000, 0.733, 0.424, alpha: 1.000)
@@ -233,7 +233,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo center square", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "QR Code with overlaid logo center square", errorCorrection: .high)
 			let image = try resourceImage(for: "square-logo", extension: "png")
 
 			// Create a logo 'template'
@@ -249,7 +249,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "QR Code with overlaid logo bottom right circular", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "QR Code with overlaid logo bottom right circular", errorCorrection: .high)
 			let image = try resourceImage(for: "instagram-icon", extension: "png")
 
 			// Create a logo 'template'
@@ -267,7 +267,7 @@ final class DocumentationImageTests: XCTestCase {
 
 	func testGenerateOffPixels() throws {
 		do {
-			let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
 			doc.design.shape.negatedOnPixelsOnly = true
 			doc.design.style.background = QRCode.FillStyle.Solid(gray: 0)
@@ -285,7 +285,7 @@ final class DocumentationImageTests: XCTestCase {
 	func testSampleQRCodeImages() throws {
 
 		do {
-			let doc = QRCode.Document(utf8String: "This is an image background")
+			let doc = try QRCode.Document(utf8String: "This is an image background")
 			let image = try resourceImage(for: "photo-logo", extension: "jpg")
 
 			doc.design.style.background = QRCode.FillStyle.Image(image)
@@ -297,7 +297,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
+			let doc = try QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
 			let image = try resourceImage(for: "wombles", extension: "jpeg")
 
 			let pixelFill = QRCode.FillStyle.LinearGradient(
@@ -328,7 +328,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "QRCode drawing only the 'off' pixels of the qr code with quiet space",
 				errorCorrection: .high
 			)
@@ -348,7 +348,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let d = QRCode.Document(engine: QRCodeEngineExternal())
+			let d = try QRCode.Document(engine: QRCodeEngineExternal())
 			d.utf8String = "https://www.swift.org"
 
 			d.design.backgroundColor(CGColor.sRGBA(0, 0.6, 0))
@@ -369,7 +369,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "http://www.bom.gov.au/products/IDR022.loop.shtml",
 				errorCorrection: .high
 			)
@@ -402,7 +402,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://www.worldwildlife.org")
+			let doc = try QRCode.Document(utf8String: "https://www.worldwildlife.org")
 
 			let backgroundImage = try resourceImage(for: "wwf", extension: "jpeg")
 			doc.design.style.background = QRCode.FillStyle.Image(backgroundImage)
@@ -424,7 +424,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://developer.apple.com/swift/")
+			let doc = try QRCode.Document(utf8String: "https://developer.apple.com/swift/")
 
 			let gradient = try! DSFGradient.build([
 				(0.3 , CGColor.sRGBA(0.005, 0.101, 0.395, 1)),
@@ -457,7 +457,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: "https://www.qrcode.com/en/history/", errorCorrection: .high)
 
 			doc.design.shape.eye = QRCode.EyeShape.Squircle()
 			doc.design.style.eye = QRCode.FillStyle.Solid(108.0 / 255.0, 76.0 / 255.0, 191.0 / 255.0)
@@ -493,7 +493,7 @@ final class DocumentationImageTests: XCTestCase {
 	}
 
 	func testPeacockBeach() throws {
-		let doc = QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
+		let doc = try QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
 
 		let background = CGColor(srgbRed: 0.018, green:0.086, blue:0.15, alpha:1)
 		doc.design.backgroundColor(background)

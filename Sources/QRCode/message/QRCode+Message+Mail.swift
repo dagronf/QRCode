@@ -30,24 +30,14 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
-		public let content: String
+		public let text: String?
 
 		/// Create a message containing a mail message (utf8 encoded)
 		/// - Parameters:
 		///   - mailTo: The mail destination
 		///   - subject: The mail subject
 		///   - body: The body of the email
-		@objc public convenience init(mailTo: String, subject: String? = nil, body: String? = nil) throws {
-			try self.init(mailTo: mailTo, subject: subject, body: body, textEncoding: .utf8)
-		}
-
-		/// Create a message containing a mail message (utf8 encoded)
-		/// - Parameters:
-		///   - mailTo: The mail destination
-		///   - subject: The mail subject
-		///   - body: The body of the email
-		///   - textEncoding: The string encoding to use
-		public init(mailTo: String, subject: String? = nil, body: String? = nil, textEncoding: String.Encoding) throws {
+		public init(mailTo: String, subject: String? = nil, body: String? = nil) throws {
 			guard let mt = mailTo.urlQuerySafe else {
 				throw QRCodeError.invalidURL
 			}
@@ -63,12 +53,12 @@ public extension QRCode.Message {
 				msg += "?\(q)"
 			}
 
-			guard let msgData = msg.data(using: textEncoding) else {
+			guard let msgData = msg.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 
 			self.data = msgData
-			self.content = msg
+			self.text = msg
 		}
 	}
 }

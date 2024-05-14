@@ -27,21 +27,14 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
-		public let content: String
-
-		/// Create a message containing a URL (utf8 encoded)
-		/// - Parameter url: The url
-		@objc public convenience init(_ url: URL) throws {
-			try self.init(url, textEncoding: .utf8)
-		}
+		public let text: String?
 
 		/// Create a message containing a URL
 		/// - Parameters:
 		///   - url: The URL to encode
-		///   - textEncoding: The string encoding to use
-		public init(_ url: URL, textEncoding: String.Encoding) throws {
-			self.content = url.absoluteString
-			guard let msgData = self.content.data(using: textEncoding) else {
+		@objc public init(_ url: URL) throws {
+			self.text = url.absoluteString
+			guard let msgData = self.text?.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 			self.data = msgData

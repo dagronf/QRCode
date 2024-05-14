@@ -25,12 +25,12 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// A string that is purely uppercase ascii, which the external generator can optimize to produce
 		// a smaller QR code
 		let s1 = "THIS IS A TEST THIS IS A TEST THIS IS A TEST "
-		let docG1 = QRCode.Document(utf8String: s1, engine: QRCodeEngineExternal())
+		let docG1 = try QRCode.Document(utf8String: s1, engine: QRCodeEngineExternal())
 		XCTAssertEqual(g1.dimension, docG1.boolMatrix.dimension)
 
 		// The first 4 characters are NOT compatible with text optimizations, so the QR code should be larger
 		let s2 = "this IS A TEST THIS IS A TEST THIS IS A TEST "
-		let docG2 = QRCode.Document(utf8String: s2, engine: QRCodeEngineExternal())
+		let docG2 = try QRCode.Document(utf8String: s2, engine: QRCodeEngineExternal())
 		XCTAssertEqual(g2.dimension, docG2.boolMatrix.dimension)
 	}
 
@@ -39,10 +39,10 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		let v1 = "0123456790123456789"
 		// Optimizable (purely numbers)
-		let docN1 = QRCode.Document(utf8String: v1, engine: eGen)
+		let docN1 = try QRCode.Document(utf8String: v1, engine: eGen)
 		XCTAssertEqual(23, docN1.boolMatrix.dimension)
 		// Setting as data, therefore not optimized
-		let docN2 = QRCode.Document(data: try XCTUnwrap(v1.data(using: .utf8)), engine: eGen)
+		let docN2 = try QRCode.Document(data: try XCTUnwrap(v1.data(using: .utf8)), engine: eGen)
 		XCTAssertEqual(27, docN2.boolMatrix.dimension)
 	}
 
@@ -53,7 +53,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		let m31 = "0123456789012345678901234567890123456789"
 		let g31 = try eGen.generate(text: m31, errorCorrection: .quantize)
 		XCTAssertEqual(g31.dimension, 27)
-		let d31 = QRCode.Document(utf8String: m31, engine: eGen)
+		let d31 = try QRCode.Document(utf8String: m31, engine: eGen)
 		XCTAssertEqual(27, d31.boolMatrix.dimension)
 		let data31 = try XCTUnwrap(d31.imageData(.png(), dimension: 300))
 		try outputFolder.write(data31, to: "extgen_numerics_only.png")
@@ -75,7 +75,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		let m32 = "012345678901234567890123456789012345678A"
 		let g32 = try eGen.generate(text: m32, errorCorrection: .quantize)
 		XCTAssertEqual(g32.dimension, 31)
-		let d32 = QRCode.Document(utf8String: m32, engine: eGen)
+		let d32 = try QRCode.Document(utf8String: m32, engine: eGen)
 		XCTAssertEqual(31, d32.boolMatrix.dimension)
 		let d32d = try XCTUnwrap(d32.imageData(.png(), dimension: 300))
 		try outputFolder.write(d32d, to: "extgen_alphanumerics_only.png")
@@ -96,7 +96,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		let m33 = "012345678901234567890123456789012345678a"
 		let g33 = try eGen.generate(text: m33, errorCorrection: .quantize)
 		XCTAssertEqual(g33.dimension, 35)
-		let d33 = QRCode.Document(utf8String: m33, engine: eGen)
+		let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 		XCTAssertEqual(35, d33.boolMatrix.dimension)
 		let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
 		try outputFolder.write(d33d, to: "extgen_generic_text.png")
@@ -117,7 +117,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			let m33 = "اربك تكست هو اول موقع يسمح"
 			let g33 = try XCTUnwrap(eGen.generate(text: m33, errorCorrection: .quantize))
 			XCTAssertEqual(g33.dimension, 39)
-			let d33 = QRCode.Document(utf8String: m33, engine: eGen)
+			let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
 			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
 			try outputFolder.write(d33d, to: "extgen_arabic_text_utf8.png")
@@ -135,7 +135,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			let m33 = "Emoji work -> 🐔👨‍👨‍👦 and also 🏋🏾"
 			let g33 = try XCTUnwrap(eGen.generate(text: m33, errorCorrection: .quantize))
 			XCTAssertEqual(g33.dimension, 39)
-			let d33 = QRCode.Document(utf8String: m33, engine: eGen)
+			let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
 			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
 			try outputFolder.write(d33d, to: "extgen_emojis_text_utf8.png")
@@ -160,7 +160,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// This will be our baseline for checking whether we trigger the optimizations
 		let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
 		XCTAssertEqual(orig.dimension, 35)
-		let origDoc = QRCode.Document(data: data, engine: eGen)
+		let origDoc = try QRCode.Document(data: data, engine: eGen)
 		XCTAssertEqual(35, origDoc.boolMatrix.dimension)
 
 #if !os(watchOS)
@@ -176,7 +176,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// Now, call the generator using the text, which means that the generator can optimize the content
 		let optim = try XCTUnwrap(eGen.generate(text: text, errorCorrection: .quantize))
 		XCTAssertEqual(optim.dimension, 27)
-		let optDoc = QRCode.Document(utf8String: text, engine: eGen)
+		let optDoc = try QRCode.Document(utf8String: text, engine: eGen)
 		XCTAssertEqual(27, optDoc.boolMatrix.dimension)
 
 		XCTAssertGreaterThan(origDoc.boolMatrix.dimension, optDoc.boolMatrix.dimension)
@@ -202,7 +202,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// This will be our baseline for checking whether we trigger the optimizations
 		let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
 		XCTAssertEqual(orig.dimension, 35)
-		let origDoc = QRCode.Document(data: data, engine: eGen)
+		let origDoc = try QRCode.Document(data: data, engine: eGen)
 		XCTAssertEqual(35, origDoc.boolMatrix.dimension)
 
 #if !os(watchOS)
@@ -218,7 +218,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// Now, call the generator using the text, which means that the generator can optimize the content
 		let optim = try XCTUnwrap(eGen.generate(text: text, errorCorrection: .quantize))
 		XCTAssertEqual(optim.dimension, 31)
-		let optDoc = QRCode.Document(utf8String: text, engine: eGen)
+		let optDoc = try QRCode.Document(utf8String: text, engine: eGen)
 		XCTAssertEqual(31, optDoc.boolMatrix.dimension)
 
 		XCTAssertGreaterThan(origDoc.boolMatrix.dimension, optDoc.boolMatrix.dimension)

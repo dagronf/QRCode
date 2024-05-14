@@ -42,7 +42,7 @@ public struct QRCodeShape: Shape {
 		engine: (any QRCodeEngine)? = nil
 	) {
 		do {
-			self.data__ = data
+			self.content__ = .data(data)
 			self.errorCorrection__ = errorCorrection
 			self.components__ = components
 			self.shape__ = shape
@@ -60,7 +60,6 @@ public struct QRCodeShape: Shape {
 	/// Create a QRCode shape using the specified text
 	/// - Parameters:
 	///   - text: The text content to contain within the QR Code
-	///   - textEncoding: The text encoding to use
 	///   - errorCorrection: The error correction level
 	///   - components: The components of the QR Code to include within the Shape path
 	///   - shape: The shape object to describle the style of the generated path
@@ -69,24 +68,26 @@ public struct QRCodeShape: Shape {
 	/// Throws an error if the text cannot be converted to the specified string encoding
 	public init(
 		text: String,
-		textEncoding: String.Encoding = .utf8,
 		errorCorrection: QRCode.ErrorCorrection = .low,
 		components: QRCode.Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: QRCode.LogoTemplate? = nil,
 		engine: (any QRCodeEngine)? = nil
 	) throws {
-		guard let data = text.data(using: textEncoding) else {
-			throw QRCodeError.unableToConvertTextToRequestedEncoding
+		do {
+			self.content__ = .text(text)
+			self.errorCorrection__ = errorCorrection
+			self.components__ = components
+			self.shape__ = shape
+			self.logoTemplate__ = logoTemplate
+			if let e = engine {
+				self.qrCodeGenerator__.engine = e
+			}
+			try self.qrCodeGenerator__.update(content: self.content__, errorCorrection: errorCorrection)
 		}
-		self.init(
-			data: data,
-			errorCorrection: errorCorrection,
-			components: components,
-			shape: shape,
-			logoTemplate: logoTemplate,
-			engine: engine
-		)
+		catch {
+			Swift.print("QRCodeShape: Error creating shape. Error was '\(error)'")
+		}
 	}
 
 	/// Create a QRCode shape using the specified message formatter
@@ -115,8 +116,39 @@ public struct QRCodeShape: Shape {
 		)
 	}
 
+	/// Create a QRCode shape using the specified data
+	/// - Parameters:
+	///   - content: The content
+	///   - errorCorrection: The error correction level
+	///   - components: The components of the QR Code to include within the Shape path
+	///   - shape: The shape object to describle the style of the generated path
+	///   - generator: The generator to use when creating the Shape path
+	internal init(
+		content: QRCode.Content,
+		errorCorrection: QRCode.ErrorCorrection = .low,
+		components: QRCode.Components = .all,
+		shape: QRCode.Shape = QRCode.Shape(),
+		logoTemplate: QRCode.LogoTemplate? = nil,
+		engine: (any QRCodeEngine)? = nil
+	) {
+		do {
+			self.content__ = content
+			self.errorCorrection__ = errorCorrection
+			self.components__ = components
+			self.shape__ = shape
+			self.logoTemplate__ = logoTemplate
+			if let e = engine {
+				self.qrCodeGenerator__.engine = e
+			}
+			try self.qrCodeGenerator__.update(content: self.content__, errorCorrection: errorCorrection)
+		}
+		catch {
+			Swift.print("QRCodeShape: Error creating shape. Error was '\(error)'")
+		}
+	}
+
 	// Private
-	private let data__: Data
+	private let content__: QRCode.Content
 	private let shape__: QRCode.Shape
 	private let components__: QRCode.Components
 	private let errorCorrection__: QRCode.ErrorCorrection
@@ -131,7 +163,7 @@ public extension QRCodeShape {
 	/// Returns a copy of the qrcode using the specified error correction level
 	func errorCorrection(_ errorCorrection: QRCode.ErrorCorrection) -> QRCodeShape {
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: errorCorrection,
 			components: self.components__,
 			shape: self.shape__.copyShape(),
@@ -143,7 +175,7 @@ public extension QRCodeShape {
 	/// Returns a copy of the qrcode using only the specified components being generated.
 	func components(_ components: QRCode.Components) -> QRCodeShape {
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: components,
 			shape: self.shape__.copyShape(),
@@ -155,7 +187,7 @@ public extension QRCodeShape {
 	/// Returns a copy of the qrcode Shape using the specified QRCode shape object
 	func shape(_ shape: QRCode.Shape) -> QRCodeShape {
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape.copyShape(),
@@ -169,7 +201,7 @@ public extension QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.onPixels = pixelShape
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
@@ -183,7 +215,7 @@ public extension QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.offPixels = pixelShape
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
@@ -197,7 +229,7 @@ public extension QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.eye = eyeShape
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
@@ -211,7 +243,7 @@ public extension QRCodeShape {
 		let shape = self.shape__.copyShape()
 		shape.pupil = pupilShape
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: shape,
@@ -223,7 +255,7 @@ public extension QRCodeShape {
 	/// Set the logo template for the shape
 	func logoTemplate(_ logoTemplate: QRCode.LogoTemplate) -> QRCodeShape {
 		return QRCodeShape(
-			data: self.data__,
+			content: self.content__,
 			errorCorrection: self.errorCorrection__,
 			components: self.components__,
 			shape: self.shape__.copyShape(),

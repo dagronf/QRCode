@@ -26,6 +26,9 @@ import Foundation
 
 	/// Must be supplied in order to get the message's formatted data
 	var data: Data { get }
+
+	/// The text representation for the message
+	var text: String? { get }
 }
 
 public extension QRCode {

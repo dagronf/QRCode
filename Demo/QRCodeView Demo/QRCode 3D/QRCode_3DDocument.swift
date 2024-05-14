@@ -15,7 +15,7 @@ final class QRCode_3DDocument: ReferenceFileDocument {
 	@Published var qrcode: QRCode.Document
 
 	init() {
-		self.qrcode = QRCode.Document(utf8String: "This is a QR Code")
+		self.qrcode = try! QRCode.Document(utf8String: "This is a QR Code")
 	}
 
 	static var readableContentTypes: [UTType] { [.json] }

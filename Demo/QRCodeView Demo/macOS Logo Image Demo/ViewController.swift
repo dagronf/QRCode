@@ -31,7 +31,7 @@ class ViewController: NSViewController {
 		super.viewWillAppear()
 
 		do {
-			let doc = QRCode.Document(
+			let doc = try! QRCode.Document(
 				utf8String: "https://support.apple.com/en-au/repair",
 				errorCorrection: .high
 			)
@@ -59,7 +59,7 @@ class ViewController: NSViewController {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "https://developer.apple.com/forums/", errorCorrection: .high)
+			let doc = try! QRCode.Document(utf8String: "https://developer.apple.com/forums/", errorCorrection: .high)
 			doc.design.backgroundColor(CGColor(red: 0.149, green: 0.137, blue: 0.208, alpha: 1.000))
 			doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(1.000, 0.733, 0.424, alpha: 1.000)
@@ -83,7 +83,7 @@ class ViewController: NSViewController {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "The rect will not be painted, however. Instead its pixel data will be used to determine, which pixels of the circle 'make it' to the final rendering. Since the rectangle covers only the upper half of the circle, the lower half of the circle will vanish", errorCorrection: .high)
+			let doc = try! QRCode.Document(utf8String: "The rect will not be painted, however. Instead its pixel data will be used to determine, which pixels of the circle 'make it' to the final rendering. Since the rectangle covers only the upper half of the circle, the lower half of the circle will vanish", errorCorrection: .high)
 			doc.design.backgroundColor(CGColor(red: 0.149, green: 0.137, blue: 0.208, alpha: 1.000))
 
 			let gradient = DSFGradient(

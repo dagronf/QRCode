@@ -67,7 +67,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 	func testPixelShapesCoreImage() throws {
 		do {
-			let doc = QRCode.Document(utf8String: text, errorCorrection: .high)
+			let doc = try QRCode.Document(utf8String: text, errorCorrection: .high)
 
 			markdownText += "## Pixel Shapes (CoreImage)\n\n"
 
@@ -142,7 +142,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	}
 
 	func testPixelShapesExternalGenerator() throws {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: .high, engine: QRCodeEngineExternal())
+		let doc = try QRCode.Document(utf8String: text, errorCorrection: .high, engine: QRCodeEngineExternal())
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(0.6, 0, 0)
 		doc.design.style.eye = QRCode.FillStyle.Solid(0, 0, 0)
 
@@ -191,7 +191,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	}
 
 	func testEyeShapes() throws {
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "QR Code generation test",
 			errorCorrection: .high
 		)
@@ -267,7 +267,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	}
 
 	func testPupilShapes() throws {
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "QR Code generation test",
 			errorCorrection: .high
 		)
@@ -350,7 +350,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		do {
 			markdownText += "### Solid\n\n"
 
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "QR Code generation test",
 				errorCorrection: .medium
 			)
@@ -404,7 +404,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		do {
 			markdownText += "### Linear\n\n"
 
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "QR Code generation test",
 				errorCorrection: .medium
 			)
@@ -482,7 +482,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		do {
 			markdownText += "### Radial\n\n"
 
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "QR Code generation test",
 				errorCorrection: .medium
 			)
@@ -559,7 +559,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		do {
 			markdownText += "## Logo\n\n"
 
-			let doc = QRCode.Document(
+			let doc = try QRCode.Document(
 				utf8String: "QR Code generation test with a lot of content to display!",
 				errorCorrection: .high
 			)
@@ -634,7 +634,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	func testBackgroundCornerRadius() throws {
 		markdownText += "## Corner radius\n\n"
 
-		let doc = QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
+		let doc = try QRCode.Document(utf8String: "Corner radius checking", errorCorrection: .high)
 		doc.design.additionalQuietZonePixels = 4
 
 		let c1 = QRCode.FillStyle.Solid(1, 0, 0)
@@ -702,7 +702,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		markdownText += "| all | on pixels | off pixels | eye background | eye outer | eye pupil |\n"
 		markdownText += "|:------:|:------:|:------:|:------:|:------:|:------:|\n"
 
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "QR Code generation test with a lot of content to display!",
 			errorCorrection: .high
 		)
@@ -771,7 +771,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	}
 
 	func testOnPathOffPath() throws {
-		let doc = QRCode.Document(utf8String: "Checking on/off paths", errorCorrection: .low)
+		let doc = try QRCode.Document(utf8String: "Checking on/off paths", errorCorrection: .low)
 
 		markdownText += "## On path/Off Path\n\n"
 
@@ -844,7 +844,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		markdownText += "## Use Pixel shape checks \n\n"
 
-		let doc = QRCode.Document(utf8String: "This is a test")
+		let doc = try QRCode.Document(utf8String: "This is a test")
 		doc.design.shape.eye = QRCode.EyeShape.UsePixelShape()
 		doc.design.shape.pupil = QRCode.PupilShape.UsePixelShape()
 
@@ -868,8 +868,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		markdownText += "## Style export equivalence checks \n\n"
 		let exporters: [QRCode.Document.ExportType] = [.png(), .pdf(), .svg]
 		let sampleDocs: [(String, QRCode.Document)] = [
-			{
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - Blue wavy", errorCorrection: .medium)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - Blue wavy", errorCorrection: .medium)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
 				doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true)
 				doc.design.style.onPixels = QRCode.FillStyle.LinearGradient(
@@ -883,8 +883,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-funky-blue", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - Speck highlights", errorCorrection: .quantize)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - Speck highlights", errorCorrection: .quantize)
 				doc.design.style.background = QRCode.FillStyle.Solid(0.937, 0.714, 0.502)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 				doc.design.style.eyeBackground = CGColor.commonWhite
@@ -897,9 +897,9 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-speck", doc)
 			}(),
 			// -------------------
-			{
+			try {
 				let msg = try! QRCode.Message.Link(URL(string: "https://github.com/dagronf/QRCode")!)
-				let doc = QRCode.Document(message: msg, errorCorrection: .quantize)
+				let doc = try QRCode.Document(message: msg, errorCorrection: .quantize)
 				doc.design.style.background = QRCode.FillStyle.Solid(.commonClear)
 				doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(cornerRadiusFraction: 0.5, insetFraction: 0.1)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
@@ -918,8 +918,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-github", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - landscape", errorCorrection: .quantize)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - landscape", errorCorrection: .quantize)
 				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
 				doc.design.style.setForegroundStyle(
 					QRCode.FillStyle.LinearGradient(
@@ -938,8 +938,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-landscape", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode stylish design with quiet space - landscape", errorCorrection: .quantize)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design with quiet space - landscape", errorCorrection: .quantize)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
 				doc.design.style.setForegroundStyle(
@@ -959,8 +959,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-landscape-quiet-space", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - radial sepia", errorCorrection: .medium)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - radial sepia", errorCorrection: .medium)
 				doc.design.foregroundStyle(QRCode.FillStyle.Solid(CGColor.RGBA(0.356, 0.209, 0.014, 1)))
 				doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.05)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
@@ -974,7 +974,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking", errorCorrection: .high)
 
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "corner-heart", withExtension: "png"))
 				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
@@ -1006,7 +1006,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking with quiet space", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking with quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 3
 
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "corner-heart", withExtension: "png"))
@@ -1039,7 +1039,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
 				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
@@ -1048,7 +1048,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency with quiet space", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency with quiet space", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 				doc.design.additionalQuietZonePixels = 6
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
@@ -1058,7 +1058,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "Adding a logo to a QR code (without masking) with quiet space", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code (without masking) with quiet space", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 				doc.design.additionalQuietZonePixels = 3
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
@@ -1068,7 +1068,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
@@ -1081,7 +1081,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let doc = QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image with quiet space", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image with quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 
@@ -1094,8 +1094,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-logo-masking-quiet-space", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code", errorCorrection: .high)
 				doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
 				doc.design.shape.negatedOnPixelsOnly = true
 				doc.design.style.background = QRCode.FillStyle.Solid(gray: 0)
@@ -1103,8 +1103,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				return ("design-negated", doc)
 			}(),
 			// -------------------
-			{
-				let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code with quiet space", errorCorrection: .high)
+			try {
+				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code with quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.05)
 				doc.design.shape.negatedOnPixelsOnly = true
@@ -1117,7 +1117,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
 				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
 
-				let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path", errorCorrection: .high)
 				doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 				doc.design.shape.negatedOnPixelsOnly = true
 				doc.design.style.background = QRCode.FillStyle.Solid(0.999, 0.988, 0.472, alpha:1)
@@ -1133,7 +1133,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
 				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
 
-				let doc = QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path and quiet space", errorCorrection: .high)
+				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path and quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 				doc.design.shape.negatedOnPixelsOnly = true
@@ -1209,7 +1209,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		try [0, 4].forEach { (aqs: UInt) in
 			do {
-				let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
+				let doc = try QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
 				doc.design.additionalQuietZonePixels = aqs
 
 				doc.design.backgroundColor(CGColor.gray(0, 1))
@@ -1249,7 +1249,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let logoImage = try resourceImage(for: "swift-logo", extension: "png")
 				let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
-				let doc = QRCode.Document(utf8String: "https://www.swift.org/about/", engine: QRCodeEngineExternal())
+				let doc = try QRCode.Document(utf8String: "https://www.swift.org/about/", engine: QRCodeEngineExternal())
 				doc.design.additionalQuietZonePixels = UInt(aqs)
 				doc.design.style.background = backgroundImage
 
@@ -1275,7 +1275,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					endPoint: CGPoint(x: 1, y: 1)
 				)
 
-				let doc = QRCode.Document(utf8String: "Gradient Background")
+				let doc = try QRCode.Document(utf8String: "Gradient Background")
 				doc.design.additionalQuietZonePixels = UInt(aqs)
 				doc.design.style.background = background
 				doc.design.foregroundColor(.commonWhite)
@@ -1298,7 +1298,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				)!
 				let background = QRCode.FillStyle.RadialGradient(gradient)
 
-				let doc = QRCode.Document(utf8String: "Radial Background")
+				let doc = try QRCode.Document(utf8String: "Radial Background")
 				doc.design.additionalQuietZonePixels = UInt(aqs)
 				doc.design.style.background = background
 				doc.design.foregroundColor(.commonWhite)
@@ -1332,7 +1332,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "| "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1)
+				let doc1 = try QRCode.Document(utf8String: r1)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-basictext-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
@@ -1343,7 +1343,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-basictext-external-noopt.jpg"
@@ -1354,7 +1354,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-basictext-external.jpg"
@@ -1378,7 +1378,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "| "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1)
+				let doc1 = try QRCode.Document(utf8String: r1)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-numerics-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
@@ -1389,7 +1389,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-numerics-external-noopt.jpg"
@@ -1400,7 +1400,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-numerics-external.jpg"
@@ -1424,7 +1424,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "| "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1)
+				let doc1 = try QRCode.Document(utf8String: r1)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
@@ -1435,7 +1435,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external-noopt.jpg"
@@ -1446,7 +1446,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external.jpg"
@@ -1471,7 +1471,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "| "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1)
+				let doc1 = try QRCode.Document(utf8String: r1)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
@@ -1482,7 +1482,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let data = r1.data(using: .ascii)!
-				let doc1 = QRCode.Document(data: data, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external-noopt.jpg"
@@ -1493,7 +1493,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " | "
 
 			do {
-				let doc1 = QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
+				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
 				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
 				let filename = "generator-alphanum-external.jpg"
@@ -1524,7 +1524,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			)!
 
 			let radial = QRCode.FillStyle.LinearGradient(gradient)
-			let doc = QRCode.Document(utf8String: "QR Code with a linear background")
+			let doc = try QRCode.Document(utf8String: "QR Code with a linear background")
 			doc.design.style.background = radial
 			doc.design.shape.eye = QRCode.EyeShape.Edges()
 
@@ -1551,7 +1551,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			)!
 
 			let radial = QRCode.FillStyle.RadialGradient(gradient)
-			let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+			let doc = try QRCode.Document(utf8String: "QR Code with a radial background")
 			doc.design.style.background = radial
 
 			for item in exporters {
@@ -1572,7 +1572,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|  png  |  pdf  |  svg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|\n"
 
-			let doc = QRCode.Document(utf8String: "QR Code with a radial background")
+			let doc = try QRCode.Document(utf8String: "QR Code with a radial background")
 			doc.design.style.background = QRCode.FillStyle.Image(logoImage)
 			doc.design.foregroundColor(.gray(1, 0.6))
 
@@ -1597,7 +1597,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		markdownText += "## Verify eye background exclusion zone drawing\n\n"
 
-		let doc = QRCode.Document(utf8String: "Validate QR Eye background")
+		let doc = try QRCode.Document(utf8String: "Validate QR Eye background")
 
 		doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 

@@ -48,7 +48,7 @@ class CustomButtonCell: NSButtonCell {
 
 class ViewController: DSFAppKitBuilderViewController {
 
-	let qrCode = QRCode.Document(utf8String: "This is a QR code")
+	let qrCode = try! QRCode.Document(utf8String: "This is a QR code")
 	private lazy var qrCodeObject = Observable(self.qrCode)
 
 	let debounce = DSFDebounce(seconds: 0.05)

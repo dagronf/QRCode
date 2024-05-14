@@ -41,7 +41,7 @@ public extension CGImage {
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Style? = nil
 	) throws -> CGImage {
-		let doc = QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
+		let doc = try QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
 		doc.design.foregroundColor(foregroundColor)
 		doc.design.backgroundColor(backgroundColor)
 		return try doc.cgImage(dimension: dimension)
@@ -50,7 +50,6 @@ public extension CGImage {
 	/// Create a CGImage containing a qr code
 	/// - Parameters:
 	///   - text: The text to encode in the qr code
-	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - dimension: The size in pixels of the output image
 	///   - errorCorrection: The error correction
 	///   - shape: The shape to use, or nil for default
@@ -58,13 +57,12 @@ public extension CGImage {
 	/// - Returns: The image representation of the qr code, or nil if an error occurred
 	static func qrCode(
 		_ text: String,
-		textEncoding: String.Encoding = .utf8,
 		dimension: Int,
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Shape? = nil,
 		style: QRCode.Style? = nil
 	) throws -> CGImage {
-		let doc = try QRCode.Document(text, textEncoding: textEncoding, errorCorrection: errorCorrection)
+		let doc = try QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
 		if let shape = shape { doc.design.shape = shape }
 		if let style = style { doc.design.style = style }
 		return try doc.cgImage(dimension: dimension)
@@ -75,7 +73,6 @@ public extension CGPath {
 	/// Simple convenience for creating a CGPath representation of a qr code
 	/// - Parameters:
 	///   - text: The text to encode in the qr code
-	///   - textEncoding: The text encoding to use (eg. .utf8)
 	///   - components: The components of the qr code to generate (default all)
 	///   - dimension: The size in pixels of the output image
 	///   - errorCorrection: The error correction
@@ -83,13 +80,12 @@ public extension CGPath {
 	/// - Returns: The path representation of the qr code, or nil if an error occurred
 	static func qrCode(
 		_ text: String,
-		textEncoding: String.Encoding = .utf8,
 		dimension: Int,
 		components: QRCode.Components = .all,
 		errorCorrection: QRCode.ErrorCorrection = .high,
 		shape: QRCode.Shape? = nil
 	) throws -> CGPath {
-		let doc = try QRCode.Document(text, textEncoding: textEncoding, errorCorrection: errorCorrection)
+		let doc = try QRCode.Document(utf8String: text, errorCorrection: errorCorrection)
 		if let shape = shape { doc.design.shape = shape }
 		return doc.path(dimension: dimension, components: components)
 	}

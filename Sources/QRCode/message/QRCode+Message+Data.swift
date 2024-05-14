@@ -29,6 +29,8 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 
+		public let text: String? = nil
+
 		/// A raw binary data message
 		/// - Parameter data: The data
 		@objc public init(_ data: Foundation.Data) {
@@ -45,25 +47,18 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
-		public let content: String
+		public let text: String?
 
 		/// Create a message containing base64-encoded binary data
 		/// - Parameters:
 		///   - data: The data
-		@objc public convenience init(_ data: Foundation.Data) throws {
-			try self.init(data, textEncoding: .utf8)
-		}
-
-		/// Create a message containing base64-encoded binary data
-		/// - Parameters:
-		///   - data: The data
-		///   - textEncoding: The string encoding to use
-		public init(_ data: Foundation.Data, textEncoding: String.Encoding) throws {
-			self.content = data.base64EncodedString()
-			guard let msgData = self.content.data(using: textEncoding) else {
+		public init(_ data: Foundation.Data) throws {
+			let text = data.base64EncodedString()
+			guard let msgData = text.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 			self.data = msgData
+			self.text = text
 		}
 	}
 }

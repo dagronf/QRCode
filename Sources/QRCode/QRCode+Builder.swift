@@ -56,12 +56,10 @@ public extension QRCode {
 		}
 
 		/// Create a builder
-		public init(_ engine: (any QRCodeEngine)? = nil) {
-			self.document = QRCode.Document(engine: engine)
-		}
+		public init() { }
 
 		/// The generated document
-		public let document: QRCode.Document
+		public let document = QRCode.Document()
 	}
 }
 
@@ -72,7 +70,7 @@ public extension QRCode.Builder {
 	/// - Parameter engine: The QR code generator
 	/// - Returns: self
 	func engine(_ engine: any QRCodeEngine) -> QRCode.Builder {
-		self.document.qrcode.engine = engine
+		self.document.engine = engine
 		return self
 	}
 
@@ -81,11 +79,8 @@ public extension QRCode.Builder {
 	///   - text: The text
 	///   - textEncoding: The string encoding to use when generating the qr code
 	/// - Returns: self
-	@discardableResult func text(
-		_ text: String,
-		textEncoding: String.Encoding = .utf8
-	) throws -> QRCode.Builder {
-		try self.content.text(text, textEncoding: textEncoding)
+	@discardableResult func text(_ text: String) throws -> QRCode.Builder {
+		try self.content.text(text)
 	}
 
 	/// Set the URL to encode
@@ -93,11 +88,8 @@ public extension QRCode.Builder {
 	///   - url: The url
 	///   - encoding: The string encoding to use when generating the qr code
 	/// - Returns: self
-	@discardableResult func url(
-		_ url: URL,
-		textEncoding: String.Encoding = .utf8
-	) throws -> QRCode.Builder {
-		try self.content.url(url, textEncoding: textEncoding)
+	@discardableResult func url(_ url: URL) throws -> QRCode.Builder {
+		try self.content.url(url)
 	}
 
 	/// The content settings for the QR Code
@@ -118,11 +110,16 @@ public extension QRCode.Builder {
 		///   - text: The text
 		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
+<<<<<<< HEAD
 		@discardableResult public func text(
 			_ text: String,
 			textEncoding: String.Encoding = .utf8
 		) throws -> QRCode.Builder {
 			guard let data = text.data(using: textEncoding) else {
+=======
+		@discardableResult func text(_ text: String) throws -> QRCode.Builder {
+			guard let data = text.data(using: .utf8) else {
+>>>>>>> 1ac8c29 (More work on throwing)
 				throw QRCode.Builder.BuilderError.unableToEncodeText
 			}
 			self.builder.document.data = data
@@ -134,11 +131,16 @@ public extension QRCode.Builder {
 		///   - url: The url
 		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
+<<<<<<< HEAD
 		@discardableResult public func url(
 			_ url: URL,
 			textEncoding: String.Encoding = .utf8
+=======
+		@discardableResult func url(
+			_ url: URL
+>>>>>>> 1ac8c29 (More work on throwing)
 		) throws -> QRCode.Builder {
-			try self.text(url.absoluteString, textEncoding: textEncoding)
+			try self.text(url.absoluteString)
 		}
 
 		/// Set the message for the qr code

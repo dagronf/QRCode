@@ -7,7 +7,7 @@ final class QRCodeImageFillTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeImageFillTests")
 
 	func testBasic() throws {
-		let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
+		let doc = try QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
 
 		let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "swift-logo", withExtension: "png"))
 		let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)).cgImage()!
@@ -47,7 +47,7 @@ final class QRCodeImageFillTests: XCTestCase {
 	}
 
 	func testBasic2() throws {
-		let doc = QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
+		let doc = try QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
 
 		doc.design.backgroundColor(.commonBlack)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)

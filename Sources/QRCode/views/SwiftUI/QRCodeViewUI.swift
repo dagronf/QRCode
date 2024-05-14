@@ -28,6 +28,7 @@ import SwiftUI
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6, *)
 public struct QRCodeViewUI: View {
 	private let content: QRCode.Document
+	private let isValid: Bool
 	public init(
 		content: String,
 		errorCorrection: QRCode.ErrorCorrection = .high,
@@ -42,31 +43,38 @@ public struct QRCodeViewUI: View {
 		additionalQuietZonePixels: UInt = 0,
 		backgroundFractionalCornerRadius: CGFloat = 0
 	) {
-		self.content = QRCode.Document(
-			utf8String: content,
-			errorCorrection: errorCorrection,
-			engine: engine
-		)
-		self.content.design.foregroundColor(foregroundColor)
-		self.content.design.backgroundColor(backgroundColor)
+		do {
+			self.content = try QRCode.Document(
+				utf8String: content,
+				errorCorrection: errorCorrection,
+				engine: engine
+			)
+			self.content.design.foregroundColor(foregroundColor)
+			self.content.design.backgroundColor(backgroundColor)
 
-		self.content.design.additionalQuietZonePixels = additionalQuietZonePixels
-		self.content.design.style.backgroundFractionalCornerRadius = backgroundFractionalCornerRadius
+			self.content.design.additionalQuietZonePixels = additionalQuietZonePixels
+			self.content.design.style.backgroundFractionalCornerRadius = backgroundFractionalCornerRadius
 
-		if let pixelStyle = pixelStyle {
-			self.content.design.shape.onPixels = pixelStyle
+			if let pixelStyle = pixelStyle {
+				self.content.design.shape.onPixels = pixelStyle
+			}
+			if let eyeStyle = eyeStyle {
+				self.content.design.shape.eye = eyeStyle
+			}
+			if let pupilStyle = pupilStyle {
+				self.content.design.shape.pupil = pupilStyle
+			}
+			if let logoTemplate = logoTemplate {
+				self.content.logoTemplate = logoTemplate
+			}
+			if let negatedOnPixelsOnly = negatedOnPixelsOnly {
+				self.content.design.shape.negatedOnPixelsOnly = negatedOnPixelsOnly
+			}
+			self.isValid = true
 		}
-		if let eyeStyle = eyeStyle {
-			self.content.design.shape.eye = eyeStyle
-		}
-		if let pupilStyle = pupilStyle {
-			self.content.design.shape.pupil = pupilStyle
-		}
-		if let logoTemplate = logoTemplate {
-			self.content.logoTemplate = logoTemplate
-		}
-		if let negatedOnPixelsOnly = negatedOnPixelsOnly {
-			self.content.design.shape.negatedOnPixelsOnly = negatedOnPixelsOnly
+		catch {
+			self.isValid = false
+			self.content = QRCode.Document()
 		}
 	}
 

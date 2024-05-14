@@ -29,26 +29,18 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
-		public let content: String
+		public let text: String?
 
 		/// Create a message containing an SMS message
 		/// - Parameters:
 		///   - mobileNumber: The mobile number in the format `(+)12342341234`
 		///   - message: The message to encode
-		@objc public convenience init(_ mobileNumber: String, message: String) throws {
-			try self.init(mobileNumber, message: message, textEncoding: .utf8)
-		}
-
-		/// Create a message containing an SMS message
-		/// - Parameters:
-		///   - mobileNumber: The mobile number in the format `(+)12342341234`
-		///   - message: The message to encode
-		public init(_ mobileNumber: String, message: String, textEncoding: String.Encoding) throws {
+		public init(_ mobileNumber: String, message: String) throws {
 			let numbersOnly = mobileNumber.filter { $0.isNumber || $0 == "+" }
 			// TEL:(+)12342341234
-			self.content = "SMSTO:\(numbersOnly):\(message)"
+			self.text = "SMSTO:\(numbersOnly):\(message)"
 
-			guard let msgData = self.content.data(using: textEncoding) else {
+			guard let msgData = self.text?.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 

@@ -7,7 +7,7 @@ final class QRCodeSVGTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeSVGTests")
 
 	func testBasicSVG() throws {
-		let doc = QRCode.Document(
+		let doc = try QRCode.Document(
 			utf8String: "This is a test This is a test This is a test This is a test",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -36,7 +36,7 @@ final class QRCodeSVGTests: XCTestCase {
 	}
 
 	func testExportSVGWithSolidFill() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -59,7 +59,7 @@ final class QRCodeSVGTests: XCTestCase {
 	}
 
 	func testExportSVGWithLinearFill() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -98,7 +98,7 @@ final class QRCodeSVGTests: XCTestCase {
 	}
 
 	func testExportSVGWithRadialFill() throws {
-		let code = QRCode.Document(
+		let code = try QRCode.Document(
 			utf8String: "https://www.apple.com/au/mac-studio/",
 			errorCorrection: .high,
 			engine: __testEngine
@@ -134,7 +134,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 	func testExportSVGWithBackgroundPixelColors() throws {
 
-		let d = QRCode.Document(engine: QRCodeEngineExternal())
+		let d = try QRCode.Document(engine: QRCodeEngineExternal())
 		d.utf8String = "https://www.swift.org"
 
 		d.design.backgroundColor(CGColor.sRGBA(0, 0.6, 0, 1))
@@ -166,7 +166,7 @@ final class QRCodeSVGTests: XCTestCase {
 	func testExportSVGWithImage() throws {
 		let fillImage = try resourceImage(for: "lego", extension: "jpeg")
 
-		let d = QRCode.Document(engine: __testEngine)
+		let d = try QRCode.Document(engine: __testEngine)
 		try d.setText("https://www.apple.com/au/mac-studio/")
 		d.design.backgroundColor(.commonBlack)
 		d.design.shape.onPixels = QRCode.PixelShape.Razor()
@@ -257,7 +257,7 @@ final class QRCodeSVGTests: XCTestCase {
 		
 		// See [Issue 19](https://github.com/dagronf/QRCode/issues/19)
 		
-		let d = QRCode.Document(utf8String: "Test")
+		let d = try QRCode.Document(utf8String: "Test")
 		d.errorCorrection = .low
 		d.design.shape.eye = QRCode.EyeShape.RoundedOuter()
 		d.design.shape.onPixels = QRCode.PixelShape.Circle()

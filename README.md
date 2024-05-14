@@ -245,7 +245,7 @@ doc.data = Data(...)
 
 // Setting text
 doc.utf8String = "This is my text"
-doc.setText("This is my text", textEncoding: .ascii)
+doc.setText("This is my text")
 
 // Setting a message
 doc.setMessage(...)
@@ -946,22 +946,40 @@ The `QRCode` library fully supports Objective-C.
 <details>
 <summary>Example</summary> 
 
+### Using QRCode.Document
+
+```objc
+QRCodeDocument* doc = [QRCodeDocument new];
+doc.utf8String = @"This is an objective-c qr code";
+doc.design.shape.onPixels = [QRCodePixelShapeRazor new];
+
+NSError* error = NULL;
+CGImageRef image = [doc cgImageWithDimension:600 error:&error];
+assert(error == nil);
+```
+
+### Using QRCode directly
+
 ```objc
 QRCode* code = [[QRCode alloc] init];
-[code updateWithText: @"This message"
-     errorCorrection: QRCodeErrorCorrectionMax];
+[code updateWithText:@"This message"
+     errorCorrection:QRCodeErrorCorrectionHigh
+               error:nil];
 
-QRCodeStyle* style = [[QRCodeStyle alloc] init];
+// Create a new design
+QRCodeDesign* design = [QRCodeDesign new];
 
 // Set the foreground color to a solid red
-style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
+design.style.onPixels = [[QRCodeFillStyleSolid alloc] init: CGColorCreateGenericRGB(1, 0, 0, 1)];
 
 // Use the leaf style
-style.shape.eyeShape = [[QRCodeEyeStyleLeaf alloc] init];
+design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
 
 // Generate the image
-CGImageRef image = [code image: CGSizeMake(400, 400) scale: 1.0 style: style];
-NSImage* nsImage = [[NSImage alloc] initWithCGImage:image size: CGSizeZero];
+CGImageRef image = [code cgImage:CGSizeMake(400, 400)
+                          design:design
+                    logoTemplate:nil
+                           error:nil];
 ```
 </details>
 

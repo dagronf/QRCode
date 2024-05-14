@@ -6,7 +6,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeLoadSaveTests")
 
 	func testBasic() throws {
-		let doc1 = QRCode.Document(engine: __testEngine)
+		let doc1 = try QRCode.Document(engine: __testEngine)
 		doc1.data = "this is a test".data(using: .utf8)!
 
 		let data = try XCTUnwrap(doc1.jsonData())
@@ -23,7 +23,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testBasicPixelEncodeDecode() throws {
 
 		do {
-			let doc = QRCode.Document(engine: __testEngine)
+			let doc = try QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.2)
 			doc.design.shape.eye = QRCode.EyeShape.Leaf()
@@ -41,7 +41,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(engine: __testEngine)
+			let doc = try QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(cornerRadiusFraction: 0.8, insetFraction: 0.2)
 			let data = try XCTUnwrap(doc.jsonData())
@@ -52,7 +52,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(engine: __testEngine)
+			let doc = try QRCode.Document(engine: __testEngine)
 			doc.data = "this is a test and fishes like squircles".data(using: .utf8)!
 			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.6)
 			let data = try XCTUnwrap(doc.jsonData())
@@ -81,7 +81,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testSimpleFillStyleEncoding() throws {
 
-		let doc1 = QRCode.Document(engine: __testEngine)
+		let doc1 = try QRCode.Document(engine: __testEngine)
 		doc1.data = "simple colors".data(using: .utf8)!
 		doc1.errorCorrection = .quantize
 
@@ -146,7 +146,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let engine: QRCodeEngine? = nil
 		#endif
 
-		let doc = QRCode.Document(utf8String: "checking negative value set", engine: engine)
+		let doc = try QRCode.Document(utf8String: "checking negative value set", engine: engine)
 		doc.design.shape.negatedOnPixelsOnly = true
 
 		let settings = doc.settings()
@@ -167,7 +167,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testEncodeDecodeShield() throws {
 		do {
-			let doc = QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
+			let doc = try QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
 			doc.design.shape.eye = QRCode.EyeShape.Shield()
 
 			let d1 = try doc.jsonData()
@@ -181,7 +181,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
+			let doc = try QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
 			doc.design.shape.eye = QRCode.EyeShape.Shield(corners: [.tr, .bl])
 
 			let d1 = try doc.jsonData()
@@ -197,7 +197,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		}
 
 		do {
-			let doc = QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
+			let doc = try QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
 			doc.design.shape.eye = QRCode.EyeShape.Shield(corners: [.tl, .br])
 			doc.design.shape.pupil = QRCode.PupilShape.Shield(corners: [.bl])
 

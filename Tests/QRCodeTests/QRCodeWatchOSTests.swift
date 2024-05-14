@@ -10,7 +10,7 @@ final class QRCodeWatchOSTests: XCTestCase {
 	func testBasic() throws {
 		do {
 			let doc = try QRCode.Document(
-				"Hi there from external generator (watchOS)",
+				utf8String: "Hi there from external generator (watchOS)",
 				errorCorrection: .high,
 				engine: QRCodeEngineExternal()
 			)

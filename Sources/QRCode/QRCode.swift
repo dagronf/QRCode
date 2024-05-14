@@ -78,24 +78,6 @@ import Foundation
 		try self.update(text: utf8String, errorCorrection: errorCorrection)
 	}
 
-	/// Create a QR code
-	/// - Parameters:
-	///   - text: The text to encode in the qr code
-	///   - textEncoding: The text encoding
-	///   - errorCorrection: The error correction to apply
-	///   - engine: A qr code engine, or nil to use the default generator
-	public init(
-		_ text: String,
-		textEncoding: String.Encoding = .utf8,
-		errorCorrection: ErrorCorrection = .default,
-		engine: (any QRCodeEngine)? = nil
-	) throws {
-		if let engine = engine { self.engine = engine }
-		let data = text.data(using: textEncoding) ?? Data()
-		super.init()
-		try self.update(data: data, errorCorrection: errorCorrection)
-	}
-
 	/// Create a QRCode with the given message and error correction
 	/// - Parameters:
 	///   - message: The message to encode
@@ -184,6 +166,17 @@ public extension QRCode {
 	/// Build the QR Code using the given text and error correction
 	func update(text: String, textEncoding: String.Encoding, errorCorrection: ErrorCorrection = .default) throws {
 		self.current = try self.engine.generate(text: text, errorCorrection: errorCorrection)
+		self.currentErrorCorrection = errorCorrection
+	}
+
+	/// Build the QR Code using the given data and error correction
+	internal func update(content: QRCode.Content, errorCorrection: ErrorCorrection) throws {
+		switch content {
+		case .data(let d):
+			self.current = try self.engine.generate(data: d, errorCorrection: errorCorrection)
+		case .text(let t):
+			self.current = try self.engine.generate(text: t, errorCorrection: errorCorrection)
+		}
 		self.currentErrorCorrection = errorCorrection
 	}
 }

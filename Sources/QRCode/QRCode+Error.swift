@@ -32,4 +32,5 @@ public enum QRCodeError: Error {
 	case unsupportedGeneratorName
 	case unsupportedColor
 	case invalidURL
+	case invalidContent
 }

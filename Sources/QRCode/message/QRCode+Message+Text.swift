@@ -27,7 +27,7 @@ public extension QRCode.Message {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
-		public let content: String
+		public let text: String?
 
 		/// Create a message containing utf8 text
 		/// - Parameter content: The text to encode
@@ -44,7 +44,7 @@ public extension QRCode.Message {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}
 			self.data = msgData
-			self.content = content
+			self.text = content
 		}
 	}
 }

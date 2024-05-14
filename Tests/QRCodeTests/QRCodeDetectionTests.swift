@@ -13,7 +13,7 @@ final class QRCodeDetectionTests: XCTestCase {
 	func test3rdPartyGenerator() throws {
 
 		// Make sure the third party generator can generate a qr code
-		let doc = QRCode.Document(engine: QRCodeEngineExternal())
+		let doc = try QRCode.Document(engine: QRCodeEngineExternal())
 
 		doc.utf8String = "This is a test"
 
@@ -118,7 +118,7 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		do {
 			let url = try XCTUnwrap(QRCode.Message.Link(string: "https://www.apple.com/mac-studio/"))
-			let code = QRCode.Document(message: url)
+			let code = try QRCode.Document(message: url)
 
 			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
 
@@ -129,7 +129,7 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		do {
 			let url = try XCTUnwrap(QRCode.Message.Text("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के"))
-			let code = QRCode.Document(message: url)
+			let code = try QRCode.Document(message: url)
 
 			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
 
@@ -166,7 +166,7 @@ final class QRCodeDetectionTests: XCTestCase {
 
 	func testMaskedDetection() throws {
 		let text = "https://www.qrcode.com/en/howto/generate.html"
-		let doc = QRCode.Document(utf8String: text, errorCorrection: .high)
+		let doc = try QRCode.Document(utf8String: text, errorCorrection: .high)
 		let image = try resourceImage(for: "colored-fill", extension: "jpg")
 
 		do {
