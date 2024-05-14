@@ -12,7 +12,7 @@ final class QRCodeWatchOSTests: XCTestCase {
 			let doc = try QRCode.Document(
 				"Hi there from external generator (watchOS)",
 				errorCorrection: .high,
-				engine: QRCodeEngine_External()
+				engine: QRCodeEngineExternal()
 			)
 
 			let svg = try doc.svg(dimension: 800)

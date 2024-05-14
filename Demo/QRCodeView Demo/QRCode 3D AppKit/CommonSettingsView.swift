@@ -137,7 +137,7 @@ class CommonSettingsView: Element {
 	private lazy var generatorSelection = ValueBinder<Int>(0) { newValue in
 		switch newValue {
 		case 0: self.qrCode.engine = nil
-		case 1: self.qrCode.engine = QRCodeEngine_External()
+		case 1: self.qrCode.engine = QRCodeEngineExternal()
 		default: fatalError()
 		}
 		self.update()

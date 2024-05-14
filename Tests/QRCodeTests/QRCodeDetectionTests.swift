@@ -13,7 +13,7 @@ final class QRCodeDetectionTests: XCTestCase {
 	func test3rdPartyGenerator() throws {
 
 		// Make sure the third party generator can generate a qr code
-		let doc = QRCode.Document(engine: QRCodeEngine_External())
+		let doc = QRCode.Document(engine: QRCodeEngineExternal())
 
 		doc.utf8String = "This is a test"
 

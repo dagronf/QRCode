@@ -55,9 +55,9 @@ extension QRCode {
 	@objc(DefaultEngine) static public func DefaultEngine() -> any QRCodeEngine {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
-		return QRCodeEngine_External()
+		return QRCodeEngineExternal()
 #else
-		return QRCodeEngine_CoreImage()
+		return QRCodeEngineCoreImage()
 #endif
 	}
 }

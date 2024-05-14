@@ -13,7 +13,7 @@ let savedDocument: QRCode.Document = {
 	let data = NSDataAsset(name: "saved-document")!
 	return try! QRCode.Document(
 		jsonData: data.data,
-		engine: QRCodeEngine_External()
+		engine: QRCodeEngineExternal()
 	)
 }()
 

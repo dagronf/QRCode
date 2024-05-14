@@ -13,7 +13,7 @@ struct ContentView: View {
 	let fixedCode = try! QRCodeShape(
 		text: "QRCode WatchOS Demo",
 		errorCorrection: .quantize,
-		engine: QRCodeEngine_External()
+		engine: QRCodeEngineExternal()
 	)
 
 	@State var number: CGFloat = 0
@@ -25,7 +25,7 @@ struct ContentView: View {
 	let document: QRCode.Document = {
 		let d = QRCode.Document(
 			utf8String: "This is a test of the watch view SwiftUI",
-			engine: QRCodeEngine_External())
+			engine: QRCodeEngineExternal())
 
 		d.design.additionalQuietZonePixels = 3
 		d.design.shape.eye = QRCode.EyeShape.Edges(cornerRadiusFraction: 0.5)

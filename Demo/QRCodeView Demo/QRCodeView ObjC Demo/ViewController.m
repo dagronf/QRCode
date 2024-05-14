@@ -17,7 +17,7 @@
 
 	// Do any additional setup after loading the view.
 
-	id engine = [QRCodeEngine_External new];
+	id engine = [QRCodeEngineExternal new];
 
 	QRCodeDocument* document = [[QRCodeDocument alloc] initWithEngine: engine];
 	[document setUtf8String: @"This message is something really exciting in objective-c"];

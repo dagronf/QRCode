@@ -14,7 +14,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	let outputFolder = try! testResultsContainer.subfolder(with: "QRCodeExternalGenerationTests")
 
 	func testBasicAlpha() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		// A string that's purely uppercase alphanumeric. This is optimizable (thus should be smaller)
 		let g1 = try eGen.generate(text: "THIS IS A TEST THIS IS A TEST THIS IS A TEST", errorCorrection: .quantize)
@@ -25,17 +25,17 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		// A string that is purely uppercase ascii, which the external generator can optimize to produce
 		// a smaller QR code
 		let s1 = "THIS IS A TEST THIS IS A TEST THIS IS A TEST "
-		let docG1 = QRCode.Document(utf8String: s1, engine: QRCodeEngine_External())
+		let docG1 = QRCode.Document(utf8String: s1, engine: QRCodeEngineExternal())
 		XCTAssertEqual(g1.dimension, docG1.boolMatrix.dimension)
 
 		// The first 4 characters are NOT compatible with text optimizations, so the QR code should be larger
 		let s2 = "this IS A TEST THIS IS A TEST THIS IS A TEST "
-		let docG2 = QRCode.Document(utf8String: s2, engine: QRCodeEngine_External())
+		let docG2 = QRCode.Document(utf8String: s2, engine: QRCodeEngineExternal())
 		XCTAssertEqual(g2.dimension, docG2.boolMatrix.dimension)
 	}
 
 	func testNumericEncoding() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		let v1 = "0123456790123456789"
 		// Optimizable (purely numbers)
@@ -47,7 +47,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testBasicNumeric() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		// Only numbers. The external encoder should be able to optimize this more
 		let m31 = "0123456789012345678901234567890123456789"
@@ -68,7 +68,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testBasicAlphaNumeric() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		// Adding a non-numeric should expand the QRCode dimensions (cannot optimize as strongly due to the 'A')
 		// However, because the character is an upper case ascii value, it can optimize further than the generic case
@@ -90,7 +90,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testBasicGenericString() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		// Adding a non-numeric should expand the QRCode dimensions (cannot optimize due to the 'a')
 		let m33 = "012345678901234567890123456789012345678a"
@@ -111,7 +111,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testUtf8EncodingThing() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		do {
 			let m33 = "اربك تكست هو اول موقع يسمح"
@@ -151,7 +151,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testOptimizationWorkingNumerics() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		let text = "0123456789012345678901234567890123456789"
 		let data = try XCTUnwrap(text.data(using: .ascii))
@@ -193,7 +193,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testOptimizationWorkingAlphaNumerics() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		let text = "THIS IS A TEST. 0123456789 - ABCDFEGH"
 		let data = try XCTUnwrap(text.data(using: .ascii))
@@ -236,7 +236,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 	}
 
 	func testAlphaNum() throws {
-		let eGen = QRCodeEngine_External()
+		let eGen = QRCodeEngineExternal()
 
 		do {
 			let message = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"

@@ -141,7 +141,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testLoadSaveNegatedOnPixelsOnly() throws {
 		#if os(watchOS)
-		let engine = QRCodeEngine_External()
+		let engine = QRCodeEngineExternal()
 		#else
 		let engine: QRCodeEngine? = nil
 		#endif

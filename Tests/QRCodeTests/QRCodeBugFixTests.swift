@@ -17,8 +17,8 @@ final class BugFixTests: XCTestCase {
 		let unoptim = "this is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr codethis is a test to encode a bunch of data in the qr code"
 		let optim = "THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE"
 
-		let ud = QRCode.Document(utf8String: unoptim, engine: QRCodeEngine_External())
-		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngine_External())
+		let ud = QRCode.Document(utf8String: unoptim, engine: QRCodeEngineExternal())
+		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngineExternal())
 
 		XCTAssertEqual(107, ud.boolMatrix.dimension)
 		XCTAssertEqual(91, od.boolMatrix.dimension)
@@ -43,7 +43,7 @@ final class BugFixTests: XCTestCase {
 #if canImport(UIKit)
 	func testBlurryUIImageRegression() throws {
 		let optim = "THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE - THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE"
-		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngine_External())
+		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngineExternal())
 		XCTAssertEqual(47, od.boolMatrix.dimension)
 
 		// New API.
@@ -78,7 +78,7 @@ final class BugFixTests: XCTestCase {
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 	func testNSImageDPI() throws {
 		let optim = "THIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODETHIS IS A TEST TO ENCODE A BUNCH OF DATA IN THE QR CODE"
-		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngine_External())
+		let od = QRCode.Document(utf8String: optim, engine: QRCodeEngineExternal())
 		XCTAssertEqual(91, od.boolMatrix.dimension)
 
 		// New API.

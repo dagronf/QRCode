@@ -348,7 +348,7 @@ final class DocumentationImageTests: XCTestCase {
 		}
 
 		do {
-			let d = QRCode.Document(engine: QRCodeEngine_External())
+			let d = QRCode.Document(engine: QRCodeEngineExternal())
 			d.utf8String = "https://www.swift.org"
 
 			d.design.backgroundColor(CGColor.sRGBA(0, 0.6, 0))

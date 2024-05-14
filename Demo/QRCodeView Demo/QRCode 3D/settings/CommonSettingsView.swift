@@ -92,7 +92,7 @@ struct CommonSettingsView: View {
 		.onChange(of: generator) { newValue in
 			switch newValue {
 			case 0: document.qrcode.engine = nil
-			case 1: document.qrcode.engine = QRCodeEngine_External()
+			case 1: document.qrcode.engine = QRCodeEngineExternal()
 			default: fatalError()
 			}
 			document.objectWillChange.send()

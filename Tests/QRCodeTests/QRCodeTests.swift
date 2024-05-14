@@ -20,9 +20,9 @@ final class QRCodeTests: XCTestCase {
 	func testGenerateBasicQRCode() throws {
 
 		#if os(watchOS)
-		let engines: [QRCodeEngine] = [QRCodeEngine_External()]
+		let engines: [QRCodeEngine] = [QRCodeEngineExternal()]
 		#else
-		let engines: [QRCodeEngine] = [QRCodeEngine_CoreImage(), QRCodeEngine_External()]
+		let engines: [QRCodeEngine] = [QRCodeEngineCoreImage(), QRCodeEngineExternal()]
 		#endif
 		try engines.forEach { engine in
 

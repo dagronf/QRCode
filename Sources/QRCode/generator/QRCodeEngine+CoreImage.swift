@@ -26,7 +26,7 @@ import CoreImage
 import Foundation
 
 /// A QR Code engine that uses Core Image filters to generate a QR Code
-internal class QRCodeEngine_CoreImage: QRCodeEngine {
+internal class QRCodeEngineCoreImage: QRCodeEngine {
 
 	/// The generator name
 	@objc public var name: String { "coreimage" }
