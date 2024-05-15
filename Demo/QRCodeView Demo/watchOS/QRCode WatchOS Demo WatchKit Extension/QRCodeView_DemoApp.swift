@@ -10,7 +10,7 @@ import QRCode
 
 class testing {
 	init() {
-		let document = QRCode.Document(engine: QRCodeEngineExternal())
+		let document = try! QRCode.Document(engine: QRCodeEngineExternal())
 		document.errorCorrection = .quantize
 		document.data = "Generating a QR Code using watchOS".data(using: .utf8)!
 

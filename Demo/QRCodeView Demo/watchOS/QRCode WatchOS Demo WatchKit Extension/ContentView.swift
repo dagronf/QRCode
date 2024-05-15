@@ -23,7 +23,7 @@ struct ContentView: View {
 	var pupilColor: Color = Color(red: 1.0, green: 0.8, blue: 0.3)
 
 	let document: QRCode.Document = {
-		let d = QRCode.Document(
+		let d = try! QRCode.Document(
 			utf8String: "This is a test of the watch view SwiftUI",
 			engine: QRCodeEngineExternal())
 

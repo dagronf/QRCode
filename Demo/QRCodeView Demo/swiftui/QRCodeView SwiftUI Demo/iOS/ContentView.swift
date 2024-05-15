@@ -89,9 +89,11 @@ struct ContentView: View {
 							}
 						}.pickerStyle(WheelPickerStyle())
 					}
-					Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
-					Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
-					Slider(value: $rotationFraction, in: 0.0 ... 1.0, label: { Text("Rotation") })
+					Form {
+						Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
+						Slider(value: $cornerRadiusFraction, in: 0.0 ... 1.0, label: { Text("Corner Radius") })
+						Slider(value: $rotationFraction, in: 0.0 ... 1.0, label: { Text("Rotation") })
+					}
 
 					HStack {
 						Picker(selection: $eyeStyle, label: Text("Eye Shape:")) {

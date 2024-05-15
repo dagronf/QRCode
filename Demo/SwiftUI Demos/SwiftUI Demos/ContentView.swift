@@ -20,7 +20,7 @@ extension CGImage {
 }
 
 let doc1: QRCode.Document = {
-	let d = QRCode.Document(engine: QRCodeEngineExternal())
+	let d = try! QRCode.Document(engine: QRCodeEngineExternal())
 
 	d.utf8String = "https://www.swift.org"
 

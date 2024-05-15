@@ -366,7 +366,7 @@
 		236A0526286FE6580019C842 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		236A0528286FE6580019C842 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		237E3FFF274F08AE003E5E24 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
-		2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "QRCodeView-SwiftUI-Demo--macOS--Info.plist"; sourceTree = "<group>"; };
+		2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QRCodeView-SwiftUI-Demo--macOS--Info.plist"; sourceTree = "<group>"; };
 		23A593C72BD867D1001BA2A0 /* NSBezierPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+extensions.swift"; sourceTree = "<group>"; };
 		23A593C92BD867FB001BA2A0 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+extensions.swift"; sourceTree = "<group>"; };
 		23A593CB2BD86BEA001BA2A0 /* CGImage+create.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+create.swift"; sourceTree = "<group>"; };
@@ -379,7 +379,7 @@
 		23C444812BDA313100AD8F6C /* EyeSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeSettingsView.swift; sourceTree = "<group>"; };
 		23C444832BDA363100AD8F6C /* MultiSelectPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectPickerView.swift; sourceTree = "<group>"; };
 		23C444852BDA3F4A00AD8F6C /* PupilSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PupilSettingsView.swift; sourceTree = "<group>"; };
-		23D882142BE5C39D00976822 /* Debounce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Debounce.swift; path = "QRCode 3D/utils/Debounce.swift"; sourceTree = SOURCE_ROOT; };
+		23D882142BE5C39D00976822 /* Debounce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Debounce.swift; path = "swiftui/QRCode 3D/utils/Debounce.swift"; sourceTree = SOURCE_ROOT; };
 		23DA09C32BD9CF69009EDB38 /* QRCode 3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCode 3D.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23DA09C52BD9CF69009EDB38 /* QRCode_3DApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode_3DApp.swift; sourceTree = "<group>"; };
 		23DA09C72BD9CF69009EDB38 /* QRCode_3DDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode_3DDocument.swift; sourceTree = "<group>"; };
@@ -389,8 +389,8 @@
 		23DA09D02BD9CF6A009EDB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23DA09D12BD9CF6A009EDB38 /* QRCode_3D.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QRCode_3D.entitlements; sourceTree = "<group>"; };
 		23DA09D72BD9D3DB009EDB38 /* QRCodePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodePreviewView.swift; sourceTree = "<group>"; };
-		23DA09D92BD9D9E1009EDB38 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPath+extensions.swift"; path = "QRCode 3D/utils/CGPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
-		23DA09DB2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSBezierPath+extensions.swift"; path = "QRCode 3D/utils/NSBezierPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
+		23DA09D92BD9D9E1009EDB38 /* CGPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPath+extensions.swift"; path = "swiftui/QRCode 3D/utils/CGPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
+		23DA09DB2BD9D9FE009EDB38 /* NSBezierPath+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSBezierPath+extensions.swift"; path = "swiftui/QRCode 3D/utils/NSBezierPath+extensions.swift"; sourceTree = SOURCE_ROOT; };
 		23DA09DF2BD9F366009EDB38 /* CommonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsView.swift; sourceTree = "<group>"; };
 		23DA09E12BD9F3AB009EDB38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		23DA09E32BD9F469009EDB38 /* PixelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelSettingsView.swift; sourceTree = "<group>"; };
@@ -607,20 +607,13 @@
 		2348FB5B273A2DDB004DB2BF = {
 			isa = PBXGroup;
 			children = (
-				2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */,
 				234DE7042745D72D00EC7FD2 /* QRCode */,
-				2348FB66273A2DDB004DB2BF /* QRCodeView Demo */,
-				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,
-				2348FBB3273A311F004DB2BF /* QRCodeView SwiftUI Demo */,
-				23F8AE66273A493A00ED6288 /* QRCodeView ObjC Demo */,
-				2322B09C276348300085B5EB /* QRCode WatchOS Demo WatchKit App */,
-				2322B0A7276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */,
-				236A0504286FE1960019C842 /* macOS QRCode Detector */,
-				236A0519286FE6570019C842 /* iOS QRCode Detector */,
-				2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */,
-				23E66A9929247CD800236B80 /* macOS Logo Image Demo */,
-				232C19302BD63A680079E11E /* QRCode 3D AppKit */,
-				23DA09C42BD9CF69009EDB38 /* QRCode 3D */,
+				236E43562BF572C3005485A1 /* macOS */,
+				236E43572BF573DF005485A1 /* iOS */,
+				23F7A0512BF57532004D5BC5 /* watchOS */,
+				23F7A0532BF57864004D5BC5 /* tvOS */,
+				23F7A0542BF578F3004D5BC5 /* swiftui */,
+				23F7A0522BF57670004D5BC5 /* detection */,
 				2348FB65273A2DDB004DB2BF /* Products */,
 				2348FB77273A2DF5004DB2BF /* Frameworks */,
 			);
@@ -694,6 +687,7 @@
 		2348FBA5273A310A004DB2BF /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				2393B0AF29D276FF008D69C4 /* QRCodeView-SwiftUI-Demo--macOS--Info.plist */,
 				2348FB99273A3109004DB2BF /* ContentView.swift */,
 				2348FBA6273A310A004DB2BF /* macOS.entitlements */,
 			);
@@ -742,6 +736,25 @@
 				236A0528286FE6580019C842 /* Info.plist */,
 			);
 			path = "iOS QRCode Detector";
+			sourceTree = "<group>";
+		};
+		236E43562BF572C3005485A1 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				2348FB66273A2DDB004DB2BF /* QRCodeView Demo */,
+				232C19302BD63A680079E11E /* QRCode 3D AppKit */,
+				23F8AE66273A493A00ED6288 /* QRCodeView ObjC Demo */,
+				23E66A9929247CD800236B80 /* macOS Logo Image Demo */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		236E43572BF573DF005485A1 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2348FB7F273A2EF3004DB2BF /* QRCodeView iOS Demo */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		23A593C62BD867C0001BA2A0 /* utils */ = {
@@ -817,6 +830,41 @@
 				23E66AA329247CD900236B80 /* macOS_Logo_Image_Demo.entitlements */,
 			);
 			path = "macOS Logo Image Demo";
+			sourceTree = "<group>";
+		};
+		23F7A0512BF57532004D5BC5 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				2322B09C276348300085B5EB /* QRCode WatchOS Demo WatchKit App */,
+				2322B0A7276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		23F7A0522BF57670004D5BC5 /* detection */ = {
+			isa = PBXGroup;
+			children = (
+				236A0504286FE1960019C842 /* macOS QRCode Detector */,
+				236A0519286FE6570019C842 /* iOS QRCode Detector */,
+			);
+			path = detection;
+			sourceTree = "<group>";
+		};
+		23F7A0532BF57864004D5BC5 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				2309F89C28ED33F8009666A1 /* Simple tvOS QRCode */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		23F7A0542BF578F3004D5BC5 /* swiftui */ = {
+			isa = PBXGroup;
+			children = (
+				2348FBB3273A311F004DB2BF /* QRCodeView SwiftUI Demo */,
+				23DA09C42BD9CF69009EDB38 /* QRCode 3D */,
+			);
+			path = swiftui;
 			sourceTree = "<group>";
 		};
 		23F8AE66273A493A00ED6288 /* QRCodeView ObjC Demo */ = {
@@ -1191,22 +1239,22 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2348FB63273A2DDB004DB2BF /* QRCodeView Demo */,
-				2348FB7D273A2EF3004DB2BF /* QRCodeView iOS Demo */,
-				2348FB9E273A310A004DB2BF /* QRCodeView SwiftUI Demo (iOS) */,
-				2348FBA3273A310A004DB2BF /* QRCodeView SwiftUI Demo (macOS) */,
-				23F8AE64273A493A00ED6288 /* QRCodeView ObjC Demo */,
 				2345F6D227488AC40087569B /* All macOS */,
 				236B0438274B5DEA004F0146 /* All iOS */,
+				2348FB63273A2DDB004DB2BF /* QRCodeView Demo */,
+				232C192E2BD63A680079E11E /* QRCode 3D AppKit */,
+				23F8AE64273A493A00ED6288 /* QRCodeView ObjC Demo */,
+				23E66A9729247CD800236B80 /* macOS Logo Image Demo */,
+				2348FB7D273A2EF3004DB2BF /* QRCodeView iOS Demo */,
 				2322B094276348300085B5EB /* QRCode WatchOS Demo */,
 				2322B097276348300085B5EB /* QRCode WatchOS Demo WatchKit App */,
 				2322B0A2276348310085B5EB /* QRCode WatchOS Demo WatchKit Extension */,
+				2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */,
+				2348FBA3273A310A004DB2BF /* QRCodeView SwiftUI Demo (macOS) */,
+				2348FB9E273A310A004DB2BF /* QRCodeView SwiftUI Demo (iOS) */,
+				23DA09C22BD9CF69009EDB38 /* QRCode 3D */,
 				236A0502286FE1960019C842 /* macOS QRCode Detector */,
 				236A0517286FE6570019C842 /* iOS QRCode Detector */,
-				2309F89A28ED33F8009666A1 /* Simple tvOS QRCode */,
-				23E66A9729247CD800236B80 /* macOS Logo Image Demo */,
-				232C192E2BD63A680079E11E /* QRCode 3D AppKit */,
-				23DA09C22BD9CF69009EDB38 /* QRCode 3D */,
 			);
 		};
 /* End PBXProject section */
@@ -1638,7 +1686,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Simple tvOS QRCode/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"tvOS/Simple tvOS QRCode/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1667,7 +1715,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Simple tvOS QRCode/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"tvOS/Simple tvOS QRCode/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1775,11 +1823,11 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"watchOS/QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCode WatchOS Demo WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "watchOS/QRCode WatchOS Demo WatchKit Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1807,11 +1855,11 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"watchOS/QRCode WatchOS Demo WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCode WatchOS Demo WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "watchOS/QRCode WatchOS Demo WatchKit Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "QRCode WatchOS Demo WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1841,7 +1889,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "QRCode 3D AppKit/QRCode-3D-AppKit.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCode 3D AppKit/QRCode-3D-AppKit.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1875,7 +1923,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "QRCode 3D AppKit/QRCode-3D-AppKit.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCode 3D AppKit/QRCode-3D-AppKit.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2039,7 +2087,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView Demo/QRCodeView_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCodeView Demo/QRCodeView_Demo.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2068,7 +2116,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView Demo/QRCodeView_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCodeView Demo/QRCodeView_Demo.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2097,13 +2145,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView iOS Demo/QRCodeView iOS Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "iOS/QRCodeView iOS Demo/QRCodeView iOS Demo.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCodeView iOS Demo/Info.plist";
+				INFOPLIST_FILE = "iOS/QRCodeView iOS Demo/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -2130,13 +2178,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView iOS Demo/QRCodeView iOS Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "iOS/QRCodeView iOS Demo/QRCodeView iOS Demo.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCodeView iOS Demo/Info.plist";
+				INFOPLIST_FILE = "iOS/QRCodeView iOS Demo/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -2225,7 +2273,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView SwiftUI Demo/macOS/macOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "swiftui/QRCodeView SwiftUI Demo/macOS/macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2234,7 +2282,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCodeView-SwiftUI-Demo--macOS--Info.plist";
+				INFOPLIST_FILE = "swiftui/QRCodeView SwiftUI Demo/macOS/QRCodeView-SwiftUI-Demo--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2256,7 +2304,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView SwiftUI Demo/macOS/macOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "swiftui/QRCodeView SwiftUI Demo/macOS/macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2265,7 +2313,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCodeView-SwiftUI-Demo--macOS--Info.plist";
+				INFOPLIST_FILE = "swiftui/QRCodeView SwiftUI Demo/macOS/QRCodeView-SwiftUI-Demo--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2287,7 +2335,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "macOS QRCode Detector/macOS_QRCode_Detector.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "detection/macOS QRCode Detector/macOS_QRCode_Detector.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2316,7 +2365,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "macOS QRCode Detector/macOS_QRCode_Detector.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "detection/macOS QRCode Detector/macOS_QRCode_Detector.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2349,7 +2399,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS QRCode Detector/Info.plist";
+				INFOPLIST_FILE = "detection/iOS QRCode Detector/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture video and detect QR codes within the video stream";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -2380,7 +2430,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "iOS QRCode Detector/Info.plist";
+				INFOPLIST_FILE = "detection/iOS QRCode Detector/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture video and detect QR codes within the video stream";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -2430,18 +2480,18 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "QRCode 3D/QRCode_3D.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "swiftui/QRCode 3D/QRCode_3D.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QRCode 3D/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"swiftui/QRCode 3D/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCode 3D/Info.plist";
+				INFOPLIST_FILE = "swiftui/QRCode 3D/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2469,18 +2519,18 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "QRCode 3D/QRCode_3D.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "swiftui/QRCode 3D/QRCode_3D.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QRCode 3D/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"swiftui/QRCode 3D/Preview Content\"";
 				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "QRCode 3D/Info.plist";
+				INFOPLIST_FILE = "swiftui/QRCode 3D/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2506,12 +2556,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -2536,12 +2586,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/macOS Logo Image Demo/macOS_Logo_Image_Demo.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -2566,7 +2616,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView ObjC Demo/QRCodeView_ObjC_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCodeView ObjC Demo/QRCodeView_ObjC_Demo.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2595,7 +2645,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "QRCodeView ObjC Demo/QRCodeView_ObjC_Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "macOS/QRCodeView ObjC Demo/QRCodeView_ObjC_Demo.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
