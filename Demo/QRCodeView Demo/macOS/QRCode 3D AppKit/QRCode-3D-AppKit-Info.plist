@@ -8,15 +8,13 @@
 			<key>CFBundleTypeName</key>
 			<string>QRCode file</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>org.dagronf.qrcode.encoding.qrjcode</string>
 			</array>
-			<key>NSUbiquitousDocumentUserActivityType</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER).example-document</string>
 		</dict>
 	</array>
 	<key>UTImportedTypeDeclarations</key>
@@ -39,16 +37,6 @@
 					<string>qrjcode</string>
 				</array>
 			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string></string>
-			<key>UTTypeIcons</key>
-			<dict/>
-			<key>UTTypeIdentifier</key>
-			<string>public.data</string>
-			<key>UTTypeTagSpecification</key>
-			<dict/>
 		</dict>
 	</array>
 </dict>

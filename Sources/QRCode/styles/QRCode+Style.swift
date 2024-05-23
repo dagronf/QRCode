@@ -106,7 +106,7 @@ public extension QRCode.Style {
 			result["background"] = b
 		}
 
-		if backgroundFractionalCornerRadius > 0.1 {
+		if backgroundFractionalCornerRadius > 0.0 {
 			result["backgroundFractionalCornerRadius"] = Double(backgroundFractionalCornerRadius)
 		}
 

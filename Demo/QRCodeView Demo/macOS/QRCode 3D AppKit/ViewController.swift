@@ -14,7 +14,11 @@ import DSFAppKitBuilder
 import DSFValueBinders
 
 class Observable<CoreType: AnyObject> {
-	var object: CoreType
+	var object: CoreType {
+		didSet {
+			self.markObjectChanged()
+		}
+	}
 	var observers: [(CoreType) -> Void] = []
 
 	init(_ object: CoreType) {
@@ -48,7 +52,7 @@ class CustomButtonCell: NSButtonCell {
 
 class ViewController: DSFAppKitBuilderViewController {
 
-	let qrCode = try! QRCode.Document(utf8String: "This is a QR code")
+	var qrCode = try! QRCode.Document(utf8String: "This is a QR code")
 	private lazy var qrCodeObject = Observable(self.qrCode)
 
 	let debounce = DSFDebounce(seconds: 0.05)
@@ -60,6 +64,31 @@ class ViewController: DSFAppKitBuilderViewController {
 		self.setupScene()
 		self.updateDisplay()
 	}
+
+	@IBAction func openDocument(_ sender: Any) {
+		let panel = NSOpenPanel()
+		panel.canChooseDirectories = false
+		panel.canCreateDirectories = false
+		panel.allowsMultipleSelection = false
+		panel.allowedFileTypes = [QRCode.EncodingExtension]
+		panel.message = "Select a QR Code"
+
+		let result = panel.runModal()
+
+		guard 
+			result.rawValue == NSApplication.ModalResponse.OK.rawValue,
+			let src = panel.url,
+			let data = try? Data(contentsOf: src),
+			let doc = try? QRCode.Document(jsonData: data)
+		else {
+			return
+		}
+
+		qrCode = doc
+		qrCodeObject.object = doc
+		self.updateDisplay()
+	}
+
 
 	override var viewBody: Element {
 		SplitView(isVertical: true) {

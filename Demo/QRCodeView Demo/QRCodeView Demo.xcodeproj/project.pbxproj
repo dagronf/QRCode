@@ -375,6 +375,7 @@
 		23A593D32BD89E4D001BA2A0 /* EyeStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeStylesView.swift; sourceTree = "<group>"; };
 		23A593D52BD89F99001BA2A0 /* PupilStylesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PupilStylesView.swift; sourceTree = "<group>"; };
 		23A593D72BD8AA9D001BA2A0 /* CommonSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsView.swift; sourceTree = "<group>"; };
+		23B2A0342BF736E50066873D /* QRCode-3D-AppKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QRCode-3D-AppKit-Info.plist"; sourceTree = "<group>"; };
 		23C3D46B2BE3836800DDB62E /* CGPoint+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+extensions.swift"; sourceTree = "<group>"; };
 		23C444812BDA313100AD8F6C /* EyeSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyeSettingsView.swift; sourceTree = "<group>"; };
 		23C444832BDA363100AD8F6C /* MultiSelectPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSelectPickerView.swift; sourceTree = "<group>"; };
@@ -590,6 +591,7 @@
 		232C19302BD63A680079E11E /* QRCode 3D AppKit */ = {
 			isa = PBXGroup;
 			children = (
+				23B2A0342BF736E50066873D /* QRCode-3D-AppKit-Info.plist */,
 				23A593C62BD867C0001BA2A0 /* utils */,
 				232C19312BD63A680079E11E /* AppDelegate.swift */,
 				232C19332BD63A680079E11E /* ViewController.swift */,
@@ -1898,6 +1900,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/QRCode 3D AppKit/QRCode-3D-AppKit-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1932,6 +1935,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/QRCode 3D AppKit/QRCode-3D-AppKit-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
