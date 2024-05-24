@@ -80,6 +80,19 @@ public extension QRCode {
 				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: CGFloat(dimension))
 			}
 
+			// If on-pixel backgrounds were set, make sure we draw it first
+			if let c = design.style.onPixelsBackground {
+				let negatedPath = self.path(
+					finalRect.size,
+					components: .negative,
+					shape: QRCode.Shape(onPixels: QRCode.PixelShape.Square()),
+					logoTemplate: logoTemplate,
+					additionalQuietSpace: additionalQuietSpace
+				)
+				let onPixelsBackgroundColor = try QRCode.FillStyle.Solid(c).svgRepresentation(styleIdentifier: "on-pixels-background-color")
+				svg += "   <path \(onPixelsBackgroundColor.styleAttribute) d=\"\(negatedPath.svgDataPath())\" />\n"
+			}
+
 			let negatedPath = self.path(
 				finalRect.size,
 				components: .negative,

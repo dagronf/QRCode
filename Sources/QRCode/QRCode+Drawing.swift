@@ -84,6 +84,19 @@ public extension QRCode {
 				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: sz)
 			}
 
+			if let c = design.style.onPixelsBackground {
+				let negatedPath = self.path(
+					finalRect.size,
+					components: .negative,
+					shape: QRCode.Shape(onPixels: QRCode.PixelShape.Square()),
+					logoTemplate: logoTemplate,
+					additionalQuietSpace: additionalQuietSpace
+				)
+				ctx.usingGState { context in
+					QRCode.FillStyle.Solid(c).fill(ctx: context, rect: finalRect, path: negatedPath)
+				}
+			}
+
 			let negatedPath = self.path(
 				finalRect.size,
 				components: .negative,
@@ -92,7 +105,6 @@ public extension QRCode {
 				additionalQuietSpace: additionalQuietSpace
 			)
 
-			//let negatedPath = design.shape.onPixels.generatePath(from: negatedMatrix, size: CGSize(dimension: sz))
 			ctx.usingGState { context in
 				style.onPixels.fill(ctx: context, rect: finalRect, path: negatedPath)
 			}
