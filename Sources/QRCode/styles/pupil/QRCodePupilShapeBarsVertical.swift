@@ -56,3 +56,36 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCode.PupilShape {
+	/// A vertical bars style pupil design
+	@objc(QRCodePupilShapeSquareBarsVertical) class SquareBarsVertical: NSObject, QRCodePupilShapeGenerator {
+		@objc public static var Name: String { "barsVerticalSquare" }
+		/// The generator title
+		@objc public static var Title: String { "Square vertical bars" }
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
+			SquareBarsVertical()
+		}
+
+		/// Make a copy of the object
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { SquareBarsVertical() }
+
+		@objc public func settings() -> [String : Any] { [:] }
+		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+
+		/// The pupil centered in the 90x90 square
+		@objc public func pupilPath() -> CGPath {
+			let roundedRectPupilPath = CGPath(rect: CGRect(x: 30, y: 30, width: 9.33, height: 30), transform: nil)
+			let roundedRectPupil2Path = CGPath(rect: CGRect(x: 40.33, y: 30, width: 9.33, height: 30), transform: nil)
+			let roundedRectPupil3Path = CGPath(rect: CGRect(x: 50.66, y: 30, width: 9.33, height: 30), transform: nil)
+
+			let result = CGMutablePath()
+			result.addPath(roundedRectPupilPath)
+			result.addPath(roundedRectPupil2Path)
+			result.addPath(roundedRectPupil3Path)
+			result.close()
+			return result
+		}
+	}
+}

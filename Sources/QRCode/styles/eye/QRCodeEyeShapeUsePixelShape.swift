@@ -60,7 +60,7 @@ public extension QRCode.EyeShape {
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		@objc public static let Name = "usePixelShape"
-		@objc public static var Title: String { "Pixel Shape" }
+		@objc public static var Title: String { "Use Pixel Shape" }
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.UsePixelShape()
 		}

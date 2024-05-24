@@ -38,7 +38,7 @@ public extension QRCode.PupilShape {
 	@objc(QRCodePupilShapeUsePixelShape) class UsePixelShape: NSObject, QRCodePupilShapeGenerator {
 		@objc public static var Name: String { "usePixelShape" }
 		/// The generator title
-		@objc public static var Title: String { "Pixel Shape" }
+		@objc public static var Title: String { "Use Pixel Shape" }
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { UsePixelShape() }
 
 		/// Make a copy of the object
