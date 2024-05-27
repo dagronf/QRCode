@@ -858,34 +858,6 @@ public extension QRCode.Document {
 	@objc var smallAsciiRepresentation: String { return self.qrcode.smallAsciiRepresentation() }
 }
 
-// MARK: - Templating conveniences
-
-public extension QRCode.Document {
-	/// Return a new document using the style and design supplied by the template data with the specified text
-	@objc static func UsingTemplate(templateJSONData: Data, text: String) throws -> QRCode.Document {
-		let doc = try QRCode.Document(jsonData: templateJSONData)
-		doc.utf8String = text
-		return doc
-	}
-
-	/// Return an image using the style and design supplied by the template data with the specified text
-	@objc @inlinable static func PNGUsingTemplate(templateJSONData: Data, text: String, dimension: Int) throws -> Data {
-		let doc = try Self.UsingTemplate(templateJSONData: templateJSONData, text: text)
-		return try doc.pngData(dimension: dimension)
-	}
-
-	/// Return a pdf using the style and design supplied by the template data with the specified text
-	@objc @inlinable static func PDFUsingTemplate(
-		templateJSONData: Data,
-		text: String,
-		dimension: Int,
-		resolution: CGFloat = 72.0
-	) throws -> Data {
-		let doc = try Self.UsingTemplate(templateJSONData: templateJSONData, text: text)
-		return try doc.pdfData(dimension: dimension, pdfResolution: resolution)
-	}
-}
-
 extension QRCode.Document {
 	// Build up the qr representation
 	private func regenerate() throws {
@@ -909,23 +881,3 @@ extension QRCode.Document {
 		}
 	}
 }
-
-// MARK: - SwiftUI extensions
-
-#if canImport(Combine)
-import Combine
-
-@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
-extension QRCode.Document: ObservableObject {
-	/// A convenience for marking a document as having been updated.
-	///
-	/// The core QRCode.Document class needs to support OSes that don't support Combine.
-	/// As such, we can't litter the QRCode.Document with `Published` types to detect automatically reflect changes
-	/// within the QRCode document. One day when these old OS versions are not supported anymore, we can
-	/// refactor the document to automatically handle combine.
-	@inlinable public func setHasChanged() {
-		self.objectWillChange.send()
-	}
-}
-
-#endif
