@@ -131,7 +131,7 @@ public extension QRCode.FillStyle.RadialGradient {
 		svg += "</radialGradient>\n"
 
 		return QRCode.FillStyle.SVGDefinition(
-			styleAttribute: "fill=\"url('#\(styleIdentifier)')\"",
+			styleAttribute: "fill=\"url(#\(styleIdentifier))\"",
 			styleDefinition: svg
 		)
 	}

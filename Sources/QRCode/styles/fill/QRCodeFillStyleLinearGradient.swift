@@ -153,7 +153,7 @@ public extension QRCode.FillStyle.LinearGradient {
 		svg += "</linearGradient>\n"
 
 		return QRCode.FillStyle.SVGDefinition(
-			styleAttribute: "fill=\"url('#\(styleIdentifier)')\"",
+			styleAttribute: "fill=\"url(#\(styleIdentifier))\"",
 			styleDefinition: svg
 		)
 	}
