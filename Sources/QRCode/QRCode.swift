@@ -200,3 +200,35 @@ internal extension QRCode {
 		return false
 	}
 }
+
+// MARK: - Simple validation routines
+
+public extension QRCode {
+	@objc static func canGenerateQRCode(
+		data: Data,
+		errorCorrection: QRCode.ErrorCorrection,
+		engine: (any QRCodeEngine)? = nil
+	) -> Bool {
+		do {
+			_ = try QRCode(data, errorCorrection: errorCorrection, engine: engine)
+			return true
+		}
+		catch {
+			return false
+		}
+	}
+
+	@objc static func canGenerateQRCode(
+		text: String,
+		errorCorrection: QRCode.ErrorCorrection,
+		engine: (any QRCodeEngine)? = nil
+	) -> Bool {
+		do {
+			_ = try QRCode(utf8String: text, errorCorrection: errorCorrection)
+			return true
+		}
+		catch {
+			return false
+		}
+	}
+}
