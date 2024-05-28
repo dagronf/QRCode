@@ -102,7 +102,7 @@ internal extension QRCode.PixelShape {
 
 					let rotatetfm: CGAffineTransform = {
 						if self.useRandomRotation {
-							return CGAffineTransform(rotationAngle: CGFloat.random(in: 0...self.rotationFraction) * CGFloat.pi)
+							return CGAffineTransform(rotationAngle: CGFloat.random(in: -self.rotationFraction...self.rotationFraction) * CGFloat.pi)
 						}
 						return rotationBase
 					}()

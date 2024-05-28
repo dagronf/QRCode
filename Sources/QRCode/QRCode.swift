@@ -105,7 +105,7 @@ import Foundation
 	// The pixel design to use for drawing the pixel background color
 	internal let onPixelBackgroundDesign: QRCode.Design = {
 		let d = QRCode.Design()
-		d.shape.offPixels = QRCode.PixelShape.Square()
+		d.shape.onPixels = QRCode.PixelShape.Square()
 		return d
 	}()
 
