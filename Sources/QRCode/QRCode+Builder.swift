@@ -244,7 +244,7 @@ public extension QRCode.Builder {
 		/// Set the background color for the qr code
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.backgroundColor(color)
 			return self.builder
 		}
@@ -252,7 +252,7 @@ public extension QRCode.Builder {
 		/// Set a background image for the qr code
 		/// - Parameter image: the image
 		/// - Returns: self
-		@discardableResult func style(_ image: CGImage) -> QRCode.Builder {
+		@discardableResult public func style(_ image: CGImage) -> QRCode.Builder {
 			self.builder.document.design.style.background = QRCode.FillStyle.Image(image)
 			return self.builder
 		}
@@ -260,7 +260,7 @@ public extension QRCode.Builder {
 		/// Set a fill style as a background fill
 		/// - Parameter gradient: The gradient
 		/// - Returns: self
-		@discardableResult func style(
+		@discardableResult public func style(
 			_ fillStyle: any QRCodeFillStyleGenerator
 		) -> QRCode.Builder {
 			self.builder.document.design.style.background = fillStyle
@@ -270,7 +270,7 @@ public extension QRCode.Builder {
 		/// A corner radius (in qr pixels) to apply to the background fill
 		/// - Parameter pixelCount: The number of pixels to set for the radius
 		/// - Returns: self
-		@discardableResult func cornerRadius(
+		@discardableResult public func cornerRadius(
 			_ pixelCount: Double
 		) -> QRCode.Builder {
 			self.builder.document.design.style.backgroundFractionalCornerRadius = pixelCount
