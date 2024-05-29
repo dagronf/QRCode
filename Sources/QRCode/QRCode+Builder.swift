@@ -108,7 +108,7 @@ public extension QRCode.Builder {
 		/// Set the data for the qr code
 		/// - Parameter data: The data
 		/// - Returns: self
-		@discardableResult func data(_ data: Data) -> QRCode.Builder {
+		@discardableResult public func data(_ data: Data) -> QRCode.Builder {
 			self.builder.document.data = data
 			return self.builder
 		}
@@ -118,7 +118,7 @@ public extension QRCode.Builder {
 		///   - text: The text
 		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-		@discardableResult func text(
+		@discardableResult public func text(
 			_ text: String,
 			textEncoding: String.Encoding = .utf8
 		) throws -> QRCode.Builder {
@@ -134,7 +134,7 @@ public extension QRCode.Builder {
 		///   - url: The url
 		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-		@discardableResult func url(
+		@discardableResult public func url(
 			_ url: URL,
 			textEncoding: String.Encoding = .utf8
 		) throws -> QRCode.Builder {
@@ -144,7 +144,7 @@ public extension QRCode.Builder {
 		/// Set the message for the qr code
 		/// - Parameter message: The message
 		/// - Returns: self
-		@discardableResult func message(
+		@discardableResult public func message(
 			_ message: any QRCodeMessageFormatter
 		) -> QRCode.Builder {
 			self.builder.document.update(message: message)
