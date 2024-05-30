@@ -108,38 +108,17 @@ public extension QRCode.Builder {
 		/// Set text content
 		/// - Parameters:
 		///   - text: The text
-		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-<<<<<<< HEAD
-		@discardableResult public func text(
-			_ text: String,
-			textEncoding: String.Encoding = .utf8
-		) throws -> QRCode.Builder {
-			guard let data = text.data(using: textEncoding) else {
-=======
 		@discardableResult func text(_ text: String) throws -> QRCode.Builder {
-			guard let data = text.data(using: .utf8) else {
->>>>>>> 1ac8c29 (More work on throwing)
-				throw QRCode.Builder.BuilderError.unableToEncodeText
-			}
-			self.builder.document.data = data
+			self.builder.document.utf8String = text
 			return self.builder
 		}
 
 		/// Set the URL to be encoded within the QR code
 		/// - Parameters:
 		///   - url: The url
-		///   - textEncoding: The string encoding to use when generating the qr code
 		/// - Returns: self
-<<<<<<< HEAD
-		@discardableResult public func url(
-			_ url: URL,
-			textEncoding: String.Encoding = .utf8
-=======
-		@discardableResult func url(
-			_ url: URL
->>>>>>> 1ac8c29 (More work on throwing)
-		) throws -> QRCode.Builder {
+		@discardableResult func url(_ url: URL) throws -> QRCode.Builder {
 			try self.text(url.absoluteString)
 		}
 
