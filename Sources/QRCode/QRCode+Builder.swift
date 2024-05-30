@@ -69,7 +69,7 @@ public extension QRCode.Builder {
 	/// Set a custom generator for the builder
 	/// - Parameter engine: The QR code generator
 	/// - Returns: self
-	func engine(_ engine: any QRCodeEngine) -> QRCode.Builder {
+	@discardableResult func engine(_ engine: any QRCodeEngine) -> QRCode.Builder {
 		self.document.engine = engine
 		return self
 	}
