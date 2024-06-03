@@ -66,6 +66,13 @@ public extension QRCode {
 			}
 		}
 
+		/// Returns the content of the QR code as raw text
+		///
+		/// If the qr code contains binary data, returns the base64 encoded data
+		@objc public var decodedText: String {
+			self.utf8String ?? self.data?.base64EncodedString() ?? "<unable to decode>"
+		}
+
 		/// The style to use when drawing the qr code
 		@objc public var design = QRCode.Design() {
 			didSet { self.regenerateNoThrow() }
