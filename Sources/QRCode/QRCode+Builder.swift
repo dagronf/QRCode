@@ -156,6 +156,13 @@ public extension QRCode.Builder {
 		self.document.design.additionalQuietZonePixels = count
 		return self
 	}
+
+	/// If set, the QR code draws the cells that AREN'T set within the QR code using the
+	/// `onPixel` generator and style. All other styles (offPixels, eye, pupil) are ignored.
+	@discardableResult func isNegated(_ isNegated: Bool) -> Self {
+		self.document.design.shape.negatedOnPixelsOnly = isNegated
+		return self
+	}
 }
 
 // MARK: - Foreground
