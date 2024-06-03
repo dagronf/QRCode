@@ -97,6 +97,7 @@ public extension QRCode {
 				finalRect.size,
 				components: .negative,
 				shape: design.shape,
+				logoTemplate: logoTemplate,
 				additionalQuietSpace: additionalQuietSpace
 			)
 

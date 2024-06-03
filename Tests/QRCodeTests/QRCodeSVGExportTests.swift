@@ -275,4 +275,25 @@ final class QRCodeSVGTests: XCTestCase {
 	}
 	#endif
 
+	func testBlockMaskPixelsForImageSVGIssue() throws {
+		// This bug relates to SVG export, when the design has on-pixels negated
+		// the pixel masking option for a logotemplate doesn't work
+		let logo = QRCode.LogoTemplate(
+			image: try resourceImage(for: "instagram-icon", extension: "png"),
+			path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.30, height: 0.30), transform: nil),
+			inset: 8,
+			masksQRCodePixels: true
+		)
+
+		let doc = try QRCode.build
+			.content.text("This is a test of SVG exporting with broken mask pixels")
+			.foregroundColor(CGColor(red: 0, green: 0, blue: 0.7, alpha: 1))
+			.onPixels.shape(QRCode.PixelShape.Circle(insetFraction: 0.3))
+			.isNegated(true)
+			.logo(logo)
+			.document
+
+		let data = try doc.svgData(dimension: 400)
+		try outputFolder.write(data, to: "broken-svg-masking.svg")
+	}
 }
