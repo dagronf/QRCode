@@ -198,7 +198,10 @@ public extension QRCode {
 		if let logoTemplate = logoTemplate {
 			ctx.saveGState()
 			// Get the absolute rect within the generated image of the mask path
-			let absMask = logoTemplate.absolutePathForMaskPath(dimension: finalRect.width, flipped: true)
+			let absMask = logoTemplate.absolutePathForMaskPath(
+				dimension: min(finalRect.width, finalRect.height),
+				flipped: true
+			)
 
 			// logo drawing is flipped.
 			ctx.scaleBy(x: 1, y: -1)
