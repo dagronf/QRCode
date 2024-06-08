@@ -23,7 +23,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			try outputFolder.write(svg, to: "testBasicMask1.svg")
 
 			let image = try code.platformImage(dimension: 300, dpi: 144)
-			let data = image.pngRepresentation()!
+			let data = try image.representation.png()
 			try outputFolder.write(data, to: "testBasicMask1.png")
 		}
 
@@ -36,7 +36,7 @@ final class QRCodeMaskingTests: XCTestCase {
 			try outputFolder.write(svg, to: "testBasicMask2.svg")
 
 			let image = try code.platformImage(dimension: 300, dpi: 144)
-			let data = image.pngRepresentation()!
+			let data = try image.representation.png()
 			try outputFolder.write(data, to: "testBasicMask2.png")
 		}
 	}
@@ -55,7 +55,7 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		code.logoTemplate = t
 		#if os(macOS)
-		let image = try XCTUnwrap(code.nsImage(dimension: 300))
+		let image = try code.nsImage(dimension: 300)
 		_ = image
 		#endif
 
@@ -87,21 +87,19 @@ final class QRCodeMaskingTests: XCTestCase {
 
 		do {
 			// Lower right logo
-
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+			let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
 			code.logoTemplate = QRCode.LogoTemplate(
-				image: logoImage.cgImage()!,
+				image: logoImage,
 				path: CGPath(ellipseIn: CGRect(x: 0.65, y: 0.65, width: 0.30, height: 0.30), transform: nil),
 				inset: 8
 			)
 
-			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 300))
-			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
+			let logoQRCode = try code.platformImage(dimension: 300)
+			let data = try logoQRCode.representation.png()
 			try outputFolder.write(data, to: "logo-lower-right-logo-small.png")
 
-			let logoQRCode2 = try XCTUnwrap(code.platformImage(dimension: 512))
-			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
+			let logoQRCode2 = try code.platformImage(dimension: 512)
+			let data2 = try logoQRCode2.representation.png()
 			try outputFolder.write(data2, to: "logo-lower-right-logo-larger.png")
 
 			let str = try code.svg(dimension: 512)
@@ -119,8 +117,8 @@ final class QRCodeMaskingTests: XCTestCase {
 			)
 			code.logoTemplate = logo
 
-			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 600))
-			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
+			let logoQRCode = try code.platformImage(dimension: 600)
+			let data = try logoQRCode.representation.png()
 			try outputFolder.write(data, to: "logo-center-square-logo.png")
 		}
 
@@ -135,8 +133,8 @@ final class QRCodeMaskingTests: XCTestCase {
 			)
 			code.logoTemplate = logo
 
-			let logoQRCode = try XCTUnwrap(code.platformImage(dimension: 512))
-			let data = try XCTUnwrap(logoQRCode.pngRepresentation())
+			let logoQRCode = try code.platformImage(dimension: 512)
+			let data = try logoQRCode.representation.png()
 			try outputFolder.write(data, to: "logo-rectangular-non-centered.png")
 
 			let logo2 = QRCode.LogoTemplate(
@@ -146,8 +144,8 @@ final class QRCodeMaskingTests: XCTestCase {
 			)
 			code.logoTemplate = logo2
 
-			let logoQRCode2 = try XCTUnwrap(code.platformImage(dimension: 3000))
-			let data2 = try XCTUnwrap(logoQRCode2.pngRepresentation())
+			let logoQRCode2 = try code.platformImage(dimension: 3000)
+			let data2 = try logoQRCode2.representation.png()
 			try outputFolder.write(data2, to: "logo-rectangular-non-centered-large.png")
 
 			let str = try code.svg(dimension: 3000)
@@ -163,46 +161,38 @@ final class QRCodeMaskingTests: XCTestCase {
 		)
 
 		do {
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+			let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
+			code.logoTemplate = .CircleCenter(image: logoImage)
 
-			code.logoTemplate = .CircleCenter(image: logoImage.cgImage()!)
-
-			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try code.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "fixed-template-circle-center.png")
 		}
 
 		do {
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+			let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
+			code.logoTemplate = QRCode.LogoTemplate.CircleBottomRight(image: logoImage)
 
-			code.logoTemplate = QRCode.LogoTemplate.CircleBottomRight(image: logoImage.cgImage()!)
-
-			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try code.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "fixed-template-circle-bottom-right.png")
 		}
 
 		do {
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "square-logo", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+			let logoImage = try resourceImage(for: "square-logo", extension: "png")
+			code.logoTemplate = QRCode.LogoTemplate.SquareCenter(image: logoImage)
 
-			code.logoTemplate = QRCode.LogoTemplate.SquareCenter(image: logoImage.cgImage()!)
-
-			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try code.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "fixed-template-square-center.png")
 		}
 
 		do {
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "square-logo", withExtension: "png"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path))
+			let logoImage = try resourceImage(for: "square-logo", extension: "png")
+			code.logoTemplate = QRCode.LogoTemplate.SquareBottomRight(image: logoImage)
 
-			code.logoTemplate = QRCode.LogoTemplate.SquareBottomRight(image: logoImage.cgImage()!)
-
-			let logo1 = try XCTUnwrap(code.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try code.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "fixed-template-square-bottom-right.png")
 		}
 	}
@@ -219,8 +209,8 @@ final class QRCodeMaskingTests: XCTestCase {
 		do {
 			doc.logoTemplate = QRCode.LogoTemplate(image: image)
 
-			let logo1 = try XCTUnwrap(doc.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try doc.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "logotemplate-image-transparency-mask.png")
 		}
 
@@ -228,8 +218,8 @@ final class QRCodeMaskingTests: XCTestCase {
 			let imageMask = try resourceImage(for: "logo-mask", extension: "png")
 			doc.logoTemplate = QRCode.LogoTemplate(image: image, maskImage: imageMask)
 
-			let logo1 = try XCTUnwrap(doc.platformImage(dimension: 300))
-			let data2 = try XCTUnwrap(logo1.pngRepresentation())
+			let logo1 = try doc.platformImage(dimension: 300)
+			let data2 = try logo1.representation.png()
 			try outputFolder.write(data2, to: "logotemplate-image-using-imagemask.png")
 		}
 	}

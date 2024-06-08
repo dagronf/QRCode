@@ -48,8 +48,8 @@ final class DocumentationImageTests: XCTestCase {
 
 		try [0, 5, 10, 15].forEach { aqs in
 			doc.design.additionalQuietZonePixels = UInt(aqs)
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "quiet-space-\(aqs).png")
 		}
 
@@ -57,8 +57,8 @@ final class DocumentationImageTests: XCTestCase {
 			let image = try resourceImage(for: "swift-logo", extension: "png")
 			doc.design.style.background = QRCode.FillStyle.Image(image)
 			doc.design.additionalQuietZonePixels = 4
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "quiet-space-background-image.png")
 		}
 	}
@@ -71,8 +71,8 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.additionalQuietZonePixels = 4
 			try [0, 2, 4, 6].forEach { cr in
 				doc.design.style.backgroundFractionalCornerRadius = cr
-				let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-				let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+				let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+				let data = try cg1.representation.png(dpi: 144)
 				try outputFolder.write(data, to: "corner-radius-\(Int(cr)).png")
 			}
 		}
@@ -85,8 +85,8 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.additionalQuietZonePixels = 2
 			doc.design.style.backgroundFractionalCornerRadius = 3.0
 
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "corner-radius-example.png")
 		}
 	}
@@ -102,7 +102,7 @@ final class DocumentationImageTests: XCTestCase {
 		)
 
 		try eyeShapes.forEach { sample in
-			let data = try XCTUnwrap(sample.image.representation.png())
+			let data = try sample.image.representation.png()
 			try outputFolder.write(data, to: "eye_\(sample.name).png")
 		}
 	}
@@ -121,7 +121,7 @@ final class DocumentationImageTests: XCTestCase {
 		)
 
 		try pixelShapes.forEach { sample in
-			let data = try XCTUnwrap(sample.image.representation.png())
+			let data = try sample.image.representation.png()
 			try outputFolder.write(data, to: "data_\(sample.name).png")
 		}
 	}
@@ -135,7 +135,7 @@ final class DocumentationImageTests: XCTestCase {
 		)
 
 		try pupilShapes.forEach { sample in
-			let data = try XCTUnwrap(sample.image.representation.png())
+			let data = try sample.image.representation.png()
 			try outputFolder.write(data, to: "pupil_\(sample.name).png")
 		}
 	}
@@ -149,8 +149,8 @@ final class DocumentationImageTests: XCTestCase {
 		doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
 		doc1.design.style.offPixels = QRCode.FillStyle.Solid(systemGreen.copy(alpha: 0.4)!)
 
-		let cg1 = try XCTUnwrap(doc1.cgImage(CGSize(width: 300, height: 300)))
-		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		let cg1 = try doc1.cgImage(CGSize(width: 300, height: 300))
+		let data = try cg1.representation.png(dpi: 144)
 		try outputFolder.write(data, to: "offPixels.png")
 	}
 
@@ -164,8 +164,8 @@ final class DocumentationImageTests: XCTestCase {
 		doc2.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
 		doc2.design.style.onPixels = QRCode.FillStyle.Solid(systemBrown)
 
-		let cg1 = try XCTUnwrap(doc2.cgImage(CGSize(width: 300, height: 300)))
-		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		let cg1 = try doc2.cgImage(CGSize(width: 300, height: 300))
+		let data = try cg1.representation.png(dpi: 144)
 		try outputFolder.write(data, to: "eye_colorstyles.png")
 	}
 
@@ -184,8 +184,8 @@ final class DocumentationImageTests: XCTestCase {
 		)
 		doc3.design.style.onPixels = radial
 
-		let cg1 = try XCTUnwrap(doc3.cgImage(CGSize(width: 300, height: 300)))
-		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		let cg1 = try doc3.cgImage(CGSize(width: 300, height: 300))
+		let data = try cg1.representation.png(dpi: 144)
 		try outputFolder.write(data, to: "fillstyles.png")
 	}
 
@@ -198,8 +198,8 @@ final class DocumentationImageTests: XCTestCase {
 		doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 
-		let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-		let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+		let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+		let data = try cg1.representation.png(dpi: 144)
 		try outputFolder.write(data, to: "custompupil.png")
 	}
 
@@ -224,11 +224,11 @@ final class DocumentationImageTests: XCTestCase {
 				inset: 2
 			)
 
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "qrcode-with-logo.png")
 
-			let pdfData = try XCTUnwrap(doc.pdfData(dimension: 300))
+			let pdfData = try doc.pdfData(dimension: 300)
 			try outputFolder.write(pdfData, to: "qrcode-with-logo.pdf")
 		}
 
@@ -269,8 +269,8 @@ final class DocumentationImageTests: XCTestCase {
 				inset: 3
 			)
 
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "qrcode-with-logo-example.png")
 		}
 
@@ -285,8 +285,8 @@ final class DocumentationImageTests: XCTestCase {
 				inset: 8
 			)
 
-			let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "qrcode-with-logo-example-bottom-right.png")
 		}
 	}
@@ -299,11 +299,11 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.background = QRCode.FillStyle.Solid(gray: 0)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(gray: 1))
 
-			let cg1 = try XCTUnwrap(doc.cgImage(dimension: 600))
-			let data = try XCTUnwrap(cg1.representation.png(dpi: 144))
+			let cg1 = try doc.cgImage(dimension: 600)
+			let data = try cg1.representation.png(dpi: 144)
 			try outputFolder.write(data, to: "qrcode-with-negated.png")
 
-			let pdfData = try XCTUnwrap(doc.pdfData(dimension: 600))
+			let pdfData = try doc.pdfData(dimension: 600)
 			try outputFolder.write(pdfData, to: "qrcode-with-negated.pdf")
 		}
 	}
@@ -317,8 +317,8 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.background = QRCode.FillStyle.Image(image)
 			doc.design.style.onPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.5)
 
-			let cg1 = try XCTUnwrap(doc.cgImage(dimension: 400))
-			let data = try XCTUnwrap(cg1.representation.jpeg(compression: 0.65))
+			let cg1 = try doc.cgImage(dimension: 400)
+			let data = try cg1.representation.jpeg(compression: 0.65)
 			try outputFolder.write(data, to: "demo-simple-image-background.jpg")
 		}
 
@@ -335,7 +335,7 @@ final class DocumentationImageTests: XCTestCase {
 				endPoint: CGPoint(x: 0, y: 1)
 			)
 
-			let fillImage = try XCTUnwrap(pixelFill.makeImage(dimension: 500))
+			let fillImage = try pixelFill.makeImage(dimension: 500)
 			XCTAssertEqual(500, fillImage.width)
 			XCTAssertEqual(500, fillImage.height)
 
@@ -348,8 +348,8 @@ final class DocumentationImageTests: XCTestCase {
 			logo.path = CGPath(rect: CGRect(x: 0.65, y: 0.375, width: 0.25, height: 0.25), transform: nil)
 			doc.logoTemplate = logo
 
-			let cg1 = try XCTUnwrap(doc.cgImage(dimension: 400))
-			let data = try XCTUnwrap(cg1.representation.jpeg(compression: 0.8))
+			let cg1 = try doc.cgImage(dimension: 400)
+			let data = try cg1.representation.jpeg(compression: 0.8)
 			try outputFolder.write(data, to: "demo-wombles.jpg")
 		}
 
@@ -368,8 +368,8 @@ final class DocumentationImageTests: XCTestCase {
 			// White foreground
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(gray: 1))
 
-			let cg1 = try XCTUnwrap(doc.cgImage(dimension: 600))
-			let data = try XCTUnwrap(cg1.representation.png())
+			let cg1 = try doc.cgImage(dimension: 600)
+			let data = try cg1.representation.png()
 			try outputFolder.write(data, to: "design-negated-quiet-space.png")
 		}
 
@@ -422,8 +422,8 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.shape.offPixels = QRCode.PixelShape.Square(insetFraction: 0.5)
 
 			// Generate the image
-			let cg1 = try XCTUnwrap(doc.cgImage(dimension: 400))
-			let data = try XCTUnwrap(cg1.representation.jpeg(dpi: 144, compression: 0.65))
+			let cg1 = try doc.cgImage(dimension: 400)
+			let data = try cg1.representation.jpeg(dpi: 144, compression: 0.65)
 			try outputFolder.write(data, to: "qrcode-off-pixels.jpg")
 		}
 
@@ -478,7 +478,7 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 1, alpha: 0.1)
 			doc.design.shape.offPixels = QRCode.PixelShape.Vertical(insetFraction: 0.05, cornerRadiusFraction: 1)
 
-			let imageData = try XCTUnwrap(doc.pngData(dimension: 400))
+			let imageData = try doc.pngData(dimension: 400)
 			try outputFolder.write(imageData, to: "linear-background.png")
 		}
 
@@ -531,8 +531,8 @@ final class DocumentationImageTests: XCTestCase {
 		let image = try resourceCommonImage(for: "beach-square", extension: "jpg")
 		doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
 
-		let cg1 = try XCTUnwrap(doc.cgImage(CGSize(width: 300, height: 300)))
-		let data = try XCTUnwrap(cg1.representation.jpeg(dpi: 144, compression: 0.65))
+		let cg1 = try doc.cgImage(CGSize(width: 300, height: 300))
+		let data = try cg1.representation.jpeg(dpi: 144, compression: 0.65)
 		try outputFolder.write(data, to: "beach-peacock.jpg")
 
 		let pdfData = try doc.pdfData(dimension: 300)

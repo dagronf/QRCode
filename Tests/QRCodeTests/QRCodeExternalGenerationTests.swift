@@ -55,12 +55,12 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		XCTAssertEqual(g31.dimension, 27)
 		let d31 = try QRCode.Document(utf8String: m31, engine: eGen)
 		XCTAssertEqual(27, d31.boolMatrix.dimension)
-		let data31 = try XCTUnwrap(d31.imageData(.png(), dimension: 300))
+		let data31 = try d31.imageData(.png(), dimension: 300)
 		try outputFolder.write(data31, to: "extgen_numerics_only.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
-		let i31 = try XCTUnwrap(d31.cgImage(dimension: 300))
+		let i31 = try d31.cgImage(dimension: 300)
 		let det31 = QRCode.DetectQRCodes(i31)
 		XCTAssertEqual(1, det31.count)
 		XCTAssertEqual(det31[0].messageString, m31)
@@ -77,12 +77,12 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		XCTAssertEqual(g32.dimension, 31)
 		let d32 = try QRCode.Document(utf8String: m32, engine: eGen)
 		XCTAssertEqual(31, d32.boolMatrix.dimension)
-		let d32d = try XCTUnwrap(d32.imageData(.png(), dimension: 300))
+		let d32d = try d32.imageData(.png(), dimension: 300)
 		try outputFolder.write(d32d, to: "extgen_alphanumerics_only.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
-		let i32 = try XCTUnwrap(d32.cgImage(dimension: 300))
+		let i32 = try d32.cgImage(dimension: 300)
 		let det32 = QRCode.DetectQRCodes(i32)
 		XCTAssertEqual(1, det32.count)
 		XCTAssertEqual(det32[0].messageString, m32)
@@ -98,12 +98,12 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 		XCTAssertEqual(g33.dimension, 35)
 		let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 		XCTAssertEqual(35, d33.boolMatrix.dimension)
-		let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+		let d33d = try d33.imageData(.png(), dimension: 300)
 		try outputFolder.write(d33d, to: "extgen_generic_text.png")
 
 #if !os(watchOS)
 		// Make sure we can detect the generated QR code
-		let i33 = try XCTUnwrap(d33.cgImage(dimension: 300))
+		let i33 = try d33.cgImage(dimension: 300)
 		let det33 = QRCode.DetectQRCodes(i33)
 		XCTAssertEqual(1, det33.count)
 		XCTAssertEqual(det33[0].messageString, m33)
@@ -115,16 +115,16 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		do {
 			let m33 = "اربك تكست هو اول موقع يسمح"
-			let g33 = try XCTUnwrap(eGen.generate(text: m33, errorCorrection: .quantize))
+			let g33 = try eGen.generate(text: m33, errorCorrection: .quantize)
 			XCTAssertEqual(g33.dimension, 39)
 			let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
-			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+			let d33d = try d33.imageData(.png(), dimension: 300)
 			try outputFolder.write(d33d, to: "extgen_arabic_text_utf8.png")
 
 #if !os(watchOS)
 			// Make sure we can detect the generated QR code
-			let i33 = try XCTUnwrap(d33.cgImage(dimension: 300))
+			let i33 = try d33.cgImage(dimension: 300)
 			let det33 = QRCode.DetectQRCodes(i33)
 			XCTAssertEqual(1, det33.count)
 			XCTAssertEqual(det33[0].messageString, m33)
@@ -133,16 +133,16 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		do {
 			let m33 = "Emoji work -> 🐔👨‍👨‍👦 and also 🏋🏾"
-			let g33 = try XCTUnwrap(eGen.generate(text: m33, errorCorrection: .quantize))
+			let g33 = try eGen.generate(text: m33, errorCorrection: .quantize)
 			XCTAssertEqual(g33.dimension, 39)
 			let d33 = try QRCode.Document(utf8String: m33, engine: eGen)
 			XCTAssertEqual(39, d33.boolMatrix.dimension)
-			let d33d = try XCTUnwrap(d33.imageData(.png(), dimension: 300))
+			let d33d = try d33.imageData(.png(), dimension: 300)
 			try outputFolder.write(d33d, to: "extgen_emojis_text_utf8.png")
 
 #if !os(watchOS)
 			// Make sure we can detect the generated QR code
-			let i33 = try XCTUnwrap(d33.cgImage(dimension: 300))
+			let i33 = try d33.cgImage(dimension: 300)
 			let det33 = QRCode.DetectQRCodes(i33)
 			XCTAssertEqual(1, det33.count)
 			XCTAssertEqual(det33[0].messageString, m33)
@@ -158,7 +158,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		// Setting the text as a data representation, we avoid triggering the optimizations
 		// This will be our baseline for checking whether we trigger the optimizations
-		let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
+		let orig = try eGen.generate(data: data, errorCorrection: .quantize)
 		XCTAssertEqual(orig.dimension, 35)
 		let origDoc = try QRCode.Document(data: data, engine: eGen)
 		XCTAssertEqual(35, origDoc.boolMatrix.dimension)
@@ -166,7 +166,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #if !os(watchOS)
 		do {
 			// Make sure we can detect the generated QR code
-			let origImage = try XCTUnwrap(origDoc.cgImage(dimension: 300))
+			let origImage = try origDoc.cgImage(dimension: 300)
 			let det1 = QRCode.DetectQRCodes(origImage)
 			XCTAssertEqual(1, det1.count)
 			XCTAssertEqual(det1[0].messageString, text)
@@ -174,7 +174,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #endif
 
 		// Now, call the generator using the text, which means that the generator can optimize the content
-		let optim = try XCTUnwrap(eGen.generate(text: text, errorCorrection: .quantize))
+		let optim = try eGen.generate(text: text, errorCorrection: .quantize)
 		XCTAssertEqual(optim.dimension, 27)
 		let optDoc = try QRCode.Document(utf8String: text, engine: eGen)
 		XCTAssertEqual(27, optDoc.boolMatrix.dimension)
@@ -184,7 +184,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #if !os(watchOS)
 		do {
 			// Make sure we can detect the generated QR code
-			let optimImage = try XCTUnwrap(optDoc.cgImage(dimension: 300))
+			let optimImage = try optDoc.cgImage(dimension: 300)
 			let det2 = QRCode.DetectQRCodes(optimImage)
 			XCTAssertEqual(1, det2.count)
 			XCTAssertEqual(det2[0].messageString, text)
@@ -200,7 +200,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 
 		// Setting the text as a data representation, we avoid triggering the optimizations
 		// This will be our baseline for checking whether we trigger the optimizations
-		let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
+		let orig = try eGen.generate(data: data, errorCorrection: .quantize)
 		XCTAssertEqual(orig.dimension, 35)
 		let origDoc = try QRCode.Document(data: data, engine: eGen)
 		XCTAssertEqual(35, origDoc.boolMatrix.dimension)
@@ -208,7 +208,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #if !os(watchOS)
 		do {
 			// Make sure we can detect the generated QR code
-			let origImage = try XCTUnwrap(origDoc.cgImage(dimension: 300))
+			let origImage = try origDoc.cgImage(dimension: 300)
 			let det1 = QRCode.DetectQRCodes(origImage)
 			XCTAssertEqual(1, det1.count)
 			XCTAssertEqual(det1[0].messageString, text)
@@ -216,7 +216,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #endif
 
 		// Now, call the generator using the text, which means that the generator can optimize the content
-		let optim = try XCTUnwrap(eGen.generate(text: text, errorCorrection: .quantize))
+		let optim = try eGen.generate(text: text, errorCorrection: .quantize)
 		XCTAssertEqual(optim.dimension, 31)
 		let optDoc = try QRCode.Document(utf8String: text, engine: eGen)
 		XCTAssertEqual(31, optDoc.boolMatrix.dimension)
@@ -226,7 +226,7 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 #if !os(watchOS)
 		do {
 			// Make sure we can detect the generated QR code
-			let optimImage = try XCTUnwrap(optDoc.cgImage(dimension: 300))
+			let optimImage = try optDoc.cgImage(dimension: 300)
 			let det2 = QRCode.DetectQRCodes(optimImage)
 			XCTAssertEqual(1, det2.count)
 			XCTAssertEqual(det2[0].messageString, text)
@@ -242,10 +242,10 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			let message = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:"
 			let data = try XCTUnwrap(message.data(using: .ascii))
 
-			let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
+			let orig = try eGen.generate(data: data, errorCorrection: .quantize)
 			XCTAssertEqual(35, orig.dimension)
 
-			let opti = try XCTUnwrap(eGen.generate(text: message, errorCorrection: .quantize))
+			let opti = try eGen.generate(text: message, errorCorrection: .quantize)
 			XCTAssertEqual(31, opti.dimension)
 
 			// Don't need to check this (its already true via the above asserts), but my brain won't let it go.
@@ -257,10 +257,10 @@ final class QRCodeExternalGenerationTests: XCTestCase {
 			let message = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYz $%*+-./:"
 			let data = try XCTUnwrap(message.data(using: .ascii))
 
-			let orig = try XCTUnwrap(eGen.generate(data: data, errorCorrection: .quantize))
+			let orig = try eGen.generate(data: data, errorCorrection: .quantize)
 			XCTAssertEqual(35, orig.dimension)
 
-			let opti = try XCTUnwrap(eGen.generate(text: message, errorCorrection: .quantize))
+			let opti = try eGen.generate(text: message, errorCorrection: .quantize)
 			XCTAssertEqual(35, opti.dimension)
 
 			// Don't need to check this (its already true via the above asserts), but my brain won't let it go.

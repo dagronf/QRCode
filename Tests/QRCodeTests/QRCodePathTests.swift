@@ -81,7 +81,7 @@ final class QRCodePathTests: XCTestCase {
 					}
 
 					let filename = "basic-path-\(generator.name)-\(comp.1)-qs\(quietSpace).png"
-					let png = try XCTUnwrap(b1.representation.png())
+					let png = try b1.representation.png()
 					let link = try imageStore.store(png, filename: filename)
 					markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
 				}
@@ -126,7 +126,7 @@ final class QRCodePathTests: XCTestCase {
 			}
 
 			let filename = "path-registration.png"
-			let png = try XCTUnwrap(b1.representation.png())
+			let png = try b1.representation.png()
 			let link = try imageStore.store(png, filename: filename)
 
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"300\" /></a> |"
@@ -153,7 +153,7 @@ final class QRCodePathTests: XCTestCase {
 			}
 
 			let filename = "path-registration-background.png"
-			let png = try XCTUnwrap(b1.representation.png())
+			let png = try b1.representation.png()
 			let link = try imageStore.store(png, filename: filename)
 
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"300\" /></a> &nbsp;"
@@ -190,7 +190,7 @@ final class QRCodePathTests: XCTestCase {
 			}
 
 			let filename = "eye-background-(\(generator.name)).png"
-			let png = try XCTUnwrap(b1.representation.png())
+			let png = try b1.representation.png()
 			let link = try imageStore.store(png, filename: filename)
 
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"

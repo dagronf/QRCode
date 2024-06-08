@@ -63,12 +63,17 @@ enum TestErrors: Error {
 	case invalidImage
 }
 
-// Load a CGImage from an image resource
-func resourceImage(for resource: String, extension extn: String) throws -> CGImage {
-	guard let logoURL = Bundle.module.url(forResource: resource, withExtension: extn) else {
+// Get a URL from the test bundle
+func resourceURL(for resource: String, extension extn: String) throws -> URL {
+	guard let url = Bundle.module.url(forResource: resource, withExtension: extn) else {
 		throw TestErrors.invalidURL
 	}
+	return url
+}
 
+// Load a CGImage from an image resource
+func resourceImage(for resource: String, extension extn: String) throws -> CGImage {
+	let logoURL = try resourceURL(for: resource, extension: extn)
 	guard let logoImage = CommonImage(contentsOfFile: logoURL.path)?.cgImage() else {
 		throw TestErrors.invalidImage
 	}
@@ -80,6 +85,13 @@ func resourceCommonImage(for resource: String, extension extn: String) throws ->
 	let image = try resourceImage(for: resource, extension: extn)
 	return CommonImage(cgImage: image)
 }
+
+func resourceString(for resource: String, extension extn: String) throws -> String {
+	let url = try resourceURL(for: resource, extension: extn)
+	return try String(contentsOf: url)
+}
+
+//
 
 func roundTripEncodeDecode<Object: Codable>(_ object: Object) throws -> (data: Data, object: Object) {
 	let data = try JSONEncoder().encode(object)
@@ -228,4 +240,20 @@ func generateAllOutputImageTypes(
 	// SVG
 	let svgData = try document.svgData(dimension: dimension)
 	try outputFolder.write(svgData, to: "\(name).svg")
+}
+
+enum ValidateQRCode: Error {
+	case cannotValidate
+}
+
+func XCTValidateSingleQRCode(_ image: CGImage, expectedText: String) throws {
+#if !os(watchOS)
+	let result = QRCode.DetectQRCodes(image)
+	guard
+		result.count == 1,
+		expectedText == result.first!.messageString
+	else {
+		throw ValidateQRCode.cannotValidate
+	}
+#endif
 }

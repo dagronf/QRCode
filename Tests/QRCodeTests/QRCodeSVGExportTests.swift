@@ -53,7 +53,7 @@ final class QRCodeSVGTests: XCTestCase {
 			try outputFolder.write(svg1, to: "solidFillGeneration.svg")
 
 			let image = try code.platformImage(dimension: 300, dpi: 144)
-			let data = image.pngRepresentation()!
+			let data = try image.representation.png()
 			try outputFolder.write(data, to: "solidFillGeneration.png")
 		}
 	}
@@ -93,7 +93,7 @@ final class QRCodeSVGTests: XCTestCase {
 		try outputFolder.write(svg1, to: "svgExportLinearFill.svg")
 
 		let image = try code.platformImage(dimension: 300, dpi: 144)
-		let data = image.pngRepresentation()!
+		let data = try image.representation.png()
 		try outputFolder.write(data, to: "svgExportLinearFill.png")
 	}
 
@@ -128,7 +128,7 @@ final class QRCodeSVGTests: XCTestCase {
 		try outputFolder.write(svg1, to: "svgExportRadialFill.svg")
 
 		let image = try code.platformImage(dimension: 300, dpi: 144)
-		let data = image.pngRepresentation()!
+		let data = try image.representation.png()
 		try outputFolder.write(data, to: "svgExportRadialFill.png")
 	}
 
@@ -269,8 +269,7 @@ final class QRCodeSVGTests: XCTestCase {
 		//			encoding: .utf8
 		//		)
 		
-		let url = try XCTUnwrap(Bundle.module.url(forResource: "Issue19Generated", withExtension: "svg"))
-		let existing = try String(contentsOf: url)
+		let existing = try resourceString(for: "Issue19Generated", extension: "svg")
 		XCTAssertEqual(str, existing)
 	}
 	#endif

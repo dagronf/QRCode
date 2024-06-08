@@ -342,7 +342,7 @@ extension QRCodeView: NSPasteboardItemDataProvider {
 			pasteboard.setData(imageData, forType: .tiff)
 		}
 		else if type == .png,
-			let pngdata = try? self._document.nsImage(self.dragImageSize, dpi: 144).pngRepresentation() {
+			let pngdata = try? self._document.nsImage(self.dragImageSize, dpi: 144).representation.png() {
 			pasteboard.setData(pngdata, forType: .png)
 		}
 		else if type == PasteboardFilePromiseContent {

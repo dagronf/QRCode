@@ -29,7 +29,7 @@ final class QRCodeDetectionTests: XCTestCase {
 		// Create a QR code from the doc, then detect it back in and check that
 		// the strings match
 		doc.utf8String = _msg
-		let imaged = try XCTUnwrap(doc.cgImage(CGSize(width: 600, height: 600)))
+		let imaged = try doc.cgImage(CGSize(width: 600, height: 600))
 
 		// ... now attempt to detect the text from the generated image
 
@@ -59,7 +59,7 @@ final class QRCodeDetectionTests: XCTestCase {
 		doc.utf8String = _msg
 
 		// Generate a basic QR code image
-		let imaged = try XCTUnwrap(doc.cgImage(CGSize(width: 600, height: 600)))
+		let imaged = try doc.cgImage(CGSize(width: 600, height: 600))
 
 		// ... now attempt to detect the text from the generated image
 
@@ -72,10 +72,9 @@ final class QRCodeDetectionTests: XCTestCase {
 
 	func testDetectFromImage() throws {
 		do {
-			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "qrcodes-image", withExtension: "jpg"))
-			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
+			let image = try resourceCommonImage(for: "qrcodes-image", extension: "jpg")
 
-			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			let results = QRCode.DetectQRCodes(in: image)
 			XCTAssertEqual(5, results.count)
 			for i in 0..<5 {
 				XCTAssertEqual("http://www.qrstuff.com", results[i].messageString)
@@ -83,10 +82,8 @@ final class QRCodeDetectionTests: XCTestCase {
 		}
 
 		do {
-			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "nsw-health", withExtension: "jpg"))
-			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
-
-			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			let image = try resourceCommonImage(for: "nsw-health", extension: "jpg")
+			let results = QRCode.DetectQRCodes(in: image)
 			XCTAssertEqual(1, results.count)
 			let msg = try XCTUnwrap(results[0].messageString)
 			XCTAssertTrue(msg.starts(with: "https://www.service.nsw.gov.au/campaign"))
@@ -99,10 +96,8 @@ final class QRCodeDetectionTests: XCTestCase {
 		}
 
 		do {
-			let imageURL = try XCTUnwrap(Bundle.module.url(forResource: "example-com", withExtension: "jpg"))
-			let image = try XCTUnwrap(CommonImage(contentsOfFile: imageURL.path))
-
-			let results = try XCTUnwrap(QRCode.DetectQRCodes(in: image))
+			let image = try resourceCommonImage(for: "example-com", extension: "jpg")
+			let results = QRCode.DetectQRCodes(in: image)
 			XCTAssertEqual(1, results.count)
 			XCTAssertEqual("www.example.com", results[0].messageString)
 
@@ -120,7 +115,7 @@ final class QRCodeDetectionTests: XCTestCase {
 			let url = try XCTUnwrap(QRCode.Message.Link(string: "https://www.apple.com/mac-studio/"))
 			let code = try QRCode.Document(message: url)
 
-			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+			let outputImage = try code.cgImage(dimension: 150)
 
 			let qrr = QRCode.DetectQRCodes(outputImage)
 			XCTAssertEqual(1, qrr.count)
@@ -131,7 +126,7 @@ final class QRCodeDetectionTests: XCTestCase {
 			let url = try XCTUnwrap(QRCode.Message.Text("बिलार आ कुकुर आ मछरी आ चिरई-चुरुंग के"))
 			let code = try QRCode.Document(message: url)
 
-			let outputImage = try XCTUnwrap(code.cgImage(dimension: 150))
+			let outputImage = try code.cgImage(dimension: 150)
 
 			let qrr = QRCode.DetectQRCodes(outputImage)
 			XCTAssertEqual(1, qrr.count)
@@ -146,7 +141,7 @@ final class QRCodeDetectionTests: XCTestCase {
 
 		// Convert to image and detect qr codes
 		do {
-			let imaged = try XCTUnwrap(qrCode.cgImage(CGSize(width: 600, height: 600)))
+			let imaged = try qrCode.cgImage(CGSize(width: 600, height: 600))
 			let features = QRCode.DetectQRCodes(imaged)
 			let first = features[0]
 			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
@@ -157,7 +152,7 @@ final class QRCodeDetectionTests: XCTestCase {
 		design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 
 		do {
-			let img = try XCTUnwrap(qrCode.cgImage(CGSize(width: 500, height: 500), design: design))
+			let img = try qrCode.cgImage(CGSize(width: 500, height: 500), design: design)
 			let features = QRCode.DetectQRCodes(img)
 			let first = features[0]
 			XCTAssertEqual("https://www.apple.com.au/", first.messageString)
@@ -174,7 +169,7 @@ final class QRCodeDetectionTests: XCTestCase {
 			let t = QRCode.LogoTemplate(image: image, path: p)
 			doc.logoTemplate = t
 
-			let image = try XCTUnwrap(doc.cgImage(dimension: 300))
+			let image = try doc.cgImage(dimension: 300)
 #if os(macOS)
 			let nsImage = NSImage(cgImage: image, size: .zero)
 			XCTAssertNotNil(nsImage)
@@ -194,7 +189,7 @@ final class QRCodeDetectionTests: XCTestCase {
 			let t = QRCode.LogoTemplate(image: logoImage, path: p)
 			doc.logoTemplate = t
 
-			let image = try XCTUnwrap(doc.cgImage(dimension: 300))
+			let image = try doc.cgImage(dimension: 300)
 #if os(macOS)
 			let nsImage = NSImage(cgImage: image, size: .zero)
 			XCTAssertNotNil(nsImage)

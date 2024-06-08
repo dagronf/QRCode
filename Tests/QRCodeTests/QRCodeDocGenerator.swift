@@ -107,7 +107,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					doc.errorCorrection = enc
 					doc.design.shape.onPixels = generator
 
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					let cgImage = try doc.cgImage(dimension: dimension)
 #if !os(watchOS)
 					let fs = QRCode.DetectQRCodes(cgImage)
 					let detected = fs.count == 1 && fs[0].messageString == text
@@ -129,7 +129,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 				do {
 					doc.design.shape.negatedOnPixelsOnly = true
-					let inverted = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let inverted = try doc.pdfData(dimension: dimension)
 					let filename = "pixelnegated - \(name).pdf"
 					let link = try imageStore.store(inverted, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
@@ -160,7 +160,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.onPixels = generator
 				doc.design.shape.negatedOnPixelsOnly = false
 
-				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+				let cgImage = try doc.cgImage(dimension: dimension)
 #if !os(watchOS)
 				let fs = QRCode.DetectQRCodes(cgImage)
 				let detected = fs.count == 1 && fs[0].messageString == text
@@ -180,7 +180,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 			do {
 				doc.design.shape.negatedOnPixelsOnly = true
-				let inverted = try XCTUnwrap(doc.pdfData(dimension: dimension))
+				let inverted = try doc.pdfData(dimension: dimension)
 				let filename = "pixelnegated - \(name).pdf"
 				let link = try imageStore.store(inverted, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
@@ -233,7 +233,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.style.eye = QRCode.FillStyle.Solid(0.6, 0, 0)
 
 			do {
-				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+				let cgImage = try doc.cgImage(dimension: dimension)
 #if !os(watchOS)
 				let fs = QRCode.DetectQRCodes(cgImage)
 				let detected = fs.count == 1 && fs[0].messageString == "QR Code generation test"
@@ -257,7 +257,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let filename = "eye - \(name).pdf"
-				let pdf = try XCTUnwrap(doc.pdfData(dimension: dimension))
+				let pdf = try doc.pdfData(dimension: dimension)
 				let link = try imageStore.store(pdf, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>pdf|"
 			}
@@ -310,7 +310,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.style.pupil = QRCode.FillStyle.Solid(0.6, 0, 0)
 
 			do {
-				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+				let cgImage = try doc.cgImage(dimension: dimension)
 
 #if !os(watchOS)
 				let fs = QRCode.DetectQRCodes(cgImage)
@@ -335,7 +335,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let filename = "pupil - \(name).pdf"
-				let pdf = try XCTUnwrap(doc.pdfData(dimension: dimension))
+				let pdf = try doc.pdfData(dimension: dimension)
 				let link = try imageStore.store(pdf, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a><br/>pdf|"
 			}
@@ -372,7 +372,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " png |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+				let cgImage = try doc.cgImage(dimension: dimension)
 				let content = try cgImage.representation.png()
 				let filename = "fillstyle-solid-\(item.offset).png"
 				let link = try imageStore.store(content, filename: filename)
@@ -393,7 +393,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += " pdf |"
 			for item in styles.enumerated() {
 				doc.design.style.setForegroundStyle(item.element)
-				let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
+				let image = try doc.pdfData(dimension: dimension)
 				let filename = "fillstyle-solid-\(item.offset).pdf"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
@@ -437,7 +437,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.design.style.setForegroundStyle(item.element)
-					let cgImage = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					let cgImage = try doc.cgImage(dimension: dimension)
 					let content = try cgImage.representation.png()
 					let filename = "fillstyle-linear-\(item.offset)-qs\(aqs).png"
 					let link = try imageStore.store(content, filename: filename)
@@ -468,7 +468,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.design.style.setForegroundStyle(item.element)
-					let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let image = try doc.pdfData(dimension: dimension)
 					let filename = "fillstyle-linear-\(item.offset)-qs\(aqs).pdf"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -517,7 +517,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.style.setForegroundStyle(item.element.1)
 					doc.design.additionalQuietZonePixels = UInt(aqs)
-					let image = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					let image = try doc.cgImage(dimension: dimension)
 					let content = try image.representation.png()
 					let filename = "fillstyle-radial-\(item.offset)-\(item.element.0)-qs\(aqs).png"
 					let link = try imageStore.store(content, filename: filename)
@@ -546,7 +546,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5, 10].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.design.style.setForegroundStyle(item.element.1)
-					let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let image = try doc.pdfData(dimension: dimension)
 					let filename = "fillstyle-radial-\(item.offset)-\(item.element.0)-qs\(aqs).pdf"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -590,7 +590,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.logoTemplate = item.element
-					let image = try XCTUnwrap(doc.cgImage(dimension: dimension))
+					let image = try doc.cgImage(dimension: dimension)
 					let content = try image.representation.png()
 					let filename = "logo-\(item.offset)-aqs\(aqs).png"
 					let link = try imageStore.store(content, filename: filename)
@@ -620,7 +620,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				try [0, 5].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
 					doc.logoTemplate = item.element
-					let image = try XCTUnwrap(doc.pdfData(dimension: dimension))
+					let image = try doc.pdfData(dimension: dimension)
 					let filename = "logo-\(item.offset)-aqs\(aqs).pdf"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -653,7 +653,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			])!
 		)
 
-		let fillImage = try XCTUnwrap(c3.makeImage(dimension: 500))
+		let fillImage = try c3.makeImage(dimension: 500)
 		XCTAssertEqual(500, fillImage.width)
 		XCTAssertEqual(500, fillImage.height)
 
@@ -674,7 +674,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				markdownText += "| PNG |"
 				try [0, 2, 4, 6].forEach { cr in
 					doc.design.style.backgroundFractionalCornerRadius = cr
-					let content = try XCTUnwrap(doc.imageData(.png(), dimension: 300))
+					let content = try doc.imageData(.png(), dimension: 300)
 					let filename = "corner-radius-solid-\(cr)-\(count).png"
 					let link = try imageStore.store(content, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
@@ -683,7 +683,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				markdownText += "| SVG |"
 				try [0, 2, 4, 6].forEach { cr in
 					doc.design.style.backgroundFractionalCornerRadius = cr
-					let content = try XCTUnwrap(doc.imageData(.svg, dimension: 300))
+					let content = try doc.imageData(.svg, dimension: 300)
 					let filename = "corner-radius-solid-\(cr)-\(count).svg"
 					let link = try imageStore.store(content, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
@@ -855,7 +855,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			_ = g.setSettingValue(1, forKey: QRCode.SettingsKey.cornerRadiusFraction)
 			doc.design.shape.onPixels = g
 
-			let image = try XCTUnwrap(doc.imageData(.jpg(dpi: 72, compression: 0.5), dimension: 500))
+			let image = try doc.imageData(.jpg(dpi: 72, compression: 0.5), dimension: 500)
 			let filename = "usePixelShape-\(name).jpg"
 			let link = try imageStore.store(image, filename: filename)
 			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
@@ -975,9 +975,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			// -------------------
 			try {
 				let doc = try QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking", errorCorrection: .high)
-
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "corner-heart", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "corner-heart", extension: "png")
 
 				doc.design.backgroundColor(.commonBlack)
 				doc.design.foregroundStyle(
@@ -1009,8 +1007,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let doc = try QRCode.Document(utf8String: "QRCode stylish design - bottom right corner masking with quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 3
 
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "corner-heart", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "corner-heart", extension: "png")
 
 				doc.design.backgroundColor(.commonBlack)
 				doc.design.foregroundStyle(
@@ -1041,8 +1038,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			try {
 				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "logo", extension: "png")
 				doc.logoTemplate = QRCode.LogoTemplate(image: logoImage)
 				return ("design-logo-masking-using-transparency", doc)
 			}(),
@@ -1051,8 +1047,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image's transparency with quiet space", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 				doc.design.additionalQuietZonePixels = 6
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "logo", extension: "png")
 				doc.logoTemplate = QRCode.LogoTemplate(image: logoImage)
 				return ("design-logo-masking-using-transparency-and-quiet-space", doc)
 			}(),
@@ -1061,8 +1056,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code (without masking) with quiet space", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
 				doc.design.additionalQuietZonePixels = 3
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "logo", extension: "png")
 				doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, masksQRCodePixels: false)
 				return ("design-logo-masking-using-transparency-without-masking-and-quiet-space", doc)
 			}(),
@@ -1070,12 +1064,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			try {
 				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image", errorCorrection: .high)
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
-
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-
-				let logoMaskURL = try XCTUnwrap(Bundle.module.url(forResource: "logo-mask", withExtension: "png"))
-				let logoMaskImage = try XCTUnwrap(CommonImage(contentsOfFile: logoMaskURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "logo", extension: "png")
+				let logoMaskImage = try resourceImage(for: "logo-mask", extension: "png")
 				doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, maskImage: logoMaskImage)
 				return ("design-logo-masking", doc)
 			}(),
@@ -1084,12 +1074,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let doc = try QRCode.Document(utf8String: "Adding a logo to a QR code using an image and a masking image with quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.style.background = QRCode.FillStyle.Solid(255.0/255.0, 255.0/255.0, 158.0/255.0)
-
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "logo", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-
-				let logoMaskURL = try XCTUnwrap(Bundle.module.url(forResource: "logo-mask", withExtension: "png"))
-				let logoMaskImage = try XCTUnwrap(CommonImage(contentsOfFile: logoMaskURL.path)?.cgImage())
+				let logoImage = try resourceImage(for: "logo", extension: "png")
+				let logoMaskImage = try resourceImage(for: "logo-mask", extension: "png")
 				doc.logoTemplate = QRCode.LogoTemplate(image: logoImage, maskImage: logoMaskImage)
 				return ("design-logo-masking-quiet-space", doc)
 			}(),
@@ -1114,9 +1100,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-
+				let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
 				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path", errorCorrection: .high)
 				doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
 				doc.design.shape.negatedOnPixelsOnly = true
@@ -1130,9 +1114,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}(),
 			// -------------------
 			try {
-				let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "instagram-icon", withExtension: "png"))
-				let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
-
+				let logoImage = try resourceImage(for: "instagram-icon", extension: "png")		
 				let doc = try QRCode.Document(utf8String: "QRCode drawing only the 'off' pixels of the qr code using fancy path and quiet space", errorCorrection: .high)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.shape.onPixels = QRCode.PixelShape.CurvePixel(cornerRadiusFraction: 0.8)
@@ -1154,7 +1136,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|:-----:|:-----:|:-----:|\n"
 
 			for item in exporters {
-				let data = try XCTUnwrap(doc.1.imageData(item, dimension: dimension))
+				let data = try doc.1.imageData(item, dimension: dimension)
 				let filename = "\(doc.0).\(item.fileExtension)"
 				let link = try imageStore.store(data, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1193,7 +1175,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|:-----:|:-----:|:-----:|\n"
 
 			for item in exporters {
-				let data = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+				let data = try doc.imageData(item, dimension: dimension)
 				let filename = "pixel-background-colors\(aqs > 0 ? "-quietspace" : "").\(item.fileExtension)"
 				let link = try imageStore.store(data, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1237,7 +1219,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				markdownText += "|:-----:|:-----:|:-----:|\n"
 
 				for item in exporters {
-					let data = try XCTUnwrap(doc.imageData(item, dimension: self.dimension))
+					let data = try doc.imageData(item, dimension: self.dimension)
 					let filename = "fillstyle-image-components\(aqs > 0 ? "-quietspace" : "").\(item.fileExtension)"
 					let link = try imageStore.store(data, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1254,7 +1236,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.style.background = backgroundImage
 
 				for item in exporters {
-					let data = try XCTUnwrap(doc.imageData(item, dimension: self.dimension))
+					let data = try doc.imageData(item, dimension: self.dimension)
 					let filename = "fillstyle-image-background\(aqs > 0 ? "-quietspace" : "").\(item.fileExtension)"
 					let link = try imageStore.store(data, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1281,7 +1263,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.foregroundColor(.commonWhite)
 
 				for item in exporters {
-					let data = try XCTUnwrap(doc.imageData(item, dimension: self.dimension))
+					let data = try doc.imageData(item, dimension: self.dimension)
 					let filename = "fillstyle-lineargradient-background\(aqs > 0 ? "-quietspace" : "").\(item.fileExtension)"
 					let link = try imageStore.store(data, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1304,7 +1286,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.foregroundColor(.commonWhite)
 
 				for item in exporters {
-					let data = try XCTUnwrap(doc.imageData(item, dimension: self.dimension))
+					let data = try doc.imageData(item, dimension: self.dimension)
 					let filename = "fillstyle-radialgradient-background\(aqs > 0 ? "-quietspace" : "").\(item.fileExtension)"
 					let link = try imageStore.store(data, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |"
@@ -1333,7 +1315,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-basictext-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1345,7 +1327,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let data = r1.data(using: .ascii)!
 				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-basictext-external-noopt.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1356,7 +1338,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-basictext-external.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1379,7 +1361,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-numerics-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1391,7 +1373,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let data = r1.data(using: .ascii)!
 				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-numerics-external-noopt.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1402,7 +1384,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-numerics-external.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1425,7 +1407,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1437,7 +1419,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let data = r1.data(using: .ascii)!
 				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-external-noopt.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1448,7 +1430,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-external.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1472,7 +1454,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-default.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1484,7 +1466,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let data = r1.data(using: .ascii)!
 				let doc1 = try QRCode.Document(data: data, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-external-noopt.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1495,7 +1477,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			do {
 				let doc1 = try QRCode.Document(utf8String: r1, engine: QRCodeEngineExternal())
 				doc1.design.foregroundColor(externalColor)
-				let image = try XCTUnwrap(doc1.imageData(.jpg(), dimension: 250))
+				let image = try doc1.imageData(.jpg(), dimension: 250)
 				let filename = "generator-alphanum-external.jpg"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a> <br/> size=\(doc1.boolMatrix.dimension)"
@@ -1529,7 +1511,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.shape.eye = QRCode.EyeShape.Edges()
 
 			for item in exporters {
-				let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+				let image = try doc.imageData(item, dimension: dimension)
 				let filename = "background-fill-linear.\(item.fileExtension)"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
@@ -1555,7 +1537,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			doc.design.style.background = radial
 
 			for item in exporters {
-				let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+				let image = try doc.imageData(item, dimension: dimension)
 				let filename = "background-fill-radial.\(item.fileExtension)"
 				let link = try imageStore.store(image, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> | "
@@ -1566,8 +1548,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 		do {
 			markdownText += "### Image \n\n"
 
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+			let logoImage = try resourceImage(for: "photo-logo", extension: "jpg")
 
 			markdownText += "|  png  |  pdf  |  svg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|\n"
@@ -1580,7 +1561,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			for item in exporters {
 				try [0, 8, 16].forEach { aqs in
 					doc.design.additionalQuietZonePixels = UInt(aqs)
-					let image = try XCTUnwrap(doc.imageData(item, dimension: dimension))
+					let image = try doc.imageData(item, dimension: dimension)
 					let filename = "background-fill-image-quietspace-\(aqs).\(item.fileExtension)"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
@@ -1622,7 +1603,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 					doc.design.additionalQuietZonePixels = quietZone
 
-					let image = try XCTUnwrap(doc.imageData(.png(), dimension: dimension))
+					let image = try doc.imageData(.png(), dimension: dimension)
 					let filename = "eye-background-exclusion-zone-\(generator.name)-\(quietZone)-\(isFlipped).png"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "

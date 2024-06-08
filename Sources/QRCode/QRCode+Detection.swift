@@ -102,10 +102,8 @@ public extension QRCode {
 	/// - Returns: An array of detected QR Codes
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
-	@objc static func DetectQRCodes(in image: NSImage) -> [CIQRCodeFeature]? {
-		guard let im = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-			return nil
-		}
+	@objc static func DetectQRCodes(in image: NSImage) -> [CIQRCodeFeature] {
+		guard let im = image.cgImage else { return [] }
 		return Self.DetectQRCodes(im)
 	}
 }
@@ -119,10 +117,8 @@ public extension QRCode {
 	/// - Returns: An array of detected QR Codes
 	///
 	/// Note: If the QR code contains raw data (ie. not a string) CoreImage has no mechanism to extract raw data.
-	@objc static func DetectQRCodes(in image: UIImage) -> [CIQRCodeFeature]? {
-		guard let im = image.cgImage else {
-			return nil
-		}
+	@objc static func DetectQRCodes(in image: UIImage) -> [CIQRCodeFeature] {
+		guard let im = image.cgImage else { return [] }
 		return Self.DetectQRCodes(im)
 	}
 }

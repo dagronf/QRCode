@@ -9,18 +9,17 @@ final class QRCodeImageFillTests: XCTestCase {
 	func testBasic() throws {
 		let doc = try QRCode.Document(utf8String: "This is a test", engine: QRCodeEngineExternal())
 
-		let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "swift-logo", withExtension: "png"))
-		let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)).cgImage()!
+		let logoImage = try resourceImage(for: "swift-logo", extension: "png")
 
 		let backgroundImage = QRCode.FillStyle.Image(logoImage)
 
-		let fillImage = try XCTUnwrap(backgroundImage.makeImage(dimension: 500))
+		let fillImage = try backgroundImage.makeImage(dimension: 500)
 		XCTAssertEqual(500, fillImage.width)
 		XCTAssertEqual(500, fillImage.height)
 
 		doc.design.style.background = backgroundImage
 
-		let im1 = try XCTUnwrap(doc.platformImage(dimension: 600))
+		let im1 = try doc.platformImage(dimension: 600)
 		Swift.print(im1)
 
 		// Write out json data -- the image should be encoded as base64 PNG
@@ -31,13 +30,13 @@ final class QRCodeImageFillTests: XCTestCase {
 		let svgDataSuperLarge = try doc.svg(dimension: 3000)
 		try outputFolder.write(svgDataSuperLarge, to: "svgdata-superlarge.svg")
 
-		let doc2 = try XCTUnwrap(QRCode.Document.init(jsonData: rawData, engine: QRCodeEngineExternal()))
+		let doc2 = try QRCode.Document(jsonData: rawData, engine: QRCodeEngineExternal())
 		let fillStyle = try XCTUnwrap(doc2.design.style.background as? QRCode.FillStyle.Image)
 		XCTAssertNotNil(fillStyle.image)
 		XCTAssertEqual(fillStyle.image?.width, logoImage.width)
 		XCTAssertEqual(fillStyle.image?.height, logoImage.height)
 
-		let im2 = try XCTUnwrap(doc2.platformImage(dimension: 600))
+		let im2 = try doc2.platformImage(dimension: 600)
 		Swift.print(im2)
 
 		let svgData2 = try doc2.svg(dimension: 300)
@@ -65,7 +64,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		let pupilImage = QRCode.FillStyle.Image(logoImage3)
 
 		do {
-			let fillImage = try XCTUnwrap(pupilImage.makeImage(dimension: 500))
+			let fillImage = try pupilImage.makeImage(dimension: 500)
 			XCTAssertEqual(500, fillImage.width)
 			XCTAssertEqual(500, fillImage.height)
 		}

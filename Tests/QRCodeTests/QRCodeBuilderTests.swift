@@ -96,7 +96,7 @@ final class QRCodeBuilderTests: XCTestCase {
 			.url(URL(string: "https://www.worldwildlife.org/about")!)
 			.document
 
-		let ii = try XCTUnwrap(doc.cgImage(dimension: 758))
+		let ii = try doc.cgImage(dimension: 758)
 		try outputFolder.write(
 			try ii.imageData(for: .png()),
 			to: "builder-plain.png"

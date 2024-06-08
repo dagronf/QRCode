@@ -84,12 +84,12 @@ final class QRCodeTests: XCTestCase {
 			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
-			let data = try XCTUnwrap(doc1.jsonData())
-			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
+			let data = try doc1.jsonData()
+			let dataStr = try doc1.jsonStringFormatted()
 
-			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, engine: __testEngine))
+			let doc111 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 			XCTAssertNotNil(doc111)
-			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
+			let data111Str = try doc111.jsonStringFormatted()
 			XCTAssertEqual(dataStr, data111Str)
 		}
 		catch {
@@ -107,12 +107,12 @@ final class QRCodeTests: XCTestCase {
 			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
-			let data = try XCTUnwrap(doc1.jsonData())
-			let dataStr = try XCTUnwrap(doc1.jsonStringFormatted())
+			let data = try doc1.jsonData()
+			let dataStr = try doc1.jsonStringFormatted()
 
-			let doc111 = try XCTUnwrap(QRCode.Document.Create(jsonData: data, engine: __testEngine))
+			let doc111 = try QRCode.Document.Create(jsonData: data, engine: __testEngine)
 			XCTAssertNotNil(doc111)
-			let data111Str = try XCTUnwrap(doc111.jsonStringFormatted())
+			let data111Str = try doc111.jsonStringFormatted()
 			XCTAssertEqual(dataStr, data111Str)
 
 			// Check that the eye shape matches that which we encoded
@@ -131,8 +131,11 @@ final class QRCodeTests: XCTestCase {
 			let doc = try QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 			doc.design.backgroundColor(CGColor.commonClear)
 			doc.design.foregroundColor(CGColor.commonWhite)
-			let image = try doc.cgImage(CGSize(width: 800, height: 800))
-			let _ = try XCTUnwrap(image)
+			let image = try doc.cgImage(CGSize(width: 800, height: 600))
+			XCTAssertEqual(800, image.width)
+			XCTAssertEqual(600, image.height)
+
+			try XCTValidateSingleQRCode(image, expectedText: "Hi there!")
 		}
 	}
 
@@ -143,7 +146,7 @@ final class QRCodeTests: XCTestCase {
 			dimension: 300,
 			foregroundColor: CGColor.commonBlack
 		)
-		XCTAssertNotNil(image)
+		XCTAssertEqual(CGSize(width: 300, height: 300), image.size)
 
 		let doc = try QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 		doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true)
@@ -152,22 +155,23 @@ final class QRCodeTests: XCTestCase {
 		doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0.9)
 
 		let cgi = try doc.cgImage(dimension: 600)
-		Swift.print(cgi)
-		#if os(macOS)
-		let nsi = NSImage(cgImage: cgi, size: CGSize(dimension: 300))
-		Swift.print(nsi)
-		#endif
+		try XCTValidateSingleQRCode(cgi, expectedText: "Hi there!")
 	}
 
 	#if canImport(CoreImage)
 	func testDiff() throws {
 		let g1 = try QRCode.Document(utf8String: "This is a test", errorCorrection: .high)
 		let i1 = try g1.cgImage(.init(width: 300, height: 300))
+		try XCTValidateSingleQRCode(i1, expectedText: "This is a test")
+
 		let g2 = try QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
 		let i2 = try g2.cgImage(.init(width: 300, height: 300))
+		try XCTValidateSingleQRCode(i2, expectedText: "This is a test")
+
 		let g3 = try QRCode.Document(utf8String: "This is a test", errorCorrection: .quantize)
 		g3.design.backgroundColor(CGColor.gray(1, 0.9))
 		let i3 = try g3.cgImage(.init(width: 300, height: 300))
+		try XCTValidateSingleQRCode(i3, expectedText: "This is a test")
 
 		do {
 			// Check exact match
@@ -197,7 +201,7 @@ final class QRCodeTests: XCTestCase {
 #if os(macOS)
 		do {
 			for dpi in dpis {
-				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
+				let data = try doc.pngData(dimension: dpi.0, dpi: dpi.1)
 				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).png")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
@@ -208,7 +212,7 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			for dpi in dpis {
-				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
+				let data = try doc.tiffData(dimension: dpi.0, dpi: dpi.1)
 				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).tiff")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
@@ -219,7 +223,7 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			for dpi in dpis {
-				let data = try XCTUnwrap(doc.jpegData(dimension: dpi.0, dpi: dpi.1, compression: 0.4))
+				let data = try doc.jpegData(dimension: dpi.0, dpi: dpi.1, compression: 0.4)
 				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).jpg")
 				let im = try XCTUnwrap(NSImage(contentsOf: url))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
@@ -230,7 +234,7 @@ final class QRCodeTests: XCTestCase {
 #else
 		do {
 			for dpi in dpis {
-				let data = try XCTUnwrap(doc.pngData(dimension: dpi.0, dpi: dpi.1))
+				let data = try doc.pngData(dimension: dpi.0, dpi: dpi.1)
 				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).png")
 				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
@@ -239,7 +243,7 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			for dpi in dpis {
-				let data = try XCTUnwrap(doc.tiffData(dimension: dpi.0, dpi: dpi.1))
+				let data = try doc.tiffData(dimension: dpi.0, dpi: dpi.1)
 				let url = try outputFolder.write(data, to: "dpi-test-output\(dpi.2).tiff")
 				let im = try XCTUnwrap(UIImage(contentsOfFile: url.path))
 				XCTAssertEqual(CGSize(dimension: dpi.3), im.size)
@@ -249,12 +253,12 @@ final class QRCodeTests: XCTestCase {
 #endif
 
 		do {
-			let data = try XCTUnwrap(doc.pdfData(dimension: 300))
+			let data = try doc.pdfData(dimension: 300)
 			try outputFolder.write(data, to: "dpi-test-output.pdf")
 		}
 
 		do {
-			let data = try XCTUnwrap(doc.svgData(dimension: 300))
+			let data = try doc.svgData(dimension: 300)
 			try outputFolder.write(data, to: "dpi-test-output.svg")
 		}
 	}
@@ -264,7 +268,6 @@ final class QRCodeTests: XCTestCase {
 		do {
 			let doc = try QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
 			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4)
-			//doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 0, 0)
 			doc.design.style.onPixelsBackground = CGColor.commonBlack
 
 			// radial fill
@@ -279,15 +282,12 @@ final class QRCodeTests: XCTestCase {
 				centerPoint: CGPoint(x: 0.5, y: 0.5)
 			)
 
-			let fillImage = try XCTUnwrap(c.makeImage(dimension: 500))
+			let fillImage = try c.makeImage(dimension: 500)
 			XCTAssertEqual(500, fillImage.width)
 			XCTAssertEqual(500, fillImage.height)
 
 			doc.design.style.onPixels = c
-
-
 			doc.design.style.eyeBackground = CGColor.RGBA(0, 1, 1, 1)
-
 			doc.design.shape.offPixels = QRCode.PixelShape.Flower(insetFraction: 0.2)
 			doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 1, 0)
 
@@ -305,28 +305,29 @@ final class QRCodeTests: XCTestCase {
 
 			doc.design.style.offPixelsBackground = CGColor.commonWhite
 
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+			let logoImage = try resourceImage(for: "photo-logo", extension: "jpg")
 			doc.design.style.background = QRCode.FillStyle.Image(logoImage)
 
 			doc.design.additionalQuietZonePixels = 8
 
-			let image = try XCTUnwrap(doc.cgImage(dimension: 800))
+			let image = try doc.cgImage(dimension: 800)
 			XCTAssertEqual(image.width, 800)
 			XCTAssertEqual(image.height, 800)
+
+			try XCTValidateSingleQRCode(image, expectedText: "Hi there!")
 		}
 
 		do {
 			let doc = try QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
-			//doc.design.additionalQuietSpace = 100
 
-			let logoURL = try XCTUnwrap(Bundle.module.url(forResource: "photo-logo", withExtension: "jpg"))
-			let logoImage = try XCTUnwrap(CommonImage(contentsOfFile: logoURL.path)?.cgImage())
+			let logoImage = try resourceImage(for: "photo-logo", extension: "jpg")
 			doc.design.style.onPixels = QRCode.FillStyle.Image(logoImage)
 
-			let image = try XCTUnwrap(doc.cgImage(dimension: 800))
+			let image = try doc.cgImage(dimension: 800)
 			XCTAssertEqual(image.width, 800)
 			XCTAssertEqual(image.height, 800)
+
+			try XCTValidateSingleQRCode(image, expectedText: "Hi there!")
 		}
 	}
 
@@ -337,9 +338,8 @@ final class QRCodeTests: XCTestCase {
 			dimension: 36,
 			foregroundColor: CGColor.RGBA(1, 0, 0, 0.5)
 		)
-		let imd = try XCTUnwrap(im)
 
-		let o1 = try imd.representation.png()
+		let o1 = try im.representation.png()
 		try outputFolder.write(o1, to: "custom-pixelssample-default-36x36@1x.png")
 	}
 
@@ -358,8 +358,7 @@ final class QRCodeTests: XCTestCase {
 			foregroundColor: CGColor.commonBlack,
 			samplePixelMatrix: d3
 		)
-		let im3 = try XCTUnwrap(im)
-		let o1 = try im3.representation.jpeg(dpi: 144.0, compression: 0.75)
+		let o1 = try im.representation.jpeg(dpi: 144.0, compression: 0.75)
 		try outputFolder.write(o1, to: "custom-pixelssample-3x3-48x48@2x.jpg")
 	}
 
@@ -437,7 +436,8 @@ final class QRCodeTests: XCTestCase {
 
 			try allImages.forEach { item in
 				let n = "pixel-alignment-check-\(matrix.offset)-\(item.name).jpg"
-				try outputFolder.write(try item.image.representation.jpeg(scale: 2, compression: 0.5), to: n)
+				let image = try item.image.representation.jpeg(scale: 2, compression: 0.5)
+				try outputFolder.write(image, to: n)
 				markdownText += "<img src=\"./\(n)\" width=\"150\" /> &nbsp;"
 			}
 			markdownText += "\n\n"
@@ -464,14 +464,13 @@ final class QRCodeTests: XCTestCase {
 			samplePixelMatrix: d3
 		)
 
-		let im4 = try XCTUnwrap(im)
-		let o1 = try im4.representation.png(dpi: 144.0)
+		let o1 = try im.representation.png(dpi: 144.0)
 		try outputFolder.write(o1, to: "custom-pixelssample-4x4-36x36@2x.png")
 
 		#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 		
 		// Convert to a @2x UIImage
-		let uii = try XCTUnwrap(UIImage(cgImage: im4, scale: 2, orientation: .up))
+		let uii = try XCTUnwrap(UIImage(cgImage: im, scale: 2, orientation: .up))
 		XCTAssertEqual(CGSize(dimension: 36), uii.size)
 		XCTAssertEqual(2, uii.scale)
 
@@ -481,7 +480,7 @@ final class QRCodeTests: XCTestCase {
 		// For some reason, this creator fails on GitHub actions, but runs fine locally
 		//		let nsi = try XCTUnwrap(NSImage(cgImage: im4, size: CGSize(dimension: 36)))
 		let nsi = NSImage(size: NSSize(dimension: 36))
-		nsi.addRepresentation(NSBitmapImageRep(cgImage: im4))
+		nsi.addRepresentation(NSBitmapImageRep(cgImage: im))
 
 		XCTAssertEqual(CGSize(dimension: 36), nsi.size)
 		XCTAssertEqual(nsi.representations.count, 1)
@@ -494,14 +493,16 @@ final class QRCodeTests: XCTestCase {
 	#if !os(watchOS)
 	func testCGImageQuickGen() throws {
 		do {
-			let image = try XCTUnwrap(CGImage.qrCode("This is a test!!!", dimension: 300))
+			let image = try CGImage.qrCode("This is a test!!!", dimension: 300)
 			XCTAssertEqual(image.width, 300)
 			XCTAssertEqual(image.height, 300)
 			XCTAssertEqual(image.detectQRCodeStrings(), ["This is a test!!!"])
+
+			try XCTValidateSingleQRCode(image, expectedText: "This is a test!!!")
 		}
 
 		do {
-			let path = try XCTUnwrap(CGPath.qrCode("This is a test!!!", dimension: 300))
+			let path = try CGPath.qrCode("This is a test!!!", dimension: 300)
 
 			let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 			let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!

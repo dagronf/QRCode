@@ -16,12 +16,12 @@ final class QRCodeFillTests: XCTestCase {
 	}
 
 	func testSolidFill() throws {
-		let fillImage1 = try XCTUnwrap(QRCode.FillStyle.Solid(srgbRed: 1, green: 0, blue: 0).makeImage(dimension: 500))
-			let data1 = try fillImage1.representation.jpeg()
-			try outputFolder.write(data1, to: "solid-fill-1.jpg")
-			let fillImage2 = try XCTUnwrap(QRCode.FillStyle.Solid(srgbRed: 0, green: 0, blue: 1, alpha: 0.2).makeImage(dimension: 128))
-			let data2 = try fillImage2.representation.png()
-			try outputFolder.write(data2, to: "solid-fill-2.png")
+		let fillImage1 = try QRCode.FillStyle.Solid(srgbRed: 1, green: 0, blue: 0).makeImage(dimension: 500)
+		let data1 = try fillImage1.representation.jpeg()
+		try outputFolder.write(data1, to: "solid-fill-1.jpg")
+		let fillImage2 = try QRCode.FillStyle.Solid(srgbRed: 0, green: 0, blue: 1, alpha: 0.2).makeImage(dimension: 128)
+		let data2 = try fillImage2.representation.png()
+		try outputFolder.write(data2, to: "solid-fill-2.png")
 	}
 
 	func testLinearGradientFill() throws {
@@ -40,14 +40,14 @@ final class QRCodeFillTests: XCTestCase {
 			endPoint: CGPoint(x: 1, y: 1)
 		)
 		do {
-			let fillImage = try XCTUnwrap(linear.makeImage(dimension: 300))
+			let fillImage = try linear.makeImage(dimension: 300)
 			XCTAssertEqual(300, fillImage.width)
 			XCTAssertEqual(300, fillImage.height)
 			let data = try fillImage.representation.jpeg()
 			try outputFolder.write(data, to: "linear-fill.jpg")
 		}
 		do {
-			let fillImage = try XCTUnwrap(linear.makeImage(dimension: 300, isFlipped: true))
+			let fillImage = try linear.makeImage(dimension: 300, isFlipped: true)
 			XCTAssertEqual(300, fillImage.width)
 			XCTAssertEqual(300, fillImage.height)
 			let data = try fillImage.representation.jpeg()
@@ -67,7 +67,7 @@ final class QRCodeFillTests: XCTestCase {
 
 		let radial = QRCode.FillStyle.RadialGradient(gradient, centerPoint: CGPoint(x: 0.5, y: 0.5))
 		do {
-			let fillImage = try XCTUnwrap(radial.makeImage(dimension: 512, isFlipped: true))
+			let fillImage = try radial.makeImage(dimension: 512, isFlipped: true)
 			XCTAssertEqual(512, fillImage.width)
 			XCTAssertEqual(512, fillImage.height)
 			let data = try fillImage.representation.jpeg()
@@ -75,7 +75,7 @@ final class QRCodeFillTests: XCTestCase {
 		}
 
 		do {
-			let fillImage = try XCTUnwrap(radial.makeImage(width: 480, height: 640, isFlipped: true))
+			let fillImage = try radial.makeImage(width: 480, height: 640, isFlipped: true)
 			XCTAssertEqual(480, fillImage.width)
 			XCTAssertEqual(640, fillImage.height)
 			let data = try fillImage.representation.jpeg()
@@ -89,7 +89,7 @@ final class QRCodeFillTests: XCTestCase {
 			// Image fill
 			let logoImage = try resourceImage(for: "square-logo", extension: "png")
 			let fill = QRCode.FillStyle.Image(logoImage)
-			let fillImage = try XCTUnwrap(fill.makeImage(dimension: 500))
+			let fillImage = try fill.makeImage(dimension: 500)
 			XCTAssertEqual(500, fillImage.width)
 			XCTAssertEqual(500, fillImage.height)
 			let data = try fillImage.representation.jpeg()
@@ -100,7 +100,7 @@ final class QRCodeFillTests: XCTestCase {
 			// Image fill
 			let logoImage = try resourceImage(for: "square-logo", extension: "png")
 			let fill = QRCode.FillStyle.Image(logoImage)
-			let fillImage = try XCTUnwrap(fill.makeImage(width: 640, height: 480, isFlipped: true))
+			let fillImage = try fill.makeImage(width: 640, height: 480, isFlipped: true)
 			XCTAssertEqual(640, fillImage.width)
 			XCTAssertEqual(480, fillImage.height)
 			let data = try fillImage.representation.jpeg()
