@@ -103,7 +103,7 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/dagronf/qrcode.git", from: "18.0.0")
+.package(url: "https://github.com/dagronf/qrcode.git", from: "19.0.0")
 ```
 
 ### Cocoapods
