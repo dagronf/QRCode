@@ -313,28 +313,28 @@ final class QRCodeMaskingTests: XCTestCase {
 		try [0, 12].forEach { quietSpace in
 			doc.design.additionalQuietZonePixels = UInt(quietSpace)
 
-			let svgData = try XCTUnwrap(doc.svgData(dimension: 400))
+			let svgData = try doc.svgData(dimension: 400)
 			try outputFolder.write(svgData, to: "logotemplate-issue34-\(quietSpace).svg")
 
-			let pdfData = try XCTUnwrap(doc.pdfData(dimension: 400))
+			let pdfData = try doc.pdfData(dimension: 400)
 			try outputFolder.write(pdfData, to: "logotemplate-issue34-\(quietSpace).pdf")
 
-			let imageSame = try XCTUnwrap(doc.cgImage(width: 400, height: 400))
+			let imageSame = try doc.cgImage(width: 400, height: 400)
 			try outputFolder.write(try imageSame.imageData(for: .png()), to: "logotemplate-issue34-equal-\(quietSpace).png")
 
-			let pdfSame = try XCTUnwrap(doc.pdfData(width: 400, height: 400))
+			let pdfSame = try doc.pdfData(width: 400, height: 400)
 			try outputFolder.write(pdfSame, to: "logotemplate-issue34-equal-\(quietSpace).pdf")
 
-			let imagewBigger = try XCTUnwrap(doc.cgImage(width: 800, height: 400))
+			let imagewBigger = try doc.cgImage(width: 800, height: 400)
 			try outputFolder.write(try imagewBigger.imageData(for: .png()), to: "logotemplate-issue34-width-bigger-\(quietSpace).png")
 
-			let pdfwBigger = try XCTUnwrap(doc.pdfData(width: 800, height: 400))
+			let pdfwBigger = try doc.pdfData(width: 800, height: 400)
 			try outputFolder.write(pdfwBigger, to: "logotemplate-issue34-width-bigger-\(quietSpace).pdf")
 
-			let imagehBigger = try XCTUnwrap(doc.cgImage(width: 400, height: 800))
+			let imagehBigger = try doc.cgImage(width: 400, height: 800)
 			try outputFolder.write(try imagehBigger.imageData(for: .png()), to: "logotemplate-issue34-height-bigger-\(quietSpace).png")
 
-			let pdfhBigger = try XCTUnwrap(doc.pdfData(width: 400, height: 800))
+			let pdfhBigger = try doc.pdfData(width: 400, height: 800)
 			try outputFolder.write(pdfhBigger, to: "logotemplate-issue34-height-bigger-\(quietSpace).pdf")
 		}
 	}

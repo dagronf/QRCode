@@ -550,8 +550,8 @@ public extension QRCode.Document {
 	///   - width: The pixel width of the image to generate
 	///   - height: The pixel height of the image to generate
 	/// - Returns: The image, or nil if an error occurred
-	@objc func cgImage(width: CGFloat, height: CGFloat) -> CGImage? {
-		self.cgImage(CGSize(width: width, height: height))
+	@objc func cgImage(width: CGFloat, height: CGFloat) throws -> CGImage {
+		try self.cgImage(CGSize(width: width, height: height))
 	}
 
 	/// Returns a CGImage representation of the qr code
@@ -632,8 +632,8 @@ public extension QRCode.Document {
 	///   - height: The page height of the generated PDF
 	///   - pdfResolution: The resolution of the pdf output
 	/// - Returns: A data object containing the PDF representation of the QR code
-	@objc func pdfData(width: CGFloat, height: CGFloat, pdfResolution: CGFloat = 72.0) -> Data? {
-		self.pdfData(CGSize(width: width, height: height), pdfResolution: pdfResolution)
+	@objc func pdfData(width: CGFloat, height: CGFloat, pdfResolution: CGFloat = 72.0) throws -> Data {
+		try self.pdfData(CGSize(width: width, height: height), pdfResolution: pdfResolution)
 	}
 
 	/// Returns a pdf representation of the qr code document
