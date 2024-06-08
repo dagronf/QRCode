@@ -34,7 +34,8 @@ public extension QRCode.Message {
 		
 		/// Create a message containing a URL
 		/// - Parameters:
-		///   - url: The URL to encode
+		///   - latitude: The latitude for the location
+		///   - longitude: The longitude for the location
 		@objc public init(latitude: CLLocationDegrees, longitude: CLLocationDegrees) throws {
 			let t = "\(latitude),\(longitude)"
 			self.text = "geo:\(t)?q=\(t)"
