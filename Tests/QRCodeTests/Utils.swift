@@ -209,3 +209,23 @@ extension NSBezierPath {
 }
 
 #endif
+
+func generateAllOutputImageTypes(
+	for document: QRCode.Document,
+	in outputFolder: TestFilesContainer.Subfolder,
+	name: String,
+	dimension: Int
+) throws {
+	// PNG
+	let cgimage = try document.cgImage(dimension: dimension)
+	try outputFolder.write(try cgimage.representation.png(), to: "\(name).png")
+	try outputFolder.write(try cgimage.representation.jpeg(compression: 0.65), to: "\(name).jpg")
+
+	// PDF
+	let pdfData = try document.pdfData(dimension: dimension)
+	try outputFolder.write(pdfData, to: "\(name).pdf")
+
+	// SVG
+	let svgData = try document.svgData(dimension: dimension)
+	try outputFolder.write(svgData, to: "\(name).svg")
+}

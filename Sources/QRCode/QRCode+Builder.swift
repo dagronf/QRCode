@@ -77,10 +77,16 @@ public extension QRCode.Builder {
 	/// Set the text to encode
 	/// - Parameters:
 	///   - text: The text
-	///   - textEncoding: The string encoding to use when generating the qr code
 	/// - Returns: self
 	@discardableResult func text(_ text: String) throws -> QRCode.Builder {
 		try self.content.text(text)
+	}
+
+	/// Set data using base64 encoding
+	/// - Parameter data: The data
+	/// - Returns: self
+	@discardableResult func base64(_ data: Data) throws -> QRCode.Builder {
+		try self.content.text(data.base64EncodedString())
 	}
 
 	/// Set the URL to encode
