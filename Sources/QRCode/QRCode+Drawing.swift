@@ -205,7 +205,7 @@ public extension QRCode {
 
 			// logo drawing is flipped.
 			ctx.scaleBy(x: 1, y: -1)
-			ctx.translateBy(x: xoff - additionalQuietSpace, y: yoff - sz - additionalQuietSpace)
+			ctx.translateBy(x: xoff - additionalQuietSpace, y: yoff - rect.height - additionalQuietSpace)
 
 			// Clip to the mask path.
 			ctx.addPath(absMask)
