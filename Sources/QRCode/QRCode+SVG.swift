@@ -184,19 +184,11 @@ public extension QRCode {
 		{
 			// Store the image in the SVG as a base64 string
 
-			let abspath = logoTemplate.absolutePathForMaskPath(dimension: finalRect.width)
+			let abspath = logoTemplate.absolutePathForMaskPath(dimension: min(finalRect.width, finalRect.height))
 			let bounds = abspath.boundingBoxOfPath.insetBy(
 				dx: logoTemplate.inset,
 				dy: logoTemplate.inset
 			).offsetBy(dx: additionalQuietSpace, dy: additionalQuietSpace)
-
-//			do {
-//				let xPos   = _SVGF(bounds.origin.x)
-//				let yPos   = _SVGF(bounds.origin.y)
-//				let width  = _SVGF(bounds.size.width)
-//				let height = _SVGF(bounds.size.height)
-//				svg += " <rect x=\"\(xPos)\" y=\"\(yPos)\" width=\"\(width)\" height=\"\(height)\" stroke=\"black\" fill=\"transparent\" stroke-width=\"5\"/>\n "
-//			}
 
 			let imageb64d = pngData.base64EncodedData(options: [.lineLength64Characters, .endLineWithLineFeed])
 			let strImage = String(data: imageb64d, encoding: .ascii)!
