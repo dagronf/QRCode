@@ -64,7 +64,7 @@ class PupilStylesView: Element {
 
 			VStack(spacing: 4) {
 				HStack {
-					Label("flipped:").font(.callout)
+					Label("Flipped:").font(.callout)
 					Toggle()
 						.controlSize(.small)
 						.bindOnOff(pupilFlipped)
@@ -77,7 +77,7 @@ class PupilStylesView: Element {
 				}
 
 				HStack {
-					Label("inner corners:").font(.callout)
+					Label("Inner corners:").font(.callout)
 					Toggle()
 						.controlSize(.small)
 						.bindOnOff(pupilHasInnerCorners)
@@ -90,7 +90,7 @@ class PupilStylesView: Element {
 				}
 
 				HStack {
-					Label("corners:").font(.callout)
+					Label("Corners:").font(.callout)
 					Segmented(trackingMode: .selectAny) {
 						Segment("􀰼")
 						Segment("􀄔")

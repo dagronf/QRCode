@@ -32,7 +32,7 @@ class CommonSettingsView: Element {
 	lazy var body: Element =
 	VStack {
 		HStack(alignment: .firstBaseline) {
-			Label("text:").font(.callout)
+			Label("Text:").font(.callout)
 			TextField(qrText)
 				.height(72)
 				.width(250)
@@ -41,7 +41,7 @@ class CommonSettingsView: Element {
 
 		Grid {
 			GridRow {
-				Label("error correction:").font(.callout)
+				Label("Error correction:").font(.callout)
 				PopupButton {
 					MenuItem("Low")
 					MenuItem("Medium")
@@ -56,10 +56,10 @@ class CommonSettingsView: Element {
 			}
 
 			GridRow {
-				Label("generator:").font(.callout)
+				Label("Generator:").font(.callout)
 				PopupButton {
-					MenuItem("core image")
-					MenuItem("external")
+					MenuItem("Core Image")
+					MenuItem("External")
 				}
 				.controlSize(.small)
 				.bindSelection(generatorSelection)
@@ -67,20 +67,20 @@ class CommonSettingsView: Element {
 			}
 
 			GridRow {
-				Label("quiet space:").font(.callout)
+				Label("Quiet space:").font(.callout)
 				Slider(quietSpacePixels, range: 0.0 ... 10.0)
 					.controlSize(.small)
 					.numberOfTickMarks(9, allowsTickMarkValuesOnly: true)
 					.horizontalCompressionResistancePriority(.defaultHigh)
 			}
 			GridRow {
-				Label("corner radius:").font(.callout)
+				Label("Corner radius:").font(.callout)
 				Slider(backgroundCornerRadius, range: 0.0 ... 1.0)
 					.controlSize(.small)
 					.horizontalCompressionResistancePriority(.defaultHigh)
 			}
 			GridRow {
-				Label("negate:").font(.callout)
+				Label("Negate:").font(.callout)
 				Toggle()
 					.controlSize(.small)
 					.bindOnOff(negatePixels)

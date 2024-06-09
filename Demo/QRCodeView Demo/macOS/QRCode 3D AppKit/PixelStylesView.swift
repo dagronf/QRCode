@@ -67,7 +67,7 @@ class PixelStylesView: Element {
 
 		VStack(spacing: 4) {
 			HStack {
-				Label("radius:").font(.callout)
+				Label("Radius:").font(.callout)
 				Slider(pixelCurveRadius, range: 0 ... 1)
 					.controlSize(.small)
 					.bindIsEnabled(pixelCurveRadiusEnabled)
@@ -87,7 +87,7 @@ class PixelStylesView: Element {
 			}
 
 			HStack {
-				Label("inset:").font(.callout)
+				Label("Inset:").font(.callout)
 				Slider(pixelInset, range: 0 ... 1)
 					.controlSize(.small)
 					.bindIsEnabled(pixelInsetEnabled)
@@ -107,7 +107,7 @@ class PixelStylesView: Element {
 			}
 
 			HStack {
-				Label("rotation:").font(.callout)
+				Label("Rotation:").font(.callout)
 				Slider(pixelRotation, range: 0 ... 1)
 					.controlSize(.small)
 					.bindIsEnabled(pixelRotationEnabled)

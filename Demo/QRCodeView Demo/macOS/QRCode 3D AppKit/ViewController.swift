@@ -75,7 +75,7 @@ class ViewController: DSFAppKitBuilderViewController {
 
 		let result = panel.runModal()
 
-		guard 
+		guard
 			result.rawValue == NSApplication.ModalResponse.OK.rawValue,
 			let src = panel.url,
 			let data = try? Data(contentsOf: src),
@@ -88,7 +88,6 @@ class ViewController: DSFAppKitBuilderViewController {
 		qrCodeObject.object = doc
 		self.updateDisplay()
 	}
-
 
 	override var viewBody: Element {
 		SplitView(isVertical: true) {

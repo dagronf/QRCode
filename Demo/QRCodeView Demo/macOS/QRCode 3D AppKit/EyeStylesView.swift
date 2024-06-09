@@ -66,7 +66,7 @@ class EyeStylesView: Element {
 		VStack(spacing: 4) {
 
 			HStack {
-				Label("radius:").font(.callout)
+				Label("Radius:").font(.callout)
 				Slider(eyeCornerRadius, range: 0 ... 1)
 					.controlSize(.small)
 					.bindIsEnabled(eyeCornerRadiusEnabled)
@@ -76,7 +76,7 @@ class EyeStylesView: Element {
 					}
 			}
 			HStack {
-				Label("flipped:").font(.callout)
+				Label("Flipped:").font(.callout)
 				Toggle()
 					.controlSize(.small)
 					.bindOnOff(eyeFlipped)
@@ -89,7 +89,7 @@ class EyeStylesView: Element {
 			}
 
 			HStack {
-				Label("corners:").font(.callout)
+				Label("Corners:").font(.callout)
 				Segmented(trackingMode: .selectAny) {
 					Segment("􀰼")
 					Segment("􀄔")
