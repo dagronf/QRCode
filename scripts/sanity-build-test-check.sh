@@ -7,69 +7,16 @@
 # Stop on error
 set -e
 
-echo "**"
-echo "** macOS x86 command line tool build..."
-echo "**"
-swift build -c release --arch x86_64
+ORIGDIR=$PWD
+BASEDIR=$(dirname $(realpath "$0"))
 
-echo "**"
-echo "** Basic ARM64 build attempt for macOS..."
-echo "**"
-swift build -c release --arch arm64
+echo "Testing starting..."
 
-echo "**"
-echo "** macOS build and test..."
-echo "**"
+${BASEDIR}/platform/macOS-build-test.sh
+${BASEDIR}/platform/macCatalyst-build-test.sh
+${BASEDIR}/platform/iOS-build-test.sh
+${BASEDIR}/platform/ipadOS-build-test.sh
+${BASEDIR}/platform/tvOS-build-test.sh
+${BASEDIR}/platform/watchOS-build-test.sh
 
-xcodebuild clean build archive test -scheme "QRCode" -destination 'platform=macOS' -quiet
-
-echo "** macOS build and test COMPLETE..."
-echo
-
-echo "**"
-echo "** macCatalyst build and test..."
-echo "**"
-
-xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=macOS,variant=Mac Catalyst' -quiet
-xcodebuild test -scheme "QRCode" -destination 'platform=macOS,variant=Mac Catalyst' -quiet
-
-echo "** macCatalyst build and test COMPLETE..."
-echo
-
-echo "**"
-echo "** iOS build and test..."
-echo "**"
-
-xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=iOS' -quiet
-xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' -quiet
-
-echo "** iOS build and test COMPLETE..."
-echo
-
-echo "**"
-echo "** ipadOS build and test..."
-echo "**"
-
-xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' -quiet
-
-echo "** ipadOS build and test COMPLETE..."
-echo
-
-echo "**"
-echo "** tvOS build and test..."
-echo "**"
-
-xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=tvOS' -quiet
-xcodebuild test -scheme "QRCode" -destination 'platform=tvOS Simulator,name=Apple TV' -quiet
-
-echo "** tvOS build and test COMPLETE..."
-echo
-
-echo "**"
-echo "** watchOS build and test..."
-echo "**"
-
-xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=watchOS' -quiet
-xcodebuild test -scheme "QRCode" -destination 'platform=watchOS Simulator,name=Apple Watch Series 5 (40mm)' -quiet
-
-echo "** watchOS build and test COMPLETE..."
+echo "... testing complete"
