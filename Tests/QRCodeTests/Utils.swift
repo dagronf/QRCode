@@ -244,6 +244,20 @@ func generateAllOutputImageTypes(
 
 enum ValidateQRCode: Error {
 	case cannotValidate
+	case cannotDetect
+}
+
+func detectFirstQRCodeMessage(_ image: CGImage) throws -> String {
+#if !os(watchOS)
+	let result = QRCode.DetectQRCodes(image)
+	if
+		result.count == 1,
+		let scanned = result.first?.messageString
+	{
+		return scanned
+	}
+#endif
+	throw ValidateQRCode.cannotDetect
 }
 
 func XCTValidateSingleQRCode(_ image: CGImage, expectedText: String) throws {

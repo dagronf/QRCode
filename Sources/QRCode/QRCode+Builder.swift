@@ -98,6 +98,14 @@ public extension QRCode.Builder {
 		try self.content.url(url)
 	}
 
+	/// Set the formatted content
+	/// - Parameter content: The formatted content
+	/// - Returns: self
+	@discardableResult func content(_ formattedContent: QRCode.Document.FormattedContent) throws -> QRCode.Builder {
+		try self.document.setFormattedContent(formattedContent)
+		return self
+	}
+
 	/// The content settings for the QR Code
 	var content: Content { Content(builder: self) }
 

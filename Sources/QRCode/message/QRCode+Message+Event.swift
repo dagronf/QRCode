@@ -1,5 +1,5 @@
 //
-//  QRCode+Message+Location.swift
+//  QRCode+Message+Event.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -21,23 +21,54 @@
 
 import Foundation
 
+/*
+ BEGIN:VEVENT
+ SUMMARY:event-title
+ LOCATION:event-location
+ DTSTART:20240608T173600
+ DTEND:20240608T173600
+ END:VEVENT
+ */
+
 public extension QRCode.Message {
-	/// A formattter for a generating a QRCode with a map location
-	@objc(QRCodeMessageLocation) class Location: NSObject, QRCodeMessageFormatter {
+	/// A formattter for a generating a basic event QRCode
+	@objc(QRCodeMessageEvent) class Event: NSObject, QRCodeMessageFormatter {
 		/// The encoded data
 		public let data: Foundation.Data
 		/// The content to be displayed in the qr code
 		public let text: String?
 
-		// geo:-37.81454463833333,144.9653524820813?q=-37.81454463833333,144.9653524820813
-		
-		/// Create a message containing a URL
+		/// Create a message containing an event
 		/// - Parameters:
-		///   - latitude: The latitude for the location
-		///   - longitude: The longitude for the location
-		@objc public init(latitude: Double, longitude: Double) throws {
-			let t = "\(latitude),\(longitude)"
-			self.text = "geo:\(t)?q=\(t)"
+		///   - summary: The event summary
+		///   - location: The event's location
+		///   - start: The start time
+		///   - end: The end time
+		@objc public init(summary: String, location: String, start: Date, end: Date) throws {
+
+			let summary = summary.removing(charactersIn: "\r\n")
+			let location = location.removing(charactersIn: "\r\n")
+
+			var msg = "BEGIN:VEVENT\r\n"
+			msg += "SUMMARY:\(summary)\r\n"
+			msg += "LOCATION:\(location)\r\n"
+
+			// Convert dates to UTC
+			//19980119T070000Z
+
+
+			let df = DateFormatter()
+			df.timeZone = TimeZone(abbreviation: "UTC")
+			df.dateFormat = "yyyyMMdd'T'HHmmss'Z'"
+
+			let dtstart = df.string(from: start)
+			msg += "DTSTART:\(dtstart)\r\n"
+			let dtend = df.string(from: end)
+			msg += "DTEND:\(dtend)\r\n"
+
+			msg += "END:VEVENT"
+
+			self.text = msg
 			guard let msgData = self.text?.data(using: .utf8) else {
 				throw QRCodeError.unableToConvertTextToRequestedEncoding
 			}

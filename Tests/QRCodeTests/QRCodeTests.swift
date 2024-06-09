@@ -539,6 +539,17 @@ final class QRCodeTests: XCTestCase {
 		try outputFolder.write(png, to: "basic-qrcode-no-styling.png")
 	}
 
+	func testFormattedInitialiser() throws {
+		let urlcontent = "https://wildcaretas.org.au/tasmanian-nature-conservation-fund-grants/"
+		let url = URL(string: urlcontent)!
+		let code = try QRCode.Document(.link(url))
+		let image = try code.cgImage(dimension: 300)
+		let png = try image.representation.png(scale: 2)
+		try outputFolder.write(png, to: "basic-qrcode-formatted-input.png")
+
+		try XCTValidateSingleQRCode(image, expectedText: urlcontent)
+	}
+
 	func testEncoding() throws {
 		struct S1: Codable {
 			let text: String
