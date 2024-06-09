@@ -70,24 +70,24 @@ final class QRCodeSVGTests: XCTestCase {
 
 		code.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 		code.design.style.eye = QRCode.FillStyle.LinearGradient(
-			DSFGradient(
+			try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.sRGBA(0.6, 0.6, 0, 1), 0),
 					DSFGradient.Pin(CGColor.sRGBA(0.0, 0.4, 0, 1), 1),
 				]
-			)!,
+			),
 			startPoint: CGPoint(x: 0, y: 1),
 			endPoint: CGPoint(x: 1, y: 1)
 		)
 
 		// linear color
 		code.design.style.onPixels = QRCode.FillStyle.LinearGradient(
-			DSFGradient(
+			try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
 					DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1),
 				]
-			)!
+			)
 		)
 		let svg1 = try code.svg(dimension: 600)
 		try outputFolder.write(svg1, to: "svgExportLinearFill.svg")
@@ -113,13 +113,13 @@ final class QRCodeSVGTests: XCTestCase {
 
 		// radial fill
 		let c = QRCode.FillStyle.RadialGradient(
-			DSFGradient(
+			try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
 					DSFGradient.Pin(CGColor.sRGBA(0, 1, 0, 1), 0.5),
 					DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1.0),
 				]
-			)!,
+			),
 			centerPoint: CGPoint(x: 0.5, y: 0.5)
 		)
 

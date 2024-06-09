@@ -37,13 +37,13 @@ public extension QRCode.FillStyle {
 		@objc public let endPoint: CGPoint
 
 		/// The current settings for the linear gradient
-		@objc public func settings() -> [String: Any] {
+		@objc public func settings() throws -> [String: Any] {
 			[
 				"startX": startPoint.x,
 				"startY": startPoint.y,
 				"endX": endPoint.x,
 				"endY": endPoint.y,
-				"gradient": self.gradient.asRGBAGradientString() ?? ""
+				"gradient": try self.gradient.asRGBAGradientString()
 			]
 		}
 
@@ -54,12 +54,11 @@ public extension QRCode.FillStyle {
 				let sY = DoubleValue(settings["startY"]),
 				let eX = DoubleValue(settings["endX"]),
 				let eY = DoubleValue(settings["endY"]),
-				let gs = settings["gradient"] as? String,
-				let grad = DSFGradient.FromRGBAGradientString(gs)
+				let gs = settings["gradient"] as? String
 			else {
 				throw QRCodeError.cannotCreateGenerator
 			}
-
+			let grad = try DSFGradient.FromRGBAGradientString(gs)
 			return QRCode.FillStyle.LinearGradient(
 				grad,
 				startPoint: CGPoint(x: sX, y: sY),
@@ -103,9 +102,9 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Create a copy of the style
-		public func copyStyle() -> any QRCodeFillStyleGenerator {
+		public func copyStyle() throws -> any QRCodeFillStyleGenerator {
 			return LinearGradient(
-				self.gradient.copyGradient(),
+				try self.gradient.copyGradient(),
 				startPoint: self.startPoint,
 				endPoint: self.endPoint)
 		}
@@ -145,9 +144,7 @@ public extension QRCode.FillStyle.LinearGradient {
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
 
 		for pin in sorted {
-			guard let rgbColor = pin.color.hexRGBCode() else {
-				throw QRCodeError.unsupportedColor
-			}
+			let rgbColor = try pin.color.hexRGBCode()
 			svg += "<stop offset=\"\(pin.position)\" stop-color=\"\(rgbColor)\" stop-opacity=\"\(pin.color.alpha)\" />\n"
 		}
 		svg += "</linearGradient>\n"

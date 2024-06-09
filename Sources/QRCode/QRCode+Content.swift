@@ -27,7 +27,9 @@ internal extension QRCode {
 	/// Note that data and text are held separately as there are additional compression options
 	/// available to text content.
 	enum Content: Codable {
+		/// Raw binary representation for the QR code
 		case data(Data)
+		/// Test representation
 		case text(String)
 
 		enum CodingKeys: CodingKey {
@@ -52,10 +54,10 @@ internal extension QRCode {
 		func encode(to encoder: any Encoder) throws {
 			var container = encoder.container(keyedBy: QRCode.Content.CodingKeys.self)
 			switch self {
-			case let .data(a0):
-				try container.encode(a0, forKey: .data)
-			case let .text(a0):
-				try container.encode(a0, forKey: .text)
+			case let .data(data):
+				try container.encode(data, forKey: .data)
+			case let .text(text):
+				try container.encode(text, forKey: .text)
 			}
 		}
 	}

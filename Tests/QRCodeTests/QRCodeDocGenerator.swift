@@ -417,13 +417,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "|"
 
-			let gradient = DSFGradient(
+			let gradient = try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.RGBA(1, 0, 0, 1), 0.1),
 					DSFGradient.Pin(CGColor.RGBA(0, 1, 0, 1), 0.7),
 					DSFGradient.Pin(CGColor.RGBA(0, 0, 1, 1), 0.9),
 				]
-			)!
+			)
 
 			let items = [
 				QRCode.FillStyle.LinearGradient(gradient),
@@ -496,13 +496,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "|"
 
-			let gradient = DSFGradient(
+			let gradient = try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.RGBA(1, 0, 0, 1), 0.1),
 					DSFGradient.Pin(CGColor.RGBA(0, 1, 0, 1), 0.5),
 					DSFGradient.Pin(CGColor.RGBA(0, 0, 1, 1), 0.9),
 				]
-			)!
+			)
 
 			let items: [(String, QRCodeFillStyleGenerator)] = [
 				("(0.5,0.5)", QRCode.FillStyle.RadialGradient(gradient)),
@@ -639,18 +639,18 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		let c1 = QRCode.FillStyle.Solid(1, 0, 0)
 		let c2 = QRCode.FillStyle.LinearGradient(
-			DSFGradient(pins: [
+			try DSFGradient(pins: [
 				DSFGradient.Pin(CGColor.RGBA(0.8, 0.8, 1, 1), 0),
 				DSFGradient.Pin(CGColor.RGBA(0.8, 0.8, 0.4, 1), 0.4),
 				DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 1),
-			])!
+			])
 		)
 		let c3 = QRCode.FillStyle.RadialGradient(
-			DSFGradient(pins: [
+			try DSFGradient(pins: [
 				DSFGradient.Pin(CGColor.RGBA(0.8, 0.8, 1, 1), 0),
 				DSFGradient.Pin(CGColor.RGBA(0.8, 0.8, 0.4, 1), 0.4),
 				DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 1),
-			])!
+			])
 		)
 
 		let fillImage = try c3.makeImage(dimension: 500)
@@ -873,10 +873,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
 				doc.design.shape.onPixels = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 1, hasInnerCorners: true)
 				doc.design.style.onPixels = QRCode.FillStyle.LinearGradient(
-					DSFGradient(pins: [
+					try DSFGradient(pins: [
 						DSFGradient.Pin(CGColor.RGBA(0, 0.589, 1, 1), 0),
 						DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 1),
-					])!
+					])
 				)
 				doc.design.shape.offPixels = QRCode.PixelShape.Circle(insetFraction: 0.1)
 				doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1)
@@ -905,10 +905,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
 				doc.design.style.setForegroundStyle(
 					QRCode.FillStyle.LinearGradient(
-						DSFGradient(pins: [
+						try DSFGradient(pins: [
 							DSFGradient.Pin(CGColor.RGBA(0.556, 0.979, 0, 1), 0),
 							DSFGradient.Pin(CGColor.RGBA(0.016, 0.444, 0.018, 1), 1),
-						])!,
+						]),
 						startPoint: CGPoint(x: 0, y: 0),
 						endPoint: CGPoint(x: 0.5, y: 1)
 					)
@@ -923,12 +923,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
 				doc.design.style.setForegroundStyle(
 					QRCode.FillStyle.LinearGradient(
-						DSFGradient(pins: [
+						try DSFGradient(pins: [
 							DSFGradient.Pin(CGColor.RGBA(0.004, 0.096, 0.574, 1), 0),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.903, 0.997, 1), 0.55),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.154, 0, 1), 0.556),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.586, 0, 1), 1),
-						])!,
+						]),
 						startPoint: CGPoint(x: 0, y: 0),
 						endPoint: CGPoint(x: 0, y: 1)
 					)
@@ -944,12 +944,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
 				doc.design.style.setForegroundStyle(
 					QRCode.FillStyle.LinearGradient(
-						DSFGradient(pins: [
+						try DSFGradient(pins: [
 							DSFGradient.Pin(CGColor.RGBA(0.004, 0.096, 0.574, 1), 0),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.903, 0.997, 1), 0.55),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.154, 0, 1), 0.556),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.586, 0, 1), 1),
-						])!,
+						]),
 						startPoint: CGPoint(x: 0, y: 0),
 						endPoint: CGPoint(x: 0, y: 1)
 					)
@@ -965,10 +965,10 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.05)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 				doc.design.style.background = QRCode.FillStyle.RadialGradient(
-					DSFGradient(pins: [
+					try DSFGradient(pins: [
 						DSFGradient.Pin(CGColor.RGBA(0.999, 1, 1, 1), 0),
 						DSFGradient.Pin(CGColor.RGBA(0.907, 0.765, 0.428, 1), 1),
-					])!
+					])
 				)
 				return ("design-radialsepia", doc)
 			}(),
@@ -980,14 +980,14 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.backgroundColor(.commonBlack)
 				doc.design.foregroundStyle(
 					QRCode.FillStyle.LinearGradient(
-						DSFGradient(pins: [
+						try DSFGradient(pins: [
 							DSFGradient.Pin(CGColor.RGBA(1, 0.149, 0, 1), 0),
 							DSFGradient.Pin(CGColor.RGBA(1, 0.578, 0, 1), 0.2),
 							DSFGradient.Pin(CGColor.RGBA(0.999, 0.985, 0, 1), 0.4),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.976, 0, 1), 0.6),
 							DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 0.8),
 							DSFGradient.Pin(CGColor.RGBA(0.581, 0.215, 1, 1), 1),
-						])!,
+						]),
 						startPoint: CGPoint(x: 0, y: 0),
 						endPoint: CGPoint(x: 1, y: 0)
 					)
@@ -1012,14 +1012,14 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.backgroundColor(.commonBlack)
 				doc.design.foregroundStyle(
 					QRCode.FillStyle.LinearGradient(
-						DSFGradient(pins: [
+						try DSFGradient(pins: [
 							DSFGradient.Pin(CGColor.RGBA(1, 0.149, 0, 1), 0),
 							DSFGradient.Pin(CGColor.RGBA(1, 0.578, 0, 1), 0.2),
 							DSFGradient.Pin(CGColor.RGBA(0.999, 0.985, 0, 1), 0.4),
 							DSFGradient.Pin(CGColor.RGBA(0, 0.976, 0, 1), 0.6),
 							DSFGradient.Pin(CGColor.RGBA(0.016, 0.198, 1, 1), 0.8),
 							DSFGradient.Pin(CGColor.RGBA(0.581, 0.215, 1, 1), 1),
-						])!,
+						]),
 						startPoint: CGPoint(x: 0, y: 0),
 						endPoint: CGPoint(x: 1, y: 0)
 					)
@@ -1245,12 +1245,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 
 			do {
-				let gradient = DSFGradient(
+				let gradient = try DSFGradient(
 					pins: [
 						DSFGradient.Pin(CGColor.RGBA(1, 0, 0, 1.000), 0),
 						DSFGradient.Pin(CGColor.RGBA(0, 0, 1, 1.000), 1),
 					]
-				)!
+				)
 				let background = QRCode.FillStyle.LinearGradient(
 					gradient,
 					startPoint: CGPoint(x: 0, y: 1),
@@ -1272,12 +1272,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			}
 
 			do {
-				let gradient = DSFGradient(
+				let gradient = try DSFGradient(
 					pins: [
 						DSFGradient.Pin(CGColor.RGBA(1, 0, 0, 1.000), 0),
 						DSFGradient.Pin(CGColor.RGBA(0, 0, 1, 1.000), 1),
 					]
-				)!
+				)
 				let background = QRCode.FillStyle.RadialGradient(gradient)
 
 				let doc = try QRCode.Document(utf8String: "Radial Background")
@@ -1498,12 +1498,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|  png  |  pdf  |  svg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|\n"
 
-			let gradient = DSFGradient(
+			let gradient = try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.RGBA(1, 1, 0.9, 1.0), 0.1),
 					DSFGradient.Pin(CGColor.RGBA(0.778, 0.635, 0.492, 1.0), 0.9),
 				]
-			)!
+			)
 
 			let radial = QRCode.FillStyle.LinearGradient(gradient)
 			let doc = try QRCode.Document(utf8String: "QR Code with a linear background")
@@ -1525,12 +1525,12 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|  png  |  pdf  |  svg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|\n"
 
-			let gradient = DSFGradient(
+			let gradient = try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.RGBA(1, 1, 0.9, 1.0), 0.1),
 					DSFGradient.Pin(CGColor.RGBA(0.778, 0.635, 0.492, 1.0), 0.9),
 				]
-			)!
+			)
 
 			let radial = QRCode.FillStyle.RadialGradient(gradient)
 			let doc = try QRCode.Document(utf8String: "QR Code with a radial background")

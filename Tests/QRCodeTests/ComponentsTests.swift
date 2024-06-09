@@ -11,21 +11,21 @@ final class ComponentsTests: XCTestCase {
 		XCTAssertEqual(1, "caterpillar".termCount("cat"))
 	}
 
-	func testDSFGradient() {
+	func testDSFGradient() throws {
 		let gps1 = [
 			DSFGradient.Pin(CGColor.commonWhite, 1.0),
 			DSFGradient.Pin(CGColor.commonBlack, 0.0),
 			DSFGradient.Pin(CGColor.RGBA(1, 1, 0, 1), 0.2),
 		]
-		let g1 = DSFGradient(pins: gps1)
-		let arc = try! XCTUnwrap(g1?.asRGBAGradientString())
-		let g11 = try! XCTUnwrap(DSFGradient.FromRGBAGradientString(arc))
+		let g1 = try DSFGradient(pins: gps1)
+		let arc = try g1.asRGBAGradientString()
+		let g11 = try DSFGradient.FromRGBAGradientString(arc)
 
 		XCTAssertEqual(g11.pins[0].position, 0.0)
 		XCTAssertEqual(g11.pins[1].position, 0.2)
 		XCTAssertEqual(g11.pins[2].position, 1.0)
 
-		let g11c = g11.copyGradient()
+		let g11c = try g11.copyGradient()
 		XCTAssertEqual(g11c.pins[0].position, 0.0)
 		XCTAssertEqual(g11c.pins[1].position, 0.2)
 		XCTAssertEqual(g11c.pins[2].position, 1.0)

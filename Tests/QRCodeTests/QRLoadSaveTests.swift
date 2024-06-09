@@ -90,11 +90,11 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		doc1.design.style.background = QRCode.FillStyle.Solid(CGColor.RGBA(0, 0, 1, 0.5))
 
 		doc1.design.style.eye = QRCode.FillStyle.LinearGradient(
-			DSFGradient(pins: [
+			try DSFGradient(pins: [
 				DSFGradient.Pin(CGColor.gray(0.5, 0.5), 0),
 				DSFGradient.Pin(CGColor.gray(1.0, 0.1), 1)
 				]
-			)!
+			)
 		)
 
 		let data = try doc1.jsonData()
@@ -107,7 +107,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testSolidFillLoadSave() throws {
 		let c = QRCode.FillStyle.Solid(CGColor.RGBA(0.5, 0.5, 1, 0.8))
 		let ctc = try XCTUnwrap(c.color.sRGBAComponents())
-		let core = c.coreSettings()
+		let core = try c.coreSettings()
 
 		let st: QRCode.FillStyle.Solid = try XCTUnwrap(QRCodeFillStyleFactory.shared.Create(settings: core) as? QRCode.FillStyle.Solid)
 		XCTAssertEqual(st.color.alpha, c.color.alpha)
@@ -122,15 +122,15 @@ final class QRCodeLoadSaveTests: XCTestCase {
 
 	func testRadialGradientLoadSave() throws {
 		let c = QRCode.FillStyle.RadialGradient(
-			DSFGradient(pins: [
+			try DSFGradient(pins: [
 				DSFGradient.Pin(CGColor.commonBlack, 0),
 				DSFGradient.Pin(CGColor.gray(0.5, 0.5), 0.5),
 				DSFGradient.Pin(CGColor.commonWhite, 1)
 				]
-			)!,
+			),
 			centerPoint: CGPoint(x: 0.2, y: 0.8))
 
-		let core = c.coreSettings()
+		let core = try c.coreSettings()
 
 		let st: QRCode.FillStyle.RadialGradient = try XCTUnwrap(QRCodeFillStyleFactory.shared.Create(settings: core) as? QRCode.FillStyle.RadialGradient)
 		XCTAssertEqual(0.2, st.centerPoint.x, accuracy: 0.0001)
@@ -149,7 +149,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		let doc = try QRCode.Document(utf8String: "checking negative value set", engine: engine)
 		doc.design.shape.negatedOnPixelsOnly = true
 
-		let settings = doc.settings()
+		let settings = try doc.settings()
 
 		let doc2 = try QRCode.Document(settings: settings, engine: engine)
 		XCTAssertEqual(true, doc2.design.shape.negatedOnPixelsOnly)
@@ -157,7 +157,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		try outputFolder.write(data1, to: "NegatedQRCodeTestFile-on.jpg")
 
 		doc2.design.shape.negatedOnPixelsOnly = false
-		let settings3 = doc2.settings()
+		let settings3 = try doc2.settings()
 		let doc3 = try QRCode.Document(settings: settings3, engine: engine)
 		XCTAssertEqual(false, doc3.design.shape.negatedOnPixelsOnly)
 

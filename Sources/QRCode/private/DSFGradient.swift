@@ -52,24 +52,24 @@ import Foundation
 	@objc public let cgGradient: CGGradient
 
 	/// Make a copy of the gradient
-	@objc @inlinable public func copyGradient() -> DSFGradient {
+	@objc @inlinable public func copyGradient() throws -> DSFGradient {
 		let pins = self.pins.map { $0.copyPin() }
-		return DSFGradient(pins: pins)!
+		return try DSFGradient(pins: pins)
 	}
 
 	/// NSCopying conformance for objc
 	@objc public func copy(with zone: NSZone? = nil) -> Any {
-		return self.copyGradient()
+		return try! self.copyGradient()
 	}
 
 	/// Create a linear gradient
 	/// - Parameters:
 	///   - pins: The color pins to use when generating the gradient
 	///   - colorspace: The colorspace to use. If not specified uses DeviceRGB
-	@objc public init?(
+	@objc public init(
 		pins: [Pin],
 		colorspace: CGColorSpace? = CGColorSpace(name: CGColorSpace.sRGB)!
-	) {
+	) throws {
 		// Sort by the position from 0 (start position) -> 1 (end position)
 		self.pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
 
@@ -80,7 +80,7 @@ import Foundation
 			colors: cgcolors as CFArray,
 			locations: positions
 		) else {
-			return nil
+			throw GradientError.cannotCreateCoreGraphicsGradient
 		}
 		self.cgGradient = gr
 	}
@@ -114,7 +114,7 @@ public extension DSFGradient {
 	/// eg:
 	///
 	///   `0.0:1.0,0.0,0.0|0.5:0.0,1.0,0.0,1.0|1.0:0.0,0.0,1.0,1.0`
-	@objc func asRGBAGradientString() -> String? {
+	@objc func asRGBAGradientString() throws -> String {
 		var result = ""
 		for pin in self.pins {
 			if result.count > 0 { result += "|" }
@@ -126,7 +126,7 @@ public extension DSFGradient {
 				let comps = pc.components,
 				pc.numberOfComponents == 4
 			else {
-				return nil
+				throw RGBAComponentsError.unableToConvertToRGBA
 			}
 			result += "\(pin.position):\(_D(comps[0])),\(_D(comps[1])),\(_D(comps[2])),\(_D(comps[3]))"
 		}
@@ -140,13 +140,13 @@ public extension DSFGradient {
 	/// Create a DSFGradient from a DSFGradient archive format string
 	/// - Parameter content: The archive 'string'
 	/// - Returns: The DSFGradient, or nil if the content didn't contain a valid DSFGradient archive
-	@objc static func FromRGBAGradientString(_ content: String) -> DSFGradient? {
+	@objc static func FromRGBAGradientString(_ content: String) throws -> DSFGradient {
 
 		// Split out the pins
 		let pinsS = content.split(separator: "|")
 
 		// If the number of pins is < 2, then it's an invalid gradient
-		guard pinsS.count > 1 else { return nil }
+		guard pinsS.count > 1 else { throw GradientError.tooFewPins }
 
 		var pins: [Pin] = []
 
@@ -157,10 +157,10 @@ public extension DSFGradient {
 			let grPin = pinS
 				.split(separator: ":")                             // Split into position:color
 				.map { $0.trimmingCharacters(in: .whitespaces) }   // Trim whitespace on each component
-			guard grPin.count == 2 else { return nil }
+			guard grPin.count == 2 else { throw GradientError.tooFewPins }
 
 			// First component is the fractional pin position
-			guard var pos = CGFloat(grPin[0]) else { return nil }
+			guard var pos = CGFloat(grPin[0]) else { throw GradientError.invalidPin }
 			pos = pos.clamped(to: 0.0 ... 1.0)
 
 			// Second component is the RGBA color component
@@ -170,17 +170,17 @@ public extension DSFGradient {
 				.compactMap { Self._numberFormatter.number(from: $0)?.doubleValue }
 				.compactMap { CGFloat($0) }
 				.map { $0.clamped(to: 0 ... 1) }
-			guard comps.count == 4 else { return nil }
+			guard comps.count == 4 else { throw GradientError.invalidColor }
 
 			// Attempt to create the color in the sRGB colorspace (which it was encoded from)
 			guard let color = CGColor(colorSpace: DSFGradient.DefaultColorSpace, components: comps) else {
-				return nil
+				throw GradientError.couldntConvertColorspace
 			}
 			pins.append(Pin(color, pos))
 		}
 
 		pins = pins.sorted(by: { p1, p2 in p1.position < p2.position })
-		return DSFGradient(pins: pins)
+		return try DSFGradient(pins: pins)
 	}
 }
 
@@ -204,6 +204,14 @@ public extension DSFGradient {
 	enum GradientError: Error {
 		/// Attempted to create a gradient where one of the colors couldnt be converted to the appropriate colorspace
 		case couldntConvertColorspace
+		/// Gradient has only a single (or no) pins
+		case tooFewPins
+		/// Pin is incorrectly formatted
+		case invalidPin
+		/// A pin has an invalid color
+		case invalidColor
+		/// Couldn't create core graphics gradient
+		case cannotCreateCoreGraphicsGradient
 	}
 
 	/// Buidl a gradient
@@ -230,10 +238,7 @@ public extension DSFGradient {
 			let p = DSFGradient.Pin(item.color, item.pos)
 			result.append(p)
 		}
-		guard let result = DSFGradient(pins: result) else {
-			throw GradientError.couldntConvertColorspace
-		}
-		return result
+		return try DSFGradient(pins: result)
 	}
 }
 

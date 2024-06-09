@@ -31,20 +31,18 @@ public extension QRCode.FillStyle {
 		@objc public let color: CGColor
 
 		/// The color settings as a dictionary
-		@objc public func settings() -> [String: Any] {
-			[ "color": color.archiveSRGBA() ?? "1.0,0.0,0.0,0.5" ]
+		@objc public func settings() throws -> [String: Any] {
+			[ "color": try color.archiveSRGBA() ]
 		}
 
 		/// Create a Solid fill style using the provided settings dictionary
 		/// - Parameter settings: The settings dictionary
 		/// - Returns: A solid fill style object
 		@objc public static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator) {
-			guard
-				let c = settings["color"] as? String,
-				let g = CGColor.UnarchiveSRGBA(c) 
-			else {
+			guard let c = settings["color"] as? String else {
 				throw QRCodeError.cannotCreateGenerator
 			}
+			let g = try CGColor.UnarchiveSRGBA(c)
 			return QRCode.FillStyle.Solid(g)
 		}
 
@@ -69,7 +67,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Returns a new copy of the fill style
-		public func copyStyle() -> any QRCodeFillStyleGenerator {
+		public func copyStyle() throws -> any QRCodeFillStyleGenerator {
 			return Solid(self.color.copy()!)
 		}
 
@@ -92,9 +90,7 @@ public extension QRCode.FillStyle {
 
 public extension QRCode.FillStyle.Solid {
 	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
-		guard let fill = self.color.hexRGBCode() else {
-			throw QRCodeError.unsupportedColor
-		}
+		let fill = try self.color.hexRGBCode()
 		return QRCode.FillStyle.SVGDefinition(
 			styleAttribute: "fill=\"\(fill)\" fill-opacity=\"\(self.color.alpha)\"",
 			styleDefinition: nil

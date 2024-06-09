@@ -112,7 +112,7 @@ public extension QRCode {
 			// Eye background color
 
 			if let eyeBackgroundColor = design.style.eyeBackground,
-				let hexEyeBackgroundColor = design.style.eyeBackground?.hexRGBCode()
+				let hexEyeBackgroundColor = try design.style.eyeBackground?.hexRGBCode()
 			{
 				let eyeBackgroundPath = self.path(finalRect.size, components: .eyeBackground, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
 				let alphaStr = _SVGF(eyeBackgroundColor.alpha)

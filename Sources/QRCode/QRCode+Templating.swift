@@ -30,7 +30,7 @@ public extension QRCode.Document {
 	///   - document: The document to apply
 	///   - includeLogoTemplate: If true, include any logotemplate information
 	@objc func applyDesign(from document: QRCode.Document, includeLogoTemplate: Bool = true) throws {
-		self.design = document.design.copyDesign()
+		self.design = try document.design.copyDesign()
 		if includeLogoTemplate {
 			self.logoTemplate = document.logoTemplate?.copyLogoTemplate()
 		}
@@ -41,7 +41,7 @@ public extension QRCode.Document {
 	///   - document: The document to apply
 	///   - includeLogoTemplate: If true, include any logotemplate information
 	@objc func applyingDesign(from document: QRCode.Document, includeLogoTemplate: Bool = true) throws -> QRCode.Document {
-		let copy = self.copyDocument()
+		let copy = try self.copyDocument()
 		try copy.applyDesign(from: document, includeLogoTemplate: includeLogoTemplate)
 		return copy
 	}

@@ -34,4 +34,5 @@ public enum QRCodeError: Error {
 	case invalidURL
 	case invalidContent
 	case cannotGenerateJSON
+	case cannotGenerateImageBase64
 }

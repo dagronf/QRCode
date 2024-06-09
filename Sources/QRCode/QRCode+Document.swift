@@ -46,7 +46,6 @@ public extension QRCode {
 			}
 			set {
 				self.content = .data(newValue ?? Data())
-				self.regenerateNoThrow()
 			}
 		}
 
@@ -62,7 +61,6 @@ public extension QRCode {
 			}
 			set {
 				self.content = .text(newValue ?? "")
-				self.regenerateNoThrow()
 			}
 		}
 
@@ -170,7 +168,11 @@ public extension QRCode {
 		internal let qrcode: QRCode
 
 		/// The content to display
-		internal var content: Content
+		internal var content: Content {
+			didSet {
+				self.regenerateNoThrow()
+			}
+		}
 	}
 }
 
@@ -263,11 +265,10 @@ public extension QRCode.Document {
 	}
 
 	/// Make a copy of the document
-	@objc func copyDocument() -> QRCode.Document {
+	@objc func copyDocument() throws -> QRCode.Document {
 		let c = QRCode.Document()
-		c.data = self.data
-		c.utf8String = self.utf8String
-		c.design = self.design.copyDesign()
+		c.content = self.content
+		c.design = try self.design.copyDesign()
 		c.logoTemplate = self.logoTemplate?.copyLogoTemplate()
 		c.errorCorrection = self.errorCorrection
 		return c
@@ -380,10 +381,10 @@ public extension QRCode.Document {
 
 public extension QRCode.Document {
 	/// The current settings for the data, shape and design for the QRCode
-	@objc func settings() -> [String: Any] {
+	@objc func settings() throws -> [String: Any] {
 		var settings: [String: Any] = [
 			"correction": errorCorrection.ECLevel,
-			"design": self.design.settings(),
+			"design": try self.design.settings(),
 		]
 		if let data = self.data {
 			settings["data"] = data.base64EncodedString()
@@ -404,7 +405,7 @@ public extension QRCode.Document {
 
 	/// Generate a pretty-printed JSON string representation of the document.
 	@objc func jsonStringFormatted() throws -> String {
-		let dict = self.settings()
+		let dict = try self.settings()
 		if #available(macOS 10.13, *) {
 			let data = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted, .sortedKeys])
 			guard let str = String(data: data, encoding: .utf8) else {
@@ -870,14 +871,11 @@ public extension QRCode.Document {
 extension QRCode.Document {
 	// Build up the qr representation
 	private func regenerate() throws {
-		if let data = self.data {
+		switch self.content {
+		case .data(let data):
 			try self.qrcode.update(data: data, errorCorrection: self.errorCorrection)
-		}
-		else if let text = self.utf8String {
+		case .text(let text):
 			try self.qrcode.update(text: text, errorCorrection: self.errorCorrection)
-		}
-		else {
-			Swift.print("QRCode.Document: No data specified")
 		}
 	}
 

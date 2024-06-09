@@ -31,8 +31,8 @@ public extension QRCode.FillStyle {
 		@objc public var image: CGImage?
 
 		/// Return the save settings for the fill style
-		@objc public func settings() -> [String: Any] {
-			["imagePNGbase64": self.getPngImageBase64() ?? ""]
+		@objc public func settings() throws -> [String: Any] {
+			["imagePNGbase64": try self.getPngImageBase64()]
 		}
 
 		/// Create the fill style from the specified settings
@@ -59,7 +59,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Returns a new copy of the fill style
-		public func copyStyle() -> any QRCodeFillStyleGenerator {
+		public func copyStyle() throws -> any QRCodeFillStyleGenerator {
 			return Image(self.image?.copy())
 		}
 
@@ -101,12 +101,12 @@ public extension QRCode.FillStyle {
 
 internal extension QRCode.FillStyle.Image {
 	// Return a PNG base64 representation for the image
-	func getPngImageBase64() -> String? {
+	func getPngImageBase64() throws -> String {
 		guard
-			let pngData = try? image?.representation.png().base64EncodedData(),
+			let pngData = try image?.representation.png().base64EncodedData(),
 			let str = String(data: pngData, encoding: .ascii)
 		else {
-			return nil
+			throw QRCodeError.cannotGenerateImageBase64
 		}
 		return str
 	}

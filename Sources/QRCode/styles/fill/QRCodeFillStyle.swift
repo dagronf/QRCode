@@ -53,9 +53,9 @@ public extension QRCode {
 	/// Create a fill style generator using the specified settings
 	static func Create(settings: [String: Any]) throws -> (any QRCodeFillStyleGenerator)
 	/// Make a copy of the style
-	@objc func copyStyle() -> any QRCodeFillStyleGenerator
+	@objc func copyStyle() throws -> any QRCodeFillStyleGenerator
 	/// Returns the current settings for the style generator
-	@objc func settings() -> [String: Any]
+	@objc func settings() throws -> [String: Any]
 	/// Fill the specified rect with the current style settings
 	func fill(ctx: CGContext, rect: CGRect)
 	/// Fill the specified path with the current style settings
@@ -70,9 +70,9 @@ private let FillStyleSettingsName = "settings"
 public extension QRCodeFillStyleGenerator {
 	var name: String { return Self.Name }
 
-	internal func coreSettings() -> [String: Any] {
+	internal func coreSettings() throws -> [String: Any] {
 		var core: [String: Any] = [FillStyleTypeName: self.name]
-		core[FillStyleSettingsName] = self.settings()
+		core[FillStyleSettingsName] = try self.settings()
 		return core
 	}
 }

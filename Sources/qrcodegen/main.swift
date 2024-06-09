@@ -202,23 +202,23 @@ Examples:
 
 		// Colors
 
-		if let archive = self.bgColor,
-			let backgroundColor = CGColor.UnarchiveSRGBA(archive) {
+		if let archive = self.bgColor {
+			let backgroundColor = try CGColor.UnarchiveSRGBA(archive)
 			design.style.background = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
-		if let archive = self.dataColor,
-			let dataColor = CGColor.UnarchiveSRGBA(archive) {
+		if let archive = self.dataColor {
+			let dataColor = try CGColor.UnarchiveSRGBA(archive)
 			design.style.onPixels = QRCode.FillStyle.Solid(dataColor)
 		}
 
-		if let archive = self.eyeColor,
-			let eyeColor = CGColor.UnarchiveSRGBA(archive) {
+		if let archive = self.eyeColor {
+			let eyeColor = try CGColor.UnarchiveSRGBA(archive)
 			design.style.eye = QRCode.FillStyle.Solid(eyeColor)
 		}
 
-		if let archive = self.pupilColor,
-			let pupilColor = CGColor.UnarchiveSRGBA(archive) {
+		if let archive = self.pupilColor {
+			let pupilColor = try CGColor.UnarchiveSRGBA(archive)
 			design.style.pupil = QRCode.FillStyle.Solid(pupilColor)
 		}
 

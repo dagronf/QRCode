@@ -58,10 +58,10 @@ public extension QRCode {
 		}
 
 		/// Copy the design
-		public func copyDesign() -> Design {
+		public func copyDesign() throws -> Design {
 			let c = Design()
 			c.shape = self.shape.copyShape()
-			c.style = self.style.copyStyle()
+			c.style = try self.style.copyStyle()
 			c.additionalQuietZonePixels = self.additionalQuietZonePixels
 			return c
 		}
@@ -71,10 +71,10 @@ public extension QRCode {
 // MARK: Save and restore
 
 public extension QRCode.Design {
-	@objc func settings() -> [String: Any] {
+	@objc func settings() throws -> [String: Any] {
 		var result: [String: Any] = [
 			"shape": shape.settings(),
-			"style": style.settings()
+			"style": try style.settings()
 		]
 		if additionalQuietZonePixels > 0 {
 			result["additionalQuietZonePixels"] = self.additionalQuietZonePixels
@@ -84,7 +84,7 @@ public extension QRCode.Design {
 
 	/// Generate a JSON string representation of the document.
 	@objc func jsonData() throws -> Data {
-		let dict = self.settings()
+		let dict = try self.settings()
 		return try JSONSerialization.data(withJSONObject: dict)
 	}
 
@@ -96,8 +96,8 @@ public extension QRCode.Design {
 			design.shape = shape
 		}
 
-		if let sh = settings["style"] as? [String: Any],
-			let style = QRCode.Style.Create(settings: sh) {
+		if let sh = settings["style"] as? [String: Any] {
+			let style = try QRCode.Style.Create(settings: sh)
 			design.style = style
 		}
 

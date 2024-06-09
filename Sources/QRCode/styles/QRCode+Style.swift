@@ -65,17 +65,17 @@ public extension QRCode {
 		@objc public var eyeBackground: CGColor? = nil
 
 		/// Copy the style
-		public func copyStyle() -> Style {
+		public func copyStyle() throws -> Style {
 			let c = Style()
-			c.onPixels = self.onPixels.copyStyle()
+			c.onPixels = try self.onPixels.copyStyle()
 			c.onPixelsBackground = self.onPixelsBackground?.copy()
-			c.offPixels = self.offPixels?.copyStyle()
+			c.offPixels = try self.offPixels?.copyStyle()
 			c.offPixelsBackground = self.offPixelsBackground?.copy()
-			c.background = self.background?.copyStyle()
+			c.background = try self.background?.copyStyle()
 			c.backgroundFractionalCornerRadius = self.backgroundFractionalCornerRadius
-			c.eye = self.eye?.copyStyle()
+			c.eye = try self.eye?.copyStyle()
 			c.eyeBackground = self.eyeBackground?.copy()
-			c.pupil = self.pupil?.copyStyle()
+			c.pupil = try self.pupil?.copyStyle()
 			return c
 		}
 	}
@@ -94,15 +94,15 @@ public extension QRCode.Style {
 }
 
 public extension QRCode.Style {
-	@objc func settings() -> [String: Any] {
-		var result: [String: Any] = ["onPixels": onPixels.coreSettings()]
-		if let e = eye?.coreSettings() {
+	@objc func settings() throws -> [String: Any] {
+		var result: [String: Any] = ["onPixels": try onPixels.coreSettings()]
+		if let e = try eye?.coreSettings() {
 			result["eye"] = e
 		}
-		if let p = pupil?.coreSettings() {
+		if let p = try pupil?.coreSettings() {
 			result["pupil"] = p
 		}
-		if let b = background?.coreSettings() {
+		if let b = try background?.coreSettings() {
 			result["background"] = b
 		}
 
@@ -110,28 +110,28 @@ public extension QRCode.Style {
 			result["backgroundFractionalCornerRadius"] = Double(backgroundFractionalCornerRadius)
 		}
 
-		if let di = offPixels?.coreSettings() {
+		if let di = try offPixels?.coreSettings() {
 			result["offPixels"] = di
 		}
 
 		// The eye background
 
-		if let e = self.eyeBackground, let eb = e.archiveSRGBA() {
-			result["eyeBackground"] = ["color": eb]
+		if let e = self.eyeBackground {
+			result["eyeBackground"] = ["color": try e.archiveSRGBA()]
 		}
 
 		// the backgrounds for the pixels
 
-		if let e = self.onPixelsBackground, let eb = e.archiveSRGBA() {
-			result["onPixelsBackground"] = ["color": eb]
+		if let e = self.onPixelsBackground {
+			result["onPixelsBackground"] = ["color": try e.archiveSRGBA()]
 		}
-		if let e = self.offPixelsBackground, let eb = e.archiveSRGBA() {
-			result["offPixelsBackground"] = ["color": eb]
+		if let e = self.offPixelsBackground {
+			result["offPixelsBackground"] = ["color": try e.archiveSRGBA()]
 		}
 		return result
 	}
 
-	@objc static func Create(settings: [String: Any]) -> QRCode.Style? {
+	@objc static func Create(settings: [String: Any]) throws -> QRCode.Style {
 		let style = QRCode.Style()
 
 		if let d = settings["onPixels"] as? [String: Any],
@@ -166,7 +166,7 @@ public extension QRCode.Style {
 		}
 
 		if let e = settings["offPixels"] as? [String: Any],
-		   let offPixels = try? QRCodeFillStyleFactory.shared.Create(settings: e)
+			let offPixels = try? QRCodeFillStyleFactory.shared.Create(settings: e)
 		{
 			style.offPixels = offPixels
 		}
@@ -174,8 +174,8 @@ public extension QRCode.Style {
 		// The eye background
 
 		if let eb = settings["eyeBackground"] as? [String: Any],
-		   let ebs = eb["color"] as? String,
-		   let ec = CGColor.UnarchiveSRGBA(ebs)
+			let ebs = eb["color"] as? String,
+			let ec = try? CGColor.UnarchiveSRGBA(ebs)
 		{
 			style.eyeBackground = ec
 		}
@@ -183,15 +183,15 @@ public extension QRCode.Style {
 		// the backgrounds for the pixels
 
 		if let eb = settings["onPixelsBackground"] as? [String: Any],
-		   let ebs = eb["color"] as? String,
-		   let ec = CGColor.UnarchiveSRGBA(ebs)
+			let ebs = eb["color"] as? String,
+			let ec = try? CGColor.UnarchiveSRGBA(ebs)
 		{
 			style.onPixelsBackground = ec
 		}
 
 		if let eb = settings["offPixelsBackground"] as? [String: Any],
-		   let ebs = eb["color"] as? String,
-		   let ec = CGColor.UnarchiveSRGBA(ebs)
+			let ebs = eb["color"] as? String,
+			let ec = try? CGColor.UnarchiveSRGBA(ebs)
 		{
 			style.offPixelsBackground = ec
 		}

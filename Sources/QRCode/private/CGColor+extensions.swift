@@ -23,6 +23,12 @@ import Foundation
 // Default colorspace for RGBA archiving/unarchiving
 private let ArchiveRGBAColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 
+/// Errors thrown by
+public enum RGBAComponentsError: Error {
+	case unableToConvertToRGBA
+	case unableToUnarchiveColor(String)
+}
+
 @objc public class RGBAComponents: NSObject {
 	@objc public let r: CGFloat
 	@objc public let g: CGFloat
@@ -42,46 +48,45 @@ private let ArchiveRGBAColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 }
 
 public extension CGColor {
-	func sRGBAComponents() -> RGBAComponents? {
+	/// Extract RGBA components from this color, converting to RGB colorspace if necessary
+	/// - Returns: RGBA components
+	func sRGBAComponents() throws -> RGBAComponents {
 		guard
-			let c = self.converted(
-				to: ArchiveRGBAColorSpace,
-				intent: .defaultIntent,
-				options: nil
-			),
+			let c = self.converted(to: ArchiveRGBAColorSpace, intent: .defaultIntent, options: nil),
 			let comps = c.components,
 			comps.count == 4
 		else {
-			return nil
+			throw RGBAComponentsError.unableToConvertToRGBA
 		}
 		return RGBAComponents(r: comps[0], g: comps[1], b: comps[2], a: comps[3])
 	}
 
 	/// Archive the color to an "r,g,b,a" string (eg. "1.0,0.0,0.0,0.5")
-	func archiveSRGBA() -> String? {
-		return self.sRGBAComponents()?.stringValue
+	func archiveSRGBA() throws -> String {
+		try self.sRGBAComponents().stringValue
 	}
 
 	/// Create a CGColor from an archive string for the format "r,g,b,a" (eg. "1.0,0.0,0.0,0.5")
-	static func UnarchiveSRGBA(_ archive: String) -> CGColor? {
+	static func UnarchiveSRGBA(_ archive: String) throws -> CGColor {
 		let comps = archive
 			.split(separator: ",")
 			.map { $0.trimmingCharacters(in: .whitespaces) }
 			.compactMap { CGFloat($0) }
 			.compactMap { $0.clamped(to: 0.0 ... 1.0) }
-		guard comps.count == 4 else {
-			return nil
+		guard 
+			comps.count == 4,
+			let c = CGColor(colorSpace: ArchiveRGBAColorSpace, components: comps)
+		else {
+			throw RGBAComponentsError.unableToUnarchiveColor(archive)
 		}
-		return CGColor(colorSpace: ArchiveRGBAColorSpace, components: comps)
+		return c
 	}
 }
 
 extension CGColor {
 	/// Return an RGBA hex code (eg. "#00000000")
-	func hexCode() -> String? {
-		guard let comps = sRGBAComponents() else {
-			return nil
-		}
+	func hexCode() throws -> String {
+		let comps = try sRGBAComponents()
 		let rv = Int(comps.r * 255.0)
 		let gv = Int(comps.g * 255.0)
 		let bv = Int(comps.b * 255.0)
@@ -90,10 +95,8 @@ extension CGColor {
 	}
 
 	/// Return an RGBA hex code (eg. "#00000000")
-	func hexRGBCode() -> String? {
-		guard let comps = sRGBAComponents() else {
-			return nil
-		}
+	func hexRGBCode() throws -> String {
+		let comps = try sRGBAComponents()
 		let rv = Int(comps.r * 255.0)
 		let gv = Int(comps.g * 255.0)
 		let bv = Int(comps.b * 255.0)

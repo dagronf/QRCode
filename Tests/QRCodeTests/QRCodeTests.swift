@@ -80,7 +80,7 @@ final class QRCodeTests: XCTestCase {
 			let doc1 = try QRCode.Document(engine: __testEngine)
 			doc1.data = "this is a test".data(using: .utf8)!
 
-			let s = doc1.settings()
+			let s = try doc1.settings()
 			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
@@ -103,7 +103,7 @@ final class QRCodeTests: XCTestCase {
 			doc1.data = "this is a test".data(using: .utf8)!
 			doc1.design.shape.pupil = QRCode.PupilShape.Circle()
 
-			let s = doc1.settings()
+			let s = try doc1.settings()
 			let doc11 = try QRCode.Document.Create(settings: s, engine: __testEngine)
 			XCTAssertNotNil(doc11)
 
@@ -272,13 +272,13 @@ final class QRCodeTests: XCTestCase {
 
 			// radial fill
 			let c = QRCode.FillStyle.RadialGradient(
-				DSFGradient(
+				try DSFGradient(
 					pins: [
 						DSFGradient.Pin(CGColor.sRGBA(1, 0, 0, 1), 0),
 						DSFGradient.Pin(CGColor.sRGBA(0, 1, 0, 1), 0.5),
 						DSFGradient.Pin(CGColor.sRGBA(0, 0, 1, 1), 1.0),
 					]
-				)!,
+				),
 				centerPoint: CGPoint(x: 0.5, y: 0.5)
 			)
 
@@ -291,12 +291,12 @@ final class QRCodeTests: XCTestCase {
 			doc.design.shape.offPixels = QRCode.PixelShape.Flower(insetFraction: 0.2)
 			doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 1, 0)
 
-			let gradient = DSFGradient(
+			let gradient = try DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor.RGBA(1, 1, 0, 1), 0),
 					DSFGradient.Pin(CGColor.RGBA(0, 1, 1, 1), 1),
 				]
-			)!
+			)
 			doc.design.style.offPixels = QRCode.FillStyle.LinearGradient(
 				gradient,
 				startPoint: CGPoint(x: 0, y: 1),

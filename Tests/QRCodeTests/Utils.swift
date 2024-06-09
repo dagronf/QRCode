@@ -24,13 +24,9 @@ extension CGPoint {
 
 extension CGColor {
 	/// Compare two colors by converting them to srgba colorspace and comparing the components
-	func dumbEquality(with other: CGColor, accuracy: Double) -> Bool {
-		guard
-			let s = self.sRGBAComponents(),
-			let o = other.sRGBAComponents()
-		else {
-			return false
-		}
+	func dumbEquality(with other: CGColor, accuracy: Double) throws -> Bool {
+		let s = try self.sRGBAComponents()
+		let o = try other.sRGBAComponents()
 		return abs(s.r - o.r) < accuracy &&
 			abs(s.g - o.g) < accuracy &&
 			abs(s.b - o.b) < accuracy &&
