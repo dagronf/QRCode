@@ -39,10 +39,10 @@ public extension QRCode {
 		/// Binary data to display in the QR code
 		@objc public var data: Data? {
 			get {
-				switch self.content {
-				case .data(let data): return data
-				default: return nil
+				if case .data(let data) = self.content {
+					return data
 				}
+				return nil
 			}
 			set {
 				self.content = .data(newValue ?? Data())
@@ -54,10 +54,10 @@ public extension QRCode {
 		/// If you need string content using a different encoding, use the `data` property instead
 		@objc public var utf8String: String? {
 			get {
-				switch self.content {
-				case .text(let text): return text
-				default: return nil
+				if case .text(let text) = self.content {
+					return text
 				}
+				return nil
 			}
 			set {
 				self.content = .text(newValue ?? "")
@@ -168,7 +168,7 @@ public extension QRCode {
 		internal let qrcode: QRCode
 
 		/// The content to display
-		internal var content: Content {
+		private var content: Content {
 			didSet {
 				self.regenerateNoThrow()
 			}
