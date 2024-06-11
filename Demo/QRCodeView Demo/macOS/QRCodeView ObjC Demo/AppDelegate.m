@@ -20,6 +20,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application
 	[self doTests];
+	[self doBasicQRCodeGeneration];
 }
 
 
@@ -95,7 +96,20 @@
 		assert(error == nil);
 		NSLog(@"image: %@", image);
 	}
+}
 
+- (void)doBasicQRCodeGeneration {
+	NSError* error = NULL;
+	QRCode* code = [[QRCode alloc] initWithUtf8String:@"This is the content"
+												 errorCorrection:QRCodeErrorCorrectionHigh
+															 engine:NULL
+															  error:&error];
+	CGImageRef cgr = [code cgImageWithDimension:400
+													 design:[[QRCodeDesign alloc] init]
+											 logoTemplate:NULL
+													  error:&error];
+
+	NSLog(@"%@", cgr);
 }
 
 @end

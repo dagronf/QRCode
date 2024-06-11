@@ -35,9 +35,9 @@ struct StyleLinearGradient: Equatable {
 
 	var style: QRCode.FillStyle.LinearGradient {
 		QRCode.FillStyle.LinearGradient(
-			DSFGradient(
+			try! DSFGradient(
 				pins: gradientStops.map { DSFGradient.Pin($0.color, $0.unit) }
-			)!,
+			),
 			startPoint: self.startPoint.cgPoint,
 			endPoint: self.endPoint.cgPoint
 		)

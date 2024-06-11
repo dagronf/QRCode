@@ -29,10 +29,10 @@ class ViewController: NSViewController {
 		q3.rebuildQRCode()
 
 		let gr = QRCode.FillStyle.RadialGradient(
-			DSFGradient(pins: [
+			try! DSFGradient(pins: [
 				DSFGradient.Pin(CGColor(red: 0.8, green: 0, blue: 0, alpha: 1), 0),
 				DSFGradient.Pin(CGColor(red: 0.1, green: 0, blue: 0, alpha: 1), 1)
-			])!,
+			]),
 			centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 		q4.design.style.background = gr

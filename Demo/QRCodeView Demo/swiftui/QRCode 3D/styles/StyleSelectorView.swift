@@ -8,10 +8,10 @@
 import SwiftUI
 import QRCode
 
-private let _DefaultGradient = DSFGradient(pins: [
+private let _DefaultGradient = try! DSFGradient(pins: [
 	DSFGradient.Pin(CGColor(gray: 0, alpha: 1), 0),
 	DSFGradient.Pin(CGColor(gray: 1, alpha: 1), 1)
-])!
+])
 
 struct StyleSelectorView: View {
 

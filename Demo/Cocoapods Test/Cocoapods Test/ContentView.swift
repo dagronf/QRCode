@@ -10,14 +10,22 @@ import SwiftUI
 import QRCode
 
 struct ContentView: View {
+	@State var content = "Hello, world!"
+
+	let style1 = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.8, hasInnerCorners: true)
+
 	var body: some View {
 		VStack {
-			Image(systemName: "globe")
-				.imageScale(.large)
-				.foregroundColor(.accentColor)
-			Text("Hello, world!")
-			QRCodeViewUI(content: "Hello, world!")
-				.frame(width: 300, height: 300)
+			TextField("Content", text: $content)
+				.multilineTextAlignment(.center)
+			Divider()
+			QRCodeViewUI(
+				content: content,
+				pixelStyle: style1,
+				additionalQuietZonePixels: 3,
+				backgroundFractionalCornerRadius: 2
+			)
+			.frame(minWidth: 300, minHeight: 300)
 		}
 		.padding()
 	}

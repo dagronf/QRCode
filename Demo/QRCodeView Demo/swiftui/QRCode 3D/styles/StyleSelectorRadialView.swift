@@ -33,9 +33,9 @@ struct StyleRadialGradient: Equatable {
 
 	var style: QRCode.FillStyle.RadialGradient {
 		.init(
-			DSFGradient(
+			try! DSFGradient(
 				pins: gradientStops.map { DSFGradient.Pin($0.color, $0.unit) }
-			)!,
+			),
 			centerPoint: self.centerPoint.cgPoint
 		)
 	}

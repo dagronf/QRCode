@@ -86,12 +86,12 @@ class ViewController: NSViewController {
 			let doc = try! QRCode.Document(utf8String: "The rect will not be painted, however. Instead its pixel data will be used to determine, which pixels of the circle 'make it' to the final rendering. Since the rectangle covers only the upper half of the circle, the lower half of the circle will vanish", errorCorrection: .high)
 			doc.design.backgroundColor(CGColor(red: 0.149, green: 0.137, blue: 0.208, alpha: 1.000))
 
-			let gradient = DSFGradient(
+			let gradient = try! DSFGradient(
 				pins: [
 					DSFGradient.Pin(CGColor(red: 0.149, green: 0.137, blue: 0.208, alpha: 1.000), 0),
 					DSFGradient.Pin(CGColor(red: 0.059, green: 0.216, blue: 0.055, alpha: 1.000), 1),
 				]
-			)!
+			)
 			doc.design.style.background = QRCode.FillStyle.LinearGradient(
 				gradient,
 				startPoint: CGPoint(x: 0, y: 1),
