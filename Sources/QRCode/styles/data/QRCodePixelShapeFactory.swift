@@ -23,7 +23,7 @@ import CoreGraphics
 import Foundation
 
 /// A data shape factory
-@objc public class QRCodePixelShapeFactory: NSObject {
+@objc public final class QRCodePixelShapeFactory: NSObject, Sendable {
 	/// Shared data shape factory
 	@objc public static let shared = QRCodePixelShapeFactory()
 

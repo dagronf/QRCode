@@ -23,7 +23,7 @@ import CoreGraphics
 import Foundation
 
 /// An eye shape factory
-@objc public class QRCodeEyeShapeFactory: NSObject {
+@objc public final class QRCodeEyeShapeFactory: NSObject, Sendable {
 	/// A shared eye shape factory
 	@objc public static let shared = QRCodeEyeShapeFactory()
 

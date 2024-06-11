@@ -23,7 +23,7 @@ import Foundation
 import CoreGraphics
 
 /// An eye shape factory
-@objc public class QRCodePupilShapeFactory: NSObject {
+@objc public final class QRCodePupilShapeFactory: NSObject, Sendable {
 	/// A shared eye shape factory
 	@objc public static let shared = QRCodePupilShapeFactory()
 
@@ -62,7 +62,7 @@ import CoreGraphics
 	// Private
 
 	// The registered pupil shapes in name sorted order
-	private var registeredTypes: [any QRCodePupilShapeGenerator.Type] = [
+	private let registeredTypes: [any QRCodePupilShapeGenerator.Type] = [
 			QRCode.PupilShape.Circle.self,
 			QRCode.PupilShape.CorneredPixels.self,
 			QRCode.PupilShape.Cross.self,
