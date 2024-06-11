@@ -106,23 +106,28 @@ to handle the throwing calls.
 
 ## Installing
 
-### Swift Package Manager
+### Methods
 
+<details>
+<summary>Swift Package Manager</summary>
 To use in your project, add the following dependency to your Package.swift:
 
 ```swift
 .package(url: "https://github.com/dagronf/qrcode.git", from: "20.0.0")
 ```
+</details>
 
-### Cocoapods
-
+<details>
+<summary>Cocoapods</summary>
 To install it, simply add the following line to your Podfile
 
 ```ruby
 pod 'DSF_QRCode', '~> 20.0.0'
 ```
+</details>
 
-### Usage
+<details>
+<summary>Usage</summary>
 
 The core functionality for generating a nice QR code is found in the `QRCode` library.
 
@@ -140,12 +145,17 @@ Swift: `import QRCode`
 
 Objective-C: `@import QRCode;`
 
+</details>
+
+<details>
+<summary>Advanced (Tuist)</summary>
+
 ### Using `Tuist` or similar
 
 `QRCode` supports Objective-C at its core, allowing usage in both Swift and Objective-C.
 
 While using `QRCode` directly in Xcode automatically supports this, it's important to make sure that you link against
-the Objective-C library.  If not, you will receive crashes during runtime (which isn't ideal).
+the Objective-C library.  If not, you _WILL_ receive crashes during runtime.
 
 You need to make sure your linker flags `OTHER_LDFLAGS` contains `-ObjC` to 
 
@@ -160,24 +170,84 @@ settings: Settings(
 )
 ```
 
-## Generating a QR Code
+</details>
 
-The `QRCode.Document` class is the core class you will interact with. It is not tied to any presentation medium and is cross-platform across Apple OSes.
+## Creating a QR Code
 
-You can use this class to generate a QR Code and present the result as a `CGPath` or a `CGImage`. And if you're using Swift you can retrieve the raw qr code data as a 2D array of `Bool` to use however you need.
+You create a QR Code by creating an instance of `QRCode.Document`
 
-You can create a basic black-and-white QR code image very easily.
+### Using Swift
 
 ```swift
-let doc = try QRCode.Document("Hi there!")
-let generated = try doc.cgImage(dimension: 800)
+let doc = try QRCode.Document(utf8String: "This is the content")
+
+// Create a CGImage 
+let cgImage = try doc.cgImage(dimension: 400)
+// Create a PNG image
+let pngData = try doc.pngData(dimension: 400)
+// Create a PDF (scalable content!)
+let pdfData = try doc.pdfData(dimension: 400)
+// Create an SVG (scalable content!)
+let svgData = try doc.svgData(dimension: 400)
+// Create a CGPath
+let path = try doc.path(dimension: 400)
 ```
 
-Generates the basic black and white QR code below
+<details>
+<summary>Objective-C</summary>
 
-<img src="./Art/images/simple-generated-qrcode.png" width="80"/>
+### Using Objective-C
 
-You can further style the qr code (see below) 
+```objective-c
+NSError* error = NULL;
+QRCodeDocument* code = [[QRCodeDocument alloc] initWithUtf8String:@"This is the content"
+                                                  errorCorrection:QRCodeErrorCorrectionHigh
+                                                           engine:NULL
+                                                            error:&error];
+CGImageRef cgr = [doc cgImageWithDimension:400 error:&error];
+```
+
+</details>
+
+|  Bitmap  |  Vector  |
+|----------|----------|
+|<a href='./Art/images/basic-doco-md-coreimage.png'><img src="./Art/images/basic-doco-md-coreimage.pdf" width="80"/></a>|<a href='./Art/images/basic-doco-md-coreimage.pdf'><img src="./Art/images/basic-doco-md-coreimage.pdf" width="80"/></a>|
+
+
+### Set the error correction
+
+```swift
+@objc public var errorCorrection: QRCode.ErrorCorrection = .quantize
+```
+
+The `QRCode.Document` has 4 different encoding levels
+
+| Error correction | Description                                          |
+|------------------|:-----------------------------------------------------|
+| low              | Lowest error correction (L - Recovers 7% of data)    |
+| medium           | Medium error correction (M - Recovers 15% of data)   |
+| quantize         | Quantize error correction (Q - Recovers 25% of data) |
+| high             | High error correction (H - Recovers 30% of data)     |
+
+## Generating your QR Code
+
+`QRCode.Document` has many methods and styles for generating a QR Code.
+
+### Exportable types
+
+|              |              |
+|:-------------|:-------------|
+| Bitmap types | `PNG`, `TIFF`, `JPEG` |
+| Vector types | `PDF`, `SVG` |
+| Path types   | `CGPath` | 
+| Image Types  | `CGImage`, `NSImage`, `UIImage` |
+| Text types   | `json` |
+ 
+
+## Styling your QR Code
+
+Once you have your `QRCode.Document`, there are many way you can style it to give your design more personality
+
 
 <details>
 <summary>tl;dr Simple Example</summary>
@@ -251,20 +321,6 @@ doc.setText("This is my text")
 doc.setMessage(...)
 ```
 
-### Set the error correction
-
-```swift
-@objc public var errorCorrection: QRCode.ErrorCorrection = .quantize
-```
-
-The `QRCode.Document` has 4 different encoding levels
-
-| Error correction | Description                                          |
-|------------------|:-----------------------------------------------------|
-| low              | Lowest error correction (L - Recovers 7% of data)    |
-| medium           | Medium error correction (M - Recovers 15% of data)   |
-| quantize         | Quantize error correction (Q - Recovers 25% of data) |
-| high             | High error correction (H - Recovers 30% of data)     |
 
 The higher the error correction level, the larger the QR code will be.
 
