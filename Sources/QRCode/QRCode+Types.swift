@@ -23,7 +23,7 @@ import Foundation
 
 public extension QRCode {
 	/// A corners definition
-	struct Corners: OptionSet, Codable {
+	struct Corners: OptionSet, Codable, Sendable {
 		public let rawValue: Int
 		/// Top left
 		public static let tl = Corners(rawValue: 1 << 0)

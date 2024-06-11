@@ -21,6 +21,8 @@
 
 import Foundation
 
+// A Swift-y convenience for creating a QR Code with different QR Code formatting
+
 // MARK: Swift Initializer convenience
 
 public extension QRCode.Document {
@@ -28,7 +30,7 @@ public extension QRCode.Document {
 	enum FormattedContent {
 		/// A basic string
 		case text(String)
-		/// Base64 encoded binary data
+		/// Data encoded as Base64
 		case base64(Data)
 		/// Raw data
 		case rawData(Data)
@@ -54,11 +56,18 @@ public extension QRCode.Document {
 		errorCorrection: QRCode.ErrorCorrection = .default,
 		engine: (any QRCodeEngine)? = nil
 	) throws {
-		try self.init(
-			data: Data(),
-			errorCorrection: errorCorrection,
-			engine: engine
-		)
+		// Create a basic QR Code with no data
+		try self.init(data: Data(), errorCorrection: errorCorrection, engine: engine)
+		// Update the formatted content
+		try self.setFormattedContent(formattedContent)
+	}
+
+	/// Set the QRCode content
+	/// - Parameters:
+	///   - formattedContent: The formatted content
+	///   - errorCorrection: Error correction
+	func update(_ formattedContent: FormattedContent, errorCorrection: QRCode.ErrorCorrection = .default) throws {
+		self.errorCorrection = errorCorrection
 		try self.setFormattedContent(formattedContent)
 	}
 }

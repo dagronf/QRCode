@@ -21,6 +21,7 @@
 	// Insert code here to initialize your application
 	[self doTests];
 	[self doBasicQRCodeGeneration];
+	[self doBasicQRCodeDocumentGeneration2];
 }
 
 
@@ -109,6 +110,16 @@
 											 logoTemplate:NULL
 													  error:&error];
 
+	NSLog(@"%@", cgr);
+}
+
+- (void)doBasicQRCodeDocumentGeneration2 {
+	NSError* error = NULL;
+	QRCodeDocument* doc = [[QRCodeDocument alloc] initWithUtf8String:@"This is the content"
+																	  errorCorrection:QRCodeErrorCorrectionHigh
+																				  engine:NULL
+																					error:&error];
+	CGImageRef cgr = [doc cgImageWithDimension:400 error:&error];
 	NSLog(@"%@", cgr);
 }
 

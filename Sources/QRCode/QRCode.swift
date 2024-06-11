@@ -99,23 +99,6 @@ import Foundation
 	/// Returns a copy of the boolean matrix representation of the current QR code data
 	@objc var boolMatrix: BoolMatrix { self.current }
 
-	// Private
-	private let DefaultPDFResolution: CGFloat = 72
-
-	// The pixel design to use for drawing the pixel background color
-	internal let onPixelBackgroundDesign: QRCode.Design = {
-		let d = QRCode.Design()
-		d.shape.onPixels = QRCode.PixelShape.Square()
-		return d
-	}()
-
-	// The pixel design to use for drawing the pixel background color
-	internal let offPixelBackgroundDesign: QRCode.Design = {
-		let d = QRCode.Design()
-		d.shape.offPixels = QRCode.PixelShape.Square()
-		return d
-	}()
-
 	// The mask represents the pixels that are NOT drawn
 	internal var currentMask: BoolMatrix? = nil
 	internal var currentErrorCorrection: ErrorCorrection = .default

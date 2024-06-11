@@ -94,7 +94,7 @@ public extension QRCode {
 		@objc override public init() {
 			self.content = .data(Data())
 			self.errorCorrection = .default
-			self.qrcode = try! QRCode(Data(), errorCorrection: self.errorCorrection, engine: nil)
+			self.qrcode = try! QRCode(Data(), errorCorrection: self.errorCorrection)
 			super.init()
 		}
 
@@ -135,33 +135,22 @@ public extension QRCode {
 			super.init()
 		}
 
-		/// Create a QRCode document containing the contents of a message formatter
+		/// Create a QRCode document using a message formatter
 		/// - Parameters:
 		///   - message: The message formatter
 		///   - errorCorrection: The error correction level
 		///   - engine: The engine to use when creating the QR code. Defaults to Core Image
-		@objc public init(
+		@objc public convenience init(
 			message: any QRCodeMessageFormatter,
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			engine: (any QRCodeEngine)? = nil
 		) throws {
 			if let text = message.text {
-				self.content = .text(text)
+				try self.init(utf8String: text, errorCorrection: errorCorrection, engine: engine)
 			}
 			else {
-				self.content = .data(message.data)
+				try self.init(data: message.data, errorCorrection: errorCorrection, engine: engine)
 			}
-			self.errorCorrection = errorCorrection
-
-			self.qrcode = try {
-				if let text = message.text {
-					return try QRCode(utf8String: text, errorCorrection: errorCorrection, engine: engine)
-				}
-				else {
-					return try QRCode(message.data, errorCorrection: errorCorrection, engine: engine)
-				}
-			}()
-			super.init()
 		}
 
 		/// The qrcode content.
@@ -268,15 +257,22 @@ public extension QRCode.Document {
 public extension QRCode.Document {
 	/// Build the QR Code using the given data and error correction
 	@objc func update(data: Data, errorCorrection: QRCode.ErrorCorrection) throws {
+		self.data = data
 		try self.qrcode.update(data: data, errorCorrection: errorCorrection)
 	}
 
-	/// Build the QR Code using the given text and error correction
+	/// Set the QRCode content
+	/// - Parameters:
+	///   - text: The utf8 text
+	///   - errorCorrection: Error correction
 	@objc func update(text: String, errorCorrection: QRCode.ErrorCorrection = .default) throws {
 		try self.qrcode.update(text: text, errorCorrection: errorCorrection)
 	}
 
-	/// Build the QR Code using the given message formatter and error correction
+	/// Set the QRCode content
+	/// - Parameters:
+	///   - message: The message
+	///   - errorCorrection: Error correction
 	@objc func update(message: any QRCodeMessageFormatter, errorCorrection: QRCode.ErrorCorrection = .default) throws {
 		try self.qrcode.update(message: message, errorCorrection: errorCorrection)
 	}

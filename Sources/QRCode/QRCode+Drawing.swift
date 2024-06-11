@@ -152,16 +152,22 @@ public extension QRCode {
 
 			// Now, the 'on' pixels background
 			if let c = design.style.onPixelsBackground {
-				onPixelBackgroundDesign.style.onPixels = QRCode.FillStyle.Solid(c)
+				let design: QRCode.Design = {
+					let d = QRCode.Design()
+					d.shape.onPixels = QRCode.PixelShape.Square()
+					d.style.onPixels = QRCode.FillStyle.Solid(c)
+					return d
+				}()
+
 				let qrPath2 = self.path(
 					finalRect.size,
 					components: .onPixels,
-					shape: onPixelBackgroundDesign.shape,
+					shape: design.shape,
 					logoTemplate: logoTemplate,
 					additionalQuietSpace: additionalQuietSpace
 				)
 				ctx.usingGState { context in
-					onPixelBackgroundDesign.style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath2)
+					design.style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath2)
 				}
 			}
 
@@ -181,16 +187,21 @@ public extension QRCode {
 			if let s = style.offPixels, let _ = design.shape.offPixels {
 				// Draw the 'off' pixels background IF the caller has set a color
 				if let c = design.style.offPixelsBackground {
-					offPixelBackgroundDesign.style.offPixels = QRCode.FillStyle.Solid(c)
+					let design: QRCode.Design = {
+						let d = QRCode.Design()
+						d.shape.offPixels = QRCode.PixelShape.Square()
+						d.style.offPixels = QRCode.FillStyle.Solid(c)
+						return d
+					}()
 					let qrPath2 = self.path(
 						finalRect.size,
 						components: .offPixels,
-						shape: offPixelBackgroundDesign.shape,
+						shape: design.shape,
 						logoTemplate: logoTemplate,
 						additionalQuietSpace: additionalQuietSpace
 					)
 					ctx.usingGState { context in
-						offPixelBackgroundDesign.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
+						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
 					}
 				}
 
