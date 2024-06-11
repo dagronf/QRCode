@@ -52,12 +52,22 @@ internal class QRCodeEngine_None: QRCodeEngine {
 
 extension QRCode {
 	/// Create a default engine for the platform
-	@objc(DefaultEngine) static public func DefaultEngine() -> any QRCodeEngine {
+	@objc(QRCodeDefaultEngine) public static func DefaultEngine() -> any QRCodeEngine {
 #if os(watchOS)
 		// You must supply a 3rd party generator for watchOS (see README.md)
 		return QRCodeEngineExternal()
 #else
 		return QRCodeEngineCoreImage()
+#endif
+	}
+
+	/// Returns the engines supported for this platform
+	/// - Returns: An array of QR Code engines supported on this platform
+	@objc(QRCodeAvailableEngines) public static func AvailableEngines() -> [any QRCodeEngine] {
+#if os(watchOS)
+	return [QRCodeEngineExternal()]
+#else
+	return [QRCodeEngineCoreImage(), QRCodeEngineExternal()]
 #endif
 	}
 }
