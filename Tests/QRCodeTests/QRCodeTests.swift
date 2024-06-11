@@ -17,6 +17,48 @@ final class QRCodeTests: XCTestCase {
 		XCTAssertEqual(35, boomat.dimension)
 	}
 
+	func testBasicDocumentionationCode() throws {
+		let content = "This is the content"
+
+		try QRCode.AvailableEngines().forEach { engine in
+
+			let code = try QRCode(utf8String: content, engine: engine)
+
+			// Create a CGImage
+			let cgImage = try code.cgImage(dimension: 400)
+			try XCTValidateSingleQRCode(cgImage, expectedText: content)
+
+			// Create a PNG image
+			let pngData = try code.pngData(dimension: 400)
+			let _ = try outputFolder.write(pngData, to: "basic-doco-md-\(engine.name).png")
+			try XCTValidateSingleQRCode(pngData, expectedText: content)
+
+			// Create a JPEG image
+			let jpgData = try code.jpegData(dimension: 400)
+			let _ = try outputFolder.write(jpgData, to: "basic-doco-md-\(engine.name).jpg")
+			try XCTValidateSingleQRCode(jpgData, expectedText: content)
+
+			// Create a TIFF image
+			let tiffData = try code.tiffData(dimension: 400)
+			let _ = try outputFolder.write(tiffData, to: "basic-doco-md-\(engine.name).tiff")
+			try XCTValidateSingleQRCode(tiffData, expectedText: content)
+
+			// Create a PDF (scalable content!)
+			let pdfData = try code.pdfData(dimension: 400)
+			let _ = try outputFolder.write(pdfData, to: "basic-doco-md-\(engine.name).pdf")
+			#if os(macOS)
+			try XCTValidateSingleQRCode(pdfData, expectedText: content)
+			#endif
+
+			// Create an SVG (scalable content!)
+			let svgData = try code.svgData(dimension: 400)
+			let _ = try outputFolder.write(svgData, to: "basic-doco-md-\(engine.name).svg")
+			#if os(macOS)
+			try XCTValidateSingleQRCode(svgData, expectedText: content)
+			#endif
+		}
+	}
+
 	func testGenerateBasicQRCode() throws {
 
 		#if os(watchOS)

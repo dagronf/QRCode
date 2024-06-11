@@ -257,7 +257,7 @@ func detectFirstQRCodeMessage(_ image: CGImage) throws -> String {
 }
 
 func XCTValidateSingleQRCode(_ image: CGImage, expectedText: String) throws {
-#if !os(watchOS)
+	#if !os(watchOS)
 	let result = QRCode.DetectQRCodes(image)
 	guard
 		result.count == 1,
@@ -265,5 +265,12 @@ func XCTValidateSingleQRCode(_ image: CGImage, expectedText: String) throws {
 	else {
 		throw ValidateQRCode.cannotValidate
 	}
-#endif
+	#endif
+}
+
+func XCTValidateSingleQRCode(_ imageData: Data, expectedText: String) throws {
+	#if !os(watchOS)
+	let cgi = try CGImage.load(data: imageData)
+	try XCTValidateSingleQRCode(cgi, expectedText: expectedText)
+	#endif
 }
