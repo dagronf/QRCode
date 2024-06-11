@@ -33,28 +33,11 @@ import Foundation
 	@objc func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix
 }
 
-// An 'empty' qr code generator which does nothing
-internal class QRCodeEngine_None: QRCodeEngine {
-	/// The engine name
-	@objc public var name: String { "none" }
-
-	/// Generate the QR code using the custom generator
-	func generate(data: Data, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
-		assert(false, "Warning: QRCode generator is not set...")
-		throw QRCodeError.noGeneratorSet
-	}
-
-	func generate(text: String, errorCorrection: QRCode.ErrorCorrection) throws -> BoolMatrix {
-		assert(false, "Warning: QRCode generator is not set...")
-		throw QRCodeError.noGeneratorSet
-	}
-}
-
 extension QRCode {
 	/// Create a default engine for the platform
 	@objc(QRCodeDefaultEngine) public static func DefaultEngine() -> any QRCodeEngine {
 #if os(watchOS)
-		// You must supply a 3rd party generator for watchOS (see README.md)
+		// A third-party qr code generator
 		return QRCodeEngineExternal()
 #else
 		return QRCodeEngineCoreImage()
