@@ -211,7 +211,7 @@ CGImageRef cgr = [doc cgImageWithDimension:400 error:&error];
 
 |  Bitmap  |  Vector  |
 |----------|----------|
-|<a href='./Art/images/basic-doco-md-coreimage.png'><img src="./Art/images/basic-doco-md-coreimage.pdf" width="80"/></a>|<a href='./Art/images/basic-doco-md-coreimage.pdf'><img src="./Art/images/basic-doco-md-coreimage.pdf" width="80"/></a>|
+|<a href='./Art/images/basic-doco-md-coreimage.png'><img src="./Art/images/basic-doco-md-coreimage.png" width="80"/></a>|<a href='./Art/images/basic-doco-md-coreimage.pdf'><img src="./Art/images/basic-doco-md-coreimage.png" width="80"/></a>|
 
 
 ### Set the error correction
@@ -278,12 +278,6 @@ let loadedDoc = try QRCode.Document(jsonData: jsonData)
 ```
 
 </details>
-
-There are also some extensions on `CGImage` to help making qr codes even easier
-
-```swift
-let qrCodeImage = CGImage.qrCode("Hi there!", dimension: 800)
-```
 
 ### QRCode builder
 

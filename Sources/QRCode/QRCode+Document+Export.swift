@@ -75,6 +75,7 @@ public extension QRCode.Document {
 			),
 			components: components,
 			shape: self.design.shape,
+			logoTemplate: self.logoTemplate,
 			additionalQuietSpace: additionalQuietSpace
 		)
 	}
@@ -85,11 +86,7 @@ public extension QRCode.Document {
 	///   - components: The components of the QR code to include in the path
 	/// - Returns: A path containing the components
 	@objc func path(dimension: Int, components: QRCode.Components = .all) -> CGPath {
-		return self.qrcode.path(
-			CGSize(dimension: dimension),
-			components: components,
-			shape: self.design.shape
-		)
+		self.path(CGSize(dimension: dimension), components: components)
 	}
 }
 

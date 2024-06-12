@@ -699,8 +699,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 	func testComponentGeneration() throws {
 		markdownText += "## Component paths\n\n"
 
-		markdownText += "| all | on pixels | off pixels | eye background | eye outer | eye pupil |\n"
-		markdownText += "|:------:|:------:|:------:|:------:|:------:|:------:|\n"
+		markdownText += "|        | all | on pixels | off pixels | eye background | eye outer | eye pupil |\n"
+		markdownText += "|:------:|:------:|:------:|:------:|:------:|:------:|:------:|\n"
 
 		let doc = try QRCode.Document(
 			utf8String: "QR Code generation test with a lot of content to display!",
@@ -717,54 +717,75 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		let rect = CGRect(origin: .zero, size: .init(width: dimension, height: dimension))
 
-		// Do all first
+		let logoTemplate = QRCode.LogoTemplate(
+			image: try resourceImage(for: "apple", extension: "png"),
+			path: CGPath(rect: CGRect(x: 0.40, y: 0.365, width: 0.55, height: 0.25), transform: nil),
+			inset: 32
+		)
+		let logoImageC = try resourceImage(for: "instagram-icon", extension: "png")
+		let logoTemplate2 = QRCode.LogoTemplate.CircleCenter(image: logoImageC)
 
-		do {
-			let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
-				ctx.saveGState()
-				ctx.setFillColor(CGColor.gray(0, 0.05))
-				ctx.fill([rect])
-				ctx.setStrokeColor(CGColor.gray(0, 0.8))
-				ctx.setLineWidth(0.5)
-				ctx.stroke(rect)
-				ctx.restoreGState()
+		try [
+			("nologo", nil),
+			("logo-1", logoTemplate),
+			("logo-2", logoTemplate2)
+		].forEach { template in
 
-				for item in items {
-					let path = doc.path(dimension: self.dimension, components: item.0)
-					ctx.addPath(path)
-					ctx.setFillColor(item.2)
-					ctx.fillPath()
-				}
-			}//.flipping(.horizontally)
+			doc.logoTemplate = template.1
+			let filenameaddition = template.0
 
-			let content = try image.representation.png()
-			let filename = "components-all.png"
-			let link = try imageStore.store(content, filename: filename)
-			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>|"
-		}
+			markdownText += "| \(filenameaddition) "
 
-		// Now each individually
+			// Do all first
 
-		for item in items.enumerated() {
-			let path = doc.path(dimension: dimension, components: item.element.0)
-			let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
-				ctx.saveGState()
-				ctx.setFillColor(CGColor.gray(0, 0.05))
-				ctx.fill([rect])
-				ctx.setStrokeColor(CGColor.gray(0, 0.8))
-				ctx.setLineWidth(0.5)
-				ctx.stroke(rect)
-				ctx.restoreGState()
+			do {
+				let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
+					ctx.saveGState()
+					ctx.setFillColor(CGColor.gray(0, 0.05))
+					ctx.fill([rect])
+					ctx.setStrokeColor(CGColor.gray(0, 0.8))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(rect)
+					ctx.restoreGState()
 
-				ctx.addPath(path)
-				ctx.setFillColor(item.element.2)
-				ctx.fillPath()
+					for item in items {
+						let path = doc.path(dimension: self.dimension, components: item.0)
+						ctx.addPath(path)
+						ctx.setFillColor(item.2)
+						ctx.fillPath()
+					}
+				}//.flipping(.horizontally)
+
+				let content = try image.representation.png()
+				let filename = "components-all-\(filenameaddition).png"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "|<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>"
 			}
 
-			let content = try image.representation.png()
-			let filename = "components-\(item.offset).png"
-			let link = try imageStore.store(content, filename: filename)
-			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>|"
+			// Now each individually
+
+			for item in items.enumerated() {
+				let path = doc.path(dimension: dimension, components: item.element.0)
+				let image = try CGImage.Create(size: rect.size, flipped: true) { ctx in
+					ctx.saveGState()
+					ctx.setFillColor(CGColor.gray(0, 0.05))
+					ctx.fill([rect])
+					ctx.setStrokeColor(CGColor.gray(0, 0.8))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(rect)
+					ctx.restoreGState()
+
+					ctx.addPath(path)
+					ctx.setFillColor(item.element.2)
+					ctx.fillPath()
+				}
+
+				let content = try image.representation.png()
+				let filename = "components-\(item.offset)-\(filenameaddition).png"
+				let link = try imageStore.store(content, filename: filename)
+				markdownText += "|<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a>"
+			}
+			markdownText += "|\n"
 		}
 
 		markdownText += "\n"

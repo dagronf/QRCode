@@ -328,4 +328,52 @@ final class QRCodeMaskingTests: XCTestCase {
 			try outputFolder.write(pdfhBigger, to: "logotemplate-issue34-height-bigger-\(quietSpace).pdf")
 		}
 	}
+
+	func testPathGenerationWithLogoTemplate() throws {
+
+		// Check that generating a CGPath contains a hole for the logotemplate if it exists
+
+		let outputFolder = try outputFolder.subfolder(with: "logo-path-check")
+
+		let logoImage = try resourceImage(for: "instagram-icon", extension: "png")
+		let logoTemplate = QRCode.LogoTemplate(
+			image: logoImage,
+			path: CGPath(ellipseIn: CGRect(x: 0.65, y: 0.35, width: 0.30, height: 0.30), transform: nil),
+			inset: 8
+		)
+
+		let doc = try QRCode.build
+			.text("Logo template checking with path export Logo template checking with path export Logo template checking with path export")
+			.backgroundColor(CGColor(srgbRed: 1, green: 1, blue: 0, alpha: 1))
+			.eye.shape(QRCode.EyeShape.Squircle())
+			.document
+
+		try [0, 12].forEach { quietSpace in
+			doc.design.additionalQuietZonePixels = UInt(quietSpace)
+
+			do {
+				// No logotemplate
+				doc.logoTemplate = nil
+				let path = doc.path(dimension: 400)
+				let b1 = try CreateBitmap(dimension: 400, backgroundColor: CGColor.commonWhite) { ctx in
+					ctx.addPath(path)
+					ctx.setFillColor(.commonBlack)
+					ctx.fillPath()
+				}
+				try outputFolder.write(try b1.representation.png(), to: "path-without-logotemplate-\(quietSpace).png")
+			}
+
+			do {
+				// No logotemplate
+				doc.logoTemplate = logoTemplate
+				let path = doc.path(dimension: 400)
+				let b1 = try CreateBitmap(dimension: 400, backgroundColor: CGColor.commonWhite) { ctx in
+					ctx.addPath(path)
+					ctx.setFillColor(.commonBlack)
+					ctx.fillPath()
+				}
+				try outputFolder.write(try b1.representation.png(), to: "path-with-logotemplate-\(quietSpace).png")
+			}
+		}
+	}
 }

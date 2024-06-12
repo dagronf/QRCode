@@ -121,7 +121,7 @@ enum CreateBitmapError: Error {
 }
 
 /// Create a bitmap and draw into it
-func CreateBitmap(dimension: Int, flipped: Bool = true, _ block: (CGContext) -> Void) throws -> CGImage {
+func CreateBitmap(dimension: Int, backgroundColor: CGColor? = nil, flipped: Bool = true, _ block: (CGContext) -> Void) throws -> CGImage {
 	let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 	let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 	guard let ctx = CGContext(
@@ -141,6 +141,14 @@ func CreateBitmap(dimension: Int, flipped: Bool = true, _ block: (CGContext) -> 
 		ctx.scaleBy(x: 1, y: -1)
 		ctx.translateBy(x: 0, y: Double(-dimension))
 	}
+
+	if let backgroundColor = backgroundColor {
+		ctx.usingGState { c in
+			c.setFillColor(backgroundColor)
+			c.fill(CGRect(origin: .zero, size: CGSize(width: ctx.width, height: ctx.height)))
+		}
+	}
+
 	block(ctx)
 	
 	guard let img = ctx.makeImage() else {
