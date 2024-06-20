@@ -1105,7 +1105,7 @@ You can build the command line tool by opening a terminal window, `cd` into the 
 The `qrcodegen` tool can be found in the `.build/release` folder.
 
 ```zsh
-% .build/debug/qrcodegen -h
+% .build/release/qrcodegen --help
 OVERVIEW: Create a qr code
 
 Examples:
@@ -1116,6 +1116,7 @@ Examples:
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
+* You can generate a style template file by exporting to json format.
 
 USAGE: qr-code-gen [<options>] <dimension>
 
@@ -1128,7 +1129,7 @@ OPTIONS:
   --output-file <output-file>
                           The output file 
   --output-format <output-format>
-                          The output format (png [default],pdf,svg,ascii,smallascii,clipboard) 
+                          The output format (png [default],pdf,svg,ascii,smallascii,clipboard,json) 
   --output-compression <output-compression>
                           The output format compression factor (if the output format supports it, png,jpg) 
   --style-template-file <style-template-file>
@@ -1156,17 +1157,19 @@ OPTIONS:
                           Print all the available eye shapes. 
   -e, --eye-shape <eye-shape>
                           The eye shape to use. Available shapes are circle, corneredPixels, edges, fireball,
-                          barsHorizontal, leaf, peacock, pinch, usePixelShape, pixels, roundedOuter, roundedPointingIn,
-                          roundedPointingOut, roundedRect, shield, square, squircle, teardrop, ufo, barsVertical. 
+                          barsHorizontal, leaf, peacock, pinch, pixels, roundedOuter, roundedPointingIn,
+                          roundedPointingOut, roundedRect, shield, square, squircle, teardrop, ufo, usePixelShape,
+                          barsVertical. 
   --eye-shape-corner-radius <eye-shape-corner-radius>
                           The fractional (0 ... 1) corner radius to use for the eye shape IF the eye shape supports it. 
   --all-pupil-shapes <all-pupil-shapes>
                           Print all the available pupil shapes. 
   -p, --pupil-shape <pupil-shape>
                           The pupil shape to use. Available shapes are blobby, circle, corneredPixels, cross,
-                          crossCurved, edges, hexagonLeaf, barsHorizontal, leaf, pinch, usePixelShape, pixels,
-                          roundedOuter, roundedPointingIn, roundedPointingOut, roundedRect, seal, shield, square,
-                          squircle, teardrop, ufo, barsVertical. 
+                          crossCurved, edges, hexagonLeaf, barsHorizontal, leaf, pinch, pixels, roundedOuter,
+                          roundedPointingIn, roundedPointingOut, roundedRect, seal, shield, square,
+                          barsHorizontalSquare, barsVerticalSquare, squircle, teardrop, ufo, usePixelShape,
+                          barsVertical. 
   --pupil-shape-corner-radius <pupil-shape-corner-radius>
                           The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape
                           supports it. 
