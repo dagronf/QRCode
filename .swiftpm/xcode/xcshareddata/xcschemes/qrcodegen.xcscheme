@@ -77,7 +77,15 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-t &quot;testing&quot; -e &quot;edges&quot; --eye-shape-corner-radius 1.0 --pupil-shape-corner-radius 1.0 512"
+            argument = "-e teardrop -t &quot;QRCode on the clipboard&quot; 512 --output-format json"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-t &quot;testing&amp;&quot; -e &quot;edges&quot; --eye-shape-corner-radius 1.0 --pupil-shape-corner-radius 1.0 512"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--help"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

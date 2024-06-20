@@ -36,9 +36,10 @@ enum SupportedExtensions: String {
 	case ascii
 	case smallascii
 	case clipboard
+	case json
 
 	var fileBased: Bool {
-		return self == .png || self == .pdf || self == .jpg || self == .svg
+		return self == .png || self == .pdf || self == .jpg || self == .svg || self == .json
 	}
 }
 
@@ -57,6 +58,7 @@ Examples:
 * If you don't specify either -t or --input-file, the qrcode content will be read from STDIN
 * If you don't specify an output file, the generated qr code will be written to a temporary file
   and opened in the default application.
+* You can generate a style template file by exporting to json format.
 """
 		)
 	}
@@ -70,7 +72,7 @@ Examples:
 	@Option(help: "The output file")
 	var outputFile: String?
 
-	@Option(help: "The output format (png [default],pdf,svg,ascii,smallascii,clipboard)")
+	@Option(help: "The output format (png [default],pdf,svg,ascii,smallascii,clipboard,json)")
 	var outputFormat: String?
 
 	@Option(help: "The output format compression factor (if the output format supports it, png,jpg)")
@@ -146,35 +148,42 @@ Examples:
 	var pupilColor: String?
 
 	func run() throws {
-		let data: Data
 
 		let outputSize = CGSize(width: self.dimension, height: self.dimension)
 
+		let doc = QRCode.Document()
+
+		//
+		// Content
+		//
+
 		if let inputFile = self.inputFile {
-			data = try Data(contentsOf: URL(fileURLWithPath: inputFile))
+			doc.data = try Data(contentsOf: URL(fileURLWithPath: inputFile))
 		}
 		else if let t = text {
-			guard let s = t.data(using: .utf8) else { return }
-			data = s
+			doc.utf8String = t
 		}
 		else if let t = readSTDIN() {
 			Swift.print("reading from stdin")
 			guard let s = t.data(using: .utf8) else { return }
-			data = s
+			doc.data = s
 		}
 		else {
 			QRCodeGen.exit(withError: ExitCode(-1))
 		}
 
-		var styleDocument: QRCode.Document?
+		//
+		// Template Design
+		//
 
-		// Create the design to use
-		let design: QRCode.Design = {
+		var templateDocument: QRCode.Document?
+
+		doc.design = {
 			if let styleTemplateFile = styleTemplateFile {
 				let templateURL = URL(fileURLWithPath: styleTemplateFile)
 				do {
-					styleDocument = try QRCode.Document(jsonData: try Data(contentsOf: templateURL))
-					return styleDocument!.design
+					templateDocument = try QRCode.Document(jsonData: try Data(contentsOf: templateURL))
+					return templateDocument!.design
 				}
 				catch {
 					Swift.print("Invalid style template file '\(styleTemplateFile)'.")
@@ -186,9 +195,12 @@ Examples:
 			}
 		}()
 
-		// logo template
-		let logoTemplate: QRCode.LogoTemplate? = {
-			if let styleDocument = styleDocument,
+		//
+		// Logo template
+		//
+
+		doc.logoTemplate = {
+			if let styleDocument = templateDocument,
 				let template = styleDocument.logoTemplate,
 				let logoImageFile = logoImageFile,
 				let path = Optional(URL(fileURLWithPath: logoImageFile)),
@@ -200,29 +212,33 @@ Examples:
 			return nil
 		}()
 
+		//
 		// Colors
+		//
 
 		if let archive = self.bgColor {
 			let backgroundColor = try CGColor.UnarchiveSRGBA(archive)
-			design.style.background = QRCode.FillStyle.Solid(backgroundColor)
+			doc.design.style.background = QRCode.FillStyle.Solid(backgroundColor)
 		}
 
 		if let archive = self.dataColor {
 			let dataColor = try CGColor.UnarchiveSRGBA(archive)
-			design.style.onPixels = QRCode.FillStyle.Solid(dataColor)
+			doc.design.style.onPixels = QRCode.FillStyle.Solid(dataColor)
 		}
 
 		if let archive = self.eyeColor {
 			let eyeColor = try CGColor.UnarchiveSRGBA(archive)
-			design.style.eye = QRCode.FillStyle.Solid(eyeColor)
+			doc.design.style.eye = QRCode.FillStyle.Solid(eyeColor)
 		}
 
 		if let archive = self.pupilColor {
 			let pupilColor = try CGColor.UnarchiveSRGBA(archive)
-			design.style.pupil = QRCode.FillStyle.Solid(pupilColor)
+			doc.design.style.pupil = QRCode.FillStyle.Solid(pupilColor)
 		}
 
+		//
 		// The eye shape
+		//
 
 		if let name = eyeShape {
 			var settings: [String: Any] = [:]
@@ -231,7 +247,7 @@ Examples:
 			}
 			
 			do {
-				design.shape.eye = try QRCodeEyeShapeFactory.shared.named(name, settings: settings)
+				doc.design.shape.eye = try QRCodeEyeShapeFactory.shared.named(name, settings: settings)
 			}
 			catch {
 				Swift.print("Unknown eye style '\(name)'.")
@@ -242,14 +258,16 @@ Examples:
 		}
 
 		if let cf = eyeShapeCornerRadius {
-			_ = design.shape.eye.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+			_ = doc.design.shape.eye.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
 		}
 
+		//
 		// Pupil shape
+		//
 
 		if let name = pupilShape {
 			do {
-				design.shape.pupil = try QRCodePupilShapeFactory.shared.named(name)
+				doc.design.shape.pupil = try QRCodePupilShapeFactory.shared.named(name)
 			}
 			catch {
 				Swift.print("Unknown pupil style '\(name)'.")
@@ -260,10 +278,12 @@ Examples:
 		}
 
 		if let cf = pupilShapeCornerRadius {
-			_ = design.shape.actualPupilShape.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+			_ = doc.design.shape.actualPupilShape.setSettingValue(cf, forKey: QRCode.SettingsKey.cornerRadiusFraction)
 		}
 
+		//
 		// The onPixels shape
+		//
 
 		let dataShapeName = self.onPixelShape ?? "square"
 		var settings: [String: Any] = [:]
@@ -278,7 +298,7 @@ Examples:
 		}
 
 		do {
-			design.shape.onPixels = try QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings)
+			doc.design.shape.onPixels = try QRCodePixelShapeFactory.shared.named(dataShapeName, settings: settings)
 		}
 		catch {
 			Swift.print("Unknown 'onPixels' style '\(dataShapeName)'.")
@@ -287,9 +307,10 @@ Examples:
 			QRCodeGen.exit(withError: ExitCode(-3))
 		}
 
+		//
 		// Error correction
+		//
 
-		var errorCorrection: QRCode.ErrorCorrection = .default
 		if let ec = self.errorCorrection {
 			guard
 				let ch = ec.first,
@@ -298,14 +319,7 @@ Examples:
 				Swift.print("Unknown error correction level '\(ec)'.")
 				QRCodeGen.exit(withError: ExitCode(-4))
 			}
-			errorCorrection = eet
-		}
-
-		// Output format
-		let extnString = self.outputFormat ?? "png"
-		guard let outputType = SupportedExtensions(rawValue: extnString) else {
-			Swift.print("Unknown output format '\(self.outputFormat ?? "")'. Supported formats are png,jpg,pdf,ascii,smallascii.")
-			QRCodeGen.exit(withError: ExitCode(-5))
+			doc.errorCorrection = eet
 		}
 
 		let outputCompr = max(0.0, min(1.0, outputCompression ?? 1.0))
@@ -314,7 +328,19 @@ Examples:
 			Swift.print("WARNING: Large image size. Suggest using PDF output at a smaller size")
 		}
 
+		//
+		// Output format
+		//
+
+		let extnString = self.outputFormat ?? "png"
+		guard let outputType = SupportedExtensions(rawValue: extnString) else {
+			Swift.print("Unknown output format '\(self.outputFormat ?? "")'. Supported formats are png,jpg,pdf,ascii,smallascii,json.")
+			QRCodeGen.exit(withError: ExitCode(-5))
+		}
+		
+		//
 		// Output URL
+		//
 
 		let outURL: URL = {
 			if let o = outputFile {
@@ -325,76 +351,31 @@ Examples:
 			}
 		}()
 
-		// Generate the QR Code
-		let qrCode = try QRCode(data, errorCorrection: errorCorrection)
+		//
+		// Generate output
+		//
 
 		switch outputType {
 		case .clipboard:
-			qrCode.addToPasteboard(outputSize, design: design, logoTemplate: logoTemplate)
+			doc.addToPasteboard(outputSize)
 		case .png:
-			guard let nsImage = try? qrCode.nsImage(outputSize, design: design, logoTemplate: logoTemplate) else {
-				Swift.print("Unable to generate image from qrcode")
-				QRCodeGen.exit(withError: ExitCode(-6))
-			}
-			do {
-				try writeImage(
-					image: nsImage,
-					usingType: .png,
-					withSizeInPixels: outputSize,
-					compressionFactor: outputCompr,
-					to: outURL)
-			}
-			catch {
-				Swift.print("Unable to write to output file \(outURL.absoluteString) - error was \(error)")
-				QRCodeGen.exit(withError: ExitCode(-7))
-			}
-
+			let pngData = try doc.pngData(dimension: Int(outputSize.width))
+			try pngData.write(to: outURL, options: .atomic)
 		case .jpg:
-			guard let nsImage = try? qrCode.nsImage(outputSize, design: design, logoTemplate: logoTemplate) else {
-				Swift.print("Unable to generate image from qrcode")
-				QRCodeGen.exit(withError: ExitCode(-6))
-			}
-			do {
-				try writeImage(
-					image: nsImage,
-					usingType: .jpeg,
-					withSizeInPixels: outputSize,
-					compressionFactor: outputCompr,
-					to: outURL)
-			}
-			catch {
-				Swift.print("Unable to write to output file \(outURL.absoluteString) - error was \(error)")
-				QRCodeGen.exit(withError: ExitCode(-7))
-			}
-
+			let jpgData = try doc.jpegData(dimension: Int(self.dimension), compression: outputCompr)
+			try jpgData.write(to: outURL, options: .atomic)
 		case .pdf:
-			guard let data = try? qrCode.pdfData(outputSize, design: design, logoTemplate: logoTemplate) else {
-				Swift.print("Unable to write to output file \(outURL.absoluteString)")
-				QRCodeGen.exit(withError: ExitCode(-8))
-			}
-			do {
-				try data.write(to: outURL, options: .atomic)
-			}
-			catch {
-				Swift.print("Unable to write to output file \(outURL.absoluteString)")
-				QRCodeGen.exit(withError: ExitCode(-9))
-			}
-
+			let pdfData = try doc.pdfData(dimension: Int(self.dimension))
+			try pdfData.write(to: outURL, options: .atomic)
 		case .svg:
-			do {
-				let str = try qrCode.svg(dimension: Int(outputSize.width), design: design, logoTemplate: logoTemplate)
-				try str.write(to: outURL, atomically: true, encoding: .utf8)
-			}
-			catch {
-				Swift.print("Unable to write to output file \(outURL.absoluteString)")
-				QRCodeGen.exit(withError: ExitCode(-9))
-			}
-
+			let svgData = try doc.svgData(dimension: Int(self.dimension))
+			try svgData.write(to: outURL, options: .atomic)
 		case .ascii:
-			Swift.print(qrCode.asciiRepresentation())
-
+			Swift.print(doc.asciiRepresentation)
 		case .smallascii:
-			Swift.print(qrCode.smallAsciiRepresentation())
+			Swift.print(doc.smallAsciiRepresentation)
+		case .json:
+			Swift.print(try doc.jsonStringFormatted())
 		}
 
 		if outputType.fileBased && self.outputFile == nil {
