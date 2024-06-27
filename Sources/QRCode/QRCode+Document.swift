@@ -113,7 +113,7 @@ public extension QRCode {
 			errorCorrection: QRCode.ErrorCorrection = .default,
 			engine: (any QRCodeEngine)? = nil
 		) throws {
-			self.content = .data(Data())
+			self.content = .data(data)
 			self.errorCorrection = errorCorrection
 			self.qrcode = try QRCode(data, errorCorrection: errorCorrection, engine: engine)
 			super.init()
