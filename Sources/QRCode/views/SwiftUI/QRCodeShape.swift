@@ -307,133 +307,131 @@ fileprivate let DemoContent = "https://goo.gl/maps/Z4d9uVV87gVifrZKA".data(using
 fileprivate let DemoContent2 = "Harness the power of Quartz technology to perform lightweight 2D rendering with high-fidelity output. Handle path-based drawing, antialiased rendering, gradients, images, color management, PDF documents, and more.".data(using: .utf8)!
 fileprivate let textData = "Hello there how are you".data(using: .utf8)!
 
-//
-// Unfortunately, there is no point in creating more previews as XCode simply refuses to display them
-//
-
-@available(macOS 11, iOS 14, tvOS 14, watchOS 6.0, *)
-#Preview("QRCodeShape") {
-	VStack {
-		Text("QRCode").font(.headline).bold()
-		HStack {
-			QRCodeShape(data: DemoContent, errorCorrection: .low)
-				.components(.all)
-				.onPixelShape(try! QRCodePixelShapeFactory.shared.named("circle"))
-			QRCodeShape(data: DemoContent2, errorCorrection: .medium)
-		}
-
+@available(macOS 11, iOS 14, tvOS 14, watchOS 6, *)
+struct QRCodeShape_Previews: PreviewProvider {
+	static var previews: some View {
 		VStack {
-			Divider()
-			Text("Components").font(.headline).bold()
+			Text("QRCode").font(.headline).bold()
 			HStack {
-				VStack {
-					ZStack {
+				QRCodeShape(data: DemoContent, errorCorrection: .low)
+					.components(.all)
+					.onPixelShape(try! QRCodePixelShapeFactory.shared.named("circle"))
+				QRCodeShape(data: DemoContent2, errorCorrection: .medium)
+			}
+
+			VStack {
+				Divider()
+				Text("Components").font(.headline).bold()
+				HStack {
+					VStack {
+						ZStack {
+							QRCodeShape(data: textData, errorCorrection: .high)
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyeBackground)
+								.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
+							QRCodeShape(data: textData, errorCorrection: .high)
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyePupil)
+								.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
+							QRCodeShape(data: textData, errorCorrection: .high)
+								.eyeShape(QRCode.EyeShape.RoundedOuter())
+								.components(.eyeOuter)
+								.fill(Color(hue: 0.4, saturation: 1, brightness: 1))
+							QRCodeShape(data: textData, errorCorrection: .high)
+								.components(.onPixels)
+								.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
+							QRCodeShape(data: textData, errorCorrection: .high)
+								.components(.offPixels)
+								.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
+						}
+						Text("components")
+					}
+					VStack {
 						QRCodeShape(data: textData, errorCorrection: .high)
-							.eyeShape(QRCode.EyeShape.RoundedOuter())
-							.components(.eyeBackground)
-							.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
+							.components(.onPixels)
+							.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
+						Text("'on' pixels only")
+					}
+					VStack {
 						QRCodeShape(data: textData, errorCorrection: .high)
-							.eyeShape(QRCode.EyeShape.RoundedOuter())
-							.components(.eyePupil)
-							.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
+							.components(.offPixels)
+							.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
+						Text("'off' pixels only")
+					}
+				}
+				HStack {
+					VStack {
 						QRCodeShape(data: textData, errorCorrection: .high)
 							.eyeShape(QRCode.EyeShape.RoundedOuter())
 							.components(.eyeOuter)
 							.fill(Color(hue: 0.4, saturation: 1, brightness: 1))
-						QRCodeShape(data: textData, errorCorrection: .high)
-							.components(.onPixels)
-							.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
-						QRCodeShape(data: textData, errorCorrection: .high)
-							.components(.offPixels)
-							.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
+						Text("eye outer only")
 					}
-					Text("components")
-				}
-				VStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.components(.onPixels)
-						.fill(Color(hue: 0.6, saturation: 1, brightness: 1))
-					Text("'on' pixels only")
-				}
-				VStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.components(.offPixels)
-						.fill(Color(hue: 0.8, saturation: 1, brightness: 1))
-					Text("'off' pixels only")
-				}
-			}
-			HStack {
-				VStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.eyeShape(QRCode.EyeShape.RoundedOuter())
-						.components(.eyeOuter)
-						.fill(Color(hue: 0.4, saturation: 1, brightness: 1))
-					Text("eye outer only")
-				}
-				VStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.eyeShape(QRCode.EyeShape.RoundedOuter())
-						.components(.eyePupil)
-						.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
-					Text("pupil only")
-				}
-				VStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.eyeShape(QRCode.EyeShape.RoundedOuter())
-						.components(.eyeBackground)
-						.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
-					Text("eye components")
+					VStack {
+						QRCodeShape(data: textData, errorCorrection: .high)
+							.eyeShape(QRCode.EyeShape.RoundedOuter())
+							.components(.eyePupil)
+							.fill(Color(hue: 0.2, saturation: 1, brightness: 1))
+						Text("pupil only")
+					}
+					VStack {
+						QRCodeShape(data: textData, errorCorrection: .high)
+							.eyeShape(QRCode.EyeShape.RoundedOuter())
+							.components(.eyeBackground)
+							.fill(Color(hue: 0.0, saturation: 1, brightness: 0))
+						Text("eye components")
+					}
 				}
 			}
-		}
 
-		VStack {
+			VStack {
 
-			let logoTemplate1: QRCode.LogoTemplate = {
-				QRCode.LogoTemplate(
-					image: try! CGColor(gray: 0.5, alpha: 1).swatch(),
-					path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
-					inset: 0
-				)
-			}()
+				let logoTemplate1: QRCode.LogoTemplate = {
+					QRCode.LogoTemplate(
+						image: try! CGColor(gray: 0.5, alpha: 1).swatch(),
+						path: CGPath(ellipseIn: CGRect(x: 0.30, y: 0.30, width: 0.40, height: 0.40), transform: nil),
+						inset: 0
+					)
+				}()
 
-			let logoTemplate2: QRCode.LogoTemplate = {
-				QRCode.LogoTemplate(
-					image: try! CGColor(gray: 0.2, alpha: 1).swatch(),
-					path: CGPath(rect: CGRect(x: 0.40, y: 0.60, width: 0.55, height: 0.30), transform: nil),
-					inset: 0
-				)
-			}()
+				let logoTemplate2: QRCode.LogoTemplate = {
+					QRCode.LogoTemplate(
+						image: try! CGColor(gray: 0.2, alpha: 1).swatch(),
+						path: CGPath(rect: CGRect(x: 0.40, y: 0.60, width: 0.55, height: 0.30), transform: nil),
+						inset: 0
+					)
+				}()
 
-			Divider()
-			Text("Masking").font(.headline).bold()
-			HStack {
-				ZStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.logoTemplate(logoTemplate1)
-						.components([.onPixels, .eyeAll])
-						.onPixelShape(QRCode.PixelShape.CurvePixel())
-						.frame(width: 200, height: 200)
-					Circle()
-						.fill(.green)
-						.frame(width: 60, height: 60)
-				}
-				ZStack {
-					QRCodeShape(data: textData, errorCorrection: .high)
-						.logoTemplate(logoTemplate2)
-						.components([.onPixels, .eyeAll])
-						.onPixelShape(QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1))
-						.eyeShape(QRCode.EyeShape.Squircle())
-						.frame(width: 200, height: 200)
-					Rectangle()
-						.fill(.red)
-						.position(x: 82, y: 77)
-						.frame(width: 100, height: 50)
+				Divider()
+				Text("Masking").font(.headline).bold()
+				HStack {
+					ZStack {
+						QRCodeShape(data: textData, errorCorrection: .high)
+							.logoTemplate(logoTemplate1)
+							.components([.onPixels, .eyeAll])
+							.onPixelShape(QRCode.PixelShape.CurvePixel())
+							.frame(width: 200, height: 200)
+						Circle()
+							.fill(.green)
+							.frame(width: 60, height: 60)
+					}
+					ZStack {
+						QRCodeShape(data: textData, errorCorrection: .high)
+							.logoTemplate(logoTemplate2)
+							.components([.onPixels, .eyeAll])
+							.onPixelShape(QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1))
+							.eyeShape(QRCode.EyeShape.Squircle())
+							.frame(width: 200, height: 200)
+						Rectangle()
+							.fill(.red)
+							.position(x: 82, y: 77)
+							.frame(width: 100, height: 50)
+					}
 				}
 			}
 		}
+		.frame(height: 800)
 	}
-	.frame(height: 800)
 }
 
 #endif
