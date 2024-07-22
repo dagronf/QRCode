@@ -78,6 +78,7 @@ import Foundation
 		QRCode.PixelShape.Sharp.self,
 		QRCode.PixelShape.Star.self,
 		QRCode.PixelShape.Shiny.self,
+		QRCode.PixelShape.CRT.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images

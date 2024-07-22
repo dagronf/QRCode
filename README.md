@@ -361,6 +361,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_barsVertical.png" width="60"/>      | "barsVertical" |`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
 |<img src="./Art/images/eye_circle.png" width="60"/>            | "circle" |`QRCode.EyeShape.Circle`|Simple circle|
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    | "corneredPixels" |`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
+|<img src="./Art/images/eye_crt.png" width="60"/>               | "crt" |`QRCode.EyeShape.CRT`| A CRT shape |
 |<img src="./Art/images/eye_edges.png" width="60"/>             | "edges" |`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
 |<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
 |<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" |`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
@@ -394,6 +395,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_corneredPixels.png" width="30"/>         |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |
 |<img src="./Art/images/pupil_cross.png" width="30"/>                  |"cross"|`QRCode.PupilShape.Cross`| A cross |
 |<img src="./Art/images/pupil_crossCurved.png" width="30"/>            |"crossCurved"|`QRCode.PupilShape.CrossCurved`| A cross with curved insets |
+|<img src="./Art/images/pupil_crt.png" width="30"/>                    | "crt" |`QRCode.PupilShape.CRT`| A CRT shape |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />           |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
 |<img src="./Art/images/pupil_Leaf.png" width="30"/>                   |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/pupil_pinch.png" width="30"/>                  |"pinch"|`QRCode.PupilShape.Pinch`| A square pinched in at the sides |
@@ -435,6 +437,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 | Preview | Name | Class | Description |
 |---|---|---|---|
 |<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_crt.png" width="60"/>              | "crt" |`QRCode.PixelShape.CRT`| A CRT shape |
 |<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
 |<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
 |<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
@@ -1144,7 +1147,7 @@ OPTIONS:
   --all-pixel-shapes <all-pixel-shapes>
                           Print all the available pixel shapes. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are circle, curvePixel, flower, horizontal,
+                          The onPixels shape to use. Available shapes are crt, circle, curvePixel, flower, horizontal,
                           pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle,
                           star, vertical. 
   -n, --on-pixel-inset-fraction <on-pixel-inset-fraction>
@@ -1156,7 +1159,7 @@ OPTIONS:
   --all-eye-shapes <all-eye-shapes>
                           Print all the available eye shapes. 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are circle, corneredPixels, edges, fireball,
+                          The eye shape to use. Available shapes are crt, circle, corneredPixels, edges, fireball,
                           barsHorizontal, leaf, peacock, pinch, pixels, roundedOuter, roundedPointingIn,
                           roundedPointingOut, roundedRect, shield, square, squircle, teardrop, ufo, usePixelShape,
                           barsVertical. 
@@ -1165,7 +1168,7 @@ OPTIONS:
   --all-pupil-shapes <all-pupil-shapes>
                           Print all the available pupil shapes. 
   -p, --pupil-shape <pupil-shape>
-                          The pupil shape to use. Available shapes are blobby, circle, corneredPixels, cross,
+                          The pupil shape to use. Available shapes are blobby, crt, circle, corneredPixels, cross,
                           crossCurved, edges, hexagonLeaf, barsHorizontal, leaf, pinch, pixels, roundedOuter,
                           roundedPointingIn, roundedPointingOut, roundedRect, seal, shield, square,
                           barsHorizontalSquare, barsVerticalSquare, squircle, teardrop, ufo, usePixelShape,

@@ -958,6 +958,22 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.style.offPixels = QRCode.FillStyle.Solid(gray: 0, alpha: 0.1)
 				return ("design-landscape", doc)
 			}(),
+
+			// -------------------
+			try {
+				let doc = try QRCode.build
+					.text("CRT-Style")
+					.errorCorrection(.high)
+					.onPixels.shape(QRCode.PixelShape.CRT(insetFraction: 0.1, rotationFraction: 0.1))
+					.onPixels.style(QRCode.FillStyle.Solid(0, 0, 1))
+					.offPixels.shape(QRCode.PixelShape.CRT(insetFraction: 0.4, rotationFraction: 0.3, useRandomRotation: true))
+					.offPixels.style(QRCode.FillStyle.Solid(gray: 0, alpha: 0.1))
+					.eye.shape(QRCode.EyeShape.CRT())
+					.document
+
+				return ("crt-style-shapes", doc)
+			}(),
+
 			// -------------------
 			try {
 				let doc = try QRCode.Document(utf8String: "QRCode stylish design with quiet space - landscape", errorCorrection: .quantize)

@@ -34,26 +34,26 @@ public extension QRCode {
 	) {
 		// Only works with a 1:1 rect
 		let sz = min(rect.width, rect.height)
-
+		
 		/// The size of each pixel in the output
 		let additionalQuietSpacePixels = CGFloat(design.additionalQuietZonePixels)
 		let dm: CGFloat = CGFloat(sz) / (CGFloat(self.cellDimension) + (2.0 * additionalQuietSpacePixels))
 		let additionalQuietSpace = dm * additionalQuietSpacePixels
-
+		
 		// Factor in the additional quiet space in the result
 		guard (2 * additionalQuietSpace) < sz else {
 			Swift.print("additionalQuietSpace too large")
 			return
 		}
-
+		
 		let xoff = additionalQuietSpace + (rect.width - (CGFloat(self.cellDimension) * dm)) / 2.0
 		let yoff = additionalQuietSpace + (rect.height - (CGFloat(self.cellDimension) * dm)) / 2.0
-
+		
 		// This is the final position for the generated qr code, inset within the final image
 		let finalRect = rect.insetBy(dx: additionalQuietSpace, dy: additionalQuietSpace)
-
+		
 		let style = design.style
-
+		
 		//
 		// Special case handling for the 'use pixel shape' eye and pupil types
 		//
@@ -63,7 +63,7 @@ public extension QRCode {
 		if let pupilPixelShape = design.shape.pupil as? QRCode.PupilShape.UsePixelShape {
 			pupilPixelShape.pixelShape = design.shape.onPixels
 		}
-
+		
 		// Fill the background first
 		let backgroundStyle = style.background ?? QRCode.FillStyle.clear
 		ctx.usingGState { context in
@@ -77,13 +77,13 @@ public extension QRCode {
 			}
 			backgroundStyle.fill(ctx: context, rect: rect)
 		}
-
+		
 		if design.shape.negatedOnPixelsOnly {
 			var negatedMatrix = self.boolMatrix.inverted()
 			if let logoTemplate = logoTemplate {
 				negatedMatrix = logoTemplate.applyingMask(matrix: negatedMatrix, dimension: sz)
 			}
-
+			
 			if let c = design.style.onPixelsBackground {
 				let negatedPath = self.path(
 					finalRect.size,
@@ -96,7 +96,7 @@ public extension QRCode {
 					QRCode.FillStyle.Solid(c).fill(ctx: context, rect: finalRect, path: negatedPath)
 				}
 			}
-
+			
 			let negatedPath = self.path(
 				finalRect.size,
 				components: .negative,
@@ -104,7 +104,7 @@ public extension QRCode {
 				logoTemplate: logoTemplate,
 				additionalQuietSpace: additionalQuietSpace
 			)
-
+			
 			ctx.usingGState { context in
 				style.onPixels.fill(ctx: context, rect: finalRect, path: negatedPath)
 			}
@@ -125,7 +125,7 @@ public extension QRCode {
 					ctx.fillPath()
 				}
 			}
-
+			
 			// Draw the outer eye
 			let eyeOuterPath = self.path(
 				finalRect.size,
@@ -137,7 +137,7 @@ public extension QRCode {
 			ctx.usingGState { context in
 				style.actualEyeStyle.fill(ctx: context, rect: finalRect, path: eyeOuterPath)
 			}
-
+			
 			// Draw the eye 'pupil'
 			let eyePupilPath = self.path(
 				finalRect.size,
@@ -149,7 +149,7 @@ public extension QRCode {
 			ctx.usingGState { context in
 				style.actualPupilStyle.fill(ctx: context, rect: finalRect, path: eyePupilPath)
 			}
-
+			
 			// Now, the 'on' pixels background
 			if let c = design.style.onPixelsBackground {
 				let design: QRCode.Design = {
@@ -158,7 +158,7 @@ public extension QRCode {
 					d.style.onPixels = QRCode.FillStyle.Solid(c)
 					return d
 				}()
-
+				
 				let qrPath2 = self.path(
 					finalRect.size,
 					components: .onPixels,
@@ -170,7 +170,7 @@ public extension QRCode {
 					design.style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath2)
 				}
 			}
-
+			
 			// Now, the 'on' pixels
 			let qrPath = self.path(
 				finalRect.size,
@@ -182,7 +182,7 @@ public extension QRCode {
 			ctx.usingGState { context in
 				style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath)
 			}
-
+			
 			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
 			if let s = style.offPixels, let _ = design.shape.offPixels {
 				// Draw the 'off' pixels background IF the caller has set a color
@@ -204,7 +204,7 @@ public extension QRCode {
 						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
 					}
 				}
-
+				
 				let qrPath = self.path(
 					finalRect.size,
 					components: .offPixels,
@@ -217,26 +217,26 @@ public extension QRCode {
 				}
 			}
 		}
-
+		
 		if let logoTemplate = logoTemplate {
-			ctx.saveGState()
-			// Get the absolute rect within the generated image of the mask path
-			let absMask = logoTemplate.absolutePathForMaskPath(
-				dimension: min(finalRect.width, finalRect.height),
-				flipped: true
-			)
-
-			// logo drawing is flipped.
-			ctx.scaleBy(x: 1, y: -1)
-			ctx.translateBy(x: xoff - additionalQuietSpace, y: yoff - rect.height - additionalQuietSpace)
-
-			// Clip to the mask path.
-			ctx.addPath(absMask)
-			ctx.clip()
-
-			// Draw the logo image into the mask bounds
-			ctx.draw(logoTemplate.image, in: absMask.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset))
-			ctx.restoreGState()
+			ctx.usingGState { context in
+				// Get the absolute rect within the generated image of the mask path
+				let absMask = logoTemplate.absolutePathForMaskPath(
+					dimension: min(finalRect.width, finalRect.height),
+					flipped: true
+				)
+				
+				// logo drawing is flipped.
+				context.scaleBy(x: 1, y: -1)
+				context.translateBy(x: xoff - additionalQuietSpace, y: yoff - rect.height - additionalQuietSpace)
+				
+				// Clip to the mask path.
+				context.addPath(absMask)
+				context.clip()
+				
+				// Draw the logo image into the mask bounds
+				context.draw(logoTemplate.image, in: absMask.boundingBoxOfPath.insetBy(dx: logoTemplate.inset, dy: logoTemplate.inset))
+			}
 		}
 	}
 }

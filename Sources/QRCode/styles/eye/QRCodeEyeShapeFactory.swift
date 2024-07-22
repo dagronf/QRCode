@@ -83,6 +83,7 @@ import Foundation
 		QRCode.EyeShape.Peacock.self,
 		QRCode.EyeShape.UFO.self,
 		QRCode.EyeShape.Pinch.self,
+		QRCode.EyeShape.CRT.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 }

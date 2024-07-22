@@ -28,6 +28,7 @@ internal extension QRCode.PixelShape {
 		enum PixelType: String, CaseIterable {
 			case square
 			case circle
+			case crt
 			case roundedRect
 			case squircle
 			case sharp
@@ -149,6 +150,17 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 
 						let sq = Squircle.squircle10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .crt {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+
+						let sq = CRT.crtPixel10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .sharp {

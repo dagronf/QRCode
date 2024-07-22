@@ -1,5 +1,5 @@
 //
-//  QRCodePupilShapePinch.swift
+//  QRCodePupilShapeCRT.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -24,15 +24,15 @@ import Foundation
 
 extension QRCode.PupilShape {
 	/// A pinch leaf pupil design
-	@objc(QRCodePupilShapePinch) public class Pinch: NSObject, QRCodePupilShapeGenerator {
+	@objc(QRCodePupilShapeCRT) public class CRT: NSObject, QRCodePupilShapeGenerator {
 		/// Generator name
-		@objc public static var Name: String { "pinch" }
+		@objc public static var Name: String { "crt" }
 		/// Generator title
-		@objc public static var Title: String { "Pinch" }
+		@objc public static var Title: String { "CRT" }
 		/// Create a hexagon leaf pupil shape, using the specified settings
-		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { Pinch() }
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { CRT() }
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { Pinch() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { CRT() }
 
 		@objc public func settings() -> [String: Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
@@ -44,16 +44,16 @@ extension QRCode.PupilShape {
 }
 
 private func _path() -> CGPath {
-	let pinchpupilPath = CGMutablePath()
-	pinchpupilPath.move(to: CGPoint(x: 30.5, y: 45))
-	pinchpupilPath.curve(to: CGPoint(x: 30, y: 30), controlPoint1: CGPoint(x: 30.5, y: 37.5), controlPoint2: CGPoint(x: 30, y: 30))
-	pinchpupilPath.curve(to: CGPoint(x: 45, y: 30.5), controlPoint1: CGPoint(x: 30, y: 30), controlPoint2: CGPoint(x: 37.5, y: 30.5))
-	pinchpupilPath.curve(to: CGPoint(x: 60, y: 30), controlPoint1: CGPoint(x: 52.5, y: 30.5), controlPoint2: CGPoint(x: 60, y: 30))
-	pinchpupilPath.curve(to: CGPoint(x: 59.5, y: 45), controlPoint1: CGPoint(x: 60, y: 30), controlPoint2: CGPoint(x: 59.5, y: 37.5))
-	pinchpupilPath.curve(to: CGPoint(x: 60, y: 60), controlPoint1: CGPoint(x: 59.5, y: 52.5), controlPoint2: CGPoint(x: 60, y: 60))
-	pinchpupilPath.curve(to: CGPoint(x: 45, y: 59.5), controlPoint1: CGPoint(x: 60, y: 60), controlPoint2: CGPoint(x: 52.5, y: 59.5))
-	pinchpupilPath.curve(to: CGPoint(x: 30, y: 60), controlPoint1: CGPoint(x: 37.5, y: 59.5), controlPoint2: CGPoint(x: 30, y: 60))
-	pinchpupilPath.curve(to: CGPoint(x: 30.5, y: 45), controlPoint1: CGPoint(x: 30, y: 60), controlPoint2: CGPoint(x: 30.5, y: 52.5))
-	pinchpupilPath.close()
-	return pinchpupilPath
+	let crt_pupilPath = CGMutablePath()
+	crt_pupilPath.move(to: CGPoint(x: 30, y: 45))
+	crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 31.29), controlPoint1: CGPoint(x: 30, y: 37.5), controlPoint2: CGPoint(x: 31.29, y: 31.29))
+	crt_pupilPath.curve(to: CGPoint(x: 45, y: 30), controlPoint1: CGPoint(x: 31.29, y: 31.29), controlPoint2: CGPoint(x: 37.5, y: 30))
+	crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 31.29), controlPoint1: CGPoint(x: 52.5, y: 30), controlPoint2: CGPoint(x: 58.71, y: 31.29))
+	crt_pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 58.71, y: 31.29), controlPoint2: CGPoint(x: 60, y: 37.5))
+	crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 58.71), controlPoint1: CGPoint(x: 60, y: 52.5), controlPoint2: CGPoint(x: 58.71, y: 58.71))
+	crt_pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 58.71, y: 58.71), controlPoint2: CGPoint(x: 52.5, y: 60))
+	crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 58.71), controlPoint1: CGPoint(x: 37.5, y: 60), controlPoint2: CGPoint(x: 31.29, y: 58.71))
+	crt_pupilPath.curve(to: CGPoint(x: 30, y: 45), controlPoint1: CGPoint(x: 31.29, y: 58.71), controlPoint2: CGPoint(x: 30, y: 52.5))
+	crt_pupilPath.close()
+	return crt_pupilPath
 }
