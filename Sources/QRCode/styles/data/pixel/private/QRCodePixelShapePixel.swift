@@ -85,7 +85,7 @@ internal extension QRCode.PixelShape {
 
 			let path = CGMutablePath()
 
-			let rotationBase = {
+			let rotationBase: CGAffineTransform = {
 				if rotationFraction == 0.0 {
 					return CGAffineTransform.identity
 				}
@@ -103,9 +103,9 @@ internal extension QRCode.PixelShape {
 					// If the pixel is 'off' then we move on to the next
 					guard matrix[row, col] == true else { continue }
 
-					let insetFraction = {
+                    let insetFraction: CGFloat = {
 						if self.useRandomInset {
-							return Double.random(in: 0.0 ... self.insetFraction, using: &insetRandomGenerator)
+							return CGFloat.random(in: 0.0 ... self.insetFraction, using: &insetRandomGenerator)
 						}
 						else {
 							return self.insetFraction
