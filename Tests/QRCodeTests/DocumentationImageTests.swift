@@ -154,6 +154,28 @@ final class DocumentationImageTests: XCTestCase {
 		try outputFolder.write(data, to: "offPixels.png")
 	}
 
+	func testBlobbyStyle() throws {
+		let imageData = try QRCode.build
+			.text("https://www.apple.com/au/")
+			.errorCorrection(.medium)
+			.eye.shape(QRCode.EyeShape.CRT())
+			.onPixels.shape(QRCode.PixelShape.Blob())
+			.onPixels.style(
+				QRCode.FillStyle.LinearGradient(
+					try DSFGradient(pins: [
+						DSFGradient.Pin(CGColor.RGBA(1, 0.589, 0, 1), 0),
+						DSFGradient.Pin(CGColor.RGBA(1, 0, 0.3, 1), 1),
+					]),
+					startPoint: CGPoint(x: 0, y: 1),
+					endPoint: CGPoint(x: 0, y: 0)
+				)
+			)
+			.offPixels.shape(QRCode.PixelShape.Circle(insetFraction: 0.3))
+			.offPixels.style(QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1))
+			.generate.svg(dimension: 400)
+		try outputFolder.write(imageData, to: "blobby-style.svg")
+	}
+
 	func testEyeColorStyles() throws {
 		let doc2 = try QRCode.Document(utf8String: "Github example for colors")
 		doc2.design.backgroundColor(.commonWhite)

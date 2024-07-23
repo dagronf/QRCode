@@ -71,7 +71,9 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
    <a href="./Art/images/3d-demo.jpg">
       <img src="./Art/images/3d-demo.jpg" width="150"/>
    </a>
-
+   <a href="./Examples/blobby/index.md"> 
+      <img src="./Examples/blobby/blobby-style.svg" width="150"/>
+   </a>
 </p>
 
 ## Why?
@@ -436,6 +438,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
+|<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
 |<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
 |<img src="./Art/images/data_crt.png" width="60"/>              | "crt" |`QRCode.PixelShape.CRT`| A CRT shape |
 |<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|

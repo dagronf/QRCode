@@ -149,7 +149,42 @@ public extension QRCode {
 			ctx.usingGState { context in
 				style.actualPupilStyle.fill(ctx: context, rect: finalRect, path: eyePupilPath)
 			}
-			
+
+			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
+			// Draw this first so it's guaranteed to be drawn behind the on-pixels
+			if let s = style.offPixels, let _ = design.shape.offPixels {
+				// Draw the 'off' pixels background IF the caller has set a color
+				if let c = design.style.offPixelsBackground {
+					let design: QRCode.Design = {
+						let d = QRCode.Design()
+						d.shape.offPixels = QRCode.PixelShape.Square()
+						d.style.offPixels = QRCode.FillStyle.Solid(c)
+						return d
+					}()
+					let qrPath2 = self.path(
+						finalRect.size,
+						components: .offPixels,
+						shape: design.shape,
+						logoTemplate: logoTemplate,
+						additionalQuietSpace: additionalQuietSpace
+					)
+					ctx.usingGState { context in
+						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
+					}
+				}
+
+				let qrPath = self.path(
+					finalRect.size,
+					components: .offPixels,
+					shape: design.shape,
+					logoTemplate: logoTemplate,
+					additionalQuietSpace: additionalQuietSpace
+				)
+				ctx.usingGState { context in
+					s.fill(ctx: context, rect: finalRect, path: qrPath)
+				}
+			}
+
 			// Now, the 'on' pixels background
 			if let c = design.style.onPixelsBackground {
 				let design: QRCode.Design = {
@@ -181,40 +216,6 @@ public extension QRCode {
 			)
 			ctx.usingGState { context in
 				style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath)
-			}
-			
-			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
-			if let s = style.offPixels, let _ = design.shape.offPixels {
-				// Draw the 'off' pixels background IF the caller has set a color
-				if let c = design.style.offPixelsBackground {
-					let design: QRCode.Design = {
-						let d = QRCode.Design()
-						d.shape.offPixels = QRCode.PixelShape.Square()
-						d.style.offPixels = QRCode.FillStyle.Solid(c)
-						return d
-					}()
-					let qrPath2 = self.path(
-						finalRect.size,
-						components: .offPixels,
-						shape: design.shape,
-						logoTemplate: logoTemplate,
-						additionalQuietSpace: additionalQuietSpace
-					)
-					ctx.usingGState { context in
-						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
-					}
-				}
-				
-				let qrPath = self.path(
-					finalRect.size,
-					components: .offPixels,
-					shape: design.shape,
-					logoTemplate: logoTemplate,
-					additionalQuietSpace: additionalQuietSpace
-				)
-				ctx.usingGState { context in
-					s.fill(ctx: context, rect: finalRect, path: qrPath)
-				}
 			}
 		}
 		

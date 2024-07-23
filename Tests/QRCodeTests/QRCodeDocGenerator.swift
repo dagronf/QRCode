@@ -976,6 +976,24 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			// -------------------
 			try {
+				let doc = try QRCode.Document(utf8String: "Blobby pixel style", errorCorrection: .medium)
+				doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
+				doc.design.shape.onPixels = QRCode.PixelShape.Blob()
+				doc.design.style.onPixels = QRCode.FillStyle.LinearGradient(
+					try DSFGradient(pins: [
+						DSFGradient.Pin(CGColor.RGBA(1, 0.589, 0, 1), 0),
+						DSFGradient.Pin(CGColor.RGBA(1, 0, 0.3, 1), 1),
+					]),
+					startPoint: CGPoint(x: 0, y: 1),
+					endPoint: CGPoint(x: 0, y: 0)
+				)
+				doc.design.shape.offPixels = QRCode.PixelShape.Circle(insetFraction: 0.3)
+				doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1)
+				return ("blobby-pixel-style", doc)
+			}(),
+
+			// -------------------
+			try {
 				let doc = try QRCode.Document(utf8String: "QRCode stylish design with quiet space - landscape", errorCorrection: .quantize)
 				doc.design.additionalQuietZonePixels = 6
 				doc.design.shape.onPixels = QRCode.PixelShape.Vertical(insetFraction: 0.1, cornerRadiusFraction: 1)
