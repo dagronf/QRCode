@@ -89,3 +89,8 @@ public extension QRCode.EyeShape {
 	}
 }
 
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.BarsHorizontal {
+	/// Create a horizontal bars eye shape generator
+	/// - Returns: An eye shape generator
+	@inlinable static func barsHorizontal() -> QRCodeEyeShapeGenerator { QRCode.EyeShape.BarsHorizontal() }
+}

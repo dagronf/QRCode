@@ -121,3 +121,12 @@ public extension QRCode.EyeShape {
 		}
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.UFO {
+	/// Create a UFO eye shape generator
+	/// - Parameter isFlipped: if true, flips the generated shape
+	/// - Returns: An eye shape generator
+	@inlinable static func ufo(isFlipped: Bool = false) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.UFO(isFlipped: isFlipped)
+	}
+}

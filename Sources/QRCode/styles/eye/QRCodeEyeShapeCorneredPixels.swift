@@ -107,3 +107,14 @@ public extension QRCode.EyeShape {
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { QRCode.PupilShape.CorneredPixels(cornerRadiusFraction: self.cornerRadiusFraction) }
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.CorneredPixels {
+	/// Create a cornered pixels eye shape generator
+	/// - Parameter cornerRadiusFraction: The fractional corner radius to apply to each pixel
+	/// - Returns: An eye shape generator
+	@inlinable static func corneredPixels(
+		cornerRadiusFraction: CGFloat = QRCode.EyeShape.CorneredPixels.DefaultCornerRadius
+	) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.CorneredPixels(cornerRadiusFraction: cornerRadiusFraction)
+	}
+}

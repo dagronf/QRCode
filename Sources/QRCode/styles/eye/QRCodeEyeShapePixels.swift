@@ -113,3 +113,14 @@ public extension QRCode.EyeShape {
 		}
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.Pixels {
+	/// Create a pixels eye shape generator
+	/// - Parameter cornerRadiusFraction: The fractional corner radius to apply to each pixel
+	/// - Returns: An eye shape generator
+	@inlinable static func pixels(
+		cornerRadiusFraction: CGFloat = QRCode.EyeShape.Pixels.DefaultCornerRadius
+	) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.Pixels(cornerRadiusFraction: cornerRadiusFraction)
+	}
+}

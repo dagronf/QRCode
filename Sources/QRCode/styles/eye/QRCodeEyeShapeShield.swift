@@ -288,3 +288,12 @@ extension QRCode.EyeShape.Shield {
 		return blOUTPath
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.Shield {
+	/// Create a shield eye shape generator
+	/// - Parameter corners: The corners to poke in
+	/// - Returns: An eye shape generator
+	@inlinable static func shield(corners: QRCode.Corners) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.Shield(corners: corners)
+	}
+}

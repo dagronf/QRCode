@@ -81,7 +81,7 @@ final class DocumentationImageTests: XCTestCase {
 			let doc = try QRCode.Document(utf8String: "Corner radius checking")
 			doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.7)
 			doc.design.foregroundStyle(QRCode.FillStyle.Solid(1, 1, 1))
-			doc.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+			doc.design.shape.eye = .roundedOuter()
 			doc.design.additionalQuietZonePixels = 2
 			doc.design.style.backgroundFractionalCornerRadius = 3.0
 
@@ -143,7 +143,7 @@ final class DocumentationImageTests: XCTestCase {
 	func testOffPixelImageGeneration() throws {
 		let doc1 = try QRCode.Document(utf8String: "Testing off-pixels")
 		doc1.design.backgroundColor(.commonWhite)
-		doc1.design.shape.eye = QRCode.EyeShape.RoundedOuter()
+		doc1.design.shape.eye = .roundedOuter()
 		doc1.design.shape.onPixels = QRCode.PixelShape.Circle()
 		doc1.design.style.onPixels = QRCode.FillStyle.Solid(systemGreen)
 		doc1.design.shape.offPixels = QRCode.PixelShape.Horizontal(insetFraction: 0.4, cornerRadiusFraction: 1) //inset: 4)
@@ -158,7 +158,7 @@ final class DocumentationImageTests: XCTestCase {
 		let imageData = try QRCode.build
 			.text("https://www.apple.com/au/")
 			.errorCorrection(.medium)
-			.eye.shape(QRCode.EyeShape.CRT())
+			.eye.shape(.crt())
 			.onPixels.shape(QRCode.PixelShape.Blob())
 			.onPixels.style(
 				QRCode.FillStyle.LinearGradient(

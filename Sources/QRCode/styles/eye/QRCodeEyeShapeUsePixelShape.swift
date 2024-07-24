@@ -77,3 +77,9 @@ extension QRCode.EyeShape.UsePixelShape {
 		return pth
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.UsePixelShape {
+	@inlinable static func usePixelShape() -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.UsePixelShape()
+	}
+}

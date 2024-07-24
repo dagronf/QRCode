@@ -111,7 +111,7 @@ final class QRCodeBuilderTests: XCTestCase {
 			.backgroundColor(CGColor(srgbRed: 0, green: 0, blue: 0.2, alpha: 1))
 			.background.cornerRadius(3)
 			.onPixels.shape(QRCode.PixelShape.CurvePixel())
-			.eye.shape(QRCode.EyeShape.Teardrop())
+			.eye.shape(.teardrop())
 			.generate.image(dimension: 600, representation: .png())
 		try outputFolder.write(image, to: "builder-example-doco.png")
 	}

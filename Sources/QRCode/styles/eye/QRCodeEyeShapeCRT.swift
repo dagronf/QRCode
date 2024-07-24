@@ -24,7 +24,7 @@ import Foundation
 
 public extension QRCode.EyeShape {
 	/// A 'pinch' style eye design
-	@objc(QRCodeEyeShapeCrt) class CRT: NSObject, QRCodeEyeShapeGenerator {
+	@objc(QRCodeEyeShapeCRT) class CRT: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "crt"
 		@objc public static var Title: String { "CRT" }
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
@@ -43,6 +43,12 @@ public extension QRCode.EyeShape {
 		private static let _defaultPupil = QRCode.PupilShape.CRT()
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}
+}
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.CRT {
+	/// Create a crt eye shape generator
+	/// - Returns: An eye shape generator
+	@inlinable static func crt() -> QRCodeEyeShapeGenerator { QRCode.EyeShape.CRT() }
 }
 
 public extension QRCode.EyeShape.CRT {

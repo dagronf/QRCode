@@ -79,3 +79,14 @@ public extension QRCode.EyeShape {
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.Edges {
+	/// Create an edges eye shape generator
+	/// - Parameter cornerRadiusFraction: The fractional corner radius to apply to each edge
+	/// - Returns: An eye shape generator
+	@inlinable static func edges(
+		cornerRadiusFraction: CGFloat = QRCode.EyeShape.Edges.DefaultCornerRadius
+	) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.Edges(cornerRadiusFraction: cornerRadiusFraction)
+	}
+}

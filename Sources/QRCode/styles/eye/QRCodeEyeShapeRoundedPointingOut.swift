@@ -76,3 +76,11 @@ public extension QRCode.EyeShape {
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self.generator_ }
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.RoundedPointingOut {
+	/// Create a 'roundedPointingOut' eye shape generator
+	/// - Returns: An eye shape generator
+	@inlinable static func roundedPointingOut() -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.RoundedPointingOut()
+	}
+}

@@ -89,3 +89,9 @@ public extension QRCode.EyeShape.Pinch {
 		return pincheyebackgroundPath
 	}
 }
+
+public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.Pinch {
+	/// Create a pinch eye shape generator
+	/// - Returns: An eye shape generator
+	@inlinable static func pinch() -> QRCodeEyeShapeGenerator { QRCode.EyeShape.Pinch() }
+}
