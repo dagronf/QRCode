@@ -168,7 +168,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 	func testEncodeDecodeShield() throws {
 		do {
 			let doc = try QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
-			doc.design.shape.eye = QRCode.EyeShape.Shield()
+			doc.design.shape.eye = .shield()
 
 			let d1 = try doc.jsonData()
 			let recon = try QRCode.Document.Create(jsonData: d1)
@@ -199,7 +199,7 @@ final class QRCodeLoadSaveTests: XCTestCase {
 		do {
 			let doc = try QRCode.Document(utf8String: "This is testing of shield encoding/decoding")
 			doc.design.shape.eye = QRCode.EyeShape.Shield(corners: [.tl, .br])
-			doc.design.shape.pupil = QRCode.PupilShape.Shield(corners: [.bl])
+			doc.design.shape.pupil = .shield(corners: [.bl])
 
 			let d1 = try doc.jsonData()
 			let recon = try QRCode.Document.Create(jsonData: d1)

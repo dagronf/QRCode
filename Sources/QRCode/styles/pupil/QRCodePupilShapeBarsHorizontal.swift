@@ -90,3 +90,18 @@ public extension QRCode.PupilShape {
 	}
 }
 
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.BarsHorizontal {
+	/// Create a horizontal bar pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func barsHorizontalRounded() -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.BarsHorizontal()
+	}
+}
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.SquareBarsHorizontal {
+	/// Create a horizontal bar pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func barsHorizontalSquare() -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.SquareBarsHorizontal()
+	}
+}

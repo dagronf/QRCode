@@ -66,3 +66,9 @@ extension QRCode.PupilShape.UsePixelShape {
 		return pth
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.UsePixelShape {
+	/// Create a pupil generator that follows the on-pixels shape
+	/// - Returns: A pupil shape generator
+	@inlinable static func usePixelShape() -> QRCodePupilShapeGenerator { QRCode.PupilShape.UsePixelShape() }
+}

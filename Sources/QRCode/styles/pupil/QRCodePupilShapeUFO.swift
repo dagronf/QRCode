@@ -104,3 +104,12 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.UFO {
+	/// Create a ufo pupil shape generator with curved insets
+	/// - Parameter isFlipped: if true, flips the pupil shape horizontally
+	/// - Returns: A pupil shape generator
+	@inlinable static func ufo(isFlipped: Bool = false) -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.UFO(isFlipped: isFlipped)
+	}
+}

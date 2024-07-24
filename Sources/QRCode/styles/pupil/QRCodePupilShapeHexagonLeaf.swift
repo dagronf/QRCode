@@ -51,3 +51,9 @@ extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.HexagonLeaf {
+	/// Create a hexagonal leaf pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func hexagonLeaf() -> QRCodePupilShapeGenerator { QRCode.PupilShape.HexagonLeaf() }
+}

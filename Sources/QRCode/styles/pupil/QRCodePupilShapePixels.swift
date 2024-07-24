@@ -85,3 +85,14 @@ public extension QRCode.PupilShape {
 		private var _actualCornerRadius: CGFloat
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Pixels {
+	/// Create a pixels pupil shape generator with curved insets
+	/// - Parameter cornerRadiusFraction: the fractional (0...1) corner radius for the pixels
+	/// - Returns: A pupil shape generator
+	@inlinable static func pixels(
+		cornerRadiusFraction: CGFloat = QRCode.PupilShape.Pixels.DefaultCornerRadius
+	) -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.Pixels(cornerRadiusFraction: cornerRadiusFraction)
+	}
+}

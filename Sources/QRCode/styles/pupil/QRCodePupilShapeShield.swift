@@ -195,5 +195,13 @@ public extension QRCode.PupilShape.Shield {
 		blOUTPath.close()
 		return blOUTPath
 	}
+}
 
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Shield {
+	/// Create a shield pupil shape generator with curved insets
+	/// - Parameter corners: The corners to punch in the shield
+	/// - Returns: A pupil shape generator
+	@inlinable static func shield(corners: QRCode.Corners = .all) -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.Shield(corners: corners)
+	}
 }

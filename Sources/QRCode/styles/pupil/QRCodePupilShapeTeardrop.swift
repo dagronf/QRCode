@@ -55,3 +55,9 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Teardrop {
+	/// Create a teardrop pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func teardrop() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Teardrop() }
+}

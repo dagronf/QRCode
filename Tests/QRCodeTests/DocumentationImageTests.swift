@@ -214,9 +214,9 @@ final class DocumentationImageTests: XCTestCase {
 	func testCustomPupilUsage() throws {
 		let doc = try QRCode.Document(utf8String: "Custom pupil")
 		doc.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
-		doc.design.shape.eye = QRCode.EyeShape.Squircle()
+		doc.design.shape.eye = .squircle()
 		doc.design.style.eye = QRCode.FillStyle.Solid(0.149, 0.137, 0.208)
-		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+		doc.design.shape.pupil = .barsHorizontalRounded()
 		doc.design.style.pupil = QRCode.FillStyle.Solid(0.314, 0.235, 0.322)
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 

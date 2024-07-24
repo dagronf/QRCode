@@ -48,3 +48,9 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Square {
+	/// Create a square pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func square() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Square() }
+}

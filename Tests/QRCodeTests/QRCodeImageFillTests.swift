@@ -70,7 +70,7 @@ final class QRCodeImageFillTests: XCTestCase {
 		}
 
 		doc.design.style.pupil = pupilImage
-		doc.design.shape.pupil = QRCode.PupilShape.BarsHorizontal()
+		doc.design.shape.pupil = .barsHorizontalRounded()
 
 		let im1 = try doc.platformImage(dimension: 600)
 		Swift.print(im1)

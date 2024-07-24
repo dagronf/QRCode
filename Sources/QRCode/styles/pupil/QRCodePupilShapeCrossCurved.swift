@@ -69,3 +69,9 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.CrossCurved {
+	/// Create a cross pupil shape generator with curved insets
+	/// - Returns: A pupil shape generator
+	@inlinable static func crossCurved() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CrossCurved() }
+}

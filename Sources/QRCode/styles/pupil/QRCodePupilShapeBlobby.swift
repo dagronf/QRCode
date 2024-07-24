@@ -81,3 +81,11 @@ private func _path() -> CGPath {
 	bezierPath.close()
 	return bezierPath
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Blobby {
+	/// Create a blobby pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func blobby() -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.Blobby()
+	}
+}

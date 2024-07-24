@@ -59,3 +59,9 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Squircle {
+	/// Create a squircle pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func squircle() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Squircle() }
+}

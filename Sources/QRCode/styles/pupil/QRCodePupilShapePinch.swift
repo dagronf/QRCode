@@ -57,3 +57,9 @@ private func _path() -> CGPath {
 	pinchpupilPath.close()
 	return pinchpupilPath
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Pinch {
+	/// Create a pinch pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func pinch() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Pinch() }
+}

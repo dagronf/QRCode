@@ -57,3 +57,9 @@ private func _path() -> CGPath {
 	crt_pupilPath.close()
 	return crt_pupilPath
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.CRT {
+	/// Create a crt pupil shape generator with curved insets
+	/// - Returns: A pupil shape generator
+	@inlinable static func crt() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CRT() }
+}

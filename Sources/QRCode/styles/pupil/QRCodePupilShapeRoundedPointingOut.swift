@@ -53,3 +53,9 @@ public extension QRCode.PupilShape {
 		}
 	}
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.RoundedPointingOut {
+	/// Create a rounded pointing out pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func roundedPointingOut() -> QRCodePupilShapeGenerator { QRCode.PupilShape.RoundedPointingOut() }
+}

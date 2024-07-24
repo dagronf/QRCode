@@ -89,3 +89,9 @@ private func _pupilPath() -> CGPath {
 	shieldPath.close()
 	return shieldPath
 }
+
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Seal {
+	/// Create a seal pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func seal() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Seal() }
+}
