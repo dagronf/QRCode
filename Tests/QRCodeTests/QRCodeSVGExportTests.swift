@@ -175,7 +175,7 @@ final class QRCodeSVGTests: XCTestCase {
 
 		do {
 			try qs.forEach { index in
-				d.design.style.onPixels = QRCode.FillStyle.Image(fillImage)
+				d.design.style.onPixels = .image(fillImage)
 				d.design.additionalQuietZonePixels = UInt(index)
 				let data = try d.svgData(dimension: 400)
 				try outputFolder.write(data, to: "testExportSVGWithImage-All-q\(index).svg")

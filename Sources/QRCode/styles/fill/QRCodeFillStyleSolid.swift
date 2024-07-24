@@ -86,6 +86,32 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - Fill creation conveniences
+
+public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.Solid {
+	/// Create a solid color
+	/// - Returns: A fill generator
+	/// - Parameter color: The color
+	@inlinable static func solid(_ color: CGColor) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.Solid(color)
+	}
+	/// Create a solid color
+	/// - Returns: A fill generator
+	@inlinable static func solid(srgbRed: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat = 1.0) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.Solid(srgbRed: srgbRed, green: green, blue: blue, alpha: alpha)
+	}
+	/// Create a solid color
+	/// - Returns: A fill generator
+	@inlinable static func solid(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, alpha: CGFloat = 1.0) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.Solid(srgbRed: red, green: green, blue: blue, alpha: alpha)
+	}
+	/// Create a solid color
+	/// - Returns: A fill generator
+	@inlinable static func solid(gray: CGFloat, alpha: CGFloat = 1.0) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.Solid(gray: gray, alpha: alpha)
+	}
+}
+
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.Solid {

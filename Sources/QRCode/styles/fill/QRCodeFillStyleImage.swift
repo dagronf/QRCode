@@ -112,6 +112,19 @@ internal extension QRCode.FillStyle.Image {
 	}
 }
 
+// MARK: - Fill creation conveniences
+
+public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.Image {
+	/// Create an image fill
+	/// - Parameter image: The image
+	/// - Returns: A fill generator
+	@inlinable static func image(_ image: CGImage?) -> QRCodeFillStyleGenerator { QRCode.FillStyle.Image(image) }
+	/// Create an image fill
+	/// - Parameter image: The image
+	/// - Returns: A fill generator
+	@inlinable static func image(_ image: DSFImage?) -> QRCodeFillStyleGenerator { QRCode.FillStyle.Image(image: image) }
+}
+
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.Image {

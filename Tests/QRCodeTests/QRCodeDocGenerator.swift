@@ -95,8 +95,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  neg  |\n"
 			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
 
-			doc.design.style.onPixels = QRCode.FillStyle.Solid(0.6, 0, 0)
-			doc.design.style.eye = QRCode.FillStyle.Solid(0, 0, 0)
+			doc.design.style.onPixels = .solid(0.6, 0, 0)
+			doc.design.style.eye = .solid(0, 0, 0)
 
 			let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
 			for name in names {
@@ -1019,7 +1019,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				doc.design.foregroundStyle(QRCode.FillStyle.Solid(CGColor.RGBA(0.356, 0.209, 0.014, 1)))
 				doc.design.shape.onPixels = QRCode.PixelShape.Square(insetFraction: 0.05)
 				doc.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
-				doc.design.style.background = QRCode.FillStyle.RadialGradient(
+				doc.design.style.background = .radialGradient(
 					try DSFGradient(pins: [
 						DSFGradient.Pin(CGColor.RGBA(0.999, 1, 1, 1), 0),
 						DSFGradient.Pin(CGColor.RGBA(0.907, 0.765, 0.428, 1), 1),

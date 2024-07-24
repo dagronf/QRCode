@@ -121,6 +121,24 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - Fill creation conveniences
+
+public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.LinearGradient {
+	/// Create a linear gradient fill
+	/// - Parameters:
+	///   - gradient: The color gradient to use
+	///   - startPoint: The fractional position within the fill rect to start the gradient (0.0 -> 1.0)
+	///   - endPoint: The fractional position within the fill rect to end the gradient (0.0 -> 1.0)
+	/// - Returns: A fill generator
+	@inlinable static func linearGradient(
+		_ gradient: DSFGradient,
+		startPoint: CGPoint = CGPoint(x: 0, y: 0),
+		endPoint: CGPoint = CGPoint(x: 1, y: 1)
+	) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.LinearGradient(gradient, startPoint: startPoint, endPoint: endPoint)
+	}
+}
+
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.LinearGradient {

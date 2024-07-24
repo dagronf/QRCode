@@ -109,6 +109,22 @@ public extension QRCode.FillStyle {
 	}
 }
 
+// MARK: - Fill creation conveniences
+
+public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.RadialGradient {
+	/// Create a radial gradient fill
+	/// - Parameters:
+	///   - gradient: The color gradient to use
+	///   - centerPoint: The fractional position within the fill rect to start the radial fill (0.0 -> 1.0)
+	/// - Returns: A fill generator
+	@inlinable static func radialGradient(
+		_ gradient: DSFGradient,
+		centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)
+	) -> QRCodeFillStyleGenerator {
+		QRCode.FillStyle.RadialGradient(gradient, centerPoint: centerPoint)
+	}
+}
+
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.RadialGradient {
