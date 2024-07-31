@@ -198,3 +198,13 @@ public extension QRCode.PixelShape.Pointy {
 		return false
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Pointy {
+	/// Create a pointy pixel generator
+	/// - Returns: A pixel generator
+	@inlinable static func pointy() -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Pointy()
+	}
+}

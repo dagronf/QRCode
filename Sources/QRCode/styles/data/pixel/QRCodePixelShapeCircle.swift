@@ -106,3 +106,22 @@ public extension QRCode.PixelShape.Circle {
 		return false
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Circle {
+	/// Create a circle pixel generator
+	/// - Parameters:
+	///   - insetFraction: The inset between each pixel
+	///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
+	/// - Returns: A pixel generator
+	@inlinable static func circle(
+		insetFraction: CGFloat = 0,
+		useRandomInset: Bool = false
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Circle(
+			insetFraction: insetFraction,
+			useRandomInset: useRandomInset
+		)
+	}
+}

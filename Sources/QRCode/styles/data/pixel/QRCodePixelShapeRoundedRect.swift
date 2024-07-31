@@ -156,3 +156,28 @@ public extension QRCode.PixelShape.RoundedRect {
 		return false
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.RoundedRect {
+	/// Create a rounded rect pixel generator
+	/// - Parameters:
+	///   - insetFraction: The inset between each pixel
+	///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
+	///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
+	///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
+	/// - Returns: A pixel generator
+	@inlinable static func roundedRect(
+		insetFraction: CGFloat = 0,
+		useRandomInset: Bool = false,
+		rotationFraction: CGFloat = 0,
+		useRandomRotation: Bool = false
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.RoundedRect(
+			insetFraction: insetFraction,
+			useRandomInset: useRandomInset,
+			rotationFraction: rotationFraction,
+			useRandomRotation: useRandomRotation
+		)
+	}
+}

@@ -309,7 +309,7 @@ final class QRCodeTests: XCTestCase {
 
 		do {
 			let doc = try QRCode.Document(utf8String: "Hi there!", errorCorrection: .high, engine: __testEngine)
-			doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4)
+			doc.design.shape.onPixels = .circle(insetFraction: 0.4)
 			doc.design.style.onPixelsBackground = CGColor.commonBlack
 
 			// radial fill
@@ -330,8 +330,8 @@ final class QRCodeTests: XCTestCase {
 
 			doc.design.style.onPixels = c
 			doc.design.style.eyeBackground = CGColor.RGBA(0, 1, 1, 1)
-			doc.design.shape.offPixels = QRCode.PixelShape.Flower(insetFraction: 0.2)
-			doc.design.style.offPixels = QRCode.FillStyle.Solid(0, 1, 0)
+			doc.design.shape.offPixels = .flower(insetFraction: 0.2)
+			doc.design.style.offPixels = .solid(0, 1, 0)
 
 			let gradient = try DSFGradient(
 				pins: [
@@ -339,7 +339,7 @@ final class QRCodeTests: XCTestCase {
 					DSFGradient.Pin(CGColor.RGBA(0, 1, 1, 1), 1),
 				]
 			)
-			doc.design.style.offPixels = QRCode.FillStyle.LinearGradient(
+			doc.design.style.offPixels = .linearGradient(
 				gradient,
 				startPoint: CGPoint(x: 0, y: 1),
 				endPoint: CGPoint(x: 1, y: 1)
@@ -348,13 +348,18 @@ final class QRCodeTests: XCTestCase {
 			doc.design.style.offPixelsBackground = CGColor.commonWhite
 
 			let logoImage = try resourceImage(for: "photo-logo", extension: "jpg")
-			doc.design.style.background = QRCode.FillStyle.Image(logoImage)
+			doc.design.style.background = .image(logoImage)
 
 			doc.design.additionalQuietZonePixels = 8
 
 			let image = try doc.cgImage(dimension: 800)
 			XCTAssertEqual(image.width, 800)
 			XCTAssertEqual(image.height, 800)
+
+			do {
+				let data = try doc.svgData(dimension: 800)
+				try outputFolder.write(data, to: "quiet-space-check.svg")
+			}
 
 			try XCTValidateSingleQRCode(image, expectedText: "Hi there!")
 		}

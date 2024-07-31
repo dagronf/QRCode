@@ -330,3 +330,13 @@ private extension QRCode.PixelShape.Razor {
 			)
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Razor {
+	/// Create a razor pixel generator
+	/// - Returns: A pixel generator
+	@inlinable static func razor() -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Razor()
+	}
+}

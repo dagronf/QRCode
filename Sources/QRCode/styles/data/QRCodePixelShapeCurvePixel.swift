@@ -295,3 +295,18 @@ public extension QRCode.PixelShape.CurvePixel {
 		return false
 	}
 }
+
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.CurvePixel {
+	/// Create a curve pixel pixel generator
+	/// - Parameters:
+	///   - cornerRadiusFraction: The corner radius fraction (0.0 -> 1.0)
+	/// - Returns: A pixel generator
+	@inlinable static func curvePixel(
+		cornerRadiusFraction: CGFloat = QRCode.PixelShape.CurvePixel.DefaultCornerRadiusValue
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.CurvePixel(cornerRadiusFraction: cornerRadiusFraction)
+	}
+}

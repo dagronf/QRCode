@@ -180,3 +180,13 @@ private extension QRCode.PixelShape.Blob {
 			$0.closeSubpath()
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Blob {
+	/// Create a blobby pixel generator
+	/// - Returns: A pixel generator
+	@inlinable static func blob() -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Blob()
+	}
+}

@@ -97,3 +97,13 @@ public extension QRCode.PixelShape.Shiny {
 	/// Set a configuration value for a particular setting string
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Shiny {
+	/// Create a shiny pixel generator
+	/// - Returns: A pixel generator
+	@inlinable static func shiny() -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Shiny()
+	}
+}

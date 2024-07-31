@@ -411,3 +411,22 @@ public extension QRCode.PixelShape.RoundedPath {
 		return false
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.RoundedPath {
+	/// Create a rounded path pixel generator
+	/// - Parameters:
+	///   - cornerRadiusFraction: The corner radius fraction (0.0 -> 1.0)
+	///   - hasInnerCorners: If true, rounds the inner corners of the path
+	/// - Returns: A pixel generator
+	@inlinable static func roundedPath(
+		cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedPath.DefaultCornerRadiusValue,
+		hasInnerCorners: Bool = QRCode.PixelShape.RoundedPath.DefaultHasInnerCorners
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.RoundedPath(
+			cornerRadiusFraction: cornerRadiusFraction,
+			hasInnerCorners: hasInnerCorners
+		)
+	}
+}

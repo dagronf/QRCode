@@ -429,3 +429,23 @@ public extension QRCode.PixelShape.RoundedEndIndent {
 		return false
 	}
 }
+
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.RoundedEndIndent {
+	/// Create a rounded end indent pixel generator
+	/// - Parameters:
+	///   - cornerRadiusFraction: The corner radius fraction (0.0 -> 1.0)
+	///   - hasInnerCorners: If true, rounds the inner corners of the path
+	/// - Returns: A pixel generator
+	@inlinable static func roundedEndIndent(
+		cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedEndIndent.DefaultCornerRadius,
+		hasInnerCorners: Bool = QRCode.PixelShape.RoundedEndIndent.DefaultHasInnerCorners
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.RoundedEndIndent(
+			cornerRadiusFraction: cornerRadiusFraction,
+			hasInnerCorners: hasInnerCorners
+		)
+	}
+}

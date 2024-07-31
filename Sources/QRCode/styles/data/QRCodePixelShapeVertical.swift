@@ -164,3 +164,22 @@ public extension QRCode.PixelShape.Vertical {
 		return false
 	}
 }
+
+// MARK: - Pixel creation conveniences
+
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Vertical {
+	/// Create a vertical pixel generator
+	/// - Parameters:
+	///   - insetFraction: The inset fraction (0.0 -> 1.0)
+	///   - cornerRadiusFraction: The corner radius fraction (0.0 -> 1.0)
+	/// - Returns: A pixel generator
+	@inlinable static func vertical(
+		insetFraction: CGFloat = QRCode.PixelShape.Vertical.DefaultInset,
+		cornerRadiusFraction: CGFloat = QRCode.PixelShape.Vertical.DefaultCornerRadius
+	) -> QRCodePixelShapeGenerator {
+		QRCode.PixelShape.Vertical(
+			insetFraction: insetFraction,
+			cornerRadiusFraction: cornerRadiusFraction
+		)
+	}
+}
