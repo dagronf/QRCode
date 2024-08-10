@@ -48,7 +48,7 @@ final class QRCodePathTests: XCTestCase {
 
 		try QRCodePixelShapeFactory.shared.all().forEach { generator in
 
-			markdown += "## \(generator.title)\n\n"
+			markdown += "### \(generator.title)\n\n"
 
 			markdown += "| Name |   0   |   4   |   8   |  12  |\n"
 			markdown += "|------|-------|-------|-------|------|\n"
@@ -195,9 +195,11 @@ final class QRCodePathTests: XCTestCase {
 
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
 		}
+		markdown += "\n\n"
 	}
 
 	func testShadow() throws {
+		markdown += "## Path with shadow\n\n"
 		do {
 			let doc = try QRCode.build
 				.text("https://www.apple.com.au/")
@@ -267,7 +269,8 @@ final class QRCodePathTests: XCTestCase {
 			let png = try b1.representation.png()
 			let link = try imageStore.store(png, filename: filename)
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
-
 		}
+
+		markdown += "\n\n"
 	}
 }
