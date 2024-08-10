@@ -196,4 +196,78 @@ final class QRCodePathTests: XCTestCase {
 			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
 		}
 	}
+
+	func testShadow() throws {
+		do {
+			let doc = try QRCode.build
+				.text("https://www.apple.com.au/")
+				.document
+
+			let path = doc.path(CGSize(dimension: 400))
+			let b1 = try CreateBitmap(dimension: 400, backgroundColor: .commonWhite) { ctx in
+				ctx.addPath(path)
+				ctx.setShadow(offset: CGSize(width: 2, height: -2), blur: 3, color: .commonBlack)
+				ctx.setFillColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+				ctx.fillPath()
+			}
+
+			let filename = "shadow-test-1.png"
+			let png = try b1.representation.png()
+			let link = try imageStore.store(png, filename: filename)
+			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("https://www.apple.com.au/")
+				.onPixels.shape(QRCode.PixelShape.Blob())
+				.document
+
+			let path = doc.path(CGSize(dimension: 400))
+			let b1 = try CreateBitmap(dimension: 400, backgroundColor: .commonWhite) { ctx in
+				ctx.addPath(path)
+				ctx.setShadow(offset: CGSize(width: 2, height: -2), blur: 3, color: .commonBlack)
+				ctx.setFillColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+				ctx.fillPath()
+			}
+
+			let filename = "shadow-test-2.png"
+			let png = try b1.representation.png()
+			let link = try imageStore.store(png, filename: filename)
+			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("https://www.apple.com.au/")
+				.onPixels.shape(QRCode.PixelShape.RoundedEndIndent())
+				.document
+
+			let path = doc.path(CGSize(dimension: 400))
+			let b1 = try CreateBitmap(dimension: 400, backgroundColor: .commonWhite) { ctx in
+
+				ctx.addPath(path)
+				ctx.setFillColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+				ctx.fillPath()
+
+				ctx.addPath(path)
+				ctx.clip()
+				ctx.setAlpha(CGColor.commonBlack.alpha)
+				
+				ctx.beginTransparencyLayer(auxiliaryInfo: nil)
+				defer { ctx.endTransparencyLayer() }
+				ctx.setShadow(offset: CGSize(width: 2, height: -2), blur: 3, color: .commonBlack)
+				ctx.setBlendMode(.sourceOut)
+				ctx.setFillColor(.commonBlack)
+				ctx.addPath(path)
+				ctx.fillPath()
+			}
+
+			let filename = "shadow-test-3.png"
+			let png = try b1.representation.png()
+			let link = try imageStore.store(png, filename: filename)
+			markdown += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> &nbsp;"
+
+		}
+	}
 }
