@@ -36,7 +36,7 @@ let package = Package(
 		// A microframework for cleaning handling image conversion
 		.package(
 			url: "https://github.com/dagronf/SwiftImageReadWrite",
-			.upToNextMinor(from: "1.7.2")
+			.upToNextMinor(from: "1.9.0")
 		),
 	],
 	targets: [
