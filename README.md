@@ -352,6 +352,32 @@ The QRCode is made up of four distinct components
 
 The 'shape' represents the way that each of the components are drawn 
 
+#### 'OnPixels' shape
+
+The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
+however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for a variety of styles.
+
+| Preview | Name | Class | Description |
+|---|---|---|---|
+|<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
+|<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
+|<img src="./Art/images/data_circuit.png" width="60"/>           |"circuit"|`QRCode.PixelShape.Circuit`|Circuits!|
+|<img src="./Art/images/data_crt.png" width="60"/>              | "crt" |`QRCode.PixelShape.CRT`| A CRT shape |
+|<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
+|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
+|<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
+|<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
+|<img src="./Art/images/data_razor.png" width="60"/>            |"razor"|`QRCode.PixelShape.Razor`| A 'razor' style|
+|<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
+|<img src="./Art/images/data_roundedPath.png" width="60"/>      |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
+|<img src="./Art/images/data_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
+|<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
+|<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` |A pixel style that appears 'shiny'|
+|<img src="./Art/images/data_square.png" width="60"/>           |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
+|<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
+|<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
+|<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+
 #### Eye shape
 
 You can provide an `EyeShape` object to style just the eyes of the generated qr code. There are built-in generators for
@@ -430,31 +456,6 @@ doc.design.style.onPixels = QRCode.FillStyle.Solid(0.624, 0.424, 0.400)
 <img src="./Art/images/custompupil.png" width="150"/>
 
 </details>
-
-#### 'OnPixels' shape
-
-The data shape represents how the 'pixels' within the QR code are displayed.  By default, this is a simple square, 
-however you can supply a `PixelShape` object to custom-draw the data.  There are built-in generators for a variety of styles.
-
-| Preview | Name | Class | Description |
-|---|---|---|---|
-|<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
-|<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
-|<img src="./Art/images/data_crt.png" width="60"/>              | "crt" |`QRCode.PixelShape.CRT`| A CRT shape |
-|<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
-|<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
-|<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
-|<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
-|<img src="./Art/images/data_razor.png" width="60"/>            |"razor"|`QRCode.PixelShape.Razor`| A 'razor' style|
-|<img src="./Art/images/data_roundedEndIndent.png" width="60"/> |"roundedEndIndent"|`QRCode.PixelShape.RoundedEndIndent`|Rounded path with circular indented ends|
-|<img src="./Art/images/data_roundedPath.png" width="60"/>      |"roundedPath"|`QRCode.PixelShape.RoundedPath`|A smooth rounded-edge path|
-|<img src="./Art/images/data_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
-|<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
-|<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` |A pixel style that appears 'shiny'|
-|<img src="./Art/images/data_square.png" width="60"/>           |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
-|<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
-|<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
 
 #### 'offPixels' shape (optional)
 
@@ -1150,9 +1151,9 @@ OPTIONS:
   --all-pixel-shapes <all-pixel-shapes>
                           Print all the available pixel shapes. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are crt, circle, curvePixel, flower, horizontal,
-                          pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle,
-                          star, vertical. 
+                          The onPixels shape to use. Available shapes are blob, crt, circle, circuit, curvePixel,
+                          flower, horizontal, pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny,
+                          square, squircle, star, vertical. 
   -n, --on-pixel-inset-fraction <on-pixel-inset-fraction>
                           The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>

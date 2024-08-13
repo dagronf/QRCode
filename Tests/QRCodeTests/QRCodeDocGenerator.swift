@@ -92,8 +92,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 			markdownText += "### Samples\n\n"
 
-			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  neg  |\n"
-			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
+			markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  PDF  |  neg  |\n"
+			markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
 
 			doc.design.style.onPixels = .solid(0.6, 0, 0)
 			doc.design.style.eye = .solid(0, 0, 0)
@@ -128,6 +128,13 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				}
 
 				do {
+					let pdf = try doc.pdfData(dimension: dimension)
+					let filename = "pixelint - \(name).pdf"
+					let link = try imageStore.store(pdf, filename: filename)
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
+				}
+
+				do {
 					doc.design.shape.negatedOnPixelsOnly = true
 					let inverted = try doc.pdfData(dimension: dimension)
 					let filename = "pixelnegated - \(name).pdf"
@@ -148,8 +155,8 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		markdownText += "## Pixel Shapes (3rd party Generator)\n\n"
 
-		markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  neg  |\n"
-		markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
+		markdownText += "|       |   L   |   M   |   Q   |   H   |  SVG  |  PDF  |  neg  |\n"
+		markdownText += "|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n"
 
 		let names = QRCodePixelShapeFactory.shared.availableGeneratorNames.sorted()
 		for name in names {
@@ -178,6 +185,14 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 				let link = try imageStore.store(svgImage, filename: filename)
 				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
 			}
+
+			do {
+				let pdf = try doc.pdfData(dimension: dimension)
+				let filename = "pixelext - \(name).pdf"
+				let link = try imageStore.store(pdf, filename: filename)
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"125\" /></a><br/>⚖️|"
+			}
+
 			do {
 				doc.design.shape.negatedOnPixelsOnly = true
 				let inverted = try doc.pdfData(dimension: dimension)
