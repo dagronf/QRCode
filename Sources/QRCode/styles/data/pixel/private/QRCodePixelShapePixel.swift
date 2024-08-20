@@ -40,12 +40,14 @@ internal extension QRCode.PixelShape {
 
 		let pixelType: PixelType
 
-		// The fractional inset for the pixel (0.0 -> 1.0)
-		var insetFraction: CGFloat
+		// Pixel inset routine
+		var insetGenerator: QRCodePixelInsetGenerator
+
+		var insetFraction: CGFloat = 0
+
 		// The fractional corner radius for the pixel (0.0 -> 1.0)
 		var cornerRadiusFraction: CGFloat
-		// If true, randomly sets the inset to create a "wobble"
-		var useRandomInset: Bool = false
+
 		// The rotation for each pixel (0.0 -> 1.0)
 		var rotationFraction: CGFloat = 0
 		// If true, randomly chooses a rotation for each pixel
@@ -54,23 +56,25 @@ internal extension QRCode.PixelShape {
 		/// Create
 		/// - Parameters:
 		///   - pixelType: The type of pixel to use (eg. square, circle)
-		///   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
-		///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
 		///   - cornerRadiusFraction: For types that support it, the roundedness of the corners (0 -> 1)
+		///   - insetGenerator: The inset function to apply across the matrix
+		///   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
 		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
 		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 		init(
 			pixelType: PixelType,
 			cornerRadiusFraction: CGFloat = 0,
+			insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 			insetFraction: CGFloat = 0,
-			useRandomInset: Bool = false,
 			rotationFraction: CGFloat = 0,
 			useRandomRotation: Bool = false
 		) {
 			self.pixelType = pixelType
-			self.insetFraction = insetFraction.clamped(to: 0 ... 1)
+			self.insetGenerator = insetGenerator
+			self.insetFraction = insetFraction
+
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
-			self.useRandomInset = useRandomInset
+			
 			self.rotationFraction = rotationFraction.clamped(to: 0 ... 1)
 			self.useRandomRotation = useRandomRotation
 		}
@@ -96,21 +100,22 @@ internal extension QRCode.PixelShape {
 
 			// We want a consistent random number
 			var rotationRandomGenerator = SplitMix64(seed: 183691261160545909)
-			var insetRandomGenerator = SplitMix64(seed: 308653205)
+
+			// Reset the inset generator
+			self.insetGenerator.reset()
 
 			for row in 0 ..< matrix.dimension {
 				for col in 0 ..< matrix.dimension {
 					// If the pixel is 'off' then we move on to the next
 					guard matrix[row, col] == true else { continue }
 
-                    let insetFraction: CGFloat = {
-						if self.useRandomInset {
-							return CGFloat.random(in: 0.0 ... self.insetFraction, using: &insetRandomGenerator)
-						}
-						else {
-							return self.insetFraction
-						}
-					}()
+					// Calculate the required pixel inset
+					let insetFraction = self.insetGenerator.insetValue(
+						for: matrix,
+						row: row,
+						column: col,
+						insetFraction: self.insetFraction
+					)
 
 					let origX = xoff + (CGFloat(col) * dm) + (dm / 2)
 					let origY = yoff + (CGFloat(row) * dm) + (dm / 2)
@@ -219,6 +224,8 @@ internal extension QRCode.PixelShape {
 
 extension QRCode.PixelShape.CommonPixelGenerator {
 
+	// Inset
+
 	func setInsetFractionValue(_ value: Any?) -> Bool {
 		guard let v = value else {
 			self.insetFraction = 0
@@ -229,14 +236,18 @@ extension QRCode.PixelShape.CommonPixelGenerator {
 		return true
 	}
 
-	func setUsesRandomInset(_ value: Any?) -> Bool {
-		guard let v = value, let v = BoolValue(v) else {
-			self.useRandomInset = false
-			return true
+	func setInsetGenerator(_ value: Any?) -> Bool {
+		guard 
+			let v = value as? String,
+			let generator = QRCode.PixelInset.generator(named: v)
+		else {
+			return false
 		}
-		self.useRandomInset = v
+		self.insetGenerator = generator
 		return true
 	}
+
+	// Rotation
 
 	func setRotationFraction(_ value: Any?) -> Bool {
 		guard let v = value, let v = CGFloatValue(v) else {

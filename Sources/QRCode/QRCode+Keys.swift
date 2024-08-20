@@ -30,8 +30,9 @@ public extension QRCode {
 		@objc public static let insetFraction = "insetFraction"
 		/// Settings key for 'has inner corners'
 		@objc public static let hasInnerCorners = "hasInnerCorners"
-		/// Setings key for 'random inset'
-		@objc public static let useRandomInset = "useRandomInset"
+		
+		@objc public static let insetGeneratorName = "insetGeneratorName"
+		
 		/// A rotation angle (0 -> 1)
 		@objc public static let rotationFraction = "rotationFraction"
 		/// Setings key for 'random rotation'
@@ -43,4 +44,11 @@ public extension QRCode {
 		/// Settings key for 'isFlipped'
 		@objc public static let isFlipped = "isFlipped"
 	}
+}
+
+	// Backwards compatibility
+
+extension QRCode.SettingsKey {
+	/// Setings key for 'random inset'
+	@objc public static let useRandomInset = "useRandomInset"
 }

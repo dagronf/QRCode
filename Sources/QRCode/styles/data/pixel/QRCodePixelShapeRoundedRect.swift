@@ -39,32 +39,32 @@ public extension QRCode.PixelShape {
 		@objc public var cornerRadiusFraction: CGFloat { self.common.cornerRadiusFraction }
 		/// The fractional inset for the pixel (0.0 -> 1.0)
 		@objc public var insetFraction: CGFloat { self.common.insetFraction }
-		/// If true, randomly sets the inset to create a "wobble"
-		@objc public var useRandomInset: Bool { self.common.useRandomInset }
-		/// The rotation for each pixel (0.0 -> 1.0)
-		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
-		/// If true, randomly chooses a rotation for each pixel
-		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
+//		/// If true, randomly sets the inset to create a "wobble"
+//		@objc public var useRandomInset: Bool { self.common.useRandomInset }
+//		/// The rotation for each pixel (0.0 -> 1.0)
+//		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
+//		/// If true, randomly chooses a rotation for each pixel
+//		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
 
 		/// Create
 		/// - Parameters:
 		///   - cornerRadiusFraction: The corner radius (0.0 -> 1.0)
+		///   - insetGenerator: The inset function to apply to each pixel
 		///   - insetFraction: The inset between each pixel
-		///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
 		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
 		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 		@objc public init(
 			cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedRect.DefaultCornerRadius,
+			insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 			insetFraction: CGFloat = QRCode.PixelShape.RoundedRect.DefaultInset,
-			useRandomInset: Bool = false,
 			rotationFraction: CGFloat = 0,
 			useRandomRotation: Bool = false
 		) {
 			self.common = CommonPixelGenerator(
 				pixelType: .roundedRect,
 				cornerRadiusFraction: cornerRadiusFraction,
+				insetGenerator: insetGenerator,
 				insetFraction: insetFraction,
-				useRandomInset: useRandomInset,
 				rotationFraction: rotationFraction,
 				useRandomRotation: useRandomRotation
 			)
@@ -75,13 +75,23 @@ public extension QRCode.PixelShape {
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction]) ?? Self.DefaultInset
 			let radius = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? Self.DefaultCornerRadius
-			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
 			let rotationFraction = CGFloatValue(settings?[QRCode.SettingsKey.rotationFraction]) ?? 0.0
 			let useRandomRotation = BoolValue(settings?[QRCode.SettingsKey.useRandomRotation]) ?? false
+
+			let generator: QRCodePixelInsetGenerator
+			if let s = settings?[QRCode.SettingsKey.insetGeneratorName] as? String {
+				generator = QRCode.PixelInset.generator(named: s) ?? QRCode.PixelInset.Fixed()
+			}
+			else {
+				// Backwards compatible
+				let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
+				generator = useRandomInset ? QRCode.PixelInset.Random() : QRCode.PixelInset.Fixed()
+			}
+
 			return RoundedRect(
 				cornerRadiusFraction: radius,
+				insetGenerator: generator,
 				insetFraction: insetFraction,
-				useRandomInset: useRandomInset,
 				rotationFraction: rotationFraction,
 				useRandomRotation: useRandomRotation
 			)
@@ -91,8 +101,8 @@ public extension QRCode.PixelShape {
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return RoundedRect(
 				cornerRadiusFraction: self.common.cornerRadiusFraction,
+				insetGenerator: self.common.insetGenerator.duplicate(),
 				insetFraction: self.common.insetFraction,
-				useRandomInset: self.common.useRandomInset,
 				rotationFraction: self.common.rotationFraction,
 				useRandomRotation: self.common.useRandomRotation
 			)
@@ -120,20 +130,25 @@ public extension QRCode.PixelShape.RoundedRect {
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
 			|| key == QRCode.SettingsKey.cornerRadiusFraction
-			|| key == QRCode.SettingsKey.useRandomInset
+			|| key == QRCode.SettingsKey.insetGeneratorName
 			|| key == QRCode.SettingsKey.rotationFraction
 			|| key == QRCode.SettingsKey.useRandomRotation
 	}
 	
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String: Any] {
-		return [
+		var result: [String: Any] = [
+			QRCode.SettingsKey.insetGeneratorName: self.common.insetGenerator.name,
 			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
 			QRCode.SettingsKey.cornerRadiusFraction: self.common.cornerRadiusFraction,
-			QRCode.SettingsKey.useRandomInset: self.common.useRandomInset,
 			QRCode.SettingsKey.rotationFraction: self.common.rotationFraction,
 			QRCode.SettingsKey.useRandomRotation: self.common.useRandomRotation,
 		]
+		if self.common.insetGenerator is QRCode.PixelInset.Random {
+			// Backwards compatibility
+			result[QRCode.SettingsKey.useRandomInset] = true
+		}
+		return result
 	}
 	
 	/// Set a configuration value for a particular setting string
@@ -141,11 +156,15 @@ public extension QRCode.PixelShape.RoundedRect {
 		if key == QRCode.SettingsKey.insetFraction {
 			return self.common.setInsetFractionValue(value)
 		}
+		else if key == QRCode.SettingsKey.insetGeneratorName {
+			return self.common.setInsetGenerator(value)
+		}
 		else if key == QRCode.SettingsKey.cornerRadiusFraction {
 			return self.common.setCornerRadiusFraction(value)
 		}
 		else if key == QRCode.SettingsKey.useRandomInset {
-			return self.common.setUsesRandomInset(value)
+			// Backwards compatible
+			return self.common.setInsetGenerator(QRCode.PixelInset.Random())
 		}
 		else if key == QRCode.SettingsKey.rotationFraction {
 			return self.common.setRotationFraction(value)
@@ -162,20 +181,23 @@ public extension QRCode.PixelShape.RoundedRect {
 public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.RoundedRect {
 	/// Create a rounded rect pixel generator
 	/// - Parameters:
+	///   - cornerRadiusFraction: The corner radius (0.0 -> 1.0)
 	///   - insetFraction: The inset between each pixel
 	///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
 	///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
 	///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 	/// - Returns: A pixel generator
 	@inlinable static func roundedRect(
+		cornerRadiusFraction: CGFloat = QRCode.PixelShape.RoundedRect.DefaultCornerRadius,
+		insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 		insetFraction: CGFloat = 0,
-		useRandomInset: Bool = false,
 		rotationFraction: CGFloat = 0,
 		useRandomRotation: Bool = false
 	) -> QRCodePixelShapeGenerator {
 		QRCode.PixelShape.RoundedRect(
+			cornerRadiusFraction: cornerRadiusFraction,
+			insetGenerator: insetGenerator,
 			insetFraction: insetFraction,
-			useRandomInset: useRandomInset,
 			rotationFraction: rotationFraction,
 			useRandomRotation: useRandomRotation
 		)

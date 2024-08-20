@@ -32,13 +32,16 @@ public extension QRCode.PixelShape {
 
 		/// Create a circle pixel shape
 		/// - Parameters:
+		///   - insetGenerator: The inset function to apply to each pixel
 		///   - insetFraction: The inset between each pixel
-		///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
-		@objc public init(insetFraction: CGFloat = 0, useRandomInset: Bool = false) {
+		@objc public init(
+			insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
+			insetFraction: CGFloat = 0
+		) {
 			self.common = CommonPixelGenerator(
 				pixelType: .circle,
-				insetFraction: insetFraction,
-				useRandomInset: useRandomInset
+				insetGenerator: insetGenerator,
+				insetFraction: insetFraction
 			)
 			super.init()
 		}
@@ -46,15 +49,25 @@ public extension QRCode.PixelShape {
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePixelShapeGenerator {
 			let insetFraction = DoubleValue(settings?[QRCode.SettingsKey.insetFraction, default: 0]) ?? 0
-			let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
-			return Circle(insetFraction: insetFraction, useRandomInset: useRandomInset)
+
+			let generator: QRCodePixelInsetGenerator
+			if let s = settings?[QRCode.SettingsKey.insetGeneratorName] as? String {
+				generator = QRCode.PixelInset.generator(named: s) ?? QRCode.PixelInset.Fixed()
+			}
+			else {
+				// Backwards compatible
+				let useRandomInset = BoolValue(settings?[QRCode.SettingsKey.useRandomInset]) ?? false
+				generator = useRandomInset ? QRCode.PixelInset.Random() : QRCode.PixelInset.Fixed()
+			}
+
+			return Circle(insetGenerator: generator, insetFraction: insetFraction)
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Circle(
-				insetFraction: self.common.insetFraction,
-				useRandomInset: self.common.useRandomInset
+				insetGenerator: self.common.insetGenerator.duplicate(),
+				insetFraction: self.common.insetFraction
 			)
 		}
 
@@ -69,8 +82,6 @@ public extension QRCode.PixelShape {
 
 		/// The fractional inset for the pixel (0.0 -> 1.0)
 		@objc public var insetFraction: CGFloat { common.insetFraction }
-		/// If true, randomly sets the inset to create a "wobble"
-		@objc public var useRandomInset: Bool { common.useRandomInset }
 
 		// private
 
@@ -84,15 +95,20 @@ public extension QRCode.PixelShape.Circle {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
-			|| key == QRCode.SettingsKey.useRandomInset
+			|| key == QRCode.SettingsKey.insetGeneratorName
 	}
 
 	/// Returns the current settings for the shape
 	@objc func settings() -> [String : Any] {
-		return [
-			QRCode.SettingsKey.insetFraction: self.common.insetFraction,
-			QRCode.SettingsKey.useRandomInset: self.common.useRandomInset
-		]
+		var result: [String : Any] = [:]
+
+		// Write the inset fraction
+		result[QRCode.SettingsKey.insetFraction] = self.common.insetFraction
+
+		// Write the generator
+		result[QRCode.SettingsKey.insetGeneratorName] = self.common.insetGenerator.name
+
+		return result
 	}
 
 	/// Set a configuration value for a particular setting string
@@ -100,8 +116,8 @@ public extension QRCode.PixelShape.Circle {
 		if key == QRCode.SettingsKey.insetFraction {
 			return self.common.setInsetFractionValue(value)
 		}
-		else if key == QRCode.SettingsKey.useRandomInset {
-			return self.common.setUsesRandomInset(value)
+		else if key == QRCode.SettingsKey.insetGeneratorName {
+			return self.common.setInsetGenerator(value)
 		}
 		return false
 	}
@@ -112,16 +128,16 @@ public extension QRCode.PixelShape.Circle {
 public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Circle {
 	/// Create a circle pixel generator
 	/// - Parameters:
+	///   - insetGenerator: The inset generator
 	///   - insetFraction: The inset between each pixel
-	///   - useRandomInset: If true, chooses a random inset value (between 0.0 -> `insetFraction`) for each pixel
 	/// - Returns: A pixel generator
 	@inlinable static func circle(
-		insetFraction: CGFloat = 0,
-		useRandomInset: Bool = false
+		insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
+		insetFraction: CGFloat = 0
 	) -> QRCodePixelShapeGenerator {
 		QRCode.PixelShape.Circle(
-			insetFraction: insetFraction,
-			useRandomInset: useRandomInset
+			insetGenerator: insetGenerator,
+			insetFraction: insetFraction
 		)
 	}
 }

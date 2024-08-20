@@ -548,7 +548,10 @@ final class DocumentationImageTests: XCTestCase {
 
 		doc.design.shape.eye = QRCode.EyeShape.Peacock()
 
-		doc.design.shape.onPixels = QRCode.PixelShape.Circle(insetFraction: 0.4, useRandomInset: true)
+		doc.design.shape.onPixels = QRCode.PixelShape.Circle(
+			insetGenerator: QRCode.PixelInset.Random(),
+			insetFraction: 0.4
+		)
 
 		let image = try resourceCommonImage(for: "beach-square", extension: "jpg")
 		doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
