@@ -583,18 +583,40 @@ final class DocumentationImageTests: XCTestCase {
 		let pngData = try QRCode.build
 			.text("https://en.wikipedia.org/wiki/QR_code")
 			.errorCorrection(.high)
-			.background.cornerRadius(2)
+			.backgroundColor(.RGBA(0.1849, 0.0750, 0.2520))
 			.onPixels.shape(
-				.squircle(
+				.circle(
 					insetGenerator: QRCode.PixelInset.Punch(),
 					insetFraction: 0.6
 				)
 			)
-			.eye.shape(.squircle())
+			.onPixels.style(.RGBA(0.8523, 0.7114, 0.3508))
+			.eye.shape(.circle())
 			.logo(logo)
 			.generate.image(dimension: 600, representation: .png())
 
 		try outputFolder.write(pngData, to: "wiki.png")
 	}
 
+	func testPixelInsetGenerator() throws {
+
+		try QRCode.PixelInset.generators.forEach { generator in
+
+			let g = generator.Create()
+
+			try [0, 0.2, 0.4, 0.6].forEach { (inset: CGFloat) in
+				let pngData = try QRCode.build
+					.text("Pixel inset tests")
+					.errorCorrection(.high)
+					.onPixels.shape(
+						.square(
+							insetGenerator: g,
+							insetFraction: inset
+						)
+					)
+					.generate.image(dimension: 300, representation: .png())
+				try outputFolder.write(pngData, to: "inset-\(g.name)-\(inset).png")
+			}
+		}
+	}
 }

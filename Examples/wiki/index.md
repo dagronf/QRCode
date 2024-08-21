@@ -22,14 +22,15 @@ let logo = QRCode.LogoTemplate(
 let pngData = try QRCode.build
    .text("https://en.wikipedia.org/wiki/QR_code")
    .errorCorrection(.high)
-   .background.cornerRadius(1)
+   .backgroundColor(.RGBA(0.1849, 0.0750, 0.2520))
    .onPixels.shape(
-      .squircle(
+      .circle(
          insetGenerator: QRCode.PixelInset.Punch(),
          insetFraction: 0.6
       )
    )
-   .eye.shape(.squircle())
+   .onPixels.style(.RGBA(0.8523, 0.7114, 0.3508))
+   .eye.shape(.circle())
    .logo(logo)
    .generate.image(dimension: 600, representation: .png())
 ```

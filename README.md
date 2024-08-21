@@ -1,6 +1,6 @@
 # QRCode
 
-A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library for SwiftUI, Swift and Objective-C.
+A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library for SwiftUI, Swift and Objective-C.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/QRCode" />
@@ -24,58 +24,58 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 </p>
 
 <p align="center">
-   <a href="./Art/screenshot.png">
-      <img src="./Art/screenshot.png" width="270"/>
+   <a href="./Examples/basic.svg">
+      <img src="./Examples/basic.png" height="80"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">
-      <img src="./Art/watchOS.png" width="120"/>
+      <img src="./Art/watchOS.png" width="80"/>
    </a>
    &nbsp;
    <a href="./Examples/people/index.md">
-      <img src="./Examples/people/qrcode-with-logo.png" width="150"/>
+      <img src="./Examples/people/qrcode-with-logo.png" width="80"/>
    </a>   
    &nbsp;
    <a href="./Examples/scan/index.md">
-      <img src="./Examples/scan/qrcode-with-basic-logo.svg" width="150"/>
+      <img src="./Examples/scan/qrcode-with-basic-logo.svg" width="80"/>
    </a>   
 
    <a href="./Examples/lineargradient/index.md">
-      <img src="./Examples/lineargradient/linear-background.png" width="150"/>
+      <img src="./Examples/lineargradient/linear-background.png" width="80"/>
    </a>
    
    <a href="./Examples/negated/index.md">
-      <img src="./Examples/negated/design-negated-quiet-space.png" width="150"/>
+      <img src="./Examples/negated/design-negated-quiet-space.png" width="80"/>
    </a>
    <a href="./Examples/green/index.md">
-      <img src="./Examples/green/svgExportPixelBackgroundColors.svg" width="150"/>
+      <img src="./Examples/green/svgExportPixelBackgroundColors.svg" width="80"/>
    </a>
 
    <a href="./Examples/logo-background/logo-background.md">
-      <img src="./Examples/logo-background/demo-simple-image-background.jpg" width="150"/>
+      <img src="./Examples/logo-background/demo-simple-image-background.jpg" width="80"/>
    </a>
    
    <a href="./Examples/red-b/red-b.md">
-      <img src="./Examples/red-b/qrcode-off-pixels.jpg" width="150"/>
+      <img src="./Examples/red-b/qrcode-off-pixels.jpg" width="80"/>
    </a>
    
    <a href="./Examples/wombles/wombles.md">
-      <img src="./Examples/wombles/demo-wombles.jpg" width="150"/>
+      <img src="./Examples/wombles/demo-wombles.jpg" width="80"/>
    </a>
    <a href="./Examples/wwf/index.md">
-      <img src="./Examples/wwf/wwf.svg" width="150"/>
+      <img src="./Examples/wwf/wwf.svg" width="80"/>
    </a>
    <a href="./Examples/peacock/index.md">
-      <img src="./Examples/peacock/beach-peacock.jpg" width="150"/>
+      <img src="./Examples/peacock/beach-peacock.jpg" width="80"/>
    </a>
    <a href="./Art/images/3d-demo.jpg">
-      <img src="./Art/images/3d-demo.jpg" width="150"/>
+      <img src="./Art/images/3d-demo.jpg" width="80"/>
    </a>
    <a href="./Examples/blobby/index.md"> 
-      <img src="./Examples/blobby/blobby-style.svg" width="150"/>
+      <img src="./Examples/blobby/blobby-style.svg" width="80"/>
    </a>
       <a href="./Examples/wiki/index.md"> 
-      <img src="./Examples/wiki/wiki.png" width="150"/>
+      <img src="./Examples/wiki/wiki.png" width="80"/>
    </a>
 </p>
 
@@ -100,14 +100,6 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
 * Configurable corner radius
 * Command line tool for generating qr codes from the command line (macOS 10.13+).
 * Basic qr code video detection (via importing `QRCodeDetector`).
-
-## **NOTES FOR THE v20.0.0 RELEASE**
-
-The public API has standardised on throwing errors instead of returning `nil` for failing calls. This was done to
-remove the inconsistency of handling errors between different calls.
-
-If you're upgrading your code to a v20+ release, you will need to make some (minor) code changes to support the new APIs
-to handle the throwing calls.
 
 ## Installing
 
@@ -380,6 +372,13 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
 |<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+
+Some pixel shapes support additional customization :-
+
+* Corner radius
+* Basic pixel insets
+* Pixel rotation
+* custom pixel insets using a [custom pixel inset generator](./Examples/pixel-inset-doco/pixel-inset-tests.md).
 
 #### Eye shape
 
@@ -891,12 +890,12 @@ QRCodeViewUI(
 If you need more control over the styling and content of your QR code, `QRCodeDocumentViewUI` is a `SwiftUI` view that displays a `QRCode.Document` object. 
 
 ```swift
-   var body: some View {
-         VStack {
-            QRCodeDocumentUIView(document: doc)
-         }
-         .padding()
+var body: some View {
+   VStack {
+      QRCodeDocumentUIView(document: doc)
    }
+   .padding()
+}
 ```
 
 

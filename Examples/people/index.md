@@ -55,5 +55,4 @@ let doc = try QRCode.build
 
 ## Logo Image
 
-<img src="../../Demo/QRCodeView Demo/QRCodeView Documentation Images/Assets.xcassets/square-logo.imageset/square-logo.png" width="150"/>
-
+<img src="../../Tests/QRCodeTests/Resources/square-logo.png" width="150"/>
