@@ -74,6 +74,9 @@ A quick and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector library 
    <a href="./Examples/blobby/index.md"> 
       <img src="./Examples/blobby/blobby-style.svg" width="150"/>
    </a>
+      <a href="./Examples/wiki/index.md"> 
+      <img src="./Examples/wiki/wiki.png" width="150"/>
+   </a>
 </p>
 
 ## Why?
