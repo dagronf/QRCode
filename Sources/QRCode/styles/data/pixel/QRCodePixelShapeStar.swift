@@ -205,17 +205,18 @@ public extension QRCode.PixelShape.Star {
 			return self.common.setInsetFractionValue(value)
 		}
 		else if key == QRCode.SettingsKey.insetGeneratorName {
-			return self.common.setInsetGenerator(value)
-		}
-		else if key == QRCode.SettingsKey.useRandomInset {
-			// Backwards compatible
-			return self.common.setInsetGenerator(QRCode.PixelInset.Random())
+			return self.common.setInsetGenerator(named: value)
 		}
 		else if key == QRCode.SettingsKey.rotationFraction {
 			return self.common.setRotationFraction(value)
 		}
 		else if key == QRCode.SettingsKey.useRandomRotation {
 			return self.common.setUsesRandomRotation(value)
+		}
+		else if key == QRCode.SettingsKey.useRandomInset {
+			// backwards compatibility
+			let which = BoolValue(value) ?? false
+			return self.common.setInsetGenerator(which ? QRCode.PixelInset.Random() : QRCode.PixelInset.Fixed())
 		}
 		return false
 	}

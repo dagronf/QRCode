@@ -236,8 +236,13 @@ extension QRCode.PixelShape.CommonPixelGenerator {
 		return true
 	}
 
-	func setInsetGenerator(_ value: Any?) -> Bool {
-		guard 
+	func setInsetGenerator(_ generator: QRCodePixelInsetGenerator) -> Bool {
+		self.insetGenerator = generator
+		return true
+	}
+
+	func setInsetGenerator(named value: Any?) -> Bool {
+		guard
 			let v = value as? String,
 			let generator = QRCode.PixelInset.generator(named: v)
 		else {

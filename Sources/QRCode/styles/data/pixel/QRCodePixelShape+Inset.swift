@@ -45,7 +45,7 @@ import Foundation
 
 extension QRCodePixelInsetGenerator {
 	/// The generators name
-	var name: String { Self.Name }
+	public var name: String { Self.Name }
 }
 
 extension QRCode {
@@ -74,7 +74,8 @@ public extension QRCode.PixelInset {
 		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Fixed() }
 		public func reset() {}
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
-			insetFraction
+			assert(insetFraction.in(0 ... 1))
+			return insetFraction
 		}
 	}
 
@@ -90,7 +91,8 @@ public extension QRCode.PixelInset {
 			self.insetRandomGenerator = SplitMix64(seed: 308653205)
 		}
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
-			CGFloat.random(in: 0.0 ... insetFraction, using: &insetRandomGenerator)
+			assert(insetFraction.in(0 ... 1))
+			return CGFloat.random(in: 0.0 ... insetFraction, using: &insetRandomGenerator)
 		}
 
 		private var insetRandomGenerator: SplitMix64
@@ -108,6 +110,7 @@ public extension QRCode.PixelInset {
 		public func reset() {}
 		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Punch() }
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
+			assert(insetFraction.in(0 ... 1))
 			let half = Double(matrix.dimension) / 2
 			let sy: Double = {
 				let r = Double(row)
@@ -133,6 +136,7 @@ public extension QRCode.PixelInset {
 		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.HorizontalWave() }
 
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
+			assert(insetFraction.in(0 ... 1))
 			let half = Double(matrix.dimension) / 2
 			let sx: Double = {
 				let c = Double(column)
@@ -151,6 +155,7 @@ public extension QRCode.PixelInset {
 		public func reset() {}
 		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.VerticalWave() }
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
+			assert(insetFraction.in(0 ... 1))
 			let half = Double(matrix.dimension) / 2
 			let sy: Double = {
 				let r = Double(row)

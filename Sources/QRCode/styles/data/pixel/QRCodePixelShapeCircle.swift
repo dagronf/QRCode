@@ -118,12 +118,12 @@ public extension QRCode.PixelShape.Circle {
 			return self.common.setInsetFractionValue(value)
 		}
 		else if key == QRCode.SettingsKey.insetGeneratorName {
-			return self.common.setInsetGenerator(value)
+			return self.common.setInsetGenerator(named: value)
 		}
 		else if key == QRCode.SettingsKey.useRandomInset {
 			// backwards compatibility
 			let which = BoolValue(value) ?? false
-			return self.common.setInsetGenerator(which ? QRCode.PixelInset.Random.Name : QRCode.PixelInset.Fixed.Name)
+			return self.common.setInsetGenerator(which ? QRCode.PixelInset.Random() : QRCode.PixelInset.Fixed())
 		}
 		return false
 	}
