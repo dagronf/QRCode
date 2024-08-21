@@ -32,7 +32,7 @@ import Foundation
 	/// Used to reset the inset generator back to bog-standard to allow repeatable results
 	func reset()
 	/// Make a copy of this generator
-	func duplicate() -> QRCodePixelInsetGenerator
+	func copyInsetGenerator() -> QRCodePixelInsetGenerator
 	/// Return the inset value (0 -> 1) for a row and column within the qr code matrix
 	/// - Parameters:
 	///   - matrix: The QR code matrix
@@ -71,7 +71,7 @@ public extension QRCode.PixelInset {
 	class Fixed: NSObject, QRCodePixelInsetGenerator {
 		public static var Name: String { "fixed" }
 		public static func Create() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Fixed() }
-		public func duplicate() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Fixed() }
+		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Fixed() }
 		public func reset() {}
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
 			insetFraction
@@ -85,7 +85,7 @@ public extension QRCode.PixelInset {
 	class Random: NSObject, QRCodePixelInsetGenerator {
 		public static var Name: String { "random" }
 		public static func Create() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Random() }
-		public func duplicate() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Random() }
+		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Random() }
 		public func reset() {
 			self.insetRandomGenerator = SplitMix64(seed: 308653205)
 		}
@@ -106,7 +106,7 @@ public extension QRCode.PixelInset {
 		public static var Name: String { "punch" }
 		public static func Create() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Punch() }
 		public func reset() {}
-		public func duplicate() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Punch() }
+		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.Punch() }
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
 			let half = Double(matrix.dimension) / 2
 			let sy: Double = {
@@ -130,7 +130,7 @@ public extension QRCode.PixelInset {
 		public static func Create() -> QRCodePixelInsetGenerator { QRCode.PixelInset.HorizontalWave() }
 
 		public func reset() {}
-		public func duplicate() -> QRCodePixelInsetGenerator { QRCode.PixelInset.HorizontalWave() }
+		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.HorizontalWave() }
 
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
 			let half = Double(matrix.dimension) / 2
@@ -149,7 +149,7 @@ public extension QRCode.PixelInset {
 		public static var Name: String { "verticalWave" }
 		public static func Create() -> QRCodePixelInsetGenerator { QRCode.PixelInset.VerticalWave() }
 		public func reset() {}
-		public func duplicate() -> QRCodePixelInsetGenerator { QRCode.PixelInset.VerticalWave() }
+		public func copyInsetGenerator() -> QRCodePixelInsetGenerator { QRCode.PixelInset.VerticalWave() }
 		public func insetValue(for matrix: BoolMatrix, row: Int, column: Int, insetFraction: CGFloat) -> CGFloat {
 			let half = Double(matrix.dimension) / 2
 			let sy: Double = {

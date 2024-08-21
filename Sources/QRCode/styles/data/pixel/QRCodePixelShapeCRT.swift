@@ -30,15 +30,6 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "CRT" }
 
-//		/// The fractional inset for the pixel (0.0 -> 1.0)
-//		@objc public var insetFraction: CGFloat { self.common.insetFraction }
-//		/// If true, randomly sets the inset to create a "wobble"
-//		@objc public var useRandomInset: Bool { self.common.useRandomInset }
-//		/// The rotation for each pixel (0.0 -> 1.0)
-//		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
-//		/// If true, randomly chooses a rotation for each pixel
-//		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
-
 		/// Create
 		/// - Parameters:
 		///   - insetGenerator: The inset function to apply to each pixel
@@ -88,7 +79,7 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return CRT(
-				insetGenerator: self.common.insetGenerator.duplicate(),
+				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction,
 				rotationFraction: self.common.rotationFraction,
 				useRandomRotation: self.common.useRandomRotation
@@ -133,6 +124,7 @@ public extension QRCode.PixelShape.CRT {
 			|| key == QRCode.SettingsKey.insetGeneratorName
 			|| key == QRCode.SettingsKey.rotationFraction
 			|| key == QRCode.SettingsKey.useRandomRotation
+			|| key == QRCode.SettingsKey.useRandomInset
 	}
 	
 	/// Returns the current settings for the shape
@@ -167,6 +159,11 @@ public extension QRCode.PixelShape.CRT {
 		}
 		else if key == QRCode.SettingsKey.useRandomRotation {
 			return self.common.setUsesRandomRotation(value)
+		}
+		else if key == QRCode.SettingsKey.useRandomInset {
+			// backwards compatibility
+			let which = BoolValue(value) ?? false
+			return self.common.setInsetGenerator(which ? QRCode.PixelInset.Random.Name : QRCode.PixelInset.Fixed.Name)
 		}
 		return false
 	}

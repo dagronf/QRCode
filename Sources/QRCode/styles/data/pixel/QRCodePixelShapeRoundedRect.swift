@@ -101,7 +101,7 @@ public extension QRCode.PixelShape {
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return RoundedRect(
 				cornerRadiusFraction: self.common.cornerRadiusFraction,
-				insetGenerator: self.common.insetGenerator.duplicate(),
+				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction,
 				rotationFraction: self.common.rotationFraction,
 				useRandomRotation: self.common.useRandomRotation

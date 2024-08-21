@@ -66,7 +66,7 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Circle(
-				insetGenerator: self.common.insetGenerator.duplicate(),
+				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction
 			)
 		}
@@ -96,6 +96,7 @@ public extension QRCode.PixelShape.Circle {
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
 			|| key == QRCode.SettingsKey.insetGeneratorName
+			|| key == QRCode.SettingsKey.useRandomInset
 	}
 
 	/// Returns the current settings for the shape
@@ -118,6 +119,11 @@ public extension QRCode.PixelShape.Circle {
 		}
 		else if key == QRCode.SettingsKey.insetGeneratorName {
 			return self.common.setInsetGenerator(value)
+		}
+		else if key == QRCode.SettingsKey.useRandomInset {
+			// backwards compatibility
+			let which = BoolValue(value) ?? false
+			return self.common.setInsetGenerator(which ? QRCode.PixelInset.Random.Name : QRCode.PixelInset.Fixed.Name)
 		}
 		return false
 	}

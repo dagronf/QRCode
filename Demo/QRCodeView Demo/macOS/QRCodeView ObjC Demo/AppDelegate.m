@@ -77,7 +77,7 @@
 		// Use the leaf style
 		design.shape.eye = [[QRCodeEyeShapeLeaf alloc] init];
 
-		design.shape.onPixels = [[QRCodePixelShapeCircle alloc] initWithInsetGenerator:[[QRCodePixelInsetFixed alloc] init]
+		design.shape.onPixels = [[QRCodePixelShapeCircle alloc] initWithInsetGenerator:[[QRCodePixelInsetPunch alloc] init]
 																							  insetFraction:0.5];
 
 		CGImageRef image = [code cgImage:CGSizeMake(400, 400)

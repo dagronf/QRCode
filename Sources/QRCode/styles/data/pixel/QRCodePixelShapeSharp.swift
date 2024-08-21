@@ -88,7 +88,7 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			return Sharp(
-				insetGenerator: self.common.insetGenerator.duplicate(),
+				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction,
 				rotationFraction: self.common.rotationFraction,
 				useRandomRotation: self.common.useRandomRotation

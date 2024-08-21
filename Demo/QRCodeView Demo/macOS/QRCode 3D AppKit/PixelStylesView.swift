@@ -11,6 +11,7 @@ import AppKit
 import DSFAppKitBuilder
 import QRCode
 import DSFValueBinders
+import DSFMenuBuilder
 
 
 class PixelStylesView: Element {
@@ -95,15 +96,32 @@ class PixelStylesView: Element {
 						_ = self?.qrCode.design.shape.onPixels.setSettingValue(newValue, forKey: QRCode.SettingsKey.insetFraction)
 						self?.update()
 					}
-				Button(title: "􀝿", type: .pushOnPushOff)
-					.toolTip("Randomize the pixel inset")
-					.bindOnOffState(pixelRandomInset)
-					.bindIsEnabled(pixelRandomInsetEnabled)
-					.width(40)
-					.onChange(of: pixelRandomInset) { [weak self] newValue in
-						_ = self?.qrCode.design.shape.onPixels.setSettingValue(newValue, forKey: QRCode.SettingsKey.useRandomInset)
-						self?.update()
-					}
+				PopupButton {
+					MenuItem("Fixed")
+					MenuItem("Random")
+					MenuItem("Punch")
+					MenuItem("Wave-H")
+					MenuItem("Wave-V")
+				}
+				.bindSelection(pixelInsetGenerator)
+				.bindIsEnabled(pixelRandomInsetEnabled)
+				.toolTip("Customize the inset")
+				.onChange(of: pixelInsetGenerator) { [weak self] newValue in
+					
+					let which: String = {
+						switch newValue {
+						case 0: return "fixed"
+						case 1: return "random"
+						case 2: return "punch"
+						case 3: return "horizontalWave"
+						case 4: return "verticalWave"
+						default: fatalError()
+						}
+					}()
+					
+					_ = self?.qrCode.design.shape.onPixels.setSettingValue(which, forKey: QRCode.SettingsKey.insetGeneratorName)
+					self?.update()
+				}
 			}
 
 			HStack {
@@ -187,6 +205,8 @@ class PixelStylesView: Element {
 
 	private lazy var pixelRandomRotation = ValueBinder(false)
 	private var pixelRandomRotationEnabled = ValueBinder(false)
+
+	private lazy var pixelInsetGenerator = ValueBinder(0)
 }
 
 
