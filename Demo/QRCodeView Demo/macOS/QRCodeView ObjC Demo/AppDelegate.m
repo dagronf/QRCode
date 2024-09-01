@@ -100,6 +100,15 @@
 		assert(error == nil);
 		NSLog(@"image: %@", image);
 	}
+
+	{
+		QRCodeDocument* doc = [QRCodeDocument new];
+		[doc setUtf8String: @"https://github.com/dagronf/QRCode"];
+
+		NSError* error = NULL;
+		CGImageRef image = [doc cgImageWithDimension:600 error:&error];
+		NSLog(@"image: %@", image);
+	}
 }
 
 - (void)doBasicQRCodeGeneration {

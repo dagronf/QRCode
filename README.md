@@ -24,8 +24,8 @@ A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector
 </p>
 
 <p align="center">
-   <a href="./Examples/basic.svg">
-      <img src="./Examples/basic.png" height="80"/>
+   <a href="./Examples/basic/index.md">
+      <img src="./Examples/basic/basic.png" height="80"/>
    </a>
    &nbsp;
    <a href="./Art/watchOS.png">

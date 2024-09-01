@@ -619,4 +619,14 @@ final class DocumentationImageTests: XCTestCase {
 			}
 		}
 	}
+
+	func testBasic() throws {
+		let cgImage = try QRCode.build
+			.text("https://github.com/dagronf/QRCode")
+			.generate.image(dimension: 600)
+
+		let pngData = try cgImage.representation.png()
+
+		try outputFolder.write(pngData, to: "basic-qrcode.png")
+	}
 }
