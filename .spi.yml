@@ -2,3 +2,4 @@ version: 1
 builder:
   configs:
   - scheme: QRCode
+    documentation_targets: [QRCode]
