@@ -590,7 +590,7 @@ final class DocumentationImageTests: XCTestCase {
 					insetFraction: 0.6
 				)
 			)
-			.onPixels.style(.RGBA(0.8523, 0.7114, 0.3508))
+			.onPixels.foregroundColor(.RGBA(0.8523, 0.7114, 0.3508))
 			.eye.shape(.circle())
 			.logo(logo)
 			.generate.image(dimension: 600, representation: .png())
@@ -628,5 +628,21 @@ final class DocumentationImageTests: XCTestCase {
 		let pngData = try cgImage.representation.png()
 
 		try outputFolder.write(pngData, to: "basic-qrcode.png")
+	}
+
+	func testWatchOSBasic() throws {
+		let pngData = try QRCode.build
+			.text("QRCode WatchOS Demo")
+			.errorCorrection(.medium)
+			.backgroundColor(hexString: "000033")
+			.quietZonePixelCount(1)
+			.background.cornerRadius(4)
+			.onPixels.foregroundColor(hexString: "FFFF80")
+			.eye.shape(QRCode.EyeShape.RoundedOuter())
+			.eye.foregroundColor(hexString: "FEE521")
+			.pupil.foregroundColor(hexString: "FFCC4D")
+			.generate.image(dimension: 300, representation: .png(scale: 2))
+
+		try outputFolder.write(pngData, to: "watchos-qrcode.png")
 	}
 }

@@ -58,7 +58,7 @@ final class QRCodeBuilderTests: XCTestCase {
 			let image = try resourceImage(for: "wwf", extension: "jpeg")
 			let im2 = try QRCode.build
 				.text("World Wildlife Foundation")
-				.background.style(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
+				.background.color(CGColor(srgbRed: 1, green: 1, blue: 0.6, alpha: 1))
 				.logo(image, position: .squareBottomRight(inset: 0))
 				.generate.image(dimension: 500)
 
@@ -72,11 +72,11 @@ final class QRCodeBuilderTests: XCTestCase {
 			let image = try resourceImage(for: "logo-scan", extension: "png")
 			let im2 = try QRCode.build
 				.text("https://www.worldwildlife.org/about")
-				.background.style(.sRGBA(1, 1, 0.6, 1))
+				.background.color(.sRGBA(1, 1, 0.6, 1))
 				.background.cornerRadius(2)
 				.onPixels.shape(.curvePixel())
 				.offPixels.shape(.flower())
-				.offPixels.style(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 0.3))
+				.offPixels.foregroundColor(CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 0.3))
 				.logo(
 					image: image,
 					unitRect: CGRect(x: 0.3, y: 0.72, width: 0.45, height: 0.22),

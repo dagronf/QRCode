@@ -29,9 +29,28 @@ import Foundation
 		@objc public let color: CGColor
 
 		/// Create a color pin
+		/// - Parameters:
+		///   - color: The pin's color
+		///   - position: The pin's unit position (0 ... 1)
 		@objc public init(_ color: CGColor, _ position: CGFloat) {
 			self.color = color
 			self.position = max(0, min(position, 1.0))
+		}
+
+		/// Create a color pin using a hex color and a unit position
+		/// - Parameters:
+		///   - hexColor: The hex color
+		///   - position: The unit position (0 ... 1) for the pin
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@objc public init(hexColor: String, position: CGFloat) throws {
+			self.color = try CGColor.fromHexString(hexColor)
+			self.position = max(0, min(position, 1.0))
+			super.init()
 		}
 
 		/// Make a copy of the pin
@@ -214,7 +233,7 @@ public extension DSFGradient {
 		case cannotCreateCoreGraphicsGradient
 	}
 
-	/// Buidl a gradient
+	/// Build a gradient
 	/// - Parameters:
 	///   - pins: An array of (position:Color) pairs in the gradient
 	///   - colorspace: An optional colorspace
@@ -240,5 +259,27 @@ public extension DSFGradient {
 		}
 		return try DSFGradient(pins: result)
 	}
-}
 
+	/// Build a gradient
+	/// - Parameters:
+	///   - pins: An array of (position : color hexstring) pairs in the gradient
+	/// - Returns: A gradient
+	///
+	/// An attempt to make the gradient creation less verbose.
+	///
+	/// ```swift
+	/// let gradient = try DSFGradient.build([
+	///   (0.0, "#000"),
+	///   (0.25, "#333"),
+	///   ...
+	/// ])
+	/// ```
+	static func build(_ pins: [(pos: CGFloat, hexColor: String)]) throws -> DSFGradient {
+		var result: [DSFGradient.Pin] = []
+		try pins.forEach { item in
+			let p = try DSFGradient.Pin(hexColor: item.hexColor, position: item.pos)
+			result.append(p)
+		}
+		return try DSFGradient(pins: result)
+	}
+}

@@ -66,6 +66,17 @@ public extension QRCode.FillStyle {
 			self.init(CGColor.gray(gray, alpha))
 		}
 
+		/// Create a solid color from a hex string
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@objc public convenience init(hexString: String) throws {
+			self.init(try CGColor.fromHexString(hexString))
+		}
+
 		/// Returns a new copy of the fill style
 		public func copyStyle() throws -> any QRCodeFillStyleGenerator {
 			return Solid(self.color.copy()!)
@@ -109,6 +120,16 @@ public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.Solid {
 	/// - Returns: A fill generator
 	@inlinable static func solid(gray: CGFloat, alpha: CGFloat = 1.0) -> QRCodeFillStyleGenerator {
 		QRCode.FillStyle.Solid(gray: gray, alpha: alpha)
+	}
+	/// Create a solid color from a hex string
+	///
+	/// Supported formats:
+	/// * [#]fff (rgb, alpha = 1)
+	/// * [#]ffff (rgba)
+	/// * [#]ffffff (rgb, alpha = 1)
+	/// * [#]ffffffff (rgba)
+	@inlinable static func solid(hexString: String) throws -> QRCodeFillStyleGenerator {
+		try QRCode.FillStyle.Solid(hexString: hexString)
 	}
 }
 

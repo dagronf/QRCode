@@ -190,6 +190,20 @@ public extension QRCode.Builder {
 		return self
 	}
 
+	/// Set the foreground color for the qr code using a hex RGB(A) color.
+	/// Throws an error if the hex string cannot be converted
+	///
+	/// Supported formats:
+	/// * [#]fff (rgb, alpha = 1)
+	/// * [#]ffff (rgba)
+	/// * [#]ffffff (rgb, alpha = 1)
+	/// * [#]ffffffff (rgba)
+	@discardableResult func foregroundColor(hexString: String) throws -> Self {
+		let c = try CGColor.fromHexString(hexString)
+		self.document.design.foregroundColor(c)
+		return self
+	}
+
 	/// The QR code's foreground settings
 	var foreground: Foreground { Foreground(builder: self) }
 
@@ -238,6 +252,20 @@ public extension QRCode.Builder {
 		return self
 	}
 
+	/// Set the background color for the qr code from a hex RGB(A) color.
+	/// Throws an error if the hex string cannot be converted
+	///
+	/// Supported formats:
+	/// * [#]fff (rgb, alpha = 1)
+	/// * [#]ffff (rgba)
+	/// * [#]ffffff (rgb, alpha = 1)
+	/// * [#]ffffffff (rgba)
+	@discardableResult func backgroundColor(hexString: String) throws -> Self {
+		let c = try CGColor.fromHexString(hexString)
+		self.document.design.backgroundColor(c)
+		return self
+	}
+
 	/// The QR code's background settings
 	var background: Background { Background(builder: self) }
 
@@ -246,7 +274,7 @@ public extension QRCode.Builder {
 		/// Set the background color for the qr code
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func color(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.backgroundColor(color)
 			return self.builder
 		}
@@ -254,7 +282,7 @@ public extension QRCode.Builder {
 		/// Set a background image for the qr code
 		/// - Parameter image: the image
 		/// - Returns: self
-		@discardableResult public func style(_ image: CGImage) -> QRCode.Builder {
+		@discardableResult public func image(_ image: CGImage) -> QRCode.Builder {
 			self.builder.document.design.style.background = QRCode.FillStyle.Image(image)
 			return self.builder
 		}
@@ -306,11 +334,22 @@ public extension QRCode.Builder {
 		/// The flat color to use for the on pixels
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(
-			_ color: CGColor
-		) -> QRCode.Builder {
+		@discardableResult public func foregroundColor(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.style.onPixels = QRCode.FillStyle.Solid(color)
 			return self.builder
+		}
+
+		/// Set the color for the qr code from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func foregroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.foregroundColor(c)
 		}
 
 		/// The style to apply to the on pixels
@@ -331,6 +370,19 @@ public extension QRCode.Builder {
 		) -> QRCode.Builder {
 			self.builder.document.design.style.onPixelsBackground = color
 			return self.builder
+		}
+
+		/// Set the color behind the on-pixels from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func backgroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.backgroundColor(c)
 		}
 
 		// Private
@@ -360,11 +412,22 @@ public extension QRCode.Builder {
 		/// The color to use when drawing the eye
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(
-			_ color: CGColor
-		) -> QRCode.Builder {
+		@discardableResult public func foregroundColor(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.style.eye = QRCode.FillStyle.Solid(color)
 			return self.builder
+		}
+
+		/// Set the color for the eye from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func foregroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.foregroundColor(c)
 		}
 
 		/// The style to apply to the eye
@@ -380,11 +443,22 @@ public extension QRCode.Builder {
 		/// The color to draw behind the eye shape
 		/// - Parameter color: The color to draw
 		/// - Returns: self
-		@discardableResult public func backgroundColor(
-			_ color: CGColor?
-		) -> QRCode.Builder {
+		@discardableResult public func backgroundColor(_ color: CGColor?) -> QRCode.Builder {
 			self.builder.document.design.style.eyeBackground = color
 			return self.builder
+		}
+
+		/// Set the color behind the eye shape from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func backgroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.backgroundColor(c)
 		}
 
 		// Private
@@ -414,9 +488,22 @@ public extension QRCode.Builder {
 		/// The color to use when drawing the pupil
 		/// - Parameter color: The color
 		/// - Returns: self
-		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func foregroundColor(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.style.pupil = QRCode.FillStyle.Solid(color)
 			return self.builder
+		}
+
+		/// Set the color for the pupil from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func foregroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.foregroundColor(c)
 		}
 
 		/// The style to use when drawing the pupil
@@ -453,12 +540,25 @@ public extension QRCode.Builder {
 			return self.builder
 		}
 
-		/// The style to apply to off pixels
+		/// The color to apply to off pixels
 		/// - Parameter color: The flat color to apply to off pixels
 		/// - Returns: self
-		@discardableResult public func style(_ color: CGColor) -> QRCode.Builder {
+		@discardableResult public func foregroundColor(_ color: CGColor) -> QRCode.Builder {
 			self.builder.document.design.style.offPixels = QRCode.FillStyle.Solid(color)
 			return self.builder
+		}
+
+		/// Set the color behind the off-pixels from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func foregroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.foregroundColor(c)
 		}
 
 		/// The style to apply to off pixels
@@ -479,6 +579,19 @@ public extension QRCode.Builder {
 		) -> QRCode.Builder {
 			self.builder.document.design.style.offPixelsBackground = color
 			return self.builder
+		}
+
+		/// Set the color behind the off-pixels from a hex RGB(A) color.
+		/// Throws an error if the hex string cannot be converted
+		///
+		/// Supported formats:
+		/// * [#]fff (rgb, alpha = 1)
+		/// * [#]ffff (rgba)
+		/// * [#]ffffff (rgb, alpha = 1)
+		/// * [#]ffffffff (rgba)
+		@discardableResult public func backgroundColor(hexString: String) throws -> QRCode.Builder {
+			let c = try CGColor.fromHexString(hexString)
+			return self.backgroundColor(c)
 		}
 
 		// Private
