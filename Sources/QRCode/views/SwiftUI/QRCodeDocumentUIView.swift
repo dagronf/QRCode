@@ -93,6 +93,8 @@ public struct QRCodeDocumentUIView: View {
 
 #endif
 
+#if DEBUG
+
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 8, *)
 private let __dummy = QRCode.Document()
 
@@ -102,5 +104,7 @@ struct QRCodeDocumentUIView_Previews: PreviewProvider {
 		QRCodeDocumentUIView(document: __dummy)
 	}
 }
+
+#endif
 
 #endif
