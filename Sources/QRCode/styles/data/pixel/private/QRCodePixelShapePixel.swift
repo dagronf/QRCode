@@ -36,6 +36,7 @@ internal extension QRCode.PixelShape {
 			case flower
 			case shiny
 			case donut
+			case arrow
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -95,7 +96,7 @@ internal extension QRCode.PixelShape {
 					return CGAffineTransform.identity
 				}
 				else {
-					return CGAffineTransform(rotationAngle: rotationFraction * CGFloat.pi)
+					return CGAffineTransform(rotationAngle: rotationFraction * (CGFloat.pi * 2))
 				}
 			}()
 
@@ -130,7 +131,7 @@ internal extension QRCode.PixelShape {
 							return CGAffineTransform(
 								rotationAngle: CGFloat.random(
 									in: -self.rotationFraction...self.rotationFraction,
-									using: &rotationRandomGenerator) * CGFloat.pi
+									using: &rotationRandomGenerator) * (CGFloat.pi * 2)
 							)
 						}
 						return rotationBase
@@ -188,6 +189,16 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Star.star10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .arrow {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Arrow.arrow10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .flower {
