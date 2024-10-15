@@ -404,6 +404,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_roundedRect.png" width="60"/>       | "roundedRect" |`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
 |<img src="./Art/images/eye_shield.png" width="60"/>            | "shield" |`QRCode.EyeShape.Shield`| A shield with configurable corners |
 |<img src="./Art/images/eye_square.png" width="60"/>            | "square" |`QRCode.EyeShape.Square`|Simple square (default)|
+|<img src="./Art/images/eye_squarePeg.png" width="60"/>         | "squarePeg" |`QRCode.EyeShape.SquarePeg`|A rounded rect with a circular cutout|
 |<img src="./Art/images/eye_squircle.png" width="60"/>          | "squircle" |`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/eye_teardrop.png" width="60" />         | "teardrop" |`QRCode.EyeShape.Teardrop` | A teardrop shape |
 |<img src="./Art/images/eye_ufo.png" width="60" />              | "ufo" |`QRCode.EyeShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
