@@ -35,6 +35,7 @@ internal extension QRCode.PixelShape {
 			case star
 			case flower
 			case shiny
+			case donut
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -210,6 +211,19 @@ internal extension QRCode.PixelShape {
 								y: -(ri.width / 8)
 							))
 						let sq = Shiny.pathShiny(row: row, col: col)
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .donut {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm),
+								y: yoff + (CGFloat(row) * dm)
+							))
+							.concatenating(CGAffineTransform(
+								translationX: -(ri.width / 10),
+								y: -(ri.width / 10)
+							))
+						let sq = Donut.donutPixel10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else {

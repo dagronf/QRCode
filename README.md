@@ -356,9 +356,10 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |---|---|---|---|
 |<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
 |<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
-|<img src="./Art/images/data_circuit.png" width="60"/>           |"circuit"|`QRCode.PixelShape.Circuit`|Circuits!|
+|<img src="./Art/images/data_circuit.png" width="60"/>          |"circuit"|`QRCode.PixelShape.Circuit`|Circuits!|
 |<img src="./Art/images/data_crt.png" width="60"/>              | "crt" |`QRCode.PixelShape.CRT`| A CRT shape |
 |<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
+|<img src="./Art/images/data_donut.png" width="60"/>            |"donut"|`QRCode.PixelShape.Donut`|A circular pixel with a hole in the center|
 |<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
 |<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
