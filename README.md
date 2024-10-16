@@ -354,6 +354,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
+|<img src="./Art/images/data_arrow.png" width="60"/>            |"arrow"|`QRCode.PixelShape.Arrow`|An arrow|
 |<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
 |<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|
 |<img src="./Art/images/data_circuit.png" width="60"/>          |"circuit"|`QRCode.PixelShape.Circuit`|Circuits!|
@@ -373,6 +374,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
 |<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+|<img src="./Art/images/data_wave.png" width="60"/>             |"wave"|`QRCode.PixelShape.Wave`|A wave|
 
 Some pixel shapes support additional customization :-
 

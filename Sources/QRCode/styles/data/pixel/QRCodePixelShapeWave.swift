@@ -1,5 +1,5 @@
 //
-//  QRCodePixelShapeArrow.swift
+//  QRCodePixelShapeWave.swift
 //
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
@@ -24,11 +24,11 @@ import Foundation
 
 public extension QRCode.PixelShape {
 	/// A arrow pixel shape
-	@objc(QRCodePixelShapeArrow) class Arrow: NSObject, QRCodePixelShapeGenerator {
+	@objc(QRCodePixelShapeWave) class Wave: NSObject, QRCodePixelShapeGenerator {
 		/// The generator name
-		@objc public static let Name: String = "arrow"
+		@objc public static let Name: String = "wave"
 		/// The generator title
-		@objc public static var Title: String { "Arrow" }
+		@objc public static var Title: String { "Wave" }
 
 		/// Create
 		/// - Parameters:
@@ -43,7 +43,7 @@ public extension QRCode.PixelShape {
 			useRandomRotation: Bool = false
 		) {
 			self.common = CommonPixelGenerator(
-				pixelType: .arrow,
+				pixelType: .wave,
 				insetGenerator: insetGenerator,
 				insetFraction: insetFraction,
 				rotationFraction: rotationFraction,
@@ -68,7 +68,7 @@ public extension QRCode.PixelShape {
 				generator = useRandomInset ? QRCode.PixelInset.Random() : QRCode.PixelInset.Fixed()
 			}
 
-			return Arrow(
+			return Wave(
 				insetGenerator: generator,
 				insetFraction: insetFraction,
 				rotationFraction: rotationFraction,
@@ -78,7 +78,7 @@ public extension QRCode.PixelShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
-			return Arrow(
+			return Wave(
 				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction,
 				rotationFraction: self.common.rotationFraction,
@@ -101,25 +101,29 @@ public extension QRCode.PixelShape {
 
 // MARK: - Drawing
 
-internal extension QRCode.PixelShape.Arrow {
+internal extension QRCode.PixelShape.Wave {
 	// A 10x10 'pixel' representation of a arrow pixel
-	static func arrow10x10() -> CGPath {
-		let arrowPath = CGMutablePath()
-		arrowPath.move(to: CGPoint(x: 5, y: 0))
-		arrowPath.line(to: CGPoint(x: 10, y: 2))
-		arrowPath.line(to: CGPoint(x: 10, y: 10))
-		arrowPath.line(to: CGPoint(x: 5, y: 8))
-		arrowPath.line(to: CGPoint(x: 0, y: 10))
-		arrowPath.line(to: CGPoint(x: 0, y: 2))
-		arrowPath.line(to: CGPoint(x: 5, y: 0))
-		arrowPath.close()
-		return arrowPath
+	static func wave10x10() -> CGPath {
+		let wavePath = CGMutablePath()
+		wavePath.move(to: CGPoint(x: 0, y: 2))
+		wavePath.curve(to: CGPoint(x: 2.5, y: 1), controlPoint1: CGPoint(x: 0, y: 2), controlPoint2: CGPoint(x: 1, y: 2))
+		wavePath.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 4, y: 0), controlPoint2: CGPoint(x: 5, y: 0))
+		wavePath.curve(to: CGPoint(x: 7.5, y: 1), controlPoint1: CGPoint(x: 5, y: 0), controlPoint2: CGPoint(x: 6, y: 0))
+		wavePath.curve(to: CGPoint(x: 10, y: 2), controlPoint1: CGPoint(x: 9, y: 2), controlPoint2: CGPoint(x: 10, y: 2))
+		wavePath.line(to: CGPoint(x: 10, y: 10))
+		wavePath.curve(to: CGPoint(x: 7.5, y: 9), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 9, y: 10))
+		wavePath.curve(to: CGPoint(x: 5, y: 8), controlPoint1: CGPoint(x: 6, y: 8), controlPoint2: CGPoint(x: 5, y: 8))
+		wavePath.curve(to: CGPoint(x: 2.5, y: 9), controlPoint1: CGPoint(x: 5, y: 8), controlPoint2: CGPoint(x: 4, y: 8))
+		wavePath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 1, y: 10), controlPoint2: CGPoint(x: 0, y: 10))
+		wavePath.line(to: CGPoint(x: 0, y: 2))
+		wavePath.close()
+		return wavePath
 	}
 }
 
 // MARK: - Settings
 
-public extension QRCode.PixelShape.Arrow {
+public extension QRCode.PixelShape.Wave {
 	/// Returns true if the shape supports setting a value for the specified key, false otherwise
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		return key == QRCode.SettingsKey.insetFraction
@@ -168,21 +172,21 @@ public extension QRCode.PixelShape.Arrow {
 
 // MARK: - Pixel creation conveniences
 
-public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Arrow {
-	/// Create a arrow pixel generator
+public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Wave {
+	/// Create a wave pixel generator
 	/// - Parameters:
 	///   - insetGenerator: The inset generator
 	///   - insetFraction: The inset between each pixel
 	///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
 	///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
 	/// - Returns: A pixel generator
-	@inlinable static func arrow(
+	@inlinable static func wave(
 		insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 		insetFraction: CGFloat = 0,
 		rotationFraction: CGFloat = 0,
 		useRandomRotation: Bool = false
 	) -> QRCodePixelShapeGenerator {
-		QRCode.PixelShape.Arrow(
+		QRCode.PixelShape.Wave(
 			insetGenerator: insetGenerator,
 			insetFraction: insetFraction,
 			rotationFraction: rotationFraction,
