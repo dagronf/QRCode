@@ -79,20 +79,36 @@ public extension QRCode.FillStyle {
 		}
 
 		/// fill the provided path in the context with the current fill color
-		public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
-			if let image = self.image {
-				ctx.usingGState { context in
-					// Clip to the mask path.
-					ctx.addPath(path)
-					ctx.clip()
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, shadow: QRCode.Shadow? = nil) {
+			guard let image = self.image else {
+				return
+			}
 
-					// image drawing is flipped
-					ctx.scaleBy(x: 1, y: -1)
-					ctx.translateBy(x: 0, y: -rect.height)
-					ctx.translateBy(x: 0, y: -rect.origin.y * 2)
+			ctx.usingGState { context in
+				// Clip to the mask path.
+				ctx.addPath(path)
+				ctx.clip()
 
-					// Draw the logo image into the mask bounds
-					ctx.draw(image, in: rect)
+				// image drawing is flipped
+				ctx.scaleBy(x: 1, y: -1)
+				ctx.translateBy(x: 0, y: -rect.height)
+				ctx.translateBy(x: 0, y: -rect.origin.y * 2)
+
+				// Draw the logo image into the mask bounds
+				ctx.draw(image, in: rect)
+			}
+
+			if let s = shadow {
+				ctx.usingGState { c in
+					c.addRect(rect)
+					c.addPath(path)
+					c.clip(using: .evenOdd)
+
+					c.addPath(path)
+					s.set(c)
+					c.setBlendMode(.normal)
+					c.setFillColor(.commonWhite)
+					c.fillPath()
 				}
 			}
 		}
@@ -128,7 +144,10 @@ public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.Image {
 // MARK: - SVG Representation
 
 public extension QRCode.FillStyle.Image {
-	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
+	func svgRepresentation(
+		styleIdentifier: String,
+		shadow: QRCode.Shadow? = nil
+	) throws -> QRCode.FillStyle.SVGDefinition {
 		guard
 			let image = self.image,
 			let jpegData = try? self.image?.representation.jpeg()
@@ -153,8 +172,14 @@ public extension QRCode.FillStyle.Image {
 
 		def += imagedef + "</pattern>"
 
+		var sa = ""
+		if let shadow = shadow {
+			def += try shadow.buildSVGFilterDef(named: styleIdentifier + "-shadow")
+			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
+		}
+
 		return QRCode.FillStyle.SVGDefinition(
-			styleAttribute: "fill=\"url(#\(styleIdentifier))\" fill-opacity=\"1\"",
+			styleAttribute: "fill=\"url(#\(styleIdentifier))\" fill-opacity=\"1\" \(sa)",
 			styleDefinition: def
 		)
 	}

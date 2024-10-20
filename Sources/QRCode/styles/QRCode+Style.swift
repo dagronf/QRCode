@@ -59,6 +59,9 @@ public extension QRCode {
 		/// A corner radius (in qr pixels) to apply to the background fill
 		@objc public var backgroundFractionalCornerRadius: CGFloat = 0
 
+		/// The shadow to apply to the primary QR Code elements (on-pixels, eye, pupil)
+		@objc public var shadow: QRCode.Shadow? = nil
+
 		/// The background color behind the eyes.
 		///
 		/// Setting a solid background color (eg. white) behind the eyes can make the QR code more readable
@@ -76,6 +79,7 @@ public extension QRCode {
 			c.eye = try self.eye?.copyStyle()
 			c.eyeBackground = self.eyeBackground?.copy()
 			c.pupil = try self.pupil?.copyStyle()
+			c.shadow = self.shadow?.copyShadow()
 			return c
 		}
 	}
@@ -128,6 +132,13 @@ public extension QRCode.Style {
 		if let e = self.offPixelsBackground {
 			result["offPixelsBackground"] = ["color": try e.archiveSRGBA()]
 		}
+
+		// Shadow
+
+		if let s = self.shadow {
+			result["shadow"] = try s.settings()
+		}
+
 		return result
 	}
 
@@ -194,6 +205,12 @@ public extension QRCode.Style {
 			let ec = try? CGColor.UnarchiveSRGBA(ebs)
 		{
 			style.offPixelsBackground = ec
+		}
+
+		// Shadow
+		
+		if let shadowSettings = settings["shadow"] as? [String: Any] {
+			style.shadow = QRCode.Shadow.Create(shadowSettings)
 		}
 
 		return style

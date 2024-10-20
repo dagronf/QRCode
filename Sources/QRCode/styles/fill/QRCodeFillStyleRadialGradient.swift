@@ -80,17 +80,36 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Fill the specified path with the gradient
-		public func fill(ctx: CGContext, rect: CGRect, path: CGPath) {
-			ctx.addPath(path)
-			ctx.clip()
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, shadow: QRCode.Shadow? = nil) {
+			ctx.usingGState { c in
+				c.addPath(path)
+				c.clip()
 
-			let grCentre = self.gradientCenterPt(rect)
-			let grRadius = rect.width / 1.75
-			ctx.drawRadialGradient(
-				self.gradient.cgGradient,
-				startCenter: self.gradientCenterPt(rect), startRadius: 0,
-				endCenter: grCentre, endRadius: grRadius,
-				options: [.drawsAfterEndLocation, .drawsBeforeStartLocation])
+				let grCentre = self.gradientCenterPt(rect)
+				let grRadius = rect.width / 1.75
+				c.drawRadialGradient(
+					self.gradient.cgGradient,
+					startCenter: self.gradientCenterPt(rect), startRadius: 0,
+					endCenter: grCentre, endRadius: grRadius,
+					options: [.drawsAfterEndLocation, .drawsBeforeStartLocation]
+				)
+			}
+
+			// Draw the shadow
+
+			if let s = shadow {
+				ctx.usingGState { c in
+					c.addRect(rect)
+					c.addPath(path)
+					c.clip(using: .evenOdd)
+
+					c.addPath(path)
+					s.set(c)
+					c.setBlendMode(.normal)
+					c.setFillColor(.commonWhite)
+					c.fillPath()
+				}
+			}
 		}
 
 		public func copyStyle() throws -> any QRCodeFillStyleGenerator {
@@ -129,13 +148,22 @@ public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.RadialG
 
 public extension QRCode.FillStyle.RadialGradient {
 
-	func svgRepresentation(styleIdentifier: String) throws -> QRCode.FillStyle.SVGDefinition {
+	func svgRepresentation(
+		styleIdentifier: String,
+		shadow: QRCode.Shadow? = nil
+	) throws -> QRCode.FillStyle.SVGDefinition {
 
 		var svg = "<radialGradient "
 		svg += "id=\"\(styleIdentifier)\" "
 
 		let center = self.centerPoint
 		svg += "cx=\"\(center.x)\" cy=\"\(center.y)\" r=\"0.5\">\n"
+
+		var sa = ""
+		if let shadow = shadow {
+			svg += try shadow.buildSVGFilterDef(named: styleIdentifier + "-shadow")
+			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
+		}
 
 		let sorted = self.gradient.pins.sorted(by: { p1, p2 in p1.position < p2.position })
 		for pin in sorted {
@@ -145,7 +173,7 @@ public extension QRCode.FillStyle.RadialGradient {
 		svg += "</radialGradient>\n"
 
 		return QRCode.FillStyle.SVGDefinition(
-			styleAttribute: "fill=\"url(#\(styleIdentifier))\"",
+			styleAttribute: "fill=\"url(#\(styleIdentifier))\" \(sa)",
 			styleDefinition: svg
 		)
 	}

@@ -39,13 +39,14 @@ public extension QRCode {
 		design: QRCode.Design = QRCode.Design(),
 		logoTemplate: QRCode.LogoTemplate? = nil
 	) throws -> String {
-		//let totalSize = CGSize(dimension: dimension)
 		var svg = ""
 
 		/// The size of each pixel in the output
 		let additionalQuietSpacePixels = CGFloat(design.additionalQuietZonePixels)
 		let dx: CGFloat = CGFloat(dimension) / (CGFloat(self.cellDimension) + (2.0 * additionalQuietSpacePixels))
 		let additionalQuietSpace = dx * additionalQuietSpacePixels
+
+		let shadow = design.style.shadow
 
 		// SVG Header
 		svg += "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" height=\"\(dimension)\" width=\"\(dimension)\">\n"
@@ -59,7 +60,7 @@ public extension QRCode {
 		// The background color for the qr code
 
 		if let background = design.style.background {
-			let backgroundFill = try background.svgRepresentation(styleIdentifier: "background")
+			let backgroundFill = try background.svgRepresentation(styleIdentifier: "background", shadow: shadow)
 			svg += "   <rect id='background-shape' \(backgroundFill.styleAttribute) x=\"0\" y=\"0\" width=\"\(dimension)\" height=\"\(dimension)\""
 			let cornerRadius = design.style.backgroundFractionalCornerRadius
 			if cornerRadius > 0 {
@@ -101,7 +102,7 @@ public extension QRCode {
 				additionalQuietSpace: additionalQuietSpace
 			)
 
-			let onPixels = try design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels")
+			let onPixels = try design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels", shadow: shadow)
 			svg += "   <path id='on-pixels-shape' \(onPixels.styleAttribute) d=\"\(negatedPath.svgDataPath())\" />\n"
 			if let def = onPixels.styleDefinition {
 				pathDefinitions.append(def)
@@ -123,7 +124,7 @@ public extension QRCode {
 
 			do {
 				let eyePupilPath = self.path(finalRect.size, components: .eyePupil, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
-				let pupilFill = try design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill")
+				let pupilFill = try design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill", shadow: shadow)
 				svg += "   <path id='pupil-shape' \(pupilFill.styleAttribute) d=\"\(eyePupilPath.svgDataPath())\" />\n"
 				if let def = pupilFill.styleDefinition {
 					pathDefinitions.append(def)
@@ -134,7 +135,7 @@ public extension QRCode {
 
 			do {
 				let eyeOuterPath = self.path(finalRect.size, components: .eyeOuter, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
-				let eyeOuterFill = try design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill")
+				let eyeOuterFill = try design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill", shadow: shadow)
 				svg += "   <path id='eye-shape' \(eyeOuterFill.styleAttribute) d=\"\(eyeOuterPath.svgDataPath())\" />\n"
 				if let def = eyeOuterFill.styleDefinition {
 					pathDefinitions.append(def)
@@ -145,7 +146,7 @@ public extension QRCode {
 			
 			do {
 				if let color = design.style.offPixelsBackground {
-					let offPixelsBackground = try QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "off-pixels-background-color")
+					let offPixelsBackground = try QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "off-pixels-background-color", shadow: nil)
 					let offPixelsBackgroundPath = self.path(finalRect.size, components: .offPixelsBackground, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
 					svg += "   <path id='off-pixels-background-shape' \(offPixelsBackground.styleAttribute) d=\"\(offPixelsBackgroundPath.svgDataPath())\" />\n"
 				}
@@ -156,7 +157,7 @@ public extension QRCode {
 			do {
 				if let _ = design.shape.offPixels {
 					let offPixelsPath = self.path(finalRect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
-					if let offPixels = try design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels") {
+					if let offPixels = try design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels", shadow: shadow) {
 						svg += "   <path id='off-pixels-shape' \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
 						if let def = offPixels.styleDefinition {
 							pathDefinitions.append(def)
@@ -169,7 +170,7 @@ public extension QRCode {
 
 			do {
 				if let color = design.style.onPixelsBackground {
-					let onPixelsBackground = try QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "on-pixels-background-color")
+					let onPixelsBackground = try QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "on-pixels-background-color", shadow: nil)
 					let onPixelsBackgroundPath = self.path(finalRect.size, components: .onPixelsBackground, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
 					svg += "   <path id='on-pixels-background-shape' \(onPixelsBackground.styleAttribute) d=\"\(onPixelsBackgroundPath.svgDataPath())\" />\n"
 				}
@@ -179,7 +180,7 @@ public extension QRCode {
 
 			do {
 				let onPixelsPath = self.path(finalRect.size, components: .onPixels, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
-				let onPixels = try design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels")
+				let onPixels = try design.style.onPixels.svgRepresentation(styleIdentifier: "on-pixels", shadow: shadow)
 				svg += "   <path id='on-pixels-shape' \(onPixels.styleAttribute) d=\"\(onPixelsPath.svgDataPath())\" />\n"
 				if let def = onPixels.styleDefinition {
 					pathDefinitions.append(def)

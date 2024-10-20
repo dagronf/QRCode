@@ -53,7 +53,8 @@ public extension QRCode {
 		let finalRect = rect.insetBy(dx: additionalQuietSpace, dy: additionalQuietSpace)
 		
 		let style = design.style
-		
+		let shadow = style.shadow
+
 		//
 		// Special case handling for the 'use pixel shape' eye and pupil types
 		//
@@ -106,7 +107,7 @@ public extension QRCode {
 			)
 			
 			ctx.usingGState { context in
-				style.onPixels.fill(ctx: context, rect: finalRect, path: negatedPath)
+				style.onPixels.fill(ctx: context, rect: finalRect, path: negatedPath, shadow: shadow)
 			}
 		}
 		else {
@@ -135,7 +136,7 @@ public extension QRCode {
 				additionalQuietSpace: additionalQuietSpace
 			)
 			ctx.usingGState { context in
-				style.actualEyeStyle.fill(ctx: context, rect: finalRect, path: eyeOuterPath)
+				style.actualEyeStyle.fill(ctx: context, rect: finalRect, path: eyeOuterPath, shadow: shadow)
 			}
 			
 			// Draw the eye 'pupil'
@@ -147,7 +148,7 @@ public extension QRCode {
 				additionalQuietSpace: additionalQuietSpace
 			)
 			ctx.usingGState { context in
-				style.actualPupilStyle.fill(ctx: context, rect: finalRect, path: eyePupilPath)
+				style.actualPupilStyle.fill(ctx: context, rect: finalRect, path: eyePupilPath, shadow: shadow)
 			}
 
 			// The 'off' pixels ONLY IF the user specifies both a offPixels shape AND an offPixels style.
@@ -169,7 +170,7 @@ public extension QRCode {
 						additionalQuietSpace: additionalQuietSpace
 					)
 					ctx.usingGState { context in
-						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2)
+						design.style.offPixels?.fill(ctx: context, rect: finalRect, path: qrPath2, shadow: nil)
 					}
 				}
 
@@ -181,7 +182,7 @@ public extension QRCode {
 					additionalQuietSpace: additionalQuietSpace
 				)
 				ctx.usingGState { context in
-					s.fill(ctx: context, rect: finalRect, path: qrPath)
+					s.fill(ctx: context, rect: finalRect, path: qrPath, shadow: nil)
 				}
 			}
 
@@ -202,7 +203,7 @@ public extension QRCode {
 					additionalQuietSpace: additionalQuietSpace
 				)
 				ctx.usingGState { context in
-					design.style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath2)
+					design.style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath2, shadow: shadow)
 				}
 			}
 			
@@ -215,7 +216,7 @@ public extension QRCode {
 				additionalQuietSpace: additionalQuietSpace
 			)
 			ctx.usingGState { context in
-				style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath)
+				style.onPixels.fill(ctx: context, rect: finalRect, path: qrPath, shadow: shadow)
 			}
 		}
 		

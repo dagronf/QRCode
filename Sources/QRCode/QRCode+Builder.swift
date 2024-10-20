@@ -313,6 +313,18 @@ public extension QRCode.Builder {
 	}
 }
 
+// MARK: - Shadow
+
+public extension QRCode.Builder {
+	/// Apply a shadow to the QR Code
+	/// - Parameter shadow: The shadow
+	/// - Returns: self
+	@discardableResult func shadow(_ shadow: QRCode.Shadow) -> Self {
+		self.document.design.style.shadow = shadow
+		return self
+	}
+}
+
 // MARK: - On Pixels
 
 public extension QRCode.Builder {
