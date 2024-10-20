@@ -1,8 +1,20 @@
 //
-//  QRCode+Shadow.swift
-//  QRCode
+//  Copyright © 2024 Darren Ford. All rights reserved.
 //
-//  Created by Darren Ford on 18/10/2024.
+//  MIT license
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+//  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial
+//  portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+//  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+//  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+//  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 import Foundation
@@ -10,14 +22,20 @@ import CoreGraphics
 
 extension QRCode {
 
+	/// The shadow type
 	@objc public enum ShadowType: Int {
+		/// Drop shadow
 		case dropShadow
+		/// Inner shadow
 		case innerShadow
 	}
 
 	@objc public class Shadow: NSObject {
+		/// The offset value represents the _fraction_ of a generated pixel size that the shadow is offset
 		@objc public var offset: CGSize
+		/// The blur size
 		@objc public var blur: CGFloat
+		/// The shadow color
 		@objc public var color: CGColor
 		@objc public let type: ShadowType
 		@objc public init(offset: CGSize, blur: CGFloat, color: CGColor, type: ShadowType = .dropShadow) {
@@ -37,15 +55,11 @@ extension QRCode {
 		}
 
 		@objc public convenience override init() {
-			self.init(dx: 2, dy: -2, blur: 3, color: .commonBlack.copy(alpha: 0.8)!)
+			self.init(dx: 0.1, dy: -0.1, blur: 3, color: .commonBlack.copy(alpha: 0.8)!)
 		}
 
 		func copyShadow() -> QRCode.Shadow {
 			Shadow(offset: self.offset, blur: self.blur, color: self.color, type: self.type)
-		}
-
-		func set(_ ctx: CGContext) {
-			ctx.setShadow(offset: self.offset, blur: self.blur, color: self.color)
 		}
 
 		@objc public static func Create(_ settings: [String: Any]?) -> Shadow? {
@@ -81,21 +95,25 @@ extension QRCode {
 }
 
 extension QRCode.Shadow {
-	func buildSVGFilterDef(named name: String) throws -> String {
+	func buildSVGFilterDef(expectedPixelSize: CGFloat, named name: String) throws -> String {
 
 		let rgba = try self.color.sRGBAComponents()
 		let r: Int = Int(rgba.r * 255)
 		let g: Int = Int(rgba.g * 255)
 		let b: Int = Int(rgba.b * 255)
 
+		let dx = expectedPixelSize * self.offset.width
+		let dy = expectedPixelSize * self.offset.height
+		let blurSize = self.blur / 2.0
+
 		var result = ""
 		result += "<filter\n"
 		result += "   style='color-interpolation-filters:sRGB'\n"
 		result += "   id='\(name)'\n"
-		result += "   x='-0.01295999'\n"
-		result += "   y='-0.018359985'\n"
-		result += "   width='1.03132'\n"
-		result += "   height='1.03132'>\n"
+		result += "   x='-0.1'\n"
+		result += "   y='-0.1'\n"
+		result += "   width='1.2'\n"
+		result += "   height='1.2'>\n"
 		result += "     <feFlood\n"
 		result += "      result='flood-\(name)'\n"
 		result += "      in='SourceGraphic'\n"
@@ -105,13 +123,13 @@ extension QRCode.Shadow {
 		result += "     <feGaussianBlur\n"
 		result += "      result='blur'\n"
 		result += "      in='SourceGraphic'\n"
-		result += "      stdDeviation='\(self.blur / 2.0)'\n"
+		result += "      stdDeviation='\(blurSize)'\n"
 		result += "      id='feGaussian-\(name)' />\n"
 		result += "     <feOffset\n"
 		result += "      result='offset-\(name)'\n"
 		result += "      in='blur'\n"
-		result += "      dx='\(self.offset.width)'\n"
-		result += "      dy='\(-self.offset.height)'\n"
+		result += "      dx='\(dx)'\n"
+		result += "      dy='\(-dy)'\n"
 		result += "      id='feOffset-\(name)' />\n"
 		result += "     <feComposite\n"
 		result += "      result='comp1'\n"

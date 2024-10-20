@@ -59,9 +59,9 @@ public extension QRCode {
 	/// Fill the specified rect with the current style settings
 	func fill(ctx: CGContext, rect: CGRect)
 	/// Fill the specified path with the current style settings
-	func fill(ctx: CGContext, rect: CGRect, path: CGPath, shadow: QRCode.Shadow?)
+	func fill(ctx: CGContext, rect: CGRect, path: CGPath, expectedPixelSize: CGFloat, shadow: QRCode.Shadow?)
 	/// Returns an SVG fill definition object for the fill style
-	func svgRepresentation(styleIdentifier: String, shadow: QRCode.Shadow?) throws -> QRCode.FillStyle.SVGDefinition
+	func svgRepresentation(styleIdentifier: String, expectedPixelSize: CGFloat, shadow: QRCode.Shadow?) throws -> QRCode.FillStyle.SVGDefinition
 }
 
 private let FillStyleTypeName = "type"

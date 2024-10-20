@@ -89,10 +89,12 @@ public extension QRCode.FillStyle {
 		}
 
 		/// fill the provided path in the context with the current fill color
-		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, shadow: QRCode.Shadow? = nil) {
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, expectedPixelSize: CGFloat, shadow: QRCode.Shadow? = nil) {
 			// Apply shadow if needed
 			if let shadow = shadow {
-				shadow.set(ctx)
+				let dx = expectedPixelSize * shadow.offset.width
+				let dy = expectedPixelSize * shadow.offset.height
+				ctx.setShadow(offset: CGSize(width: dx, height: dy), blur: shadow.blur, color: shadow.color)
 			}
 
 			ctx.setFillColor(color)
@@ -143,6 +145,7 @@ public extension QRCodeFillStyleGenerator where Self == QRCode.FillStyle.Solid {
 public extension QRCode.FillStyle.Solid {
 	func svgRepresentation(
 		styleIdentifier: String,
+		expectedPixelSize: CGFloat,
 		shadow: QRCode.Shadow? = nil
 	) throws -> QRCode.FillStyle.SVGDefinition {
 		let fill = try self.color.hexRGBCode()
@@ -151,7 +154,7 @@ public extension QRCode.FillStyle.Solid {
 
 		var svg: String? = nil
 		if let shadow = shadow {
-			svg = try shadow.buildSVGFilterDef(named: styleIdentifier + "-shadow")
+			svg = try shadow.buildSVGFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
 			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
 		}
 		return QRCode.FillStyle.SVGDefinition(styleAttribute: sa, styleDefinition: svg)

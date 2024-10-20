@@ -80,7 +80,7 @@ public extension QRCode.FillStyle {
 		}
 
 		/// Fill the specified path with the gradient
-		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, shadow: QRCode.Shadow? = nil) {
+		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, expectedPixelSize: CGFloat, shadow: QRCode.Shadow? = nil) {
 			ctx.usingGState { c in
 				c.addPath(path)
 				c.clip()
@@ -104,7 +104,11 @@ public extension QRCode.FillStyle {
 					c.clip(using: .evenOdd)
 
 					c.addPath(path)
-					s.set(c)
+
+					let dx = expectedPixelSize * s.offset.width
+					let dy = expectedPixelSize * s.offset.height
+					c.setShadow(offset: CGSize(width: dx, height: dy), blur: s.blur, color: s.color)
+
 					c.setBlendMode(.normal)
 					c.setFillColor(.commonWhite)
 					c.fillPath()
@@ -150,6 +154,7 @@ public extension QRCode.FillStyle.RadialGradient {
 
 	func svgRepresentation(
 		styleIdentifier: String,
+		expectedPixelSize: CGFloat,
 		shadow: QRCode.Shadow? = nil
 	) throws -> QRCode.FillStyle.SVGDefinition {
 
@@ -161,7 +166,7 @@ public extension QRCode.FillStyle.RadialGradient {
 
 		var sa = ""
 		if let shadow = shadow {
-			svg += try shadow.buildSVGFilterDef(named: styleIdentifier + "-shadow")
+			svg += try shadow.buildSVGFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
 			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
 		}
 

@@ -21,9 +21,9 @@ final class ShadowTests: XCTestCase {
 
 		let doc = try QRCode.Document(utf8String: "shadow-basic", errorCorrection: .high)
 
-		let s1 = QRCode.Shadow(dx: 3, dy: -3, blur: 3, color: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+		let s1 = QRCode.Shadow(dx: 0.1, dy: -0.1, blur: 3, color: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
 		let s2 = QRCode.Shadow(dx: 0, dy: 0, blur: 8, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
-		let s3 = QRCode.Shadow(dx: -3, dy: 3, blur: 8, color: CGColor(red: 0, green: 1, blue: 0, alpha: 1))
+		let s3 = QRCode.Shadow(dx: -0.1, dy: 0.1, blur: 8, color: CGColor(red: 0, green: 1, blue: 0, alpha: 1))
 
 		markdownText += "| shadow  |   png   |   svg   |   pdf   |\n"
 		markdownText += "|---------|---------|---------|---------|\n"
@@ -85,9 +85,9 @@ final class ShadowTests: XCTestCase {
 			.offPixels.style(QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1))
 			.document
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 2, height: -2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+		let s1 = QRCode.Shadow(offset: CGSize(width: 0.2, height: -0.2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
 		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 3, height: 3), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		let s3 = QRCode.Shadow(offset: CGSize(width: 0.25, height: -0.25), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
 
 		markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
 		markdownText += "|---------|---------|---------|---------|\n"
@@ -150,7 +150,7 @@ final class ShadowTests: XCTestCase {
 				endPoint: CGPoint(x: 1, y: 0)
 			)
 		)
-		doc.design.style.shadow = QRCode.Shadow(dx: 1, dy: -1, blur: 2, color: CGColor(gray: 1, alpha: 1))
+		doc.design.style.shadow = QRCode.Shadow(dx: 0.1, dy: -0.1, blur: 2, color: CGColor(gray: 1, alpha: 1))
 
 		do {
 			let imd = try doc.imageData(.png(), dimension: 600)
@@ -180,9 +180,9 @@ final class ShadowTests: XCTestCase {
 		let doc = try QRCode.Document(utf8String: "Radial gradient", errorCorrection: .high)
 		doc.design.style.onPixels = rfill
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 2, height: -2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+		let s1 = QRCode.Shadow(offset: CGSize(width: 0.2, height: -0.2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
 		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 3, height: 3), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		let s3 = QRCode.Shadow(offset: CGSize(width: 0.25, height: 0.25), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
 
 		markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
 		markdownText += "|---------|---------|---------|---------|\n"
@@ -237,9 +237,9 @@ final class ShadowTests: XCTestCase {
 		let image = try resourceCommonImage(for: "beach-square", extension: "jpg")
 		doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 2, height: -2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+		let s1 = QRCode.Shadow(offset: CGSize(width: 0.1, height: -0.1), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
 		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 3, height: 3), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		let s3 = QRCode.Shadow(offset: CGSize(width: 0.1, height: 0.1), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
 
 		markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
 		markdownText += "|--------|---------|---------|---------|\n"
@@ -288,7 +288,7 @@ final class ShadowTests: XCTestCase {
 		doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.4)
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 1, 0)
 
-		let s1 = QRCode.Shadow(dx: 4, dy: -4, blur: 8, color: CGColor(gray: 1, alpha: 1))
+		let s1 = QRCode.Shadow(dx: 0.25, dy: -0.25, blur: 8, color: CGColor(gray: 1, alpha: 1))
 		let s2 = QRCode.Shadow(dx: 0, dy: 0, blur: 8, color: CGColor(gray: 1, alpha: 1))
 
 		markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
@@ -328,4 +328,43 @@ final class ShadowTests: XCTestCase {
 
 		markdownText += "\n\n"
 	}
+
+	func testShadowMatrix() throws {
+
+		markdownText += "# QRCode with shadow - matrix\n\n"
+
+		let doc = try QRCode.Document(utf8String: "Matrix qr code with shadow")
+		doc.errorCorrection = .high
+		doc.design.backgroundColor(CGColor.sRGBA(1, 1, 0.4))
+
+		let places = [-0.2, -0.1, 0.0, 0.1, 0.2]
+
+		let exportTypes: [QRCode.Document.ExportType] = [.png(), .svg]
+
+		try exportTypes.forEach { exportType in
+
+			markdownText += "## Export - \(exportType.fileExtension)\n\n"
+
+			markdownText += "|     |     |     |     |     |\n"
+			markdownText += "|-----|-----|-----|-----|-----|\n"
+
+			for y in places.reversed() {
+				markdownText += "| "
+				for x in places {
+					let s1 = QRCode.Shadow(dx: x, dy: y, blur: 16, color: CGColor.sRGBA(1, 0, 0))
+					doc.design.style.shadow = s1
+
+					let imd = try doc.imageData(exportType, dimension: 600)
+					let link = try imageStore.store(imd, filename: "matrix(\(x),\(y)).\(exportType.fileExtension)")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> |"
+				}
+				markdownText += "\n"
+			}
+			markdownText += "\n\n"
+		}
+
+
+
+	}
+
 }
