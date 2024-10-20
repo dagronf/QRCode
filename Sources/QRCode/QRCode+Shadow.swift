@@ -23,14 +23,14 @@ import CoreGraphics
 extension QRCode {
 
 	/// The shadow type
-	@objc public enum ShadowType: Int {
+	@objc(QRCodeShadowType) public enum ShadowType: Int {
 		/// Drop shadow
 		case dropShadow
 		/// Inner shadow
 		case innerShadow
 	}
 
-	@objc public class Shadow: NSObject {
+	@objc(QRCodeShadow) public class Shadow: NSObject {
 		/// The offset value represents the _fraction_ of a generated pixel size that the shadow is offset
 		@objc public var offset: CGSize
 		/// The blur size
