@@ -317,11 +317,45 @@ public extension QRCode.Builder {
 
 public extension QRCode.Builder {
 	/// Apply a shadow to the QR Code
-	/// - Parameter shadow: The shadow
+	/// - Parameter shadow: The shadow definition
 	/// - Returns: self
 	@discardableResult func shadow(_ shadow: QRCode.Shadow) -> Self {
 		self.document.design.style.shadow = shadow
 		return self
+	}
+
+	/// Apply a shadow to the QR Code
+	/// - Parameters:
+	///   - type: The type of shadow
+	///   - dx: The shadow’s horizontal relative position
+	///   - dy: The shadow’s vertical relative position
+	///   - blur: The blur radius of the shadow
+	///   - color: The color of the shadow
+	/// - Returns: self
+	@discardableResult func shadow(
+		_ type: QRCode.ShadowType = .dropShadow,
+		dx: CGFloat,
+		dy: CGFloat,
+		blur: CGFloat,
+		color: CGColor
+	) -> Self {
+		self.shadow(QRCode.Shadow(type, dx: dx, dy: dy, blur: blur, color: color))
+	}
+
+	/// Apply a shadow to the QR Code
+	/// - Parameters:
+	///   - type: The shadow type
+	///   - offset: The shadow’s relative position, which you specify with horizontal and vertical offset values
+	///   - blur: The blur radius of the shadow
+	///   - color: The color of the shadow
+	/// - Returns: self
+	@discardableResult func shadow(
+		_ type: QRCode.ShadowType = .dropShadow,
+		offset: CGSize,
+		blur: CGFloat,
+		color: CGColor
+	) -> Self {
+		self.shadow(QRCode.Shadow(type, offset: offset, blur: blur, color: color))
 	}
 }
 

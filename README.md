@@ -564,6 +564,51 @@ let cgImage = try doc3.cgImage(CGSize(width: 300, height: 300))
 
 </details>
 
+## Adding shadows
+
+The `QRCode.Shadow` class is used to apply shadows to a QR Code. The shadow is applied to the `style` component
+of the `QRCode.Document`
+
+### WARNING
+
+Adding heavy shadows can heavily adversely affect the ability to recognise the content of the QR code.
+
+### Usage
+
+The shadow is applied equally to the primary components of the QRCode, namely :- 
+
+* `.onPixels`
+* `.eye`
+* `.pupil` 
+
+By default, no shadows are applied.
+
+### Drop shadow
+
+```swift
+let shadow = QRCode.Shadow(
+   .dropShadow,
+   dx: 0.2, 
+   dy: -0.2, 
+   blur: 3, 
+   color: CGColor.sRGBA(1, 0, 1)
+)
+document.design.style.shadow = shadow
+```
+
+### Inner shadow
+
+```swift
+let shadow = QRCode.Shadow(
+   .innerShadow,
+   dx: 0.2, 
+   dy: -0.2, 
+   blur: 3, 
+   color: CGColor.sRGBA(1, 0, 1), 
+)
+document.design.style.shadow = shadow
+```
+
 ## Adding a logo to a QR code
 
 The `QRCode.LogoTemplate` class is used to define a logo on the QR code. 

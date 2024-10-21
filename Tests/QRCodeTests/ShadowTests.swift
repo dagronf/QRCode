@@ -6,6 +6,8 @@ private let outputFolder = try! testResultsContainer.subfolder(with: "shadow-tes
 private let imagesFolder = try! outputFolder.subfolder(with: "images")
 private let imageStore = ImageOutput(imagesFolder)
 
+private let shadowTypes = [QRCode.ShadowType.dropShadow, QRCode.ShadowType.innerShadow]
+
 final class ShadowTests: XCTestCase {
 
 	override func setUpWithError() throws {
@@ -15,56 +17,61 @@ final class ShadowTests: XCTestCase {
 		try! outputFolder.write(markdownText, to: "index-\(osstring).md", encoding: .utf8)
 	}
 
-	func testBasicRasterImage() throws {
+	func testSolidImageShadows() throws {
 
-		markdownText += "# QRCode basic solid - solid fill\n\n"
+		markdownText += "# Shadows - solid fill 1\n\n"
 
 		let doc = try QRCode.Document(utf8String: "shadow-basic", errorCorrection: .high)
 
-		let s1 = QRCode.Shadow(dx: 0.1, dy: -0.1, blur: 3, color: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
-		let s2 = QRCode.Shadow(dx: 0, dy: 0, blur: 8, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
-		let s3 = QRCode.Shadow(dx: -0.1, dy: 0.1, blur: 8, color: CGColor(red: 0, green: 1, blue: 0, alpha: 1))
+		try shadowTypes.forEach { shadowType in
 
-		markdownText += "| shadow  |   png   |   svg   |   pdf   |\n"
-		markdownText += "|---------|---------|---------|---------|\n"
+			markdownText += "## \(shadowType.name)\n\n"
 
-		try [nil, s1, s2, s3].enumerated().forEach { item in
-			doc.design.style.shadow = item.element
+			let s1 = QRCode.Shadow(shadowType, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(1, 0, 1))
+			let s2 = QRCode.Shadow(shadowType, dx: 0, dy: 0, blur: 8, color: CGColor.sRGBA(0, 0, 1))
+			let s3 = QRCode.Shadow(shadowType, dx: -0.2, dy: 0.2, blur: 8, color: CGColor.sRGBA(0, 1, 0))
 
-			if let s = item.element {
-				markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
-			}
-			else {
-				markdownText += "| no shadow "
+			markdownText += "| shadow  |   png   |   svg   |   pdf   |\n"
+			markdownText += "|---------|---------|---------|---------|\n"
+
+			try [nil, s1, s2, s3].enumerated().forEach { item in
+				doc.design.style.shadow = item.element
+
+				if let s = item.element {
+					markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
+				}
+				else {
+					markdownText += "| no shadow "
+				}
+
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.png(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "basic-all-shadow-\(shadowType.name)-\(item.offset).png")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.svg, dimension: 600)
+					let link = try imageStore.store(imd, filename: "basic-all-shadow-\(shadowType.name)-\(item.offset).svg")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.pdf(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "basic-all-shadow-\(shadowType.name)-\(item.offset).pdf")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " |\n"
 			}
 
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.png(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "basic-all-shadow-\(item.offset).png")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.svg, dimension: 600)
-				let link = try imageStore.store(imd, filename: "basic-all-shadow-\(item.offset).svg")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.pdf(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "basic-all-shadow-\(item.offset).pdf")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " |\n"
+			markdownText += "\n\n"
 		}
-
-		markdownText += "\n\n"
 	}
 
 	func testFancyLinearGradient() throws {
 
-		markdownText += "# QRCode with shadow - linear fill\n\n"
+		markdownText += "# Shadows - linear fill 1\n\n"
 
 		let doc = try QRCode.build
 			.text("https://www.apple.com/au/")
@@ -85,51 +92,55 @@ final class ShadowTests: XCTestCase {
 			.offPixels.style(QRCode.FillStyle.Solid(0, 0, 0, alpha: 0.1))
 			.document
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 0.2, height: -0.2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 0.25, height: -0.25), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		try shadowTypes.forEach { shadowType in
 
-		markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
-		markdownText += "|---------|---------|---------|---------|\n"
+			markdownText += "## \(shadowType.name)\n\n"
 
-		try [nil, s1, s2, s3].enumerated().forEach { shadow in
-			doc.design.style.shadow = shadow.element
+			let s1 = QRCode.Shadow(shadowType, offset: CGSize(width: 0.2, height: -0.2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+			let s2 = QRCode.Shadow(shadowType, offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+			let s3 = QRCode.Shadow(shadowType, offset: CGSize(width: 0.25, height: -0.25), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
 
-			if let s = shadow.element {
-				markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
-			}
-			else {
-				markdownText += "| no shadow "
-			}
+			markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
+			markdownText += "|---------|---------|---------|---------|\n"
 
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.png(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "styled-shadow-\(shadow.offset).png")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.svg, dimension: 600)
-				let link = try imageStore.store(imd, filename: "styled-shadow-\(shadow.offset).svg")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.pdf(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "styled-shadow-\(shadow.offset).pdf")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
+			try [nil, s1, s2, s3].enumerated().forEach { shadow in
+				doc.design.style.shadow = shadow.element
 
-			markdownText += "|\n"
+				if let s = shadow.element {
+					markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
+				}
+				else {
+					markdownText += "| no shadow "
+				}
+
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.png(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "styled-shadow-\(shadowType.name)-\(shadow.offset).png")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.svg, dimension: 600)
+					let link = try imageStore.store(imd, filename: "styled-shadow-\(shadowType.name)-\(shadow.offset).svg")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.pdf(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "styled-shadow-\(shadowType.name)-\(shadow.offset).pdf")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+
+				markdownText += "|\n"
+			}
+			markdownText += "\n\n"
 		}
-
-		markdownText += "\n\n"
 	}
 
 	func testFancyLinearGradient2() throws {
 
-		markdownText += "# QRCode with shadow - linear fill 2\n\n"
+		markdownText += "# Drop shadow - linear fill 2\n\n"
 
 		let doc = try QRCode.Document(utf8String: "Rainbow linear gradient", errorCorrection: .high)
 		doc.design.additionalQuietZonePixels = 3
@@ -150,17 +161,36 @@ final class ShadowTests: XCTestCase {
 				endPoint: CGPoint(x: 1, y: 0)
 			)
 		)
-		doc.design.style.shadow = QRCode.Shadow(dx: 0.1, dy: -0.1, blur: 2, color: CGColor(gray: 1, alpha: 1))
 
-		do {
-			let imd = try doc.imageData(.png(), dimension: 600)
-			let link = try imageStore.store(imd, filename: "rainbow-shadow.png")
-			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> "
-		}
-		do {
-			let imd = try doc.imageData(.svg, dimension: 600)
-			let link = try imageStore.store(imd, filename: "rainbow-shadow.svg")
-			markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> "
+		let s1 = QRCode.Shadow(.dropShadow, dx: 0.1, dy: -0.1, blur: 2, color: CGColor(gray: 1, alpha: 1))
+		let s2 = QRCode.Shadow(.innerShadow, dx: 0.2, dy: -0.2, blur: 4, color: CGColor(gray: 1, alpha: 1))
+
+		try [s1, s2].enumerated().forEach { shadow in
+
+			markdownText += "## \(shadow.element.type.name)\n\n"
+
+			markdownText += "|   png   |   svg   |   pdf   |\n"
+			markdownText += "|---------|---------|---------|\n"
+
+			doc.design.style.shadow = shadow.element
+
+			do {
+				let imd = try doc.imageData(.png(), dimension: 600)
+				let link = try imageStore.store(imd, filename: "rainbow-shadow-\(shadow.offset).png")
+				markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> | "
+			}
+			do {
+				let imd = try doc.imageData(.svg, dimension: 600)
+				let link = try imageStore.store(imd, filename: "rainbow-shadow-\(shadow.offset).svg")
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> | "
+			}
+			do {
+				let imd = try doc.imageData(.pdf(), dimension: 600)
+				let link = try imageStore.store(imd, filename: "rainbow-shadow-\(shadow.offset).pdf")
+				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> | "
+			}
+
+			markdownText += "\n\n"
 		}
 
 		markdownText += "\n\n"
@@ -168,7 +198,7 @@ final class ShadowTests: XCTestCase {
 
 	func testRadialGradient1() throws {
 
-		markdownText += "# QRCode with shadow - radial fill 1\n\n"
+		markdownText += "# Shadows - radial fill 1\n\n"
 
 		let gr = try DSFGradient(pins: [
 			DSFGradient.Pin(CGColor.RGBA(0.03, 0.3, 0.1, 1), 0),
@@ -180,50 +210,55 @@ final class ShadowTests: XCTestCase {
 		let doc = try QRCode.Document(utf8String: "Radial gradient", errorCorrection: .high)
 		doc.design.style.onPixels = rfill
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 0.2, height: -0.2), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 0.25, height: 0.25), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		try shadowTypes.forEach { shadowType in
 
-		markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
-		markdownText += "|---------|---------|---------|---------|\n"
+			markdownText += "## \(shadowType.name)\n\n"
 
-		try [nil, s1, s2, s3].enumerated().forEach { shadow in
-			doc.design.style.shadow = shadow.element
+			let s1 = QRCode.Shadow(shadowType, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(0, 0, 0))
+			let s2 = QRCode.Shadow(shadowType, dx: 0, dy: 0, blur: 10, color: CGColor.sRGBA(0, 0, 0))
+			let s3 = QRCode.Shadow(shadowType, dx: 0.25, dy: 0.25, blur: 0, color: CGColor.sRGBA(0, 0, 0))
 
-			if let s = shadow.element {
-				markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
-			}
-			else {
-				markdownText += "| no shadow "
+			markdownText += "|  shadow |   png   |   svg   |   pdf   |\n"
+			markdownText += "|---------|---------|---------|---------|\n"
+
+			try [nil, s1, s2, s3].enumerated().forEach { shadow in
+				doc.design.style.shadow = shadow.element
+
+				if let s = shadow.element {
+					markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
+				}
+				else {
+					markdownText += "| no shadow "
+				}
+
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.png(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "radial-\(shadowType.name)-\(shadow.offset).png")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.svg, dimension: 600)
+					let link = try imageStore.store(imd, filename: "radial-\(shadowType.name)-\(shadow.offset).svg")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.pdf(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "radial-\(shadowType.name)-\(shadow.offset).pdf")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += "|\n"
 			}
 
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.png(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "radial-\(shadow.offset).png")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.svg, dimension: 600)
-				let link = try imageStore.store(imd, filename: "radial-\(shadow.offset).svg")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.pdf(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "radial-\(shadow.offset).pdf")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += "|\n"
+			markdownText += "\n\n"
 		}
-
-		markdownText += "\n\n"
 	}
 
 	func testImageShadowFill() throws {
 
-		markdownText += "# QRCode with shadow - image fill\n\n"
+		markdownText += "# Shadows - image fill\n\n"
 
 		let doc = try QRCode.Document(utf8String: "Peacock feathers style, with bubbles style on pixels")
 
@@ -237,50 +272,55 @@ final class ShadowTests: XCTestCase {
 		let image = try resourceCommonImage(for: "beach-square", extension: "jpg")
 		doc.design.style.onPixels = QRCode.FillStyle.Image(image: image)
 
-		let s1 = QRCode.Shadow(offset: CGSize(width: 0.1, height: -0.1), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s2 = QRCode.Shadow(offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
-		let s3 = QRCode.Shadow(offset: CGSize(width: 0.1, height: 0.1), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+		try shadowTypes.forEach { shadowType in
 
-		markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
-		markdownText += "|--------|---------|---------|---------|\n"
+			markdownText += "## \(shadowType.name)\n\n"
 
-		try [nil, s1, s2, s3].enumerated().forEach { shadow in
-			let s = shadow.element
-			doc.design.style.shadow = s
-			if let s = s {
-				markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
-			}
-			else {
-				markdownText += "| no shadow "
+			let s1 = QRCode.Shadow(shadowType, offset: CGSize(width: 0.1, height: -0.1), blur: 3, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+			let s2 = QRCode.Shadow(shadowType, offset: CGSize(width: 0, height: 0), blur: 10, color: CGColor(red: 0, green: 0, blue: 0, alpha: 1))
+			let s3 = QRCode.Shadow(shadowType, offset: CGSize(width: 0.1, height: 0.1), blur: 0, color: CGColor(red: 0, green: 0, blue: 1, alpha: 1))
+
+			markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
+			markdownText += "|--------|---------|---------|---------|\n"
+
+			try [nil, s1, s2, s3].enumerated().forEach { shadow in
+				let s = shadow.element
+				doc.design.style.shadow = s
+				if let s = s {
+					markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
+				}
+				else {
+					markdownText += "| no shadow "
+				}
+
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.png(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "image-shadow-\(shadowType.name)-\(shadow.offset).png")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.svg, dimension: 600)
+					let link = try imageStore.store(imd, filename: "image-shadow-\(shadowType.name)-\(shadow.offset).svg")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.pdf(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "image-shadow-\(shadowType.name)-\(shadow.offset).pdf")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += "|\n"
 			}
 
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.png(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "image-shadow-\(shadow.offset).png")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.svg, dimension: 600)
-				let link = try imageStore.store(imd, filename: "image-shadow-\(shadow.offset).svg")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.pdf(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "image-shadow-\(shadow.offset).pdf")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += "|\n"
+			markdownText += "\n\n"
 		}
-
-		markdownText += "\n\n"
 	}
 
 	func testBasicSolidShadowFill() throws {
 
-		markdownText += "# QRCode with shadow - solid fill\n\n"
+		markdownText += "# Shadows - solid fill 2\n\n"
 
 		let doc = try QRCode.Document(utf8String: "Basic shadow")
 		doc.design.additionalQuietZonePixels = 2
@@ -288,83 +328,87 @@ final class ShadowTests: XCTestCase {
 		doc.design.style.background = QRCode.FillStyle.Solid(0, 0, 0.4)
 		doc.design.style.onPixels = QRCode.FillStyle.Solid(1, 1, 0)
 
-		let s1 = QRCode.Shadow(dx: 0.25, dy: -0.25, blur: 8, color: CGColor(gray: 1, alpha: 1))
-		let s2 = QRCode.Shadow(dx: 0, dy: 0, blur: 8, color: CGColor(gray: 1, alpha: 1))
+		try shadowTypes.forEach { shadowType in
 
-		markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
-		markdownText += "|--------|---------|---------|---------|\n"
+			markdownText += "## \(shadowType.name)\n\n"
 
-		try [nil, s1, s2].enumerated().forEach { shadow in
-			doc.design.style.shadow = shadow.element
+			let gray = (shadowType == .dropShadow) ? 1.0 : 0.0
 
-			if let s = shadow.element {
-				markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
-			}
-			else {
-				markdownText += "| no shadow "
+			let s1 = QRCode.Shadow(shadowType, dx: 0.25, dy: -0.25, blur: 8, color: CGColor(gray: gray, alpha: 1))
+			let s2 = QRCode.Shadow(shadowType, dx: 0, dy: 0, blur: 8, color: CGColor(gray: gray, alpha: 1))
+
+			markdownText += "| shadow |   png   |   svg   |   pdf   |\n"
+			markdownText += "|--------|---------|---------|---------|\n"
+
+			try [nil, s1, s2].enumerated().forEach { shadow in
+				doc.design.style.shadow = shadow.element
+
+				if let s = shadow.element {
+					markdownText += "| \(s.offset.width) x \(s.offset.height) : \(s.blur) "
+				}
+				else {
+					markdownText += "| no shadow "
+				}
+
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.png(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadowType.name)-\(shadow.offset).png")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+
+					let imd = try doc.imageData(.svg, dimension: 600)
+					let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadowType.name)-\(shadow.offset).svg")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " | "
+				do {
+					let imd = try doc.imageData(.pdf(), dimension: 600)
+					let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadowType.name)-\(shadow.offset).pdf")
+					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " |\n"
 			}
 
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.png(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadow.offset).png")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-
-				let imd = try doc.imageData(.svg, dimension: 600)
-				let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadow.offset).svg")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " | "
-			do {
-				let imd = try doc.imageData(.pdf(), dimension: 600)
-				let link = try imageStore.store(imd, filename: "solid-fill-with-shadow-\(shadow.offset).pdf")
-				markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
-			}
-			markdownText += " |\n"
+			markdownText += "\n\n"
 		}
-
 		markdownText += "\n\n"
 	}
 
-	func testShadowMatrix() throws {
-
-		markdownText += "# QRCode with shadow - matrix\n\n"
-
-		let doc = try QRCode.Document(utf8String: "Matrix qr code with shadow")
-		doc.errorCorrection = .high
-		doc.design.backgroundColor(CGColor.sRGBA(1, 1, 0.4))
-
-		let places = [-0.2, -0.1, 0.0, 0.1, 0.2]
-
-		let exportTypes: [QRCode.Document.ExportType] = [.png(), .svg]
-
-		try exportTypes.forEach { exportType in
-
-			markdownText += "## Export - \(exportType.fileExtension)\n\n"
-
-			markdownText += "|     |     |     |     |     |\n"
-			markdownText += "|-----|-----|-----|-----|-----|\n"
-
-			for y in places.reversed() {
-				markdownText += "| "
-				for x in places {
-					let s1 = QRCode.Shadow(dx: x, dy: y, blur: 16, color: CGColor.sRGBA(1, 0, 0))
-					doc.design.style.shadow = s1
-
-					let imd = try doc.imageData(exportType, dimension: 600)
-					let link = try imageStore.store(imd, filename: "matrix(\(x),\(y)).\(exportType.fileExtension)")
-					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> |"
-				}
-				markdownText += "\n"
-			}
-			markdownText += "\n\n"
-		}
-
-
-
-	}
-
+	//	func testShadowMatrix() throws {
+	//
+	//		markdownText += "# Drop shadow - matrix\n\n"
+	//
+	//		let doc = try QRCode.Document(utf8String: "Matrix qr code with shadow")
+	//		doc.errorCorrection = .high
+	//		doc.design.backgroundColor(CGColor.sRGBA(1, 1, 0.4))
+	//
+	//		let places = [-0.2, -0.1, 0.0, 0.1, 0.2]
+	//
+	//		let exportTypes: [QRCode.Document.ExportType] = [.png(), .svg]
+	//
+	//		try exportTypes.forEach { exportType in
+	//
+	//			markdownText += "## Export - \(exportType.fileExtension)\n\n"
+	//
+	//			markdownText += "|     |     |     |     |     |\n"
+	//			markdownText += "|-----|-----|-----|-----|-----|\n"
+	//
+	//			for y in places.reversed() {
+	//				markdownText += "| "
+	//				for x in places {
+	//					let s1 = QRCode.Shadow(dx: x, dy: y, blur: 16, color: CGColor.sRGBA(1, 0, 0))
+	//					doc.design.style.shadow = s1
+	//
+	//					let imd = try doc.imageData(exportType, dimension: 600)
+	//					let link = try imageStore.store(imd, filename: "matrix(\(x),\(y)).\(exportType.fileExtension)")
+	//					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"100\" /></a> |"
+	//				}
+	//				markdownText += "\n"
+	//			}
+	//			markdownText += "\n\n"
+	//		}
+	//	}
 }

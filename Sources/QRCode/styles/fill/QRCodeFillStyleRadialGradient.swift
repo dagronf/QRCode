@@ -98,20 +98,33 @@ public extension QRCode.FillStyle {
 			// Draw the shadow
 
 			if let s = shadow {
-				ctx.usingGState { c in
-					c.addRect(rect)
-					c.addPath(path)
-					c.clip(using: .evenOdd)
+				if s.type == .dropShadow {
+					ctx.usingGState { c in
+						c.addRect(rect)
+						c.addPath(path)
+						c.clip(using: .evenOdd)
 
-					c.addPath(path)
+						c.addPath(path)
 
-					let dx = expectedPixelSize * s.offset.width
-					let dy = expectedPixelSize * s.offset.height
-					c.setShadow(offset: CGSize(width: dx, height: dy), blur: s.blur, color: s.color)
+						let dx = expectedPixelSize * s.offset.width
+						let dy = expectedPixelSize * s.offset.height
+						c.setShadow(offset: CGSize(width: dx, height: dy), blur: s.blur, color: s.color)
 
-					c.setBlendMode(.normal)
-					c.setFillColor(.commonWhite)
-					c.fillPath()
+						c.setBlendMode(.normal)
+						c.setFillColor(.commonWhite)
+						c.fillPath()
+					}
+				}
+				else if s.type == .innerShadow {
+					ctx.usingGState { c in
+						let dx = expectedPixelSize * s.offset.width
+						let dy = expectedPixelSize * s.offset.height
+						let sz = CGSize(width: dx, height: dy)
+						c.drawInnerShadow(in: path, shadowColor: s.color, offset: sz, blurRadius: s.blur)
+					}
+				}
+				else {
+					fatalError()
 				}
 			}
 		}
@@ -166,7 +179,15 @@ public extension QRCode.FillStyle.RadialGradient {
 
 		var sa = ""
 		if let shadow = shadow {
-			svg += try shadow.buildSVGFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			if shadow.type == .dropShadow {
+				svg += try shadow.buildSVGDropShadowFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			}
+			else if shadow.type == .innerShadow {
+				svg += try shadow.buildSVGInnerShadowFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			}
+			else {
+				fatalError()
+			}
 			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
 		}
 

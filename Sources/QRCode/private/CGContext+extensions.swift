@@ -46,6 +46,13 @@ public extension CGContext {
 		}
 		try stateBlock(self)
 	}
+
+	/// Wrap the drawing commands in `block` within a transparency layer
+	func usingTransparencyLayer(auxiliaryInfo: CFDictionary? = nil, _ block: () -> Void) {
+		self.beginTransparencyLayer(auxiliaryInfo: auxiliaryInfo)
+		defer { self.endTransparencyLayer() }
+		block()
+	}
 }
 
 // MARK: CGContext and scalable drawing into a PDF
@@ -87,3 +94,43 @@ func UsingSinglePagePDFContext(
 
 	return data as Data
 }
+
+public extension CGContext {
+	/// Draw an inner shadow in the path
+	/// - Parameters:
+	///   - path: The path to apply the inner shadow to
+	///   - shadowColor: Specifies the color of the shadow, which may contain a non-opaque alpha value. If NULL, then shadowing is disabled.
+	///   - offset: Specifies a translation in base-space.
+	///   - blurRadius: A non-negative number specifying the amount of blur.
+	///
+	/// Note: I originally used the method outlined here ...
+	///
+	/// **Inner Shadows in Quartz: Helftone**
+	///
+	/// * [Blog Article](https://blog.helftone.com/demystifying-inner-shadows-in-quartz/)
+	/// * [(Archived)](https://web.archive.org/web/20221206132428/https://blog.helftone.com/demystifying-inner-shadows-in-quartz/)
+	///
+	///   ... BUT it doesn't work when using a PDF context (Sequoia)
+	func drawInnerShadow(in path: CGPath, shadowColor: CGColor?, offset: CGSize, blurRadius: CGFloat) {
+		guard let shadowColor = shadowColor else {
+			return
+		}
+
+		self.usingGState { ctx in
+			// Clip the drawing to the QRCode path
+			ctx.addPath(path)
+			ctx.setShouldAntialias(true)
+			ctx.clip()
+
+			self.usingGState { ctx in
+				ctx.addRect(_innerShadowMask)
+				ctx.addPath(path)
+				ctx.setFillColor(shadowColor)
+				ctx.setShadow(offset: offset, blur: blurRadius, color: shadowColor)
+				ctx.fillPath(using: .evenOdd)
+			}
+		}
+	}
+}
+
+private let _innerShadowMask = CGRect(x: -100000.0, y: -100000.0, width: 200000.0, height: 200000.0)

@@ -91,15 +91,23 @@ public extension QRCode.FillStyle {
 		/// fill the provided path in the context with the current fill color
 		public func fill(ctx: CGContext, rect: CGRect, path: CGPath, expectedPixelSize: CGFloat, shadow: QRCode.Shadow? = nil) {
 			// Apply shadow if needed
-			if let shadow = shadow {
+			if let shadow = shadow, shadow.type == .dropShadow {
 				let dx = expectedPixelSize * shadow.offset.width
 				let dy = expectedPixelSize * shadow.offset.height
-				ctx.setShadow(offset: CGSize(width: dx, height: dy), blur: shadow.blur, color: shadow.color)
+				let sz = CGSize(width: dx, height: dy)
+				ctx.setShadow(offset: sz, blur: shadow.blur, color: shadow.color)
 			}
 
 			ctx.setFillColor(color)
 			ctx.addPath(path)
 			ctx.fillPath()
+
+			if let shadow = shadow, shadow.type == .innerShadow {
+				let dx = expectedPixelSize * shadow.offset.width
+				let dy = expectedPixelSize * shadow.offset.height
+				let sz = CGSize(width: dx, height: dy)
+				ctx.drawInnerShadow(in: path, shadowColor: shadow.color, offset: sz, blurRadius: shadow.blur)
+			}
 		}
 	}
 }
@@ -154,7 +162,15 @@ public extension QRCode.FillStyle.Solid {
 
 		var svg: String? = nil
 		if let shadow = shadow {
-			svg = try shadow.buildSVGFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			if shadow.type == .dropShadow {
+				svg = try shadow.buildSVGDropShadowFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			}
+			else if shadow.type == .innerShadow {
+				svg = try shadow.buildSVGInnerShadowFilterDef(expectedPixelSize: expectedPixelSize, named: styleIdentifier + "-shadow")
+			}
+			else {
+				fatalError()
+			}
 			sa += "style=\"filter:url(#\(styleIdentifier)-shadow)\""
 		}
 		return QRCode.FillStyle.SVGDefinition(styleAttribute: sa, styleDefinition: svg)
