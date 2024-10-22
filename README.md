@@ -600,7 +600,7 @@ let shadow = QRCode.Shadow(
    dx: 0.2,
    dy: -0.2,
    blur: 8,
-   color: CGColor.sRGBA(0, 0, 0.3, 0.6)
+   color: CGColor.sRGBA(0, 1, 0, 1)
 )
 doc.design.style.shadow = shadow
 let pngData = try doc.pngData(dimension: 600, dpi: 144)
@@ -627,7 +627,7 @@ let shadow = QRCode.Shadow(
    dx: 0.2,
    dy: -0.2,
    blur: 8,
-   color: CGColor.sRGBA(0.7, 0.7, 1.0, 1)
+   color: CGColor.sRGBA(0, 1, 0, 1)
 )
 doc.design.style.shadow = shadow
 let pngData = try doc.pngData(dimension: 600, dpi: 144)

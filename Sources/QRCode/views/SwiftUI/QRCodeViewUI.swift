@@ -41,7 +41,8 @@ public struct QRCodeViewUI: View {
 		negatedOnPixelsOnly: Bool? = nil,
 		engine: (any QRCodeEngine)? = nil,
 		additionalQuietZonePixels: UInt = 0,
-		backgroundFractionalCornerRadius: CGFloat = 0
+		backgroundFractionalCornerRadius: CGFloat = 0,
+		shadow: QRCode.Shadow? = nil
 	) {
 		do {
 			self.content = try QRCode.Document(
@@ -70,6 +71,9 @@ public struct QRCodeViewUI: View {
 			if let negatedOnPixelsOnly = negatedOnPixelsOnly {
 				self.content.design.shape.negatedOnPixelsOnly = negatedOnPixelsOnly
 			}
+
+			self.content.design.style.shadow = shadow
+
 			self.isValid = true
 		}
 		catch {
@@ -166,7 +170,22 @@ struct QRCodeViewUI_Previews: PreviewProvider {
 					)
 				)
 			}
+			HStack {
+				QRCodeViewUI(
+					content: "This is a test",
+					pixelStyle: QRCode.PixelShape.Square(insetFraction: 0.1),
+					eyeStyle: QRCode.EyeShape.RoundedOuter(),
+					shadow: .init(.dropShadow, dx: 0.2, dy: -0.2, blur: 8, color: CGColor(red: 0, green: 1, blue: 0, alpha: 1))
+				)
+				QRCodeViewUI(
+					content: "This is a test",
+					pixelStyle: QRCode.PixelShape.Square(insetFraction: 0.1),
+					eyeStyle: QRCode.EyeShape.RoundedOuter(),
+					shadow: .init(.innerShadow, dx: 0.2, dy: -0.2, blur: 8, color: CGColor(red: 0, green: 1, blue: 0, alpha: 1))
+				)
+			}
 		}
+		.frame(height: 800)
 	}
 }
 
