@@ -74,8 +74,11 @@ A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector
    <a href="./Examples/blobby/index.md"> 
       <img src="./Examples/blobby/blobby-style.svg" width="80"/>
    </a>
-      <a href="./Examples/wiki/index.md"> 
+   <a href="./Examples/wiki/index.md"> 
       <img src="./Examples/wiki/wiki.png" width="80"/>
+   </a>
+      <a href="./Examples/simple-inner-shadow/index.md"> 
+      <img src="./Examples/simple-inner-shadow/basic-inner-shadow.svg" width="80"/>
    </a>
 </p>
 
@@ -583,11 +586,39 @@ The shadow is applied equally to the primary components of the QRCode, namely :-
 
 By default, no shadows are applied.
 
-### Drop shadow
+| Parameter  | Description |
+|------------|-------------|
+| `dx`       | The fraction of a `module` width to offset along the horizontal axis (1.0 == 1 module width) |
+| `dy`       | The fraction of a `module` height to offset along the vertical axis (1.0 == 1 module height) | 
+| `blur`     | The blur radius of the shadow | 
+| `color`    | The color of the shadow |
+
+A `module` represents a single square within the QRCode output. For example, in the image below, the dx and dy values are equal to 0.5.
+
+<img src="./Art/images/shadow-module-offset.png" />
+
+### Shadow styles
+
+#### Drop shadow
+
+##### Swift
 
 ```swift
 let shadow = QRCode.Shadow(.dropShadow, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(1, 0, 1))
 document.design.style.shadow = shadow
+```
+
+##### Objective-C
+
+```objc
+NSColor* color = [NSColor colorWithRed: 1.0 green: 0.0 blue: 0.0 alpha: 1.0];
+struct CGColor* shadowColor = [color CGColor];
+QRCodeShadow* shadow = [[QRCodeShadow alloc] init:QRCodeShadowTypeDropShadow
+                                               dx: 0.2
+                                               dy: -0.2
+                                             blur: 3
+                                            color: shadowColor];
+document.design.style.shadow = shadow;
 ```
 
 <details>
@@ -610,7 +641,7 @@ let pngData = try doc.pngData(dimension: 600, dpi: 144)
 
 </details>
 
-### Inner shadow
+#### Inner shadow
 
 ```swift
 let shadow = QRCode.Shadow(.innerShadow, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(1, 0, 1))

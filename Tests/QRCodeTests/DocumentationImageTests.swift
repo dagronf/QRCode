@@ -659,8 +659,12 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.shadow = shadow
 			let pngData = try doc.pngData(dimension: 600, dpi: 144)
 			try outputFolder.write(pngData, to: "qrcode-drop-shadow.png")
+			let svgData = try doc.svgData(dimension: 600)
+			try outputFolder.write(svgData, to: "qrcode-drop-shadow.svg")
+			let pdfData = try doc.pdfData(dimension: 600)
+			try outputFolder.write(pdfData, to: "qrcode-drop-shadow.pdf")
 		}
-		
+
 		do {
 			let doc = try QRCode.Document(utf8String: "Inner shadow sample")
 			let shadow = QRCode.Shadow(
@@ -673,6 +677,23 @@ final class DocumentationImageTests: XCTestCase {
 			doc.design.style.shadow = shadow
 			let pngData = try doc.pngData(dimension: 600, dpi: 144)
 			try outputFolder.write(pngData, to: "qrcode-inner-shadow.png")
+			let svgData = try doc.svgData(dimension: 600)
+			try outputFolder.write(svgData, to: "qrcode-inner-shadow.svg")
+			let pdfData = try doc.pdfData(dimension: 600)
+			try outputFolder.write(pdfData, to: "qrcode-inner-shadow.pdf")
+		}
+
+		do {
+			let svgData = try QRCode.build
+				.text("https://github.com/dagronf/QRCode")
+				.background.color(.black)
+				.background.cornerRadius(2)
+				.onPixels.foregroundColor(CGColor.sRGBA(0.119, 0.89, 1))
+				.onPixels.shape(.horizontal(insetFraction: 0.05))
+				.eye.shape(.barsHorizontal())
+				.shadow(.innerShadow, dx: 0.15, dy: -0.15, blur: 6, color: CGColor.gray(0))
+				.generate.svg(dimension: 600)
+			try outputFolder.write(svgData, to: "basic-inner-shadow.svg")
 		}
 	}
 }
