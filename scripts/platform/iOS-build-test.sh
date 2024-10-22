@@ -18,7 +18,7 @@ cd "${BASEDIR}"/../..
 echo ">>>> iOS build and test..."
 
 xcodebuild clean build archive -scheme "QRCode" -destination 'generic/platform=iOS' -quiet
-xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' -quiet
+xcodebuild test -scheme "QRCode" -destination 'platform=iOS Simulator,name=iPhone 15' -quiet
 
 echo "<<<< iOS build and test COMPLETE..."
 

@@ -22,12 +22,6 @@ env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePac
 env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=ios" archive
 env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCodeDetector -destination "generic/platform=ios" archive
 
-# macCatalyst
-env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=macCatalyst"
-env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCodeDetector -destination "generic/platform=macCatalyst"
-env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=macCatalyst" archive
-env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCodeDetector -destination "generic/platform=macCatalyst" archive
-
 # watchOS
 env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=watchos"
 env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=watchos" archive
@@ -38,6 +32,12 @@ env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePac
 
 # Command line
 env DEVELOPER_DIR="/Applications/Xcode.app" xcrun swift build -c release --product qrcodegen
+
+# macCatalyst
+env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=macCatalyst"
+env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCodeDetector -destination "generic/platform=macCatalyst"
+env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCode -destination "generic/platform=macCatalyst" archive
+env DEVELOPER_DIR="/Applications/Xcode.app" xcrun xcodebuild -IDEClonedSourcePackagesDirPathOverride="$PWD/sanitybuild/.dependencies" -derivedDataPath "$PWD/sanitybuild/.derivedData" build -scheme QRCodeDetector -destination "generic/platform=macCatalyst" archive
 
 # Move back into the original folder
 cd ${ORIGDIR}

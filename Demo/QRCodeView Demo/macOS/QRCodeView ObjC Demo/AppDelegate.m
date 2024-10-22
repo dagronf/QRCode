@@ -146,11 +146,11 @@
 	NSColor* color = [NSColor colorWithRed:1 green:0 blue:0 alpha:1];
 	struct CGColor* shadowColor = [color CGColor];
 
-	QRCodeShadow* shadow = [[QRCodeShadow alloc] initWithDx: 0.2
-																		  dy: -0.2
-																		blur: 3
-																	  color: shadowColor
-																		type: QRCodeShadowTypeDropShadow];
+	QRCodeShadow* shadow = [[QRCodeShadow alloc] init: QRCodeShadowTypeDropShadow
+																  dx: 0.2
+																  dy: -0.2
+																blur: 3
+															  color: shadowColor];
 
 	doc.design.style.shadow = shadow;
 	CGImageRef cgr = [doc cgImageWithDimension:400 error:&error];
