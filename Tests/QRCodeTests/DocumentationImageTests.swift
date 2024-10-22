@@ -645,4 +645,32 @@ final class DocumentationImageTests: XCTestCase {
 
 		try outputFolder.write(pngData, to: "watchos-qrcode.png")
 	}
+
+	func testDropShadowExample() throws {
+		let doc = try QRCode.Document(utf8String: "Drop shadow sample")
+		let shadow = QRCode.Shadow(
+			.dropShadow,
+			dx: 0.2,
+			dy: -0.2,
+			blur: 8,
+			color: CGColor.sRGBA(0, 0, 0.3, 0.6)
+		)
+		doc.design.style.shadow = shadow
+		let pngData = try doc.pngData(dimension: 600, dpi: 144)
+		try outputFolder.write(pngData, to: "qrcode-drop-shadow.png")
+	}
+
+	func testInnerShadowExample() throws {
+		let doc = try QRCode.Document(utf8String: "Inner shadow sample")
+		let shadow = QRCode.Shadow(
+			.innerShadow,
+			dx: 0.2,
+			dy: -0.2,
+			blur: 8,
+			color: CGColor.sRGBA(0.7, 0.7, 1.0, 1)
+		)
+		doc.design.style.shadow = shadow
+		let pngData = try doc.pngData(dimension: 600, dpi: 144)
+		try outputFolder.write(pngData, to: "qrcode-inner-shadow.png")
+	}
 }

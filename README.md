@@ -586,28 +586,56 @@ By default, no shadows are applied.
 ### Drop shadow
 
 ```swift
-let shadow = QRCode.Shadow(
-   .dropShadow,
-   dx: 0.2, 
-   dy: -0.2, 
-   blur: 3, 
-   color: CGColor.sRGBA(1, 0, 1)
-)
+let shadow = QRCode.Shadow(.dropShadow, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(1, 0, 1))
 document.design.style.shadow = shadow
 ```
+
+<details>
+<summary>Drop shadow example</summary>
+
+```swift
+let doc = try QRCode.Document(utf8String: "Drop shadow sample")
+let shadow = QRCode.Shadow(
+   .dropShadow,
+   dx: 0.2,
+   dy: -0.2,
+   blur: 8,
+   color: CGColor.sRGBA(0, 0, 0.3, 0.6)
+)
+doc.design.style.shadow = shadow
+let pngData = try doc.pngData(dimension: 600, dpi: 144)
+```
+
+<a href="./Art/images/qrcode-drop-shadow.png"><img src="./Art/images/qrcode-drop-shadow.png" width="150"/></a>
+
+</details>
 
 ### Inner shadow
 
 ```swift
-let shadow = QRCode.Shadow(
-   .innerShadow,
-   dx: 0.2, 
-   dy: -0.2, 
-   blur: 3, 
-   color: CGColor.sRGBA(1, 0, 1), 
-)
+let shadow = QRCode.Shadow(.innerShadow, dx: 0.2, dy: -0.2, blur: 3, color: CGColor.sRGBA(1, 0, 1))
 document.design.style.shadow = shadow
 ```
+
+<details>
+<summary>Inner shadow example</summary>
+
+```swift
+let doc = try QRCode.Document(utf8String: "Inner shadow sample")
+let shadow = QRCode.Shadow(
+   .innerShadow,
+   dx: 0.2,
+   dy: -0.2,
+   blur: 8,
+   color: CGColor.sRGBA(0.7, 0.7, 1.0, 1)
+)
+doc.design.style.shadow = shadow
+let pngData = try doc.pngData(dimension: 600, dpi: 144)
+```
+
+<a href="./Art/images/qrcode-inner-shadow.png"><img src="./Art/images/qrcode-inner-shadow.png" width="150"/></a>
+
+</details>
 
 ## Adding a logo to a QR code
 
