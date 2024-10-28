@@ -40,6 +40,13 @@ extension CGPath {
 		block(pth)
 		return pth
 	}
+
+	func flipped() -> CGPath {
+		let flipped = CGMutablePath()
+		let y = self.boundingBox.height
+		flipped.addPath(self, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -y))
+		return flipped
+	}
 }
 
 extension CGPath {

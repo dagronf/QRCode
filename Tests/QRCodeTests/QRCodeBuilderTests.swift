@@ -131,4 +131,26 @@ final class QRCodeBuilderTests: XCTestCase {
 		let image2 = try builder.generate.image(dimension: 400, representation: .png())
 		try outputFolder.write(image2, to: "builder-logo.png")
 	}
+
+	func testBuilderBasicFlat() throws {
+		let text = "Vortex style qr code"
+		let builder = try QRCode.build
+			.text(text)
+			.errorCorrection(.high)
+			.onPixels.shape(.vortex())
+			.offPixels.shape(.circle())
+			.offPixels.style(.solid(1, 0, 0, alpha: 0.2))
+
+		let image = try builder.generate.image(dimension: 800, representation: .png())
+		try outputFolder.write(image, to: "vortex1.png")
+
+		let image2 = try builder.generate.svg(dimension: 800)
+		try outputFolder.write(image2, to: "vortex1.svg")
+
+		let defaultImage = try QRCode.build
+			.text(text)
+			.errorCorrection(.high)
+			.generate.svg(dimension: 800)
+		try outputFolder.write(defaultImage, to: "vortex-pattern.svg")
+	}
 }
