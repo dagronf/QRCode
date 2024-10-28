@@ -62,6 +62,13 @@ public extension QRCode {
 
 	/// Does the shape generator support setting values for a particular key?
 	func supportsSettingValue(forKey key: String) -> Bool
+
+	/// Can this pixel generator be used when creating eye and pupil shapes?
+	///
+	/// Some pixel generators generate eye and pupil shapes that seem to adversely effect recognition
+	/// (Vortex I'm looking at you!). So we need to fall back to the square pixel generator IF the selected generator's
+	/// `canGenerateEyeAndPupilShapes` returns `false`
+	@objc var canGenerateEyeAndPupilShapes: Bool { get }
 }
 
 public extension QRCodePixelShapeGenerator {

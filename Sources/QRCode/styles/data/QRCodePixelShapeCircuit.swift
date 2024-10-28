@@ -29,6 +29,10 @@ public extension QRCode.PixelShape {
 		@objc public static let Name: String = "circuit"
 		/// The generator title
 		@objc public static var Title: String { "Circuit" }
+
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator { Circuit() }
 

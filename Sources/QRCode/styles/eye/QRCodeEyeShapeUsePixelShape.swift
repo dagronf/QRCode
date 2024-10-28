@@ -43,7 +43,14 @@ public extension QRCode.EyeShape {
 		}
 
 		public func eyePath() -> CGPath {
-			let generator = pixelShape ?? QRCode.PixelShape.Square()
+			let generator: QRCodePixelShapeGenerator = {
+				if let pixelShape = pixelShape, pixelShape.canGenerateEyeAndPupilShapes {
+					return pixelShape
+				}
+				else {
+					return QRCode.PixelShape.Square()
+				}
+			}()
 			return generator.generatePath(from: _EyeTemplate, size: CGSize(width: 90, height: 90))
 		}
 

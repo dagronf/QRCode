@@ -29,6 +29,9 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Rounded end indent" }
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		// The default radius for the curved edges
 		@objc public static let DefaultCornerRadius: CGFloat = 0.65
 		// Should we draw inner corners on the shape

@@ -35,16 +35,13 @@ public extension QRCode.PixelShape {
 		/// Default corner radius value
 		@objc public static let DefaultCornerRadius: CGFloat = 0.65
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		/// The fractional corner radius for the pixel (0.0 -> 1.0)
 		@objc public var cornerRadiusFraction: CGFloat { self.common.cornerRadiusFraction }
 		/// The fractional inset for the pixel (0.0 -> 1.0)
 		@objc public var insetFraction: CGFloat { self.common.insetFraction }
-//		/// If true, randomly sets the inset to create a "wobble"
-//		@objc public var useRandomInset: Bool { self.common.useRandomInset }
-//		/// The rotation for each pixel (0.0 -> 1.0)
-//		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
-//		/// If true, randomly chooses a rotation for each pixel
-//		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
 
 		/// Create
 		/// - Parameters:

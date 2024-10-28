@@ -30,6 +30,9 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Donut" }
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		/// Create a donut pixel shape
 		@objc public override init() {
 			self.common = CommonPixelGenerator(pixelType: .donut)

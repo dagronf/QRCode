@@ -30,6 +30,9 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Circle" }
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		/// Create a circle pixel shape
 		/// - Parameters:
 		///   - insetGenerator: The inset function to apply to each pixel

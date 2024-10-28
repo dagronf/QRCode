@@ -29,6 +29,9 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Horizontal bars" }
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		/// Default inset value
 		@objc public static let DefaultInset: CGFloat = 0.1
 		/// Default corner radius value

@@ -50,7 +50,14 @@ public extension QRCode.PupilShape {
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
-			let generator = pixelShape ?? QRCode.PixelShape.Square()
+			let generator: QRCodePixelShapeGenerator = {
+				if let pixelShape = pixelShape, pixelShape.canGenerateEyeAndPupilShapes {
+					return pixelShape
+				}
+				else {
+					return QRCode.PixelShape.Square()
+				}
+			}()
 			return generator.generatePath(from: _PupilTemplate, size: CGSize(width: 60, height: 60))
 		}
 

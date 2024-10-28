@@ -29,6 +29,9 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Rounded path" }
 
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
+
 		// The default radius for the curved edges
 		@objc public static let DefaultCornerRadiusValue: CGFloat = 0.65
 		@objc public static let DefaultHasInnerCorners = true

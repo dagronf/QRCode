@@ -30,14 +30,8 @@ public extension QRCode.PixelShape {
 		/// The generator title
 		@objc public static var Title: String { "Square" }
 
-//		/// The fractional inset for the pixel (0.0 -> 1.0)
-//		@objc public var insetFraction: CGFloat { self.common.insetFraction }
-//		/// If true, randomly sets the inset to create a "wobble"
-//		@objc public var useRandomInset: Bool { self.common.useRandomInset }
-//		/// The rotation for each pixel (0.0 -> 1.0)
-//		@objc public var rotationFraction: CGFloat { self.common.rotationFraction }
-//		/// If true, randomly chooses a rotation for each pixel
-//		@objc public var useRandomRotation: Bool { self.common.useRandomRotation }
+		/// This pupil generator can be used when generating eye and pupil shapes
+		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
 
 		/// Create
 		/// - Parameters:
