@@ -29,7 +29,7 @@ public extension QRCode.PixelRotation {
 		public func copyRotationGenerator() -> QRCodePixelRotationGenerator { QRCode.PixelRotation.Fixed() }
 		public func reset() {}
 		public func rotationValue(for matrix: BoolMatrix, row: Int, column: Int, rotationFraction: CGFloat) -> CGFloat {
-			assert(rotationFraction.in(0 ... 1))
+			assert(rotationFraction.in(-1 ... 1))
 			return rotationFraction
 		}
 	}

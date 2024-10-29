@@ -65,7 +65,7 @@ internal extension QRCode.PixelShape {
 		///   - insetGenerator: The inset function to apply across the matrix
 		///   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
 		///   - rotationGenerator: The rotation function to apply across the matrix
-		///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
+		///   - rotationFraction: The rotation fraction (-1.0 -> 1.0) to apply to the rotation of each pixel
 		init(
 			pixelType: PixelType,
 			cornerRadiusFraction: CGFloat = 0,
@@ -82,7 +82,7 @@ internal extension QRCode.PixelShape {
 			self.cornerRadiusFraction = cornerRadiusFraction.clamped(to: 0 ... 1)
 
 			self.rotationGenerator = rotationGenerator
-			self.rotationFraction = rotationFraction.clamped(to: 0 ... 1)
+			self.rotationFraction = rotationFraction.clamped(to: -1 ... 1)
 		}
 
 		func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {

@@ -38,7 +38,7 @@ import Foundation
 	///   - matrix: The QR code matrix
 	///   - row: The pixel's row offset
 	///   - column: The pixel's column offset
-	///   - rotationFraction: The rotation generator's maximum fractional value
+	///   - rotationFraction: The rotation fraction (-1.0 -> 1.0) to apply to the rotation of each pixel
 	/// - Returns: An inset value
 	func rotationValue(for matrix: BoolMatrix, row: Int, column: Int, rotationFraction: CGFloat) -> CGFloat
 }

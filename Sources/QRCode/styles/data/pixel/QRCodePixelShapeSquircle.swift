@@ -41,7 +41,7 @@ public extension QRCode.PixelShape {
 		///   - insetGenerator: The inset function to apply to each pixel
 		///   - insetFraction: The inset between each pixel
 		///   - rotationGenerator: The rotation function to apply to each pixel
-		///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
+		///   - rotationFraction: The rotation fraction (-1.0 -> 1.0) to apply to the rotation of each pixel
 		@objc public init(
 			insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 			insetFraction: CGFloat = 0,
@@ -196,7 +196,7 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Squir
 	///   - insetGenerator: The inset generator
 	///   - insetFraction: The inset between each pixel
 	///   - rotationGenerator: The rotation generator
-	///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
+	///   - rotationFraction: The rotation fraction (-1.0 -> 1.0) to apply to the rotation of each pixel
 	/// - Returns: A pixel generator
 	@inlinable static func squircle(
 		insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),

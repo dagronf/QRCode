@@ -34,7 +34,8 @@ public extension QRCode.PixelRotation {
 		}
 		public func rotationValue(for matrix: BoolMatrix, row: Int, column: Int, rotationFraction: CGFloat) -> CGFloat {
 			assert(rotationFraction.in(0 ... 1))
-			return CGFloat.random(in: 0 ... rotationFraction, using: &randomGenerator)
+			let a = abs(rotationFraction)
+			return CGFloat.random(in: -a ... a, using: &randomGenerator)
 		}
 		@objc public override init() {
 			self.randomGenerator = SplitMix64(seed: 308653205)
