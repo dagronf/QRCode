@@ -981,7 +981,7 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 					.errorCorrection(.high)
 					.onPixels.shape(QRCode.PixelShape.CRT(insetFraction: 0.1, rotationFraction: 0.1))
 					.onPixels.style(QRCode.FillStyle.Solid(0, 0, 1))
-					.offPixels.shape(QRCode.PixelShape.CRT(insetFraction: 0.4, rotationFraction: 0.3, useRandomRotation: true))
+					.offPixels.shape(QRCode.PixelShape.CRT(insetFraction: 0.4, rotationGenerator: QRCode.PixelRotation.Random(), rotationFraction: 0.3))
 					.offPixels.style(QRCode.FillStyle.Solid(gray: 0, alpha: 0.1))
 					.eye.shape(QRCode.EyeShape.CRT())
 					.document

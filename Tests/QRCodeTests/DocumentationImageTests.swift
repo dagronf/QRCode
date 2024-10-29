@@ -686,7 +686,7 @@ final class DocumentationImageTests: XCTestCase {
 		do {
 			let svgData = try QRCode.build
 				.text("https://github.com/dagronf/QRCode")
-				.background.color(.black)
+				.background.color(.commonBlack)
 				.background.cornerRadius(2)
 				.onPixels.foregroundColor(CGColor.sRGBA(0.119, 0.89, 1))
 				.onPixels.shape(.horizontal(insetFraction: 0.05))
@@ -695,5 +695,52 @@ final class DocumentationImageTests: XCTestCase {
 				.generate.svg(dimension: 600)
 			try outputFolder.write(svgData, to: "basic-inner-shadow.svg")
 		}
+	}
+
+	func testSettingsGeneration() throws {
+
+		let all = QRCodePixelShapeFactory.shared.all()
+
+		var text = ""
+
+		for generator in all {
+
+			text += "| \(generator.name) |"
+
+			var sText = ""
+
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
+				sText += " * Corner radius <br/>"
+			}
+
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
+				sText += " * Optional inner corners <br/>"
+			}
+
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction) {
+				sText += " * Inset fraction"
+				if generator.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
+					sText += " (supports custom inset generators)"
+				}
+				sText += " <br/>"
+			}
+
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
+				sText += " * Rotation fraction"
+				if generator.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomRotation) {
+					sText += " (supports random)"
+				}
+				sText += " <br/>"
+			}
+
+			if sText.isEmpty {
+				sText = " * No settings "
+			}
+
+			text += "\(sText) |\n"
+		}
+
+		Swift.print(text)
+
 	}
 }
