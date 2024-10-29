@@ -72,6 +72,9 @@ public extension QRCode.EyeShape {
 			return QRCode.EyeShape.UsePixelShape()
 		}
 
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() { }
+
 		/// The pixel shape generator assigned to the qr code.
 		weak var pixelShape: (any QRCodePixelShapeGenerator)?
 	}

@@ -72,6 +72,11 @@ public extension QRCode.EyeShape {
 			Self.Create(self.settings())
 		}
 
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() {
+			self.corners = .all
+		}
+
 		public func eyePath() -> CGPath {
 			let eyePath = CGMutablePath()
 			corners.contains(QRCode.Corners.tl) ? eyePath.addPath(tlIN()) : eyePath.addPath(tlOUT())

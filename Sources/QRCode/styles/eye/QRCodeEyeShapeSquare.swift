@@ -40,6 +40,9 @@ public extension QRCode.EyeShape {
 			return Self.Create(self.settings())
 		}
 
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() { }
+
 		public func eyePath() -> CGPath {
 			let squareEyePath = CGMutablePath()
 			squareEyePath.move(to: CGPoint(x: 70, y: 70))

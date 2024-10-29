@@ -61,6 +61,11 @@ public extension QRCode.EyeShape {
 			return Self.Create(self.settings())
 		}
 
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() {
+			self.cornerRadiusFraction = Self.DefaultCornerRadius
+		}
+
 		public func eyePath() -> CGPath {
 			let edgePath = CGMutablePath()
 			let cr = self._actualCornerRadius

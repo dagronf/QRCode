@@ -46,6 +46,9 @@ public extension QRCode {
 	@objc func eyeBackgroundPath() -> CGPath
 	@objc func defaultPupil() -> any QRCodePupilShapeGenerator
 
+	/// Reset the eye shape generator back to defaults
+	@objc func reset()
+
 	/// Returns a storable representation of the shape handler
 	@objc func settings() -> [String: Any]
 	/// Does the shape generator support setting values for a particular key?

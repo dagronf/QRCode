@@ -39,7 +39,10 @@ public extension QRCode.EyeShape {
 		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return Self.Create(self.settings())
 		}
-		
+
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() { }
+
 		public func eyePath() -> CGPath {
 			let eyePath = CGMutablePath()
 			eyePath.move(to: CGPoint(x: 20, y: 20))

@@ -40,6 +40,9 @@ public extension QRCode.EyeShape {
 			return Self.Create(self.settings())
 		}
 
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() { }
+
 		private static let _defaultPupil = QRCode.PupilShape.Pinch()
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}

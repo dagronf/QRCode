@@ -66,7 +66,12 @@ public extension QRCode.EyeShape {
 		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
 			return QRCode.EyeShape.UFO(isFlipped: self.isFlipped)
 		}
-		
+
+		/// Reset the eye shape generator back to defaults
+		@objc public func reset() {
+			self.isFlipped = false
+		}
+
 		public func eyePath() -> CGPath {
 			let eyePath = CGMutablePath()
 			eyePath.move(to: CGPoint(x: 70, y: 70))
