@@ -365,6 +365,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
 |<img src="./Art/images/data_donut.png" width="60"/>            |"donut"|`QRCode.PixelShape.Donut`|A circular pixel with a hole in the center|
 |<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
+|<img src="./Art/images/data_heart.png" width="60"/>            |"heart"|`QRCode.PixelShape.Heart`|A 'heart' style|
 |<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
 |<img src="./Art/images/data_razor.png" width="60"/>            |"razor"|`QRCode.PixelShape.Razor`| A 'razor' style|
