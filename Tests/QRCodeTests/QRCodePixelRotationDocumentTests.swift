@@ -39,7 +39,7 @@ final class QRCodePixelRotationDocumentTests: XCTestCase {
 	}
 
 	func testExample() throws {
-		markdown += "| Name |  0.0  |  0.1  |  0.2  |  0.3  |  0.4  |\n"
+		markdown += "| Name |  0.0  |  0.125  |  0.25  |  0.375  |  0.5  |\n"
 		markdown += "|------|-------|-------|-------|-------|-------|\n"
 
 		try QRCode.PixelRotation.generators.forEach { generator in
@@ -48,17 +48,17 @@ final class QRCodePixelRotationDocumentTests: XCTestCase {
 
 			markdown += "| \(g.name) "
 
-			try [0, 0.1, 0.2, 0.3, 0.4].forEach { (inset: CGFloat) in
+			try [0.0, 0.125, 0.25, 0.375, 0.5].forEach { (inset: CGFloat) in
 				let pngData = try QRCode.build
 					.text("Pixel rotation tests")
 					.errorCorrection(.high)
 					.onPixels.shape(
-						.square(
+						.heart(
 							rotationGenerator: g,
 							rotationFraction: inset
 						)
 					)
-					.generate.image(dimension: 300, representation: .png())
+					.generate.image(dimension: 400, representation: .png())
 
 				let filename = "rotation-\(g.name)-\(inset).png"
 				let link = try imageStore.store(pngData, filename: filename)

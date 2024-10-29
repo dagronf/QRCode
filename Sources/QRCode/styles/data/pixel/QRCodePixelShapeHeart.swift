@@ -213,7 +213,7 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Heart
 		rotationGenerator: QRCodePixelRotationGenerator = QRCode.PixelRotation.Fixed(),
 		rotationFraction: CGFloat = 0
 	) -> QRCodePixelShapeGenerator {
-		QRCode.PixelShape.Star(
+		QRCode.PixelShape.Heart(
 			insetGenerator: insetGenerator,
 			insetFraction: insetFraction,
 			rotationGenerator: rotationGenerator,
