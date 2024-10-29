@@ -37,15 +37,19 @@ internal let PupilShapeSettingsName_ = "settings"
 	@objc static var Name: String { get }
 	/// The user-facing title for the generator
 	@objc static var Title: String { get }
+
 	/// Create a pupil shape generator using the provided settings
 	@objc static func Create(_ settings: [String: Any]?) -> any QRCodePupilShapeGenerator
+
 	/// Make a copy of this shape
 	@objc func copyShape() -> any QRCodePupilShapeGenerator
 	/// Reset the pupil shape generator back to defaults
 	@objc func reset()
+
 	/// Return a path representing the pupil
 	@objc func pupilPath() -> CGPath
-
+	
+	/// The pupil generator settings
 	@objc func settings() -> [String: Any]
 	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool
@@ -54,7 +58,9 @@ internal let PupilShapeSettingsName_ = "settings"
 }
 
 public extension QRCodePupilShapeGenerator {
+	/// The generator name
 	@inlinable var name: String { return Self.Name }
+	/// The generator title (user-facting)
 	@inlinable var title: String { return Self.Title }
 
 	internal func coreSettings() -> [String: Any] {
