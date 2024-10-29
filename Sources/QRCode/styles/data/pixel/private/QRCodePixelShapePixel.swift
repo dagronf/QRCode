@@ -244,10 +244,6 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm),
 								y: yoff + (CGFloat(row) * dm)
 							))
-							.concatenating(CGAffineTransform(
-								translationX: -(ri.width / 10),
-								y: -(ri.width / 10)
-							))
 						let sq = Donut.donutPixel10x10()
 						path.addPath(sq, transform: transform)
 					}
