@@ -377,6 +377,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
 |<img src="./Art/images/data_vertical.png" width="60"/>         |"vertical"|`QRCode.PixelShape.Vertical`|The pixels are vertically joined to make continuous vertical bars|
+|<img src="./Art/images/data_vortex.png" width="60"/>           |"vortex"|`QRCode.PixelShape.Vortex`| Pixels wrap in rings within the code |
 |<img src="./Art/images/data_wave.png" width="60"/>             |"wave"|`QRCode.PixelShape.Wave`|A wave|
 
 Some pixel shapes support additional customization :-
@@ -432,7 +433,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_corneredPixels.png" width="30"/>         |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |
 |<img src="./Art/images/pupil_cross.png" width="30"/>                  |"cross"|`QRCode.PupilShape.Cross`| A cross |
 |<img src="./Art/images/pupil_crossCurved.png" width="30"/>            |"crossCurved"|`QRCode.PupilShape.CrossCurved`| A cross with curved insets |
-|<img src="./Art/images/pupil_crt.png" width="30"/>                    | "crt" |`QRCode.PupilShape.CRT`| A CRT shape |
+|<img src="./Art/images/pupil_crt.png" width="30"/>                    |"crt"|`QRCode.PupilShape.CRT`| A CRT shape |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />           |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
 |<img src="./Art/images/pupil_Leaf.png" width="30"/>                   |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/pupil_pinch.png" width="30"/>                  |"pinch"|`QRCode.PupilShape.Pinch`| A square pinched in at the sides |
