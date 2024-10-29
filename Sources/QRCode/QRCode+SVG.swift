@@ -145,7 +145,7 @@ public extension QRCode {
 				}
 			}
 
-			// The background for the off pixels (if set)
+			// The background for the off pixels (if set). Should not apply a shadow
 			
 			do {
 				if let color = design.style.offPixelsBackground {
@@ -160,7 +160,7 @@ public extension QRCode {
 			do {
 				if let _ = design.shape.offPixels {
 					let offPixelsPath = self.path(finalRect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
-					if let offPixels = try design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels", expectedPixelSize: pixelSize, shadow: shadow) {
+					if let offPixels = try design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels", expectedPixelSize: pixelSize, shadow: nil) {
 						svg += "   <path id='off-pixels-shape' \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
 						if let def = offPixels.styleDefinition {
 							pathDefinitions.append(def)

@@ -1259,14 +1259,13 @@ OPTIONS:
   -t, --text <text>       The text to be stored in the QR code 
   -s, --silence           Silence any output 
   -c, --error-correction <error-correction>
-                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize),
-                          "H" (high) 
+                          The level of error correction. Available levels are "L" (low), "M" (medium), "Q" (quantize), "H" (high) 
   --all-pixel-shapes <all-pixel-shapes>
                           Print all the available pixel shapes. 
   -d, --on-pixel-shape <on-pixel-shape>
-                          The onPixels shape to use. Available shapes are blob, crt, circle, circuit, curvePixel,
-                          flower, horizontal, pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny,
-                          square, squircle, star, vertical. 
+                          The onPixels shape to use. Available shapes are arrow, blob, crt, circle, circuit, curvePixel, donut, flower,
+                          heart, horizontal, pointy, razor, roundedEndIndent, roundedPath, roundedRect, sharp, shiny, square, squircle,
+                          star, vertical, vortex, wave. 
   -n, --on-pixel-inset-fraction <on-pixel-inset-fraction>
                           The spacing around each individual pixel in the onPixels section 
   -r, --on-pixel-shape-corner-radius <on-pixel-shape-corner-radius>
@@ -1276,23 +1275,20 @@ OPTIONS:
   --all-eye-shapes <all-eye-shapes>
                           Print all the available eye shapes. 
   -e, --eye-shape <eye-shape>
-                          The eye shape to use. Available shapes are crt, circle, corneredPixels, edges, fireball,
-                          barsHorizontal, leaf, peacock, pinch, pixels, roundedOuter, roundedPointingIn,
-                          roundedPointingOut, roundedRect, shield, square, squircle, teardrop, ufo, usePixelShape,
-                          barsVertical. 
+                          The eye shape to use. Available shapes are crt, circle, corneredPixels, edges, fireball, barsHorizontal, leaf,
+                          peacock, pinch, pixels, roundedOuter, roundedPointingIn, roundedPointingOut, roundedRect, shield, square,
+                          squarePeg, squircle, teardrop, ufo, usePixelShape, barsVertical. 
   --eye-shape-corner-radius <eye-shape-corner-radius>
                           The fractional (0 ... 1) corner radius to use for the eye shape IF the eye shape supports it. 
   --all-pupil-shapes <all-pupil-shapes>
                           Print all the available pupil shapes. 
   -p, --pupil-shape <pupil-shape>
-                          The pupil shape to use. Available shapes are blobby, crt, circle, corneredPixels, cross,
-                          crossCurved, edges, hexagonLeaf, barsHorizontal, leaf, pinch, pixels, roundedOuter,
-                          roundedPointingIn, roundedPointingOut, roundedRect, seal, shield, square,
-                          barsHorizontalSquare, barsVerticalSquare, squircle, teardrop, ufo, usePixelShape,
-                          barsVertical. 
+                          The pupil shape to use. Available shapes are blobby, crt, circle, corneredPixels, cross, crossCurved, edges,
+                          hexagonLeaf, barsHorizontal, leaf, pinch, pixels, roundedOuter, roundedPointingIn, roundedPointingOut,
+                          roundedRect, seal, shield, square, barsHorizontalSquare, barsVerticalSquare, squircle, teardrop, ufo,
+                          usePixelShape, barsVertical. 
   --pupil-shape-corner-radius <pupil-shape-corner-radius>
-                          The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape
-                          supports it. 
+                          The fractional (0 ... 1) corner radius to apply to the pupil shape IF the pupil shape supports it. 
   --bg-color <bg-color>   The background color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   --data-color <data-color>
                           The onPixels color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
@@ -1300,7 +1296,7 @@ OPTIONS:
   --pupil-color <pupil-color>
                           The pupil color to use (format r,g,b,a - 1.0,0.5,0.5,1.0) 
   -h, --help              Show help information.
-```
+  ```
 
 ### Example
 
