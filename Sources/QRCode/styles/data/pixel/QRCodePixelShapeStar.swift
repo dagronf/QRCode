@@ -90,12 +90,20 @@ public extension QRCode.PixelShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
-			return Star(
+			Star(
 				insetGenerator: self.common.insetGenerator.copyInsetGenerator(),
 				insetFraction: self.common.insetFraction,
 				rotationGenerator: self.common.rotationGenerator.copyRotationGenerator(),
 				rotationFraction: self.common.rotationFraction
 			)
+		}
+
+		/// Reset the generator back to defaults
+		@objc public func reset() {
+			self.common.insetGenerator = QRCode.PixelInset.Fixed()
+			self.common.insetFraction = 0
+			self.common.rotationGenerator = QRCode.PixelRotation.Fixed()
+			self.common.rotationFraction = 0
 		}
 
 		/// Generate a CGPath from the matrix contents

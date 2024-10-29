@@ -79,6 +79,11 @@ public extension QRCode.PixelShape {
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator {
 			CurvePixel(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
+
+		/// Reset the generator back to defaults
+		@objc public func reset() {
+			self._cornerRadius = QRCode.PixelShape.CurvePixel.DefaultCornerRadiusValue
+		}
 	}
 }
 

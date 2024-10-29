@@ -52,6 +52,12 @@ public extension QRCode.PixelShape {
 			)
 		}
 
+		/// Reset the generator back to defaults
+		@objc public func reset() {
+			self.cornerRadiusFraction = Self.DefaultCornerRadius
+			self.insetFraction = Self.DefaultInset
+		}
+
 		// The fractional inset for the pixel
 		var insetFraction: CGFloat
 		// The fractional corner radius

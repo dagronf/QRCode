@@ -91,6 +91,13 @@ public extension QRCode.PixelShape {
 				hasInnerCorners: self.hasInnerCorners
 			)
 		}
+
+		/// Reset the generator back to defaults
+		@objc public func reset() {
+			self._cornerRadius = QRCode.PixelShape.RoundedPath.DefaultCornerRadiusValue
+			self.hasInnerCorners = QRCode.PixelShape.RoundedPath.DefaultHasInnerCorners
+			self.cornerRadiusChanged()
+		}
 	}
 }
 

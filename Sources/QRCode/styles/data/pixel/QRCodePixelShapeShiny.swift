@@ -38,6 +38,9 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Shiny() }
 
+		/// Reset the generator back to defaults
+		@objc public func reset() { }
+
 		@objc override public init() {
 			self.common = CommonPixelGenerator(pixelType: .shiny)
 			super.init()

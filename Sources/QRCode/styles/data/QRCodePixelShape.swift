@@ -47,6 +47,9 @@ public extension QRCode {
 	/// Make a copy of the shape object
 	@objc func copyShape() -> any QRCodePixelShapeGenerator
 
+	/// Reset the settings back to defaults
+	@objc func reset()
+
 	/// Generate a path representing the 'on' pixels within the specified matrix
 	/// - Parameters:
 	///   - matrix: The matrix

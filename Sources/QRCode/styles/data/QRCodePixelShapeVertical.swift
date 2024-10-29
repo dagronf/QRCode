@@ -67,6 +67,12 @@ public extension QRCode.PixelShape {
 			)
 		}
 
+		/// Reset the generator back to defaults
+		@objc public func reset() {
+			self.insetFraction = QRCode.PixelShape.Vertical.DefaultInset
+			self.cornerRadiusFraction = QRCode.PixelShape.Vertical.DefaultCornerRadius
+		}
+
 		/// Generate a CGPath from the matrix contents
 		/// - Parameters:
 		///   - matrix: The matrix to generate

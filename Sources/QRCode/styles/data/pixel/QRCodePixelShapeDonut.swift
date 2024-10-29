@@ -44,6 +44,9 @@ public extension QRCode.PixelShape {
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Donut() }
 
+		/// Reset the generator back to defaults
+		@objc public func reset() { }
+
 		/// Generate a CGPath from the matrix contents
 		/// - Parameters:
 		///   - matrix: The matrix to generate

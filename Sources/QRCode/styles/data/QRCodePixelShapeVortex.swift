@@ -42,6 +42,9 @@ public extension QRCode.PixelShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePixelShapeGenerator { Vortex() }
+
+		/// Reset the generator back to defaults
+		@objc public func reset() { }
 	}
 }
 

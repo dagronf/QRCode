@@ -37,6 +37,9 @@ public extension QRCode.PixelShape {
 			QRCode.PixelShape.Pointy()
 		}
 
+		/// Reset the generator back to defaults
+		@objc public func reset() { }
+
 		static let DefaultSize = CGSize(width: 10, height: 10)
 		static let DefaultRect = CGRect(origin: .zero, size: DefaultSize)
 		static let templateSquare: CGPath = {
