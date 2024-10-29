@@ -31,23 +31,64 @@ extension QRCode.PupilShape {
 		@objc public static var Title: String { "Hexagon Leaf" }
 		/// Create a hexagon leaf pupil shape, using the specified settings
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			HexagonLeaf()
+			if let settings = settings {
+				return HexagonLeaf(settings: settings)
+			}
+			return HexagonLeaf()
+		}
+
+		/// Is the pupil shape flipped?
+		@objc public var isFlipped: Bool = false
+
+		@objc public init(isFlipped: Bool = false) {
+			self.isFlipped = isFlipped
+			super.init()
+		}
+
+		/// Create a navigator pupil shape using the specified settings
+		@objc public init(settings: [String: Any]) {
+			super.init()
+			settings.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { HexagonLeaf() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
+			HexagonLeaf(isFlipped: self.isFlipped)
+		}
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self.isFlipped = false
+		}
 
-		@objc public func settings() -> [String: Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_: Any?, forKey _: String) -> Bool { false }
+		@objc public func settings() -> [String: Any] {
+			[QRCode.SettingsKey.isFlipped: self.isFlipped]
+		}
+		@objc public func supportsSettingValue(forKey key: String) -> Bool {
+			key == QRCode.SettingsKey.isFlipped
+		}
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == QRCode.SettingsKey.isFlipped {
+				self.isFlipped = BoolValue(value) ?? false
+			}
+			return false
+		}
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
-			CGPath.RoundedHexagon(
+			let pupilPath = CGPath.RoundedHexagon(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerRadius: 3,
 				byRoundingCorners: [.topMiddle, .rightMiddle, .bottomMiddle, .leftMiddle]
 			)
+
+			if isFlipped {
+				let flipped = CGMutablePath()
+				flipped.addPath(pupilPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				return flipped
+			}
+			return pupilPath
 		}
 	}
 }
@@ -55,5 +96,7 @@ extension QRCode.PupilShape {
 public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.HexagonLeaf {
 	/// Create a hexagonal leaf pupil shape generator
 	/// - Returns: A pupil shape generator
-	@inlinable static func hexagonLeaf() -> QRCodePupilShapeGenerator { QRCode.PupilShape.HexagonLeaf() }
+	@inlinable static func hexagonLeaf(isFlipped: Bool = false) -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.HexagonLeaf(isFlipped: isFlipped)
+	}
 }

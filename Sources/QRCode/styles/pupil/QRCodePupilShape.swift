@@ -41,6 +41,8 @@ internal let PupilShapeSettingsName_ = "settings"
 	@objc static func Create(_ settings: [String: Any]?) -> any QRCodePupilShapeGenerator
 	/// Make a copy of this shape
 	@objc func copyShape() -> any QRCodePupilShapeGenerator
+	/// Reset the pupil shape generator back to defaults
+	@objc func reset()
 	/// Return a path representing the pupil
 	@objc func pupilPath() -> CGPath
 

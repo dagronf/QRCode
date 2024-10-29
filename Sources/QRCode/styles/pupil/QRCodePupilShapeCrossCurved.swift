@@ -34,9 +34,9 @@ public extension QRCode.PupilShape {
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { CrossCurved() }
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
-			CrossCurved()
-		}
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { CrossCurved() }
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() { }
 
 		// Settings
 

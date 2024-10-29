@@ -36,6 +36,8 @@ public extension QRCode.PupilShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator { BarsVertical() }
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() { }
 
 		@objc public func settings() -> [String : Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
@@ -69,6 +71,8 @@ public extension QRCode.PupilShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator { SquareBarsVertical() }
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() { }
 
 		@objc public func settings() -> [String : Any] { [:] }
 		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }

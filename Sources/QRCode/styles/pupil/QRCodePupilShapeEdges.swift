@@ -54,6 +54,10 @@ public extension QRCode.PupilShape {
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			Edges(cornerRadiusFraction: self.cornerRadiusFraction)
 		}
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self.cornerRadiusFraction = Self.DefaultCornerRadius
+		}
 
 		@objc public func settings() -> [String: Any] {
 			[ QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction ]

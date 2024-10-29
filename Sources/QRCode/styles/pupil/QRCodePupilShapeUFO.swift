@@ -54,6 +54,10 @@ public extension QRCode.PupilShape {
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			UFO(isFlipped: self.isFlipped)
 		}
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self.isFlipped = false
+		}
 
 		@objc public func settings() -> [String : Any] {
 			[QRCode.SettingsKey.isFlipped: self.isFlipped]

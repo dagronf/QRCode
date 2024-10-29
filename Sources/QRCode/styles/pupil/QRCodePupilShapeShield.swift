@@ -67,6 +67,10 @@ public extension QRCode.PupilShape {
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
 			Self.Create(self.settings())
 		}
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self.corners = .all
+		}
 
 		@objc public func settings() -> [String: Any] { [
 			QRCode.SettingsKey.corners: self.corners.rawValue
