@@ -431,6 +431,42 @@ public extension QRCode.Builder {
 			return self.backgroundColor(c)
 		}
 
+		/// Apply a inset generator to the on pixels if it supports inset
+		/// - Parameters:
+		///   - generator: The inset generator
+		///   - insetFraction: The inset fractional value (0.0 ... 1.0)
+		/// - Returns: self
+		@discardableResult public func inset(
+			_ generator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
+			insetFraction: CGFloat
+		) throws -> QRCode.Builder {
+			let insetFraction = insetFraction.clamped(to: 0.0 ... 1.0)
+			let onPixels = self.builder.document.design.shape.onPixels
+			if onPixels.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
+				_ = onPixels.setSettingValue(generator.name, forKey: QRCode.SettingsKey.insetGeneratorName)
+				_ = onPixels.setSettingValue(insetFraction, forKey: QRCode.SettingsKey.insetFraction)
+			}
+			return self.builder
+		}
+
+		/// Apply a rotation generator to the on pixels if it supports rotation
+		/// - Parameters:
+		///   - generator: The rotation generator
+		///   - rotationFraction: The rotation fractional value (-1.0 ... 1.0)
+		/// - Returns: self
+		@discardableResult public func rotate(
+			_ generator: QRCodePixelRotationGenerator = QRCode.PixelRotation.Fixed(),
+			rotationFraction: CGFloat
+		) throws -> QRCode.Builder {
+			let rotationFraction = rotationFraction.clamped(to: -1.0 ... 1.0)
+			let onPixels = self.builder.document.design.shape.onPixels
+			if onPixels.supportsSettingValue(forKey: QRCode.SettingsKey.rotationGeneratorName) {
+				_ = onPixels.setSettingValue(generator.name, forKey: QRCode.SettingsKey.rotationGeneratorName)
+				_ = onPixels.setSettingValue(rotationFraction, forKey: QRCode.SettingsKey.rotationFraction)
+			}
+			return self.builder
+		}
+
 		// Private
 		fileprivate let builder: QRCode.Builder
 		fileprivate init(builder: QRCode.Builder) { self.builder = builder }

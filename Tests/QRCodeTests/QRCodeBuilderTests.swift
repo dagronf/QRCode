@@ -153,4 +153,32 @@ final class QRCodeBuilderTests: XCTestCase {
 			.generate.svg(dimension: 800)
 		try outputFolder.write(defaultImage, to: "vortex-pattern.svg")
 	}
+
+	func testBuilderRotation() throws {
+		do {
+			let builder = try QRCode.build
+				.text("Fish and chips")
+				.errorCorrection(.high)
+				.onPixels.inset(insetFraction: 0.2)
+				.onPixels.rotate(QRCode.PixelRotation.HWave(), rotationFraction: 0.25)
+				.eye.shape(.usePixelShape())
+				.pupil.shape(.usePixelShape())
+
+			let image = try builder.generate.image(dimension: 800, representation: .png())
+			try outputFolder.write(image, to: "builder-generated-rotate1.png")
+		}
+
+		do {
+			let builder = try QRCode.build
+				.text("Fish and chips")
+				.errorCorrection(.high)
+				.onPixels.inset(insetFraction: 0.1)
+				.onPixels.rotate(rotationFraction: 0.125)
+				.eye.shape(.usePixelShape())
+				.pupil.shape(.usePixelShape())
+
+			let image = try builder.generate.svg(dimension: 800)
+			try outputFolder.write(image, to: "builder-generated-rotate2.svg")
+		}
+	}
 }
