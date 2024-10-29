@@ -65,8 +65,7 @@ internal extension QRCode.PixelShape {
 		///   - insetGenerator: The inset function to apply across the matrix
 		///   - insetFraction: The inset within the each pixel to generate the pixel's path (0 -> 1)
 		///   - rotationGenerator: The rotation function to apply across the matrix
-		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
-		///   - useRandomRotation: If true, randomly sets the rotation of each pixel within the range `0 ... rotationFraction`
+		///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
 		init(
 			pixelType: PixelType,
 			cornerRadiusFraction: CGFloat = 0,

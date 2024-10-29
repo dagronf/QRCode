@@ -386,6 +386,7 @@ Some pixel shapes support additional customization :-
 * Basic pixel insets
 * Pixel rotation
 * custom pixel insets using a [custom pixel inset generator](./Examples/pixel-inset-doco/pixel-inset-tests.md).
+* custom pixel rotations using a [custom pixel rotation generator](./Examples/pixel-rotation-doco/pixel-rotation-tests.md).
 
 #### Eye shape
 

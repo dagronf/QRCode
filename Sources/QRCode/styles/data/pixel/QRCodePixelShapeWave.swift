@@ -38,7 +38,7 @@ public extension QRCode.PixelShape {
 		///   - insetGenerator: The inset function to apply to each pixel
 		///   - insetFraction: The inset between each pixel
 		///   - rotationGenerator: The rotation function to apply to each pixel
-		///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
+		///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
 		@objc public init(
 			insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
 			insetFraction: CGFloat = 0,
@@ -199,7 +199,7 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Wave 
 	///   - insetGenerator: The inset generator
 	///   - insetFraction: The inset between each pixel
 	///   - rotationGenerator: The rotation generator
-	///   - rotationFraction: A rotation factor (0 -> 1) to apply to the rotation of each pixel
+	///   - rotationFraction: The (clockwise) rotation fraction (0 -> 1) to apply to the rotation of each pixel (0 -> 1)
 	/// - Returns: A pixel generator
 	@inlinable static func wave(
 		insetGenerator: QRCodePixelInsetGenerator = QRCode.PixelInset.Fixed(),
