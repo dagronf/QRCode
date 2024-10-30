@@ -180,6 +180,8 @@ public extension QRCode.Document {
 			return try self.svgData(dimension: dimension)
 		case let .tiff(dpi):
 			return try self.tiffData(dimension: dimension, dpi: dpi)
+		@unknown default:
+			throw QRCodeError.unsupportedExportType
 		}
 	}
 }

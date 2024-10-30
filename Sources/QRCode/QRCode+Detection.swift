@@ -39,6 +39,7 @@ public extension QRCode {
 			switch self {
 			case .low: return CIDetectorAccuracyLow
 			case .high: return CIDetectorAccuracyHigh
+			@unknown default: fatalError()
 			}
 		}
 	}
