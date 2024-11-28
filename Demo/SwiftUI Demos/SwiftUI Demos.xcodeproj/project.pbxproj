@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2376ED5E2CF7E43500D8FA4E /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 2376ED5D2CF7E43500D8FA4E /* QRCode */; };
 		23C952E7296B812D0020B18D /* SwiftUI_DemosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C952E6296B812D0020B18D /* SwiftUI_DemosApp.swift */; };
 		23C952E9296B812D0020B18D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C952E8296B812D0020B18D /* ContentView.swift */; };
 		23C952EB296B812E0020B18D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23C952EA296B812E0020B18D /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2376ED4E2CF7E42000D8FA4E /* QRCodeViewUI Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QRCodeViewUI Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C952E3296B812D0020B18D /* SwiftUI Demos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI Demos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C952E6296B812D0020B18D /* SwiftUI_DemosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_DemosApp.swift; sourceTree = "<group>"; };
 		23C952E8296B812D0020B18D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -24,7 +26,19 @@
 		23C952F5296B813A0020B18D /* QRCode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = QRCode; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2376ED4F2CF7E42000D8FA4E /* QRCodeViewUI Demo */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "QRCodeViewUI Demo"; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		2376ED4B2CF7E42000D8FA4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2376ED5E2CF7E43500D8FA4E /* QRCode in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23C952E0296B812D0020B18D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -41,6 +55,7 @@
 			children = (
 				23C952F5296B813A0020B18D /* QRCode */,
 				23C952E5296B812D0020B18D /* SwiftUI Demos */,
+				2376ED4F2CF7E42000D8FA4E /* QRCodeViewUI Demo */,
 				23C952E4296B812D0020B18D /* Products */,
 				23C952F6296B815A0020B18D /* Frameworks */,
 			);
@@ -50,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				23C952E3296B812D0020B18D /* SwiftUI Demos.app */,
+				2376ED4E2CF7E42000D8FA4E /* QRCodeViewUI Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +100,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2376ED4D2CF7E42000D8FA4E /* QRCodeViewUI Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2376ED5C2CF7E42100D8FA4E /* Build configuration list for PBXNativeTarget "QRCodeViewUI Demo" */;
+			buildPhases = (
+				2376ED4A2CF7E42000D8FA4E /* Sources */,
+				2376ED4B2CF7E42000D8FA4E /* Frameworks */,
+				2376ED4C2CF7E42000D8FA4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2376ED4F2CF7E42000D8FA4E /* QRCodeViewUI Demo */,
+			);
+			name = "QRCodeViewUI Demo";
+			packageProductDependencies = (
+				2376ED5D2CF7E43500D8FA4E /* QRCode */,
+			);
+			productName = "QRCodeViewUI Demo";
+			productReference = 2376ED4E2CF7E42000D8FA4E /* QRCodeViewUI Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		23C952E2296B812D0020B18D /* SwiftUI Demos */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23C952F2296B812E0020B18D /* Build configuration list for PBXNativeTarget "SwiftUI Demos" */;
@@ -111,9 +150,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
+					2376ED4D2CF7E42000D8FA4E = {
+						CreatedOnToolsVersion = 16.1;
+					};
 					23C952E2296B812D0020B18D = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -133,11 +175,19 @@
 			projectRoot = "";
 			targets = (
 				23C952E2296B812D0020B18D /* SwiftUI Demos */,
+				2376ED4D2CF7E42000D8FA4E /* QRCodeViewUI Demo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2376ED4C2CF7E42000D8FA4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23C952E1296B812D0020B18D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -150,6 +200,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2376ED4A2CF7E42000D8FA4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23C952DF296B812D0020B18D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,6 +219,93 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		2376ED5A2CF7E42100D8FA4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "QRCodeViewUI Demo/QRCodeViewUI_Demo.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCodeViewUI Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.QRCodeViewUI-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		2376ED5B2CF7E42100D8FA4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "QRCodeViewUI Demo/QRCodeViewUI_Demo.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QRCodeViewUI Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.QRCodeViewUI-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
 		23C952F0296B812E0020B18D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -350,6 +494,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2376ED5C2CF7E42100D8FA4E /* Build configuration list for PBXNativeTarget "QRCodeViewUI Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2376ED5A2CF7E42100D8FA4E /* Debug */,
+				2376ED5B2CF7E42100D8FA4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		23C952DE296B812D0020B18D /* Build configuration list for PBXProject "SwiftUI Demos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -371,6 +524,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2376ED5D2CF7E43500D8FA4E /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QRCode;
+		};
 		23C952F9296B815A0020B18D /* QRCodeStatic */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = QRCodeStatic;
