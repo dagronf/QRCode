@@ -209,6 +209,7 @@ final class ShadowTests: XCTestCase {
 
 		let doc = try QRCode.Document(utf8String: "Radial gradient", errorCorrection: .high)
 		doc.design.style.onPixels = rfill
+		doc.design.shape.eye = QRCode.EyeShape.RoundedRect(cornerRadiusFraction: 0.8)
 
 		try shadowTypes.forEach { shadowType in
 

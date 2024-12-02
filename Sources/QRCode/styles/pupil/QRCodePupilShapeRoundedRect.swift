@@ -27,26 +27,86 @@ import Foundation
 public extension QRCode.PupilShape {
 	/// A 'rounded rect' style pupil design
 	@objc(QRCodePupilShapeRoundedRect) class RoundedRect: NSObject, QRCodePupilShapeGenerator {
+		/// The generator name
 		@objc public static var Name: String { "roundedRect" }
 		/// The generator title
 		@objc public static var Title: String { "Rounded rectangle" }
+
+		/// Create an eye rounded rect shape from settings
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			RoundedRect()
+			let value = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? QRCode.PupilShape.RoundedRect.DefaultRadius
+			return QRCode.PupilShape.RoundedRect(cornerRadiusFraction: value)
 		}
 
-		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { RoundedRect() }
-		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { }
+		/// Default corner radius
+		@objc public static let DefaultRadius: CGFloat = 0.3
 
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		/// The fractional  corner radius (clamped to 0.0 ... 1.0)
+		@objc public var cornerRadiusFraction: CGFloat {
+			get { self._cornerRadiusFraction }
+			set { self._cornerRadiusFraction = newValue.unitClamped() }
+		}
+
+		/// Create a pupil shape generator
+		/// - Parameter cornerRadiusFraction: The corner radius to apply to the pupil shape
+		@objc public init(cornerRadiusFraction: Double = QRCode.PupilShape.RoundedRect.DefaultRadius) {
+			self._cornerRadiusFraction = cornerRadiusFraction.unitClamped()
+		}
+
+		// MARK: - Generator support
+
+		/// Make a copy of the generator
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
+			RoundedRect(cornerRadiusFraction: self._cornerRadiusFraction)
+		}
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self._cornerRadiusFraction = QRCode.PupilShape.RoundedRect.DefaultRadius
+		}
+
+		// MARK: - Settings support
+
+		// Return the pupil's settings
+		@objc public func settings() -> [String: Any] {[
+			QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction,
+		]}
+
+		/// Returns true if this generator supports the keyed setting
+		@objc public func supportsSettingValue(forKey key: String) -> Bool {
+			return key == QRCode.SettingsKey.cornerRadiusFraction
+		}
+
+		/// Set the value for the setting defined by `key`
+		/// - Parameters:
+		///   - value: The value for the setting
+		///   - key: The key defining the setting
+		/// - Returns: True if the setting was successful, false otherwise
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == QRCode.SettingsKey.cornerRadiusFraction,
+				let radius = DoubleValue(value)
+			{
+				self.cornerRadiusFraction = radius
+				return true
+			}
+			return false
+		}
+
+		// MARK: - Path generation
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
-			return CGPath(roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30), cornerWidth: 4, cornerHeight: 4, transform: nil)
+			return CGPath(
+				roundedRect: CGRect(x: 30, y: 30, width: 30, height: 30),
+				cornerWidth: 15 * cornerRadiusFraction * 0.9,
+				cornerHeight: 15 * cornerRadiusFraction * 0.9,
+				transform: nil
+			)
 		}
+
+		// MARK: - private
+
+		/// Unit radius value
+		private var _cornerRadiusFraction = QRCode.PupilShape.RoundedRect.DefaultRadius
 	}
 }
 

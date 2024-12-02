@@ -25,68 +25,119 @@ import Foundation
 public extension QRCode.EyeShape {
 	/// A 'rounded rect' style eye design
 	@objc(QRCodeEyeShapeRoundedRect) class RoundedRect: NSObject, QRCodeEyeShapeGenerator {
+		/// The generator name
 		@objc public static let Name = "roundedRect"
+		/// The generator title
 		@objc public static var Title: String { "Rounded rectangle" }
+
+		/// Create an eye rounded rect shape from settings
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
-			return QRCode.EyeShape.RoundedRect()
+			let value = DoubleValue(settings?[QRCode.SettingsKey.cornerRadiusFraction]) ?? QRCode.EyeShape.RoundedRect.DefaultRadius
+			return QRCode.EyeShape.RoundedRect(cornerRadiusFraction: value)
 		}
 
-		// Has no configurable settings
-		@objc public func settings() -> [String: Any] { return [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		/// The default corner radius for the eye
+		@objc public static let DefaultRadius: CGFloat = 0.3
 
-		/// Make a copy of the object
+		/// The fractional  corner radius (clamped to 0.0 ... 1.0)
+		@objc public var cornerRadiusFraction: CGFloat {
+			get { self._cornerRadiusFraction }
+			set {
+				self._cornerRadiusFraction = newValue.unitClamped()
+
+				// Pass the value down to the default pupil shape
+				_ = self._defaultPupil.cornerRadiusFraction = self._cornerRadiusFraction
+			}
+		}
+
+		/// Create a rounded rect eye shape
+		/// - Parameter cornerRadiusFraction: The fractional corner radius
+		@objc public init(cornerRadiusFraction: CGFloat = QRCode.EyeShape.RoundedRect.DefaultRadius) {
+			self._cornerRadiusFraction = cornerRadiusFraction.unitClamped()
+			self._defaultPupil.cornerRadiusFraction = cornerRadiusFraction.unitClamped()
+		}
+
+		// MARK: - Generator support
+
+		/// Make a copy of the generator
 		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
-			return Self.Create(self.settings())
+			QRCode.EyeShape.RoundedRect(cornerRadiusFraction: self._cornerRadiusFraction)
 		}
 
 		/// Reset the eye shape generator back to defaults
-		@objc public func reset() { }
+		@objc public func reset() {
+			self._cornerRadiusFraction = QRCode.EyeShape.RoundedRect.DefaultRadius
+		}
 
+		/// The default pupil shape to use with this eye shape
+		public func defaultPupil() -> any QRCodePupilShapeGenerator { self._defaultPupil }
+
+		// MARK: - Settings support
+
+		/// The eye generator settings
+		@objc public func settings() -> [String: Any] {[
+			QRCode.SettingsKey.cornerRadiusFraction: self.cornerRadiusFraction,
+		]}
+
+		/// Returns true if this generator supports the keyed setting
+		@objc public func supportsSettingValue(forKey key: String) -> Bool {
+			return key == QRCode.SettingsKey.cornerRadiusFraction
+		}
+
+		/// Set the value for the setting defined by `key`
+		/// - Parameters:
+		///   - value: The value for the setting
+		///   - key: The key defining the setting
+		/// - Returns: True if the setting was successful, false otherwise
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == QRCode.SettingsKey.cornerRadiusFraction,
+				let value = DoubleValue(value)
+			{
+				self.cornerRadiusFraction = value
+				_ = self.defaultPupil().setSettingValue(value, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+			}
+			return false
+		}
+
+		// MARK: - Path generation
+
+		private let _hFlipTransform = CGAffineTransform(scaleX: -1, y: 1)
+			.concatenating(CGAffineTransform.init(translationX: 90, y: 0))
+
+		/// The eye's path definition
 		public func eyePath() -> CGPath {
-			let roundedRectEyePath = CGMutablePath()
-			roundedRectEyePath.move(to: CGPoint(x: 65, y: 20))
-			roundedRectEyePath.line(to: CGPoint(x: 25, y: 20))
-			roundedRectEyePath.curve(to: CGPoint(x: 20, y: 25), controlPoint1: CGPoint(x: 22.24, y: 20), controlPoint2: CGPoint(x: 20, y: 22.24))
-			roundedRectEyePath.line(to: CGPoint(x: 20, y: 65))
-			roundedRectEyePath.curve(to: CGPoint(x: 25, y: 70), controlPoint1: CGPoint(x: 20, y: 67.76), controlPoint2: CGPoint(x: 22.24, y: 70))
-			roundedRectEyePath.line(to: CGPoint(x: 65, y: 70))
-			roundedRectEyePath.curve(to: CGPoint(x: 70, y: 65), controlPoint1: CGPoint(x: 67.76, y: 70), controlPoint2: CGPoint(x: 70, y: 67.76))
-			roundedRectEyePath.line(to: CGPoint(x: 70, y: 25))
-			roundedRectEyePath.curve(to: CGPoint(x: 65, y: 20), controlPoint1: CGPoint(x: 70, y: 22.24), controlPoint2: CGPoint(x: 67.76, y: 20))
-			roundedRectEyePath.close()
-			roundedRectEyePath.move(to: CGPoint(x: 80, y: 20))
-			roundedRectEyePath.line(to: CGPoint(x: 80, y: 70))
-			roundedRectEyePath.curve(to: CGPoint(x: 70, y: 80), controlPoint1: CGPoint(x: 80, y: 75.52), controlPoint2: CGPoint(x: 75.52, y: 80))
-			roundedRectEyePath.line(to: CGPoint(x: 20, y: 80))
-			roundedRectEyePath.curve(to: CGPoint(x: 10, y: 70), controlPoint1: CGPoint(x: 14.48, y: 80), controlPoint2: CGPoint(x: 10, y: 75.52))
-			roundedRectEyePath.line(to: CGPoint(x: 10, y: 20))
-			roundedRectEyePath.curve(to: CGPoint(x: 20, y: 10), controlPoint1: CGPoint(x: 10, y: 14.48), controlPoint2: CGPoint(x: 14.48, y: 10))
-			roundedRectEyePath.line(to: CGPoint(x: 70, y: 10))
-			roundedRectEyePath.curve(to: CGPoint(x: 80, y: 20), controlPoint1: CGPoint(x: 75.52, y: 10), controlPoint2: CGPoint(x: 80, y: 14.48))
-			roundedRectEyePath.close()
+			CGPath.make { path in
+				// The outer
+				let outerRadius = (70.0 / 2.0) * _cornerRadiusFraction
+				let outer = CGRect(x: 10, y: 10, width: 70, height: 70)
+				let outerPath = CGPath(roundedRect: outer, cornerWidth: outerRadius, cornerHeight: outerRadius, transform: nil)
+				path.addPath(outerPath)
 
-			return roundedRectEyePath
+				// The inner
+				// This needs to be order reversed so that it 'cuts out' the inner from the outer (eoFill)
+				// Easiest way to do this -- flip the inner path vertically and move back into place.
+				let innerRadius = max(0, outerRadius - 7.5)
+				let inner = CGRect(x: 20, y: 20, width: 50, height: 50)
+				let innerPath = CGPath(roundedRect: inner, cornerWidth: innerRadius, cornerHeight: innerRadius, transform: nil)
+				path.addPath(innerPath, transform: _hFlipTransform)
+			}
 		}
 
+		/// The background path for the eye
 		@objc public func eyeBackgroundPath() -> CGPath {
-			let roundedRectEye2Path = CGMutablePath()
-			roundedRectEye2Path.move(to: CGPoint(x: 90, y: 77.14))
-			roundedRectEye2Path.line(to: CGPoint(x: 90, y: 12.86))
-			roundedRectEye2Path.curve(to: CGPoint(x: 77.14, y: 0), controlPoint1: CGPoint(x: 90, y: 5.76), controlPoint2: CGPoint(x: 84.24, y: -0))
-			roundedRectEye2Path.line(to: CGPoint(x: 12.86, y: 0))
-			roundedRectEye2Path.curve(to: CGPoint(x: 0, y: 12.86), controlPoint1: CGPoint(x: 5.76, y: 0), controlPoint2: CGPoint(x: 0, y: 5.76))
-			roundedRectEye2Path.line(to: CGPoint(x: 0, y: 77.14))
-			roundedRectEye2Path.curve(to: CGPoint(x: 12.86, y: 90), controlPoint1: CGPoint(x: 0, y: 84.24), controlPoint2: CGPoint(x: 5.76, y: 90))
-			roundedRectEye2Path.line(to: CGPoint(x: 77.14, y: 90))
-			roundedRectEye2Path.curve(to: CGPoint(x: 90, y: 77.14), controlPoint1: CGPoint(x: 84.24, y: 90), controlPoint2: CGPoint(x: 90, y: 84.24))
-			roundedRectEye2Path.close()
-			return roundedRectEye2Path
+			CGPath.make { path in
+				let outerRadius = (90.0 / 2.0) * _cornerRadiusFraction.unitClamped()
+				let outer = CGRect(x: 0, y: 0, width: 90, height: 90)
+				let outerPath = CGPath(roundedRect: outer, cornerWidth: outerRadius, cornerHeight: outerRadius, transform: nil)
+				path.addPath(outerPath)
+			}
 		}
 
-		private static let _defaultPupil = QRCode.PupilShape.RoundedRect()
-		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
+		// MARK: - private
+		// The fractional corner radius (0.0 ... 1.0)
+		private var _cornerRadiusFraction: CGFloat = QRCode.EyeShape.RoundedRect.DefaultRadius
+		// The default pupil shape for this eye
+		private let _defaultPupil = QRCode.PupilShape.RoundedRect()
 	}
 }
 
