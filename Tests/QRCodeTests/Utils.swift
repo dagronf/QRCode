@@ -16,6 +16,21 @@ import UIKit
 typealias CommonImage = UIImage
 #endif
 
+/// Returns a string defining the OS that's currently being tested
+func OSString() -> String {
+#if os(watchOS)
+	"watchOS"
+#elseif os(macOS)
+	"macOS"
+#elseif os(iOS)
+	"iOS"
+#elseif os(tvOS)
+	"tvOS"
+#elseif os(visionOS)
+	"visionOS"
+#endif
+}
+
 extension CGPoint {
 	@inlinable static func _P(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x, y: y) }
 	@inlinable static func _P(_ x: Int, _ y: Int) -> CGPoint { CGPoint(x: x, y: y) }
