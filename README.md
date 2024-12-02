@@ -381,7 +381,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_vortex.png" width="60"/>           |"vortex"|`QRCode.PixelShape.Vortex`| Pixels wrap in rings within the code |
 |<img src="./Art/images/data_wave.png" width="60"/>             |"wave"|`QRCode.PixelShape.Wave`|A wave|
 
-Some pixel shapes support additional customization :-
+Some pixel shapes [support additional customization](./Documentation/shape-configuration-options/pixel-configuration-options/index.md) :-
 
 * Corner radius
 * Basic pixel insets
@@ -418,6 +418,12 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_ufo.png" width="60" />              | "ufo" |`QRCode.EyeShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
 |                                                               | "usePixelShape" |`QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
 
+Some eye shapes [support additional customization](./Documentation/shape-configuration-options/eye-configuration-options/index.md)
+
+* Corner radius
+* Configurable corners
+* Flippable
+
 #### Custom Pupil shape (optional)
 
 You can provide an override to the default `EyeShape` pupil shape to change just the shape of the pupil. There are built-in generators for square, circle, rounded rectangle, and more.
@@ -451,6 +457,12 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_teardrop.png" width="30" />              |"teardrop"|`QRCode.PixelShape.Teardrop` | A teardrop shape |
 |<img src="./Art/images/pupil_ufo.png" width="30" />                   |"ufo"|`QRCode.PixelShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
 |                                                                      |"usePixelShape"|`QRCode.PupilShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the pupils |
+
+Some pupil shapes [support additional customization](./Documentation/shape-configuration-options/pupil-configuration-options/index.md)
+
+* Corner radius
+* Configurable corners
+* Flippable
 
 <details>
 <summary>Example</summary>

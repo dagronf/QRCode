@@ -80,3 +80,36 @@ class TestFilesContainer {
 		}
 	}
 }
+
+class MarkdownContainer {
+	init(testName: String) {
+		self.outputFolder = try! testResultsContainer.subfolder(with: testName)
+		self.imagesFolder = try! outputFolder.subfolder(with: "images")
+		self.imageStore = ImageOutput(imagesFolder)
+	}
+
+	private var markdownText = ""
+	private let outputFolder: TestFilesContainer.Subfolder
+	private let imagesFolder: TestFilesContainer.Subfolder
+	private let imageStore: ImageOutput
+}
+
+extension MarkdownContainer {
+	static func +=(_ container: MarkdownContainer, _ text: String) {
+		container.add(text)
+	}
+
+	func add(_ text: String) {
+		self.markdownText += text
+	}
+
+	func add(filename: String, imageData: Data) throws -> String {
+		try imageStore.store(imageData, filename: filename)
+	}
+}
+
+extension MarkdownContainer {
+	func write() throws {
+		try outputFolder.write(markdownText, to: "index-\(OSString()).md", encoding: .utf8)
+	}
+}
