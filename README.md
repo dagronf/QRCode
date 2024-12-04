@@ -1003,8 +1003,8 @@ QRCodeViewUI(
    content: "This is a test",
    foregroundColor: CGColor(srgbRed: 1, green: 0.8, blue: 0.6, alpha: 1.0),
    backgroundColor: CGColor(srgbRed: 0.2, green: 0.2, blue: 0.8, alpha: 1.0),
-   pixelStyle: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true),
-   eyeStyle: QRCode.EyeShape.RoundedRect()
+   onPixelShape: QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.7, hasInnerCorners: true),
+   eyeShape: QRCode.EyeShape.RoundedRect()
 )
 ```
 
