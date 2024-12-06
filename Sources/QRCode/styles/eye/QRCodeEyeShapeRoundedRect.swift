@@ -108,18 +108,29 @@ public extension QRCode.EyeShape {
 		public func eyePath() -> CGPath {
 			CGPath.make { path in
 				// The outer
-				let outerRadius = (70.0 / 2.0) * _cornerRadiusFraction
 				let outer = CGRect(x: 10, y: 10, width: 70, height: 70)
+				let maxOuterRadius = outer.width / 2.0
+				let expectedOuterRadius = maxOuterRadius * self._cornerRadiusFraction
+				let outerRadius = expectedOuterRadius.clamped(to: 0 ... maxOuterRadius)
+
 				let outerPath = CGPath(roundedRect: outer, cornerWidth: outerRadius, cornerHeight: outerRadius, transform: nil)
 				path.addPath(outerPath)
 
 				// The inner
+				let inner = CGRect(x: 20, y: 20, width: 50, height: 50)
+				let maxInnerRadius = inner.width / 2.0
+				let expectedInnerRadius = outerRadius - 7.5
+
+				// Make sure we clamp to the maximum radius allowed (half of the rect) or else older versions can barf
+				let innerRadius = expectedInnerRadius.clamped(to: 0 ... maxInnerRadius)
+				let innerPath = CGPath(roundedRect: inner, cornerWidth: innerRadius, cornerHeight: innerRadius, transform: nil)
+
 				// This needs to be order reversed so that it 'cuts out' the inner from the outer (eoFill)
 				// Easiest way to do this -- flip the inner path vertically and move back into place.
-				let innerRadius = max(0, outerRadius - 7.5)
-				let inner = CGRect(x: 20, y: 20, width: 50, height: 50)
-				let innerPath = CGPath(roundedRect: inner, cornerWidth: innerRadius, cornerHeight: innerRadius, transform: nil)
+				// This method only works because the shape is completely symmetrical
 				path.addPath(innerPath, transform: _hFlipTransform)
+
+				path.closeSubpath()
 			}
 		}
 
