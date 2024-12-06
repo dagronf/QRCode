@@ -65,6 +65,8 @@ class ViewController: DSFAppKitBuilderViewController {
 		self.updateDisplay()
 	}
 
+	lazy var qrcodeDocumentView = QRCodeDocumentView(document: self.qrCode)
+
 	@IBAction func openDocument(_ sender: Any) {
 		let panel = NSOpenPanel()
 		panel.canChooseDirectories = false
@@ -92,9 +94,16 @@ class ViewController: DSFAppKitBuilderViewController {
 	override var viewBody: Element {
 		SplitView(isVertical: true) {
 			SplitViewItem {
-				View(sceneView)
-					.minWidth(300)
-					.minHeight(300)
+				TabView {
+					TabViewItem("Code") {
+						View(qrcodeDocumentView)
+					}
+					TabViewItem("3D") {
+						View(sceneView)
+					}
+				}
+				.minWidth(300)
+				.minHeight(300)
 			}
 
 			SplitViewItem {
@@ -106,21 +115,26 @@ class ViewController: DSFAppKitBuilderViewController {
 						}
 					}
 
-					ScrollView(borderType: .noBorder, fitHorizontally: true) {
-						VStack(spacing: 8) {
-							FakeBox("Pixel Styles") {
-								PixelStylesView(qrCode: self.qrCodeObject) { [weak self] in
-									self?.updateDisplay()
+					TabView {
+						TabViewItem("pixel") {
+							ScrollView(borderType: .noBorder, fitHorizontally: true) {
+								VStack(spacing: 8) {
+									PixelStylesView(qrCode: self.qrCodeObject) { [weak self] in
+										self?.updateDisplay()
+									}
 								}
 							}
-
-							FakeBox("Eye Styles") {
+						}
+						TabViewItem("eye") {
+							ScrollView(borderType: .noBorder, fitHorizontally: true) {
 								EyeStylesView(qrCode: self.qrCodeObject) { [weak self] in
 									self?.updateDisplay()
 								}
 							}
 
-							FakeBox("Pupil Styles") {
+						}
+						TabViewItem("pupil") {
+							ScrollView(borderType: .noBorder, fitHorizontally: true) {
 								PupilStylesView(qrCode: self.qrCodeObject) { [weak self] in
 									self?.updateDisplay()
 								}
@@ -161,6 +175,8 @@ class ViewController: DSFAppKitBuilderViewController {
 		mx.addPath(path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -1000))
 		qrCodeShape?.path = NSBezierPath(cgPath: mx)
 		qrBackgroundPlane?.cornerRadius = qrCode.design.style.backgroundFractionalCornerRadius * 1000
+
+		self.qrcodeDocumentView.document = self.qrCode
 	}
 
 	var qrCodeShape: SCNShape?

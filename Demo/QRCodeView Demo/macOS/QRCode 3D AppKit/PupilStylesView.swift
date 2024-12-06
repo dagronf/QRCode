@@ -64,6 +64,17 @@ class PupilStylesView: Element {
 
 			VStack(spacing: 4) {
 				HStack {
+					Label("Radius:").font(.callout)
+					Slider(pupilCornerRadius, range: 0 ... 1)
+						.controlSize(.small)
+						.bindIsEnabled(pupilCornerRadiusEnabled)
+						.onChange(of: pupilCornerRadius) { [weak self] newValue in
+							_ = self?.qrCode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.cornerRadiusFraction)
+							self?.update()
+						}
+				}
+
+				HStack {
 					Label("Flipped:").font(.callout)
 					Toggle()
 						.controlSize(.small)
@@ -114,6 +125,9 @@ class PupilStylesView: Element {
 		self.pupilHasInnerCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
 		self.pupilHasInnerCorners.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.hasInnerCorners) ?? false
 
+		self.pupilCornerRadiusEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
+		self.pupilCornerRadius.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) ?? 0.35
+
 		self.pupilSelectedCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
 		if let value: Int = item.settingsValue(forKey: QRCode.SettingsKey.corners) {
 			let opts = QRCode.Corners(rawValue: value)
@@ -151,6 +165,9 @@ class PupilStylesView: Element {
 
 	private lazy var pupilHasInnerCorners = ValueBinder(false)
 	private var pupilHasInnerCornersEnabled = ValueBinder(false)
+
+	private lazy var pupilCornerRadius = ValueBinder(0.65)
+	private var pupilCornerRadiusEnabled = ValueBinder(false)
 
 	private lazy var pupilSelectedCorners = ValueBinder(NSSet()) { newValue in
 		var value: Int = 0

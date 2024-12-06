@@ -98,50 +98,49 @@ class PixelStylesView: Element {
 					}
 				PopupButton {
 					MenuItem("Fixed")
+						.onAction { self.pixelInsetGeneratorName = "fixed" }
 					MenuItem("Random")
+						.onAction { self.pixelInsetGeneratorName = "random" }
 					MenuItem("Punch")
+						.onAction { self.pixelInsetGeneratorName = "punch" }
 					MenuItem("Wave-H")
+						.onAction { self.pixelInsetGeneratorName = "horizontalWave" }
 					MenuItem("Wave-V")
+						.onAction { self.pixelInsetGeneratorName = "verticalWave" }
 				}
-				.bindSelection(pixelInsetGenerator)
-				.bindIsEnabled(pixelRandomInsetEnabled)
+				.bindIsEnabled(pixelInsetEnabled)
 				.toolTip("Customize the inset")
-				.onChange(of: pixelInsetGenerator) { [weak self] newValue in
-					
-					let which: String = {
-						switch newValue {
-						case 0: return "fixed"
-						case 1: return "random"
-						case 2: return "punch"
-						case 3: return "horizontalWave"
-						case 4: return "verticalWave"
-						default: fatalError()
-						}
-					}()
-					
-					_ = self?.qrCode.design.shape.onPixels.setSettingValue(which, forKey: QRCode.SettingsKey.insetGeneratorName)
+				.onChange(of: $pixelInsetGeneratorName) { [weak self] newValue in
+					_ = self?.qrCode.design.shape.onPixels.setSettingValue(newValue, forKey: QRCode.SettingsKey.insetGeneratorName)
 					self?.update()
 				}
 			}
 
 			HStack {
 				Label("Rotation:").font(.callout)
-				Slider(pixelRotation, range: 0 ... 1)
+				Slider($pixelRotation, range: 0 ... 1)
 					.controlSize(.small)
-					.bindIsEnabled(pixelRotationEnabled)
-					.onChange(of: pixelRotation) { [weak self] newValue in
+					.bindIsEnabled($pixelRotationEnabled)
+					.onChange(of: $pixelRotation) { [weak self] newValue in
 						_ = self?.qrCode.design.shape.onPixels.setSettingValue(newValue, forKey: QRCode.SettingsKey.rotationFraction)
 						self?.update()
 					}
-				Button(title: "􀎮", type: .pushOnPushOff)
-					.toolTip("Randomize the pixel rotation")
-					.bindOnOffState(pixelRandomRotation)
-					.bindIsEnabled(pixelRandomRotationEnabled)
-					.width(40)
-					.onChange(of: pixelRandomRotation) { [weak self] newValue in
-						_ = self?.qrCode.design.shape.onPixels.setSettingValue(newValue, forKey: QRCode.SettingsKey.useRandomRotation)
-						self?.update()
-					}
+
+				PopupButton {
+					MenuItem("Fixed")
+						.onAction { self.pixelRotationGeneratorName = "fixed" }
+					MenuItem("Random")
+						.onAction { self.pixelRotationGeneratorName = "random" }
+					MenuItem("Wave-H")
+						.onAction { self.pixelRotationGeneratorName = "horizontalWave" }
+					MenuItem("Wave-V")
+						.onAction { self.pixelRotationGeneratorName = "verticalWave" }
+				}
+				.bindIsEnabled($pixelRotationEnabled)
+				.onChange(of: $pixelRotationGeneratorName) { [weak self] newvalue in
+					_ = self?.qrCode.design.shape.onPixels.setSettingValue(newvalue, forKey: QRCode.SettingsKey.rotationGeneratorName)
+					self?.update()
+				}
 			}
 		}
 	}
@@ -163,14 +162,12 @@ class PixelStylesView: Element {
 		self.pixelInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction)
 		self.pixelInset.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.insetFraction) ?? 0.1
 
-		self.pixelRandomInset.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.useRandomInset) ?? false
-		self.pixelRandomInsetEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomInset)
+		self.pixelInsetGeneratorName = item.settingsValue(forKey: QRCode.SettingsKey.insetGeneratorName)
+		self.pixelInsetGeneratorNameEnabled = item.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName)
 
-		self.pixelRotation.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.rotationFraction) ?? 0.0
-		self.pixelRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction)
-
-		self.pixelRandomRotation.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.useRandomRotation) ?? false
-		self.pixelRandomRotationEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.useRandomRotation)
+		//self.pixelRotationGeneratorName = item.settingsValue(forKey: QRCode.SettingsKey.rotationGeneratorName)
+		self.pixelRotation = item.settingsValue(forKey: QRCode.SettingsKey.rotationFraction) ?? 0.0
+		self.pixelRotationEnabled = item.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction)
 
 		if let i = QRCodePixelShapeFactory.shared.availableGeneratorNames.firstIndex(of: item.name) {
 			selectedPixelStyle.wrappedValue.activate(at: i)
@@ -194,19 +191,13 @@ class PixelStylesView: Element {
 	private lazy var pixelInnerCurves = ValueBinder(false)
 	private var pixelInnerCurvesEnabled = ValueBinder(false)
 
-	private lazy var pixelInset = ValueBinder(1.0)
-	private var pixelInsetEnabled = ValueBinder(false)
+	@ValueBinding private var pixelInset = ValueBinder(1.0)
+	@ValueBinding private var pixelInsetEnabled = ValueBinder(false)
+	@ValueBinding private var pixelInsetGeneratorName: String? = nil
+	@ValueBinding private var pixelInsetGeneratorNameEnabled: Bool = false
 
-	private lazy var pixelRandomInset = ValueBinder(false)
-	private var pixelRandomInsetEnabled = ValueBinder(false)
-
-	private lazy var pixelRotation = ValueBinder(1.0)
-	private var pixelRotationEnabled = ValueBinder(false)
-
-	private lazy var pixelRandomRotation = ValueBinder(false)
-	private var pixelRandomRotationEnabled = ValueBinder(false)
-
-	private lazy var pixelInsetGenerator = ValueBinder(0)
+	@ValueBinding private var pixelRotationEnabled = false
+	@ValueBinding private var pixelRotation = 1.0
+	@ValueBinding private var pixelRotationGeneratorName: String? = nil
+	@ValueBinding private var pixelRandomGeneratorNameEnabled = false
 }
-
-
