@@ -112,6 +112,9 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) {
 				settings += "• __Flippable__<br/>"
 			}
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.eyeInnerStyle) {
+				settings += "• __Configurable inner corners__<br/>"
+			}
 
 			if settings.count > 0 {
 				markdown += settings

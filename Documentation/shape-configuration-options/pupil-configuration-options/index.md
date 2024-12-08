@@ -20,6 +20,7 @@
 | <a href="./images/roundedRect.png"><img src="./images/roundedRect.png" width="50" /></a><br/>__roundedRect__ | • __Corner radius__<br/> |
 | <a href="./images/seal.png"><img src="./images/seal.png" width="50" /></a><br/>__seal__ | _No configurable settings_ |
 | <a href="./images/shield.png"><img src="./images/shield.png" width="50" /></a><br/>__shield__ | • __Configurable corners__<br/> |
+| <a href="./images/spikyCircle.png"><img src="./images/spikyCircle.png" width="50" /></a><br/>__spikyCircle__ | _No configurable settings_ |
 | <a href="./images/square.png"><img src="./images/square.png" width="50" /></a><br/>__square__ | _No configurable settings_ |
 | <a href="./images/barsHorizontalSquare.png"><img src="./images/barsHorizontalSquare.png" width="50" /></a><br/>__barsHorizontalSquare__ | _No configurable settings_ |
 | <a href="./images/barsVerticalSquare.png"><img src="./images/barsVerticalSquare.png" width="50" /></a><br/>__barsVerticalSquare__ | _No configurable settings_ |

@@ -85,6 +85,7 @@ import Foundation
 		QRCode.PixelShape.Arrow.self,
 		QRCode.PixelShape.Wave.self,
 		QRCode.PixelShape.Heart.self,
+		QRCode.PixelShape.SpikyCircle.self,
 		QRCode.PixelShape.Vortex.self
 	].sorted(by: { a, b in a.Title < b.Title })
 

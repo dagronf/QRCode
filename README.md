@@ -374,6 +374,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_roundedRect.png" width="60"/>      |"roundedRect"|`QRCode.PixelShape.RoundedRect`|A basic rounded rectangle pixel with configurable radius|
 |<img src="./Art/images/data_sharp.png" width="60"/>            |"sharp"|`QRCode.PixelShape.Sharp`|A 'sharp' style|
 |<img src="./Art/images/data_shiny.png" width="60" />           | "shiny" |`QRCode.PixelShape.Shiny` |A pixel style that appears 'shiny'|
+|<img src="./Art/images/data_spikyCircle.png" width="60"/>      |"spikyCircle"|`QRCode.PixelShape.SpikyCircle`|A circle with spikes|
 |<img src="./Art/images/data_square.png" width="60"/>           |"square"|`QRCode.PixelShape.Square`|A basic square pixel (default)|
 |<img src="./Art/images/data_squircle.png" width="60"/>         |"squircle"|`QRCode.PixelShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/data_star.png" width="60"/>             |"star"|`QRCode.PixelShape.Star`|A 'star' style|
@@ -411,6 +412,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_roundedpointingin.png" width="60"/> | "roundedPointingIn" |`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
 |<img src="./Art/images/eye_roundedRect.png" width="60"/>       | "roundedRect" |`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
 |<img src="./Art/images/eye_shield.png" width="60"/>            | "shield" |`QRCode.EyeShape.Shield`| A shield with configurable corners |
+|<img src="./Art/images/eye_spikyCircle.png" width="60"/>       | "spikyCircle" |`QRCode.EyeShape.SpikyCircle`|A circle with spikes|
 |<img src="./Art/images/eye_square.png" width="60"/>            | "square" |`QRCode.EyeShape.Square`|Simple square (default)|
 |<img src="./Art/images/eye_squarePeg.png" width="60"/>         | "squarePeg" |`QRCode.EyeShape.SquarePeg`|A rounded rect with a circular cutout|
 |<img src="./Art/images/eye_squircle.png" width="60"/>          | "squircle" |`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
@@ -450,6 +452,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_RoundedPointingIn.png" width="30"/>      |"roundedPointingIn"|`QRCode.PupilShape.RoundedPointingIn`|A rounded rect with the inner corner as a point|
 |<img src="./Art/images/pupil_roundedPointingOut.png" width="30"/>     |"roundedPointingOut"|`QRCode.PupilShape.RoundedPointingOut`|A rounded rect with the outer corner as a point|
 |<img src="./Art/images/pupil_roundedRect.png" width="30"/>            |"roundedRect"|`QRCode.PupilShape.RoundedRect`|Simple rounded rect|
+|<img src="./Art/images/pupil_spikyCircle.png" width="30"/>            |"spikyCircle"|`QRCode.PupilShape.SpikyCircle`|A circle with spikes|
 |<img src="./Art/images/pupil_Squircle.png" width="30"/>               |"squircle"|`QRCode.PupilShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
 |<img src="./Art/images/pupil_shield.png" width="30"/>                 |"shield"|`QRCode.PupilShape.Shield`|  A shield with configurable corners |
 |<img src="./Art/images/pupil_seal.png" width="30" />                  |"seal"|`QRCode.PixelShape.Seal` | A seal leaf shape |
