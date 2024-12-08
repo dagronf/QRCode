@@ -44,47 +44,21 @@ public extension QRCode.EyeShape {
 		@objc public func reset() { }
 
 		public func eyePath() -> CGPath {
-			let eyeShapePath = CGMutablePath()
-			eyeShapePath.move(to: CGPoint(x: 45, y: 70))
-			eyeShapePath.curve(to: CGPoint(x: 20, y: 45), controlPoint1: CGPoint(x: 31.19, y: 70), controlPoint2: CGPoint(x: 20, y: 58.81))
-			eyeShapePath.curve(to: CGPoint(x: 20, y: 31.56), controlPoint1: CGPoint(x: 20, y: 45), controlPoint2: CGPoint(x: 20, y: 38.11))
-			eyeShapePath.curve(to: CGPoint(x: 20, y: 20), controlPoint1: CGPoint(x: 20, y: 25.64), controlPoint2: CGPoint(x: 20, y: 20))
-			eyeShapePath.line(to: CGPoint(x: 45, y: 20))
-			eyeShapePath.curve(to: CGPoint(x: 70, y: 45), controlPoint1: CGPoint(x: 58.81, y: 20), controlPoint2: CGPoint(x: 70, y: 31.19))
-			eyeShapePath.curve(to: CGPoint(x: 45, y: 70), controlPoint1: CGPoint(x: 70, y: 58.81), controlPoint2: CGPoint(x: 58.81, y: 70))
-			eyeShapePath.close()
-			eyeShapePath.move(to: CGPoint(x: 80, y: 80))
-			eyeShapePath.curve(to: CGPoint(x: 80, y: 45), controlPoint1: CGPoint(x: 80, y: 80), controlPoint2: CGPoint(x: 80, y: 45))
-			eyeShapePath.curve(to: CGPoint(x: 45, y: 10), controlPoint1: CGPoint(x: 80, y: 25.67), controlPoint2: CGPoint(x: 64.33, y: 10))
-			eyeShapePath.line(to: CGPoint(x: 10, y: 10))
-			eyeShapePath.curve(to: CGPoint(x: 10, y: 15.78), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 10, y: 12.33))
-			eyeShapePath.curve(to: CGPoint(x: 10, y: 45), controlPoint1: CGPoint(x: 10, y: 25.72), controlPoint2: CGPoint(x: 10, y: 45))
-			eyeShapePath.curve(to: CGPoint(x: 45, y: 80), controlPoint1: CGPoint(x: 10, y: 64.33), controlPoint2: CGPoint(x: 25.67, y: 80))
-			eyeShapePath.line(to: CGPoint(x: 80, y: 80))
-			eyeShapePath.line(to: CGPoint(x: 80, y: 80))
-			eyeShapePath.close()
-			return eyeShapePath
+			coreEyeGenerator__.eyePath()
 		}
 
 		public func eyeBackgroundPath() -> CGPath {
-			let safeZonePath = CGMutablePath()
-			safeZonePath.move(to: CGPoint(x: 90, y: 90))
-			safeZonePath.curve(to: CGPoint(x: 90, y: 45), controlPoint1: CGPoint(x: 90, y: 90), controlPoint2: CGPoint(x: 90, y: 45))
-			safeZonePath.curve(to: CGPoint(x: 45, y: 0), controlPoint1: CGPoint(x: 90, y: 20.15), controlPoint2: CGPoint(x: 69.85, y: 0))
-			safeZonePath.line(to: CGPoint(x: 0, y: 0))
-			safeZonePath.line(to: CGPoint(x: 0, y: 45))
-			safeZonePath.curve(to: CGPoint(x: 45, y: 90), controlPoint1: CGPoint(x: 0, y: 69.85), controlPoint2: CGPoint(x: 20.15, y: 90))
-			safeZonePath.line(to: CGPoint(x: 90, y: 90))
-			safeZonePath.line(to: CGPoint(x: 90, y: 90))
-			safeZonePath.close()
-
-			let n = CGMutablePath()
-			n.addPath(safeZonePath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
-			return n
+			coreEyeGenerator__.eyeBackgroundPath()
 		}
 		
-		private static let _defaultPupil = QRCode.PupilShape.Teardrop()
-		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
+		public func defaultPupil() -> any QRCodePupilShapeGenerator {
+			corePupilGenerator__
+		}
+
+		/// The eye generator
+		private let coreEyeGenerator__ = QRCode.EyeShape.Eye(eyeInnerStyle: .rightOnly)
+		/// The pupil generator
+		private let corePupilGenerator__ = QRCode.PupilShape.Teardrop()
 	}
 }
 
