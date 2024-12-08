@@ -30,25 +30,59 @@ public extension QRCode.PupilShape {
 		@objc public static var Name: String { "leaf" }
 		/// The generator title
 		@objc public static var Title: String { "Leaf" }
+
+		/// Create a pupil generator
+		/// - Parameter settings: The settings to apply to the pupil
+		/// - Returns: A new pupil generator
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			Leaf()
+			Leaf(settings: settings)
+		}
+
+		/// Is the pupil shape flipped?
+		@objc public var isFlipped: Bool = false
+
+		/// Create a pupil
+		/// - Parameter isFlipped: Flip the shape
+		@objc public init(isFlipped: Bool = false) {
+			self.isFlipped = isFlipped
+			super.init()
+		}
+
+		/// Create a navigator pupil shape using the specified settings
+		@objc public init(settings: [String: Any]?) {
+			super.init()
+			settings?.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { Leaf() }
-		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
+			Leaf(isFlipped: self.isFlipped)
+		}
 
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() { self.isFlipped = false }
+
+		@objc public func settings() -> [String : Any] {
+			[QRCode.SettingsKey.isFlipped: self.isFlipped]
+		}
+		@objc public func supportsSettingValue(forKey key: String) -> Bool {
+			key == QRCode.SettingsKey.isFlipped
+		}
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == QRCode.SettingsKey.isFlipped {
+				self.isFlipped = BoolValue(value) ?? false
+			}
+			return false
+		}
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				cornerRadius: 6,
-				byRoundingCorners: [.topRight, .bottomLeft]
+				byRoundingCorners: self.isFlipped ? [.bottomRight, .topLeft] : [.topRight, .bottomLeft]
 			)
 			return roundedPupil
 		}
