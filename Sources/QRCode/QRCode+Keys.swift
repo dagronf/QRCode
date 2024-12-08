@@ -45,8 +45,16 @@ public extension QRCode {
 		@objc public static let corners = "corners"
 		/// Settings key for 'additionalQuietSpace'
 		@objc public static let additionalQuietZonePixels = "additionalQuietZonePixels"
+
 		/// Settings key for 'isFlipped'
 		@objc public static let isFlipped = "isFlipped"
+
+		///
+		@objc public static let eyeInnerStyle = "eyeInnerStyle"
+
+
+		/// Settings key for 'Flip' (QRCode.Flip)
+		@objc public static let flip = "Flip"
 	}
 }
 

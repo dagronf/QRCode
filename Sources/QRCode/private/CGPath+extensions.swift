@@ -28,9 +28,12 @@ import CoreGraphics
 
 extension CGPath {
 	/// Convenience for creating a CGPath
-	static func make(_ block: (CGMutablePath) -> Void) -> CGPath {
+	static func make(forceClosePath: Bool = false, _ block: (CGMutablePath) -> Void) -> CGPath {
 		let pth = CGMutablePath()
 		block(pth)
+		if forceClosePath {
+			pth.closeSubpath()
+		}
 		return pth
 	}
 

@@ -31,17 +31,61 @@ public extension QRCode.PupilShape {
 		/// The generator title
 		@objc public static var Title: String { "Teardrop" }
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			Teardrop()
+			Teardrop(settings: settings)
+		}
+
+		/// Create a teardrop shape pupil
+		/// - Parameter flip: The flip state for the pupil
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
+			super.init()
+		}
+
+		/// Create a pupil shape using the specified settings
+		@objc public init(settings: [String: Any]?) {
+			super.init()
+			settings?.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { Teardrop() }
-		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
+			Teardrop(flip: self.flip)
+		}
 
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		/// Reset the pupil shape generator back to defaults
+		@objc public func reset() {
+			self.flip = .none
+		}
+
+		/// Available settings for the ppupil
+		@objc public func settings() -> [String : Any] {
+			[QRCode.SettingsKey.flip: self.flip.rawValue]
+		}
+
+		/// Returns true if the generator supports settings values for the given key
+		@objc public func supportsSettingValue(forKey key: String) -> Bool {
+			key == QRCode.SettingsKey.flip
+		}
+
+		/// Set the key's value in the generator
+		/// - Parameters:
+		///   - value: The value to set
+		///   - key: The setting key
+		/// - Returns: True if the setting was able to be change, false otherwise
+		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+			if key == QRCode.SettingsKey.flip,
+				let which = IntValue(value)
+			{
+				self.flip = QRCode.Flip(rawValue: which) ?? .none
+				return true
+			}
+			return false
+		}
+
+		/// Flip the pupil shape
+		@objc public var flip: QRCode.Flip = .none
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
@@ -53,7 +97,23 @@ public extension QRCode.PupilShape {
 			pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 30, y: 53.28), controlPoint2: CGPoint(x: 36.72, y: 60))
 			pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 53.28, y: 60), controlPoint2: CGPoint(x: 60, y: 53.28))
 			pupilPath.close()
-			return pupilPath
+
+			switch self.flip {
+			case .none:
+				return pupilPath
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
 		}
 	}
 }

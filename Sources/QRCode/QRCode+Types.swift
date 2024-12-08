@@ -41,3 +41,17 @@ public extension QRCode {
 		public init(rawValue: Int) { self.rawValue = rawValue }
 	}
 }
+
+public extension QRCode {
+	/// Flip
+	@objc enum Flip: Int {
+		/// No Flip
+		case none
+		/// Flip along the horizontal axis
+		case horizontally = 1
+		/// Flip along the vertical axis
+		case vertically = 2
+		/// Flip along both axes
+		case both = 3
+	}
+}
