@@ -84,7 +84,8 @@ import Foundation
 		QRCode.EyeShape.UFO.self,
 		QRCode.EyeShape.Pinch.self,
 		QRCode.EyeShape.CRT.self,
-		QRCode.EyeShape.SquarePeg.self
+		QRCode.EyeShape.SquarePeg.self,
+		QRCode.EyeShape.Eye.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 }
