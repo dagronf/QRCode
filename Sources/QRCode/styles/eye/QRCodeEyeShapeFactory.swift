@@ -39,7 +39,9 @@ import Foundation
 
 	/// Return all of the eye generators (with default settings) in name sorted order
 	@objc public func all() -> [any QRCodeEyeShapeGenerator] {
-		self.registeredTypes.map { $0.Create(nil) }
+		self.registeredTypes
+			.map { $0.Create(nil) }
+			.sorted(by: { a, b in a.name < b.name })
 	}
 
 	/// Return a new instance of an eye shape generator with the specified name and optional settings

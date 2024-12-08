@@ -39,7 +39,9 @@ import Foundation
 
 	/// Return all of the pixel generators (with default settings) in name sorted order
 	@objc public func all() -> [any QRCodePixelShapeGenerator] {
-		self.registeredTypes.map { $0.Create(nil) }
+		self.registeredTypes
+			.map { $0.Create(nil) }
+			.sorted(by: { a, b in a.name < b.name })
 	}
 
 	/// Return a new instance of the data shape generator with the specified name and optional settings

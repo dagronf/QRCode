@@ -403,6 +403,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    | "corneredPixels" |`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
 |<img src="./Art/images/eye_crt.png" width="60"/>               | "crt" |`QRCode.EyeShape.CRT`| A CRT shape |
 |<img src="./Art/images/eye_edges.png" width="60"/>             | "edges" |`QRCode.EyeShape.Edges`| Simple bordered bars with a configurable corner radius |
+|<img src="./Art/images/eye_eye.png" width="60"/>               | "eye" |`QRCode.EyeShape.Eye`| Simple eye shape |
 |<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
 |<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" |`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/eye_peacock.png" width="60" />          | "peacock" |`QRCode.EyeShape.Peacock` | A peacock-eye style shape |

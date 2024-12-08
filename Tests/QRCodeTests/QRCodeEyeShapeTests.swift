@@ -120,7 +120,7 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 				markdown += settings
 			}
 			else {
-				markdown += "_No configurable settings_"
+				markdown += "_none_"
 			}
 
 			markdown += " |\n"
@@ -193,7 +193,7 @@ final class QRCodePixelShapeConfigurationTests: XCTestCase {
 				markdown += settings
 			}
 			else {
-				markdown += "_No configurable settings_"
+				markdown += "_none_"
 			}
 
 			markdown += " |\n"
@@ -252,7 +252,7 @@ final class QRCodePupilShapeConfigurationTests: XCTestCase {
 				markdown += settings
 			}
 			else {
-				markdown += "_No configurable settings_"
+				markdown += "_none_"
 			}
 
 			markdown += " |\n"
