@@ -89,6 +89,7 @@ import Foundation
 		QRCode.EyeShape.SquarePeg.self,
 		QRCode.EyeShape.Eye.self,
 		QRCode.EyeShape.SpikyCircle.self,
+		QRCode.EyeShape.Explode.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 }

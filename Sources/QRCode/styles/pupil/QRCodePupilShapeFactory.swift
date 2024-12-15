@@ -93,6 +93,7 @@ import CoreGraphics
 			QRCode.PupilShape.SquareBarsVertical.self,
 			QRCode.PupilShape.SpikyCircle.self,
 			QRCode.PupilShape.Forest.self,
+			QRCode.PupilShape.Explode.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 
