@@ -445,6 +445,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_cross.png" width="30"/>                  |"cross"|`QRCode.PupilShape.Cross`| A cross |
 |<img src="./Art/images/pupil_crossCurved.png" width="30"/>            |"crossCurved"|`QRCode.PupilShape.CrossCurved`| A cross with curved insets |
 |<img src="./Art/images/pupil_crt.png" width="30"/>                    |"crt"|`QRCode.PupilShape.CRT`| A CRT shape |
+|<img src="./Art/images/pupil_forest.png" width="30" />                |"forest"|`QRCode.PixelShape.Forest` | A more rounded leaf style |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />           |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
 |<img src="./Art/images/pupil_Leaf.png" width="30"/>                   |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/pupil_pinch.png" width="30"/>                  |"pinch"|`QRCode.PupilShape.Pinch`| A square pinched in at the sides |

@@ -109,7 +109,8 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 				settings += "• __Configurable corners__<br/>"
 			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) {
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 				settings += "• __Flippable__<br/>"
 			}
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.eyeInnerStyle) {
@@ -172,7 +173,8 @@ final class QRCodePixelShapeConfigurationTests: XCTestCase {
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 				settings += "• __Configurable corners__<br/>"
 			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) {
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 				settings += "• __Flippable__<br/>"
 			}
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
@@ -244,7 +246,8 @@ final class QRCodePupilShapeConfigurationTests: XCTestCase {
 			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 				settings += "• __Configurable corners__<br/>"
 			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) {
+			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 				settings += "• __Flippable__<br/>"
 			}
 

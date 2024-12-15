@@ -13,6 +13,7 @@
 | <a href="./images/crossCurved.png"><img src="./images/crossCurved.png" width="50" /></a><br/>__crossCurved__ | _none_ |
 | <a href="./images/crt.png"><img src="./images/crt.png" width="50" /></a><br/>__crt__ | _none_ |
 | <a href="./images/edges.png"><img src="./images/edges.png" width="50" /></a><br/>__edges__ | • __Corner radius__<br/> |
+| <a href="./images/forest.png"><img src="./images/forest.png" width="50" /></a><br/>__forest__ | • __Flippable__<br/> |
 | <a href="./images/hexagonLeaf.png"><img src="./images/hexagonLeaf.png" width="50" /></a><br/>__hexagonLeaf__ | • __Flippable__<br/> |
 | <a href="./images/leaf.png"><img src="./images/leaf.png" width="50" /></a><br/>__leaf__ | • __Flippable__<br/> |
 | <a href="./images/pinch.png"><img src="./images/pinch.png" width="50" /></a><br/>__pinch__ | _none_ |
@@ -26,6 +27,6 @@
 | <a href="./images/spikyCircle.png"><img src="./images/spikyCircle.png" width="50" /></a><br/>__spikyCircle__ | _none_ |
 | <a href="./images/square.png"><img src="./images/square.png" width="50" /></a><br/>__square__ | _none_ |
 | <a href="./images/squircle.png"><img src="./images/squircle.png" width="50" /></a><br/>__squircle__ | _none_ |
-| <a href="./images/teardrop.png"><img src="./images/teardrop.png" width="50" /></a><br/>__teardrop__ | _none_ |
+| <a href="./images/teardrop.png"><img src="./images/teardrop.png" width="50" /></a><br/>__teardrop__ | • __Flippable__<br/> |
 | <a href="./images/ufo.png"><img src="./images/ufo.png" width="50" /></a><br/>__ufo__ | • __Flippable__<br/> |
 | <a href="./images/usePixelShape.png"><img src="./images/usePixelShape.png" width="50" /></a><br/>__usePixelShape__ | _none_ |
