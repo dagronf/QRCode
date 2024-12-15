@@ -21,13 +21,13 @@ import CoreGraphics
 import Foundation
 
 extension QRCode.PupilShape {
-	/// A pinch leaf pupil design
+	/// An orbits leaf pupil design
 	@objc(QRCodePupilShapeOrbits) public class Orbits: NSObject, QRCodePupilShapeGenerator {
 		/// Generator name
 		@objc public static var Name: String { "orbits" }
 		/// Generator title
 		@objc public static var Title: String { "Orbits" }
-		/// Create a hexagon leaf pupil shape, using the specified settings
+		/// Create a  leaf pupil shape, using the specified settings
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { Orbits() }
 
 		/// Make a copy of the object
