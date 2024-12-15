@@ -450,6 +450,7 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_barsHorizontalSquare.png" width="30"/>   |"barsHorizontalSquare"|`QRCode.PupilShape.BarsHorizontalSquare`| Three horizontal bars |
 |<img src="./Art/images/pupil_barsVertical.png" width="30"/>           |"barsVertical"|`QRCode.PupilShape.BarsVertical`| Three vertical bars with rounded edges |
 |<img src="./Art/images/pupil_barsVerticalSquare.png" width="30"/>     |"barsVerticalSquare"|`QRCode.PupilShape.BarsVerticalSquare`| Tthree vertical bars |
+|<img src="./Art/images/pupil_blade.png" width="30" />                 |"blade"|`QRCode.PixelShape.Blade` | A circular saw blade shape |
 |<img src="./Art/images/pupil_blobby.png" width="30" />                |"blobby"|`QRCode.PixelShape.Blobby` | A blobby shape |
 |<img src="./Art/images/pupil_Circle.png" width="30"/>                 |"circle"|`QRCode.PupilShape.Circle`|Simple circle|
 |<img src="./Art/images/pupil_corneredPixels.png" width="30"/>         |"corneredPixels"|`QRCode.PupilShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape |

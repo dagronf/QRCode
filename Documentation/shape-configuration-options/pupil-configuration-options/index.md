@@ -6,6 +6,7 @@
 | <a href="./images/barsHorizontalSquare.png"><img src="./images/barsHorizontalSquare.png" width="50" /></a><br/>__barsHorizontalSquare__ | _none_ |
 | <a href="./images/barsVertical.png"><img src="./images/barsVertical.png" width="50" /></a><br/>__barsVertical__ | _none_ |
 | <a href="./images/barsVerticalSquare.png"><img src="./images/barsVerticalSquare.png" width="50" /></a><br/>__barsVerticalSquare__ | _none_ |
+| <a href="./images/blade.png"><img src="./images/blade.png" width="50" /></a><br/>__blade__ | _none_ |
 | <a href="./images/blobby.png"><img src="./images/blobby.png" width="50" /></a><br/>__blobby__ | _none_ |
 | <a href="./images/circle.png"><img src="./images/circle.png" width="50" /></a><br/>__circle__ | _none_ |
 | <a href="./images/corneredPixels.png"><img src="./images/corneredPixels.png" width="50" /></a><br/>__corneredPixels__ | • __Corner radius__<br/> |
