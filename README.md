@@ -461,7 +461,8 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_explode.png" width="30" />               |"explode"|`QRCode.PixelShape.Explode` | AAn explode style |
 |<img src="./Art/images/pupil_forest.png" width="30" />                |"forest"|`QRCode.PixelShape.Forest` | A more rounded leaf style |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />           |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
-|<img src="./Art/images/pupil_Leaf.png" width="30"/>                   |"leaf"|`QRCode.PupilShape.Leaf`|An eye that look like a leaf|
+|<img src="./Art/images/pupil_Leaf.png" width="30"/>                   |"leaf"|`QRCode.PupilShape.Leaf`| An pupil that look like a leaf|
+|<img src="./Art/images/pupil_orbits.png" width="30"/>                 |"orbits"|`QRCode.PupilShape.Orbits`| A rounded plus shape|
 |<img src="./Art/images/pupil_pinch.png" width="30"/>                  |"pinch"|`QRCode.PupilShape.Pinch`| A square pinched in at the sides |
 |<img src="./Art/images/pupil_pixels.png" width="30"/>                 |"pixels"|`QRCode.PupilShape.Pixel`| A simple collection of pixels with configurable corner radius for each pixel |
 |<img src="./Art/images/pupil_RoundedOuter.png" width="30"/>           |"roundedOuter"|`QRCode.PupilShape.RoundedOuter`|Square with the outer corner rounded|

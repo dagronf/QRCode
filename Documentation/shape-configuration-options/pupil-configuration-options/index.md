@@ -19,6 +19,7 @@
 | <a href="./images/forest.png"><img src="./images/forest.png" width="50" /></a><br/>__forest__ | • __Flippable__<br/> |
 | <a href="./images/hexagonLeaf.png"><img src="./images/hexagonLeaf.png" width="50" /></a><br/>__hexagonLeaf__ | • __Flippable__<br/> |
 | <a href="./images/leaf.png"><img src="./images/leaf.png" width="50" /></a><br/>__leaf__ | • __Flippable__<br/> |
+| <a href="./images/orbits.png"><img src="./images/orbits.png" width="50" /></a><br/>__orbits__ | _none_ |
 | <a href="./images/pinch.png"><img src="./images/pinch.png" width="50" /></a><br/>__pinch__ | _none_ |
 | <a href="./images/pixels.png"><img src="./images/pixels.png" width="50" /></a><br/>__pixels__ | • __Corner radius__<br/> |
 | <a href="./images/roundedOuter.png"><img src="./images/roundedOuter.png" width="50" /></a><br/>__roundedOuter__ | _none_ |
