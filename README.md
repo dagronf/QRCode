@@ -360,6 +360,7 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 
 | Preview | Name | Class | Description |
 |---|---|---|---|
+|<img src="./Art/images/data_abstract.png" width="60"/>         |"abstract"|`QRCode.PixelShape.Abstract`|Abstract curved pixels|
 |<img src="./Art/images/data_arrow.png" width="60"/>            |"arrow"|`QRCode.PixelShape.Arrow`|An arrow|
 |<img src="./Art/images/data_blob.png" width="60"/>             |"blob"|`QRCode.PixelShape.Blob`|A blobby style|
 |<img src="./Art/images/data_circle.png" width="60"/>           |"circle"|`QRCode.PixelShape.Circle`|A basic circle pixel|

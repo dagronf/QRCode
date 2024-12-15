@@ -92,6 +92,7 @@ import Foundation
 		QRCode.PixelShape.Grid2x2.self,
 		QRCode.PixelShape.Grid3x3.self,
 		QRCode.PixelShape.Grid4x4.self,
+		QRCode.PixelShape.Abstract.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images

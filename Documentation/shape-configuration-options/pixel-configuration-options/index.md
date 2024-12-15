@@ -2,6 +2,7 @@
 
 |  Pixel Shape  |  Options  |
 |:-------------:|-----------|
+| <a href="./images/abstract.png"><img src="./images/abstract.png" width="75" /></a><br/>__abstract__ | _none_ |
 | <a href="./images/arrow.png"><img src="./images/arrow.png" width="75" /></a><br/>__arrow__ | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="./images/blob.png"><img src="./images/blob.png" width="75" /></a><br/>__blob__ | _none_ |
 | <a href="./images/circle.png"><img src="./images/circle.png" width="75" /></a><br/>__circle__ | • __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
