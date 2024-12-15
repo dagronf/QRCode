@@ -8,6 +8,7 @@
 | <a href="./images/corneredPixels.png"><img src="./images/corneredPixels.png" width="75" /></a><br/>corneredPixels | • __Corner radius__<br/> |
 | <a href="./images/crt.png"><img src="./images/crt.png" width="75" /></a><br/>crt | _none_ |
 | <a href="./images/edges.png"><img src="./images/edges.png" width="75" /></a><br/>edges | • __Corner radius__<br/> |
+| <a href="./images/explode.png"><img src="./images/explode.png" width="75" /></a><br/>explode | _none_ |
 | <a href="./images/eye.png"><img src="./images/eye.png" width="75" /></a><br/>eye | • __Flippable__<br/>• __Configurable inner corners__<br/> |
 | <a href="./images/fireball.png"><img src="./images/fireball.png" width="75" /></a><br/>fireball | _none_ |
 | <a href="./images/leaf.png"><img src="./images/leaf.png" width="75" /></a><br/>leaf | _none_ |
