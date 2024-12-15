@@ -7,6 +7,8 @@
 | <a href="./images/circle.png"><img src="./images/circle.png" width="75" /></a><br/>circle | _none_ |
 | <a href="./images/corneredPixels.png"><img src="./images/corneredPixels.png" width="75" /></a><br/>corneredPixels | • __Corner radius__<br/> |
 | <a href="./images/crt.png"><img src="./images/crt.png" width="75" /></a><br/>crt | _none_ |
+| <a href="./images/dotDragHorizontal.png"><img src="./images/dotDragHorizontal.png" width="75" /></a><br/>dotDragHorizontal | _none_ |
+| <a href="./images/dotDragVertical.png"><img src="./images/dotDragVertical.png" width="75" /></a><br/>dotDragVertical | _none_ |
 | <a href="./images/edges.png"><img src="./images/edges.png" width="75" /></a><br/>edges | • __Corner radius__<br/> |
 | <a href="./images/explode.png"><img src="./images/explode.png" width="75" /></a><br/>explode | _none_ |
 | <a href="./images/eye.png"><img src="./images/eye.png" width="75" /></a><br/>eye | • __Flippable__<br/>• __Configurable inner corners__<br/> |

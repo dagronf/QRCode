@@ -12,6 +12,8 @@
 | <a href="./images/cross.png"><img src="./images/cross.png" width="50" /></a><br/>__cross__ | _none_ |
 | <a href="./images/crossCurved.png"><img src="./images/crossCurved.png" width="50" /></a><br/>__crossCurved__ | _none_ |
 | <a href="./images/crt.png"><img src="./images/crt.png" width="50" /></a><br/>__crt__ | _none_ |
+| <a href="./images/dotDragHorizontal.png"><img src="./images/dotDragHorizontal.png" width="50" /></a><br/>__dotDragHorizontal__ | _none_ |
+| <a href="./images/dotDragVertical.png"><img src="./images/dotDragVertical.png" width="50" /></a><br/>__dotDragVertical__ | _none_ |
 | <a href="./images/edges.png"><img src="./images/edges.png" width="50" /></a><br/>__edges__ | • __Corner radius__<br/> |
 | <a href="./images/explode.png"><img src="./images/explode.png" width="50" /></a><br/>__explode__ | _none_ |
 | <a href="./images/forest.png"><img src="./images/forest.png" width="50" /></a><br/>__forest__ | • __Flippable__<br/> |

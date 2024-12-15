@@ -409,6 +409,8 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_circle.png" width="60"/>            | "circle" |`QRCode.EyeShape.Circle`|Simple circle|
 |<img src="./Art/images/eye_corneredPixels.png" width="60"/>    | "corneredPixels" |`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
 |<img src="./Art/images/eye_crt.png" width="60"/>               | "crt" |`QRCode.EyeShape.CRT`| A CRT shape |
+|<img src="./Art/images/eye_dotDragHorizontal.png" width="60"/> | "dotDragHorizontal" |`QRCode.EyeShape.DotDragHorizontal`| A horizontal bar and dot shape |
+|<img src="./Art/images/eye_dotDragVertical.png" width="60"/>   | "dotDragVertical" |`QRCode.EyeShape.DotDragVertical`| A vertical bar and dot shape |
 |<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
 |<img src="./Art/images/eye_explode.png" width="60"/>           | "explode" |`QRCode.EyeShape.Explode`| Explode style |
 |<img src="./Art/images/eye_eye.png" width="60"/>               | "eye" |`QRCode.EyeShape.Eye`| Simple eye shape |
@@ -453,6 +455,8 @@ If you don't override the pupil shape, it defaults to the eye shape's pupil shap
 |<img src="./Art/images/pupil_cross.png" width="30"/>                  |"cross"|`QRCode.PupilShape.Cross`| A cross |
 |<img src="./Art/images/pupil_crossCurved.png" width="30"/>            |"crossCurved"|`QRCode.PupilShape.CrossCurved`| A cross with curved insets |
 |<img src="./Art/images/pupil_crt.png" width="30"/>                    |"crt"|`QRCode.PupilShape.CRT`| A CRT shape |
+|<img src="./Art/images/pupil_dotDragHorizontal.png" width="30"/>      |"dotDragHorizontal" |`QRCode.PupilShape.DotDragHorizontal`| A horizontal bar and dot shape |
+|<img src="./Art/images/pupil_dotDragVertical.png" width="30"/>        |"dotDragVertical"   |`QRCode.PupilShape.DotDragVertical`  | A vertical bar and dot shape |
 |<img src="./Art/images/pupil_explode.png" width="30" />               |"explode"|`QRCode.PixelShape.Explode` | AAn explode style |
 |<img src="./Art/images/pupil_forest.png" width="30" />                |"forest"|`QRCode.PixelShape.Forest` | A more rounded leaf style |
 |<img src="./Art/images/pupil_hexagonLeaf.png" width="30" />           |"hexagonLeaf"|`QRCode.PixelShape.HexagonLeaf` | A hexagonal leaf shape |
