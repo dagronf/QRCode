@@ -84,4 +84,14 @@ extension CGPath {
 	}
 }
 
+extension CGPath {
+	/// Create a new path by applying the provided transform to this path
+	func applyingTransform(_ transform: CGAffineTransform) -> CGPath {
+		CGPath.make { path in
+			path.addPath(self, transform: transform)
+			path.closeSubpath()
+		}
+	}
+}
+
 #endif

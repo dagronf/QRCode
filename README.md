@@ -415,6 +415,7 @@ square, circle, rounded rectangle, and more.
 |<img src="./Art/images/eye_explode.png" width="60"/>           | "explode" |`QRCode.EyeShape.Explode`| Explode style |
 |<img src="./Art/images/eye_eye.png" width="60"/>               | "eye" |`QRCode.EyeShape.Eye`| Simple eye shape |
 |<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
+|<img src="./Art/images/eye_headlight.png" width="60" />        | "headlight" |`QRCode.EyeShape.Headlight` | A headlight shape |
 |<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" |`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
 |<img src="./Art/images/eye_peacock.png" width="60" />          | "peacock" |`QRCode.EyeShape.Peacock` | A peacock-eye style shape |
 |<img src="./Art/images/eye_pinch.png" width="60"/>             | "pinch" |`QRCode.EyeShape.Pinch`| A square pinched in at the sides |

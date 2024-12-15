@@ -13,6 +13,7 @@
 | <a href="./images/explode.png"><img src="./images/explode.png" width="75" /></a><br/>explode | _none_ |
 | <a href="./images/eye.png"><img src="./images/eye.png" width="75" /></a><br/>eye | • __Flippable__<br/>• __Configurable inner corners__<br/> |
 | <a href="./images/fireball.png"><img src="./images/fireball.png" width="75" /></a><br/>fireball | _none_ |
+| <a href="./images/headlight.png"><img src="./images/headlight.png" width="75" /></a><br/>headlight | _none_ |
 | <a href="./images/leaf.png"><img src="./images/leaf.png" width="75" /></a><br/>leaf | _none_ |
 | <a href="./images/peacock.png"><img src="./images/peacock.png" width="75" /></a><br/>peacock | _none_ |
 | <a href="./images/pinch.png"><img src="./images/pinch.png" width="75" /></a><br/>pinch | _none_ |
