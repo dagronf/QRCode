@@ -27,6 +27,7 @@
 | <a href="./images/square.png"><img src="./images/square.png" width="75" /></a><br/>square | _none_ |
 | <a href="./images/squarePeg.png"><img src="./images/squarePeg.png" width="75" /></a><br/>squarePeg | _none_ |
 | <a href="./images/squircle.png"><img src="./images/squircle.png" width="75" /></a><br/>squircle | _none_ |
+| <a href="./images/surroundingBars.png"><img src="./images/surroundingBars.png" width="75" /></a><br/>surroundingBars | _none_ |
 | <a href="./images/teardrop.png"><img src="./images/teardrop.png" width="75" /></a><br/>teardrop | _none_ |
 | <a href="./images/ufo.png"><img src="./images/ufo.png" width="75" /></a><br/>ufo | • __Flippable__<br/> |
 | <a href="./images/usePixelShape.png"><img src="./images/usePixelShape.png" width="75" /></a><br/>usePixelShape | _none_ |

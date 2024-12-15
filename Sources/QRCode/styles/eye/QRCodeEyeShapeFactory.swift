@@ -93,8 +93,8 @@ import Foundation
 		QRCode.EyeShape.DotDragHorizontal.self,
 		QRCode.EyeShape.DotDragVertical.self,
 		QRCode.EyeShape.Headlight.self,
+		QRCode.EyeShape.SurroundingBars.self,
 	].sorted(by: { a, b in a.Title < b.Title })
-
 }
 
 public extension QRCodeEyeShapeFactory {

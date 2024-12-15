@@ -404,33 +404,34 @@ square, circle, rounded rectangle, and more.
 
 | Preview | Name   | Class  | Description |
 |:-------:|:-------|:-------|:------------|
-|<img src="./Art/images/eye_barsHorizontal.png" width="60"/>    | "barsHorizontal" |`QRCode.EyeShape.BarsHorizontal`|Simple rounded rect with three horizontal bars as the pupil|
-|<img src="./Art/images/eye_barsVertical.png" width="60"/>      | "barsVertical" |`QRCode.EyeShape.BarsVertical`| Simple rounded rect with three vertical bars as the pupil|
-|<img src="./Art/images/eye_circle.png" width="60"/>            | "circle" |`QRCode.EyeShape.Circle`|Simple circle|
-|<img src="./Art/images/eye_corneredPixels.png" width="60"/>    | "corneredPixels" |`QRCode.EyeShape.CorneredPixels`| A simple collection of pixels with configurable corner radius for the entire shape|
-|<img src="./Art/images/eye_crt.png" width="60"/>               | "crt" |`QRCode.EyeShape.CRT`| A CRT shape |
-|<img src="./Art/images/eye_dotDragHorizontal.png" width="60"/> | "dotDragHorizontal" |`QRCode.EyeShape.DotDragHorizontal`| A horizontal bar and dot shape |
-|<img src="./Art/images/eye_dotDragVertical.png" width="60"/>   | "dotDragVertical" |`QRCode.EyeShape.DotDragVertical`| A vertical bar and dot shape |
-|<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
-|<img src="./Art/images/eye_explode.png" width="60"/>           | "explode" |`QRCode.EyeShape.Explode`| Explode style |
-|<img src="./Art/images/eye_eye.png" width="60"/>               | "eye" |`QRCode.EyeShape.Eye`| Simple eye shape |
-|<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" |`QRCode.EyeShape.Fireball` | A fireball shape |
-|<img src="./Art/images/eye_headlight.png" width="60" />        | "headlight" |`QRCode.EyeShape.Headlight` | A headlight shape |
-|<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" |`QRCode.EyeShape.Leaf`|An eye that look like a leaf|
-|<img src="./Art/images/eye_peacock.png" width="60" />          | "peacock" |`QRCode.EyeShape.Peacock` | A peacock-eye style shape |
-|<img src="./Art/images/eye_pinch.png" width="60"/>             | "pinch" |`QRCode.EyeShape.Pinch`| A square pinched in at the sides |
-|<img src="./Art/images/eye_pixels.png" width="60"/>            | "pixels" |`QRCode.EyeShape.Pixels`| A simple collection of pixels with configurable corner radius for each pixel|
-|<img src="./Art/images/eye_roundedouter.png" width="60"/>      | "roundedOuter" |`QRCode.EyeShape.RoundedOuter`|Square with the outer corner rounded|
-|<img src="./Art/images/eye_roundedpointingin.png" width="60"/> | "roundedPointingIn" |`QRCode.EyeShape.RoundedPointingIn`|A rounded rect with the 'inner' corner as a point|
-|<img src="./Art/images/eye_roundedRect.png" width="60"/>       | "roundedRect" |`QRCode.EyeShape.RoundedRect`|Simple rounded rect|
-|<img src="./Art/images/eye_shield.png" width="60"/>            | "shield" |`QRCode.EyeShape.Shield`| A shield with configurable corners |
-|<img src="./Art/images/eye_spikyCircle.png" width="60"/>       | "spikyCircle" |`QRCode.EyeShape.SpikyCircle`|A circle with spikes|
-|<img src="./Art/images/eye_square.png" width="60"/>            | "square" |`QRCode.EyeShape.Square`|Simple square (default)|
-|<img src="./Art/images/eye_squarePeg.png" width="60"/>         | "squarePeg" |`QRCode.EyeShape.SquarePeg`|A rounded rect with a circular cutout|
-|<img src="./Art/images/eye_squircle.png" width="60"/>          | "squircle" |`QRCode.EyeShape.Squircle`|A superellipse shape (somewhere between a square and a circle)|
-|<img src="./Art/images/eye_teardrop.png" width="60" />         | "teardrop" |`QRCode.EyeShape.Teardrop` | A teardrop shape |
-|<img src="./Art/images/eye_ufo.png" width="60" />              | "ufo" |`QRCode.EyeShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
-|                                                               | "usePixelShape" |`QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
+|<img src="./Art/images/eye_barsHorizontal.png" width="60"/>    | "barsHorizontal" | `QRCode.EyeShape.BarsHorizontal` | Simple rounded rect with three horizontal bars as the pupil |
+|<img src="./Art/images/eye_barsVertical.png" width="60"/>      | "barsVertical" | `QRCode.EyeShape.BarsVertical` | Simple rounded rect with three vertical bars as the pupil |
+|<img src="./Art/images/eye_circle.png" width="60"/>            | "circle" | `QRCode.EyeShape.Circle` | Simple circle |
+|<img src="./Art/images/eye_corneredPixels.png" width="60"/>    | "corneredPixels" | `QRCode.EyeShape.CorneredPixels` | A simple collection of pixels with configurable corner radius for the entire shape |
+|<img src="./Art/images/eye_crt.png" width="60"/>               | "crt" | `QRCode.EyeShape.CRT` | A CRT shape |
+|<img src="./Art/images/eye_dotDragHorizontal.png" width="60"/> | "dotDragHorizontal" | `QRCode.EyeShape.DotDragHorizontal` | A horizontal bar and dot shape |
+|<img src="./Art/images/eye_dotDragVertical.png" width="60"/>   | "dotDragVertical" | `QRCode.EyeShape.DotDragVertical` | A vertical bar and dot shape |
+|<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" | `QRCode.EyeShape.Fireball` | A fireball shape |
+|<img src="./Art/images/eye_explode.png" width="60"/>           | "explode" | `QRCode.EyeShape.Explode` | Explode style |
+|<img src="./Art/images/eye_eye.png" width="60"/>               | "eye" | `QRCode.EyeShape.Eye` | Simple eye shape |
+|<img src="./Art/images/eye_fireball.png" width="60" />         | "fireball" | `QRCode.EyeShape.Fireball` | A fireball shape |
+|<img src="./Art/images/eye_headlight.png" width="60" />        | "headlight" | `QRCode.EyeShape.Headlight` | A headlight shape |
+|<img src="./Art/images/eye_leaf.png" width="60"/>              | "leaf" | `QRCode.EyeShape.Leaf` | An eye that look like a leaf |
+|<img src="./Art/images/eye_peacock.png" width="60" />          | "peacock" | `QRCode.EyeShape.Peacock` | A peacock-eye style shape |
+|<img src="./Art/images/eye_pinch.png" width="60"/>             | "pinch" | `QRCode.EyeShape.Pinch` | A square pinched in at the sides |
+|<img src="./Art/images/eye_pixels.png" width="60"/>            | "pixels" | `QRCode.EyeShape.Pixels` | A simple collection of pixels with configurable corner radius for each pixel |
+|<img src="./Art/images/eye_roundedouter.png" width="60"/>      | "roundedOuter" | `QRCode.EyeShape.RoundedOuter` | Square with the outer corner rounded |
+|<img src="./Art/images/eye_roundedpointingin.png" width="60"/> | "roundedPointingIn" | `QRCode.EyeShape.RoundedPointingIn` | A rounded rect with the 'inner' corner as a point |
+|<img src="./Art/images/eye_roundedRect.png" width="60"/>       | "roundedRect" | `QRCode.EyeShape.RoundedRect` | Simple rounded rect |
+|<img src="./Art/images/eye_shield.png" width="60"/>            | "shield" | `QRCode.EyeShape.Shield` | A shield with configurable corners |
+|<img src="./Art/images/eye_spikyCircle.png" width="60"/>       | "spikyCircle" | `QRCode.EyeShape.SpikyCircle` | A circle with spikes |
+|<img src="./Art/images/eye_square.png" width="60"/>            | "square" | `QRCode.EyeShape.Square` | Simple square (default |
+|<img src="./Art/images/eye_squarePeg.png" width="60"/>         | "squarePeg" | `QRCode.EyeShape.SquarePeg` | A rounded rect with a circular cutout |
+|<img src="./Art/images/eye_squircle.png" width="60"/>          | "squircle" | `QRCode.EyeShape.Squircle` | A superellipse shape (somewhere between a square and a circle) |
+|<img src="./Art/images/eye_surroundingBars.png" width="60"/>   | "surroundingBars" | `QRCode.EyeShape.SurroundingBars` | Rounded bars around the outside of the pupil |
+|<img src="./Art/images/eye_teardrop.png" width="60" />         | "teardrop" | `QRCode.EyeShape.Teardrop` | A teardrop shape |
+|<img src="./Art/images/eye_ufo.png" width="60" />              | "ufo" | `QRCode.EyeShape.UFO` | A UFO shape (think 'Flight of the Navigator') |
+|                                                               | "usePixelShape" | `QRCode.EyeShape.UsePixelShape`| Use the pattern of the `onPixels` generator when drawing the eyes |
 
 Some eye shapes [support additional customization](./Documentation/shape-configuration-options/eye-configuration-options/index.md)
 
