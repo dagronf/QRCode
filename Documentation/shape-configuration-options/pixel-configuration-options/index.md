@@ -10,6 +10,9 @@
 | <a href="./images/curvePixel.png"><img src="./images/curvePixel.png" width="75" /></a><br/>__curvePixel__ | • __Corner radius__<br/> |
 | <a href="./images/donut.png"><img src="./images/donut.png" width="75" /></a><br/>__donut__ | _none_ |
 | <a href="./images/flower.png"><img src="./images/flower.png" width="75" /></a><br/>__flower__ | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
+| <a href="./images/grid2x2.png"><img src="./images/grid2x2.png" width="75" /></a><br/>__grid2x2__ | _none_ |
+| <a href="./images/grid3x3.png"><img src="./images/grid3x3.png" width="75" /></a><br/>__grid3x3__ | _none_ |
+| <a href="./images/grid4x4.png"><img src="./images/grid4x4.png" width="75" /></a><br/>__grid4x4__ | _none_ |
 | <a href="./images/heart.png"><img src="./images/heart.png" width="75" /></a><br/>__heart__ | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="./images/horizontal.png"><img src="./images/horizontal.png" width="75" /></a><br/>__horizontal__ | • __Corner radius__<br/>• __Pixel inset__<br/> |
 | <a href="./images/pointy.png"><img src="./images/pointy.png" width="75" /></a><br/>__pointy__ | _none_ |

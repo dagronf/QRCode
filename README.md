@@ -77,8 +77,11 @@ A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector
    <a href="./Examples/wiki/index.md"> 
       <img src="./Examples/wiki/wiki.png" width="80"/>
    </a>
-      <a href="./Examples/simple-inner-shadow/index.md"> 
+   <a href="./Examples/simple-inner-shadow/index.md"> 
       <img src="./Examples/simple-inner-shadow/basic-inner-shadow.svg" width="80"/>
+   </a>
+   <a href="./Examples/lcd/index.md"> 
+      <img src="./Examples/lcd/lcd.svg" width="80"/>
    </a>
 </p>
 
@@ -365,6 +368,9 @@ however you can supply a `PixelShape` object to custom-draw the data.  There are
 |<img src="./Art/images/data_curvePixel.png" width="60"/>       |"curvePixel"|`QRCode.PixelShape.CurvePixel`|A pixel that curves to follow paths|
 |<img src="./Art/images/data_donut.png" width="60"/>            |"donut"|`QRCode.PixelShape.Donut`|A circular pixel with a hole in the center|
 |<img src="./Art/images/data_flower.png" width="60"/>           |"flower"|`QRCode.PixelShape.Flower`|A 'flower' style|
+|<img src="./Art/images/data_grid2x2.png" width="60"/>          |"grid2x2"|`QRCode.PixelShape.Grid2x2`| A 2x2 pixel grid |
+|<img src="./Art/images/data_grid3x3.png" width="60"/>          |"grid3x3"|`QRCode.PixelShape.Grid3x3`| A 3x3 pixel grid |
+|<img src="./Art/images/data_grid4x4.png" width="60"/>          |"grid4x4"|`QRCode.PixelShape.Grid4x4`| A 4x4 pixel grid |
 |<img src="./Art/images/data_heart.png" width="60"/>            |"heart"|`QRCode.PixelShape.Heart`|A 'heart' style|
 |<img src="./Art/images/data_horizontal.png" width="60"/>       |"horizontal"|`QRCode.PixelShape.Horizontal`|The pixels are horizonally joined to make continuous horizontal bars|
 |<img src="./Art/images/data_pointy.png" width="60"/>           |"pointy"|`QRCode.PixelShape.Pointy`|A 'pointy' style|
