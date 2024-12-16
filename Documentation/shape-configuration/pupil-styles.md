@@ -1,6 +1,6 @@
 # Pupil shape options
 
-|  Preview  |  Name  | Class |  Options  |
+|  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/pupil_barsHorizontal.png"><img src="../../Art/images/pupil_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.PixelShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/pupil_barsHorizontalSquare.png"><img src="../../Art/images/pupil_barsHorizontalSquare.png" width="75" /></a> | __barsHorizontalSquare__ | `QRCode.PixelShape.SquareBarsHorizontal` | _none_ |
@@ -23,7 +23,7 @@
 | <a href="../../Art/images/pupil_orbits.png"><img src="../../Art/images/pupil_orbits.png" width="75" /></a> | __orbits__ | `QRCode.PixelShape.Orbits` | _none_ |
 | <a href="../../Art/images/pupil_pinch.png"><img src="../../Art/images/pupil_pinch.png" width="75" /></a> | __pinch__ | `QRCode.PixelShape.Pinch` | _none_ |
 | <a href="../../Art/images/pupil_pixels.png"><img src="../../Art/images/pupil_pixels.png" width="75" /></a> | __pixels__ | `QRCode.PixelShape.Pixels` | • __Corner radius__<br/> |
-| <a href="../../Art/images/pupil_roundedOuter.png"><img src="../../Art/images/pupil_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.PixelShape.RoundedOuter` | _none_ |
+| <a href="../../Art/images/pupil_roundedOuter.png"><img src="../../Art/images/pupil_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.PixelShape.RoundedOuter` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_roundedPointingIn.png"><img src="../../Art/images/pupil_roundedPointingIn.png" width="75" /></a> | __roundedPointingIn__ | `QRCode.PixelShape.RoundedPointingIn` | _none_ |
 | <a href="../../Art/images/pupil_roundedPointingOut.png"><img src="../../Art/images/pupil_roundedPointingOut.png" width="75" /></a> | __roundedPointingOut__ | `QRCode.PixelShape.RoundedPointingOut` | _none_ |
 | <a href="../../Art/images/pupil_roundedRect.png"><img src="../../Art/images/pupil_roundedRect.png" width="75" /></a> | __roundedRect__ | `QRCode.PixelShape.RoundedRect` | • __Corner radius__<br/> |

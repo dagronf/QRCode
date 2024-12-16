@@ -28,20 +28,41 @@ public extension QRCode.EyeShape {
 		@objc public static let Name = "roundedOuter"
 		@objc public static var Title: String { "Rounded outer" }
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
-			return QRCode.EyeShape.RoundedOuter()
+			return QRCode.EyeShape.RoundedOuter(settings: settings)
 		}
-		
-		@objc public func settings() -> [String: Any] { return [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+
+		/// Create a roundedOuter eye shape
+		/// - Parameter flip: The flip state for the eye
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
+			super.init()
+
+			// Push the setting down to the
+			self._defaultPupil.flip = self.flip
+		}
+
+		/// Create a pupil shape using the specified settings
+		@objc public init(settings: [String: Any]?) {
+			super.init()
+			settings?.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
+		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
-			return Self.Create(self.settings())
+			return QRCode.EyeShape.RoundedOuter(flip: self.flip)
 		}
 
 		/// Reset the eye shape generator back to defaults
-		@objc public func reset() { }
+		@objc public func reset() { self.flip = .none }
+
+		/// Flip the eye shape
+		@objc public var flip: QRCode.Flip = .none {
+			didSet {
+				_ = self.defaultPupil().setSettingValue(self.flip.rawValue, forKey: QRCode.SettingsKey.flip)
+			}
+		}
 
 		public func eyePath() -> CGPath {
 			let roundedSharpOuterPath = CGMutablePath()
@@ -60,7 +81,23 @@ public extension QRCode.EyeShape {
 			roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
 			roundedSharpOuterPath.line(to: CGPoint(x: 10, y: 80))
 			roundedSharpOuterPath.close()
-			return roundedSharpOuterPath
+
+			switch self.flip {
+			case .none:
+				return roundedSharpOuterPath
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedSharpOuterPath, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedSharpOuterPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedSharpOuterPath, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
 		}
 
 		@objc public func eyeBackgroundPath() -> CGPath {
@@ -73,11 +110,53 @@ public extension QRCode.EyeShape {
 			roundedRectEye2Path.line(to: CGPoint(x: 0, y: 0))
 			roundedRectEye2Path.line(to: CGPoint(x: 0, y: 0))
 			roundedRectEye2Path.close()
-			return roundedRectEye2Path
+
+			switch self.flip {
+			case .none:
+				return roundedRectEye2Path
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedRectEye2Path, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedRectEye2Path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedRectEye2Path, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
 		}
 		
-		private static let _defaultPupil = QRCode.PupilShape.RoundedOuter()
-		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
+		private let _defaultPupil = QRCode.PupilShape.RoundedOuter()
+		public func defaultPupil() -> any QRCodePupilShapeGenerator { self._defaultPupil }
+	}
+}
+
+public extension QRCode.EyeShape.RoundedOuter {
+	@objc func settings() -> [String: Any] {
+		[QRCode.SettingsKey.flip: self.flip.rawValue]
+	}
+
+	/// Returns true if the generator supports settings values for the given key
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		key == QRCode.SettingsKey.flip
+	}
+
+	/// Set the key's value in the generator
+	/// - Parameters:
+	///   - value: The value to set
+	///   - key: The setting key
+	/// - Returns: True if the setting was able to be change, false otherwise
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == QRCode.SettingsKey.flip,
+			let which = IntValue(value)
+		{
+			self.flip = QRCode.Flip(rawValue: which) ?? .none
+			return true
+		}
+		return false
 	}
 }
 

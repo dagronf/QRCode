@@ -30,19 +30,33 @@ public extension QRCode.PupilShape {
 		@objc public static var Name: String { "roundedOuter" }
 		/// The generator title
 		@objc public static var Title: String { "Rounded outer" }
-
+		/// Create a rounded outer pupil generator
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			RoundedOuter()
+			RoundedOuter(settings: settings)
+		}
+
+		/// Flip the eye shape
+		@objc public var flip: QRCode.Flip = .none
+
+		/// Create a pupil
+		/// - Parameter flip: The flip state for the eye
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
+			super.init()
+		}
+
+		/// Create a pupil shape using the specified settings
+		@objc public init(settings: [String: Any]?) {
+			super.init()
+			settings?.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { RoundedOuter() }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator { RoundedOuter(flip: self.flip) }
 		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { }
-
-		@objc public func settings() -> [String : Any] { [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		@objc public func reset() { self.flip = .none }
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
@@ -50,8 +64,50 @@ public extension QRCode.PupilShape {
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
 				topLeftRadius: CGSize(width: 6, height: 6)
 			)
-			return roundedPupil
+
+			switch self.flip {
+			case .none:
+				return roundedPupil
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedPupil, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedPupil, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(roundedPupil, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
 		}
+	}
+}
+
+public extension QRCode.PupilShape.RoundedOuter {
+	@objc func settings() -> [String: Any] {
+		[QRCode.SettingsKey.flip: self.flip.rawValue]
+	}
+
+	/// Returns true if the generator supports settings values for the given key
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		key == QRCode.SettingsKey.flip
+	}
+
+	/// Set the key's value in the generator
+	/// - Parameters:
+	///   - value: The value to set
+	///   - key: The setting key
+	/// - Returns: True if the setting was able to be change, false otherwise
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == QRCode.SettingsKey.flip,
+			let which = IntValue(value)
+		{
+			self.flip = QRCode.Flip(rawValue: which) ?? .none
+			return true
+		}
+		return false
 	}
 }
 

@@ -18,7 +18,7 @@
 | <a href="../../Art/images/eye_peacock.png"><img src="../../Art/images/eye_peacock.png" width="75" /></a> | __peacock__ | `QRCode.EyeShape.Peacock` | _none_ |
 | <a href="../../Art/images/eye_pinch.png"><img src="../../Art/images/eye_pinch.png" width="75" /></a> | __pinch__ | `QRCode.EyeShape.Pinch` | _none_ |
 | <a href="../../Art/images/eye_pixels.png"><img src="../../Art/images/eye_pixels.png" width="75" /></a> | __pixels__ | `QRCode.EyeShape.Pixels` | • __Corner radius__<br/> |
-| <a href="../../Art/images/eye_roundedOuter.png"><img src="../../Art/images/eye_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.EyeShape.RoundedOuter` | _none_ |
+| <a href="../../Art/images/eye_roundedOuter.png"><img src="../../Art/images/eye_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.EyeShape.RoundedOuter` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_roundedPointingIn.png"><img src="../../Art/images/eye_roundedPointingIn.png" width="75" /></a> | __roundedPointingIn__ | `QRCode.EyeShape.RoundedPointingIn` | _none_ |
 | <a href="../../Art/images/eye_roundedPointingOut.png"><img src="../../Art/images/eye_roundedPointingOut.png" width="75" /></a> | __roundedPointingOut__ | `QRCode.EyeShape.RoundedPointingOut` | _none_ |
 | <a href="../../Art/images/eye_roundedRect.png"><img src="../../Art/images/eye_roundedRect.png" width="75" /></a> | __roundedRect__ | `QRCode.EyeShape.RoundedRect` | • __Corner radius__<br/> |
