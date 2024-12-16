@@ -71,7 +71,7 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 	let markdown = MarkdownContainer(testName: "eye-configuration-options")
 
 	override func setUpWithError() throws {
-		markdown += "# Eye shape configuration\n\n"
+		markdown += "# Eye shape options\n\n"
 	}
 
 	override func tearDownWithError() throws {
@@ -81,47 +81,49 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 
 	func testGenerateEyeShapeOptions() throws {
 		
-		markdown += "|  Eye Shape  |  Options  |\n"
-		markdown += "|:-----------:|-----------|\n"
+		markdown += "|  Preview  |  Name  | Class |  Options  | \n"
+		markdown += "|:-------------:|-----------|---------|---------|\n"
 
-		let images = try QRCodeEyeShapeFactory.shared.generateSampleImages(
-			dimension: 200,
-			foregroundColor: CGColor.commonBlack,
-			backgroundColor: CGColor.commonWhite
-		)
+		QRCodeEyeShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			let link = "../../Art/images/eye_\(g.name).png"
 
-		for shape in images {
-			let imageData = try shape.image.imageData(for: .png())
-			let link = try markdown.add(filename: shape.name + ".png", imageData: imageData)
+			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"75\" /></a> "
+			markdown += "| __\(g.name)__ "
+			let typename = "\(type(of: g))"
+			markdown += "| `QRCode.EyeShape.\(typename)` "
+			markdown += "| "
 
-			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"75\" /></a><br/>\(shape.name) | "
+			do {
+				var settings: String = ""
 
-			let generator = try QRCodeEyeShapeFactory.shared.named(shape.name)
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
+					settings += "• __Corner radius__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
+					settings += "• __Optional Inner corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
+					settings += "• __Configurable corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+					settings += "• __Flippable__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
+					settings += "• __Pixel rotation__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel rotation generator<br/>"
+				}
 
-			var settings: String = ""
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction) {
+					settings += "• __Pixel inset__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel inset generator<br/>"
+				}
 
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
-				settings += "• __Corner radius__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
-				settings += "• __Optional Inner corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
-				settings += "• __Configurable corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
-				settings += "• __Flippable__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.eyeInnerStyle) {
-				settings += "• __Configurable inner corners__<br/>"
-			}
-
-			if settings.count > 0 {
-				markdown += settings
-			}
-			else {
-				markdown += "_none_"
+				markdown += (settings.count > 0) ? settings : "_none_"
 			}
 
 			markdown += " |\n"
@@ -143,62 +145,53 @@ final class QRCodePixelShapeConfigurationTests: XCTestCase {
 		try markdown.write()
 	}
 
-	func testGeneratePixelShapeOptions() throws {
+	func testGeneratePixelShapes() throws {
 
-		markdown += "|  Pixel Shape  |  Options  |\n"
-		markdown += "|:-------------:|-----------|\n"
+		markdown += "|  Preview  |  Name  | Class |  Options  | \n"
+		markdown += "|:-------------:|-----------|---------|---------|\n"
 
-		let images = try QRCodePixelShapeFactory.shared.generateSampleImages(
-			dimension: 200,
-			foregroundColor: CGColor.commonBlack,
-			backgroundColor: CGColor.commonWhite
-		)
+		QRCodePixelShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			let link = "../../Art/images/data_\(g.name).png"
 
-		for shape in images {
-			let imageData = try shape.image.imageData(for: .png())
-			let link = try markdown.add(filename: shape.name + ".png", imageData: imageData)
+			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"75\" /></a> "
+			markdown += "| __\(g.name)__ "
+			let typename = "\(type(of: g))"
+			markdown += "| `QRCode.PixelShape.\(typename)` "
+			markdown += "| "
 
-			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"75\" /></a><br/>__\(shape.name)__ | "
+			do {
+				var settings: String = ""
 
-			let generator = try QRCodePixelShapeFactory.shared.named(shape.name)
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
+					settings += "• __Corner radius__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
+					settings += "• __Optional Inner corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
+					settings += "• __Configurable corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+					settings += "• __Flippable__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
+					settings += "• __Pixel rotation__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel rotation generator<br/>"
+				}
 
-			var settings: String = ""
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction) {
+					settings += "• __Pixel inset__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel inset generator<br/>"
+				}
 
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
-				settings += "• __Corner radius__<br/>"
+				markdown += (settings.count > 0) ? settings : "_none_"
+				markdown += " |\n"
 			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
-				settings += "• __Optional Inner corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
-				settings += "• __Configurable corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
-				settings += "• __Flippable__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
-				settings += "• __Pixel rotation__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.rotationGeneratorName) {
-				settings += "&nbsp;&nbsp;- Supports pixel rotation generator<br/>"
-			}
-
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction) {
-				settings += "• __Pixel inset__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
-				settings += "&nbsp;&nbsp;- Supports pixel inset generator<br/>"
-			}
-
-			if settings.count > 0 {
-				markdown += settings
-			}
-			else {
-				markdown += "_none_"
-			}
-
-			markdown += " |\n"
 		}
 	}
 }
@@ -218,47 +211,82 @@ final class QRCodePupilShapeConfigurationTests: XCTestCase {
 
 	func testGeneratePupilShapeOptions() throws {
 
-		markdown += "|  Pupil Shape  |  Options  |\n"
-		markdown += "|:-------------:|-----------|\n"
+		markdown += "|  Preview  |  Name  | Class |  Options  | \n"
+		markdown += "|:-------------:|-----------|---------|---------|\n"
 
-		let images = try QRCodePupilShapeFactory.shared.generateSampleImages(
-			dimension: 100,
-			foregroundColor: CGColor.commonBlack,
-			backgroundColor: CGColor.commonWhite
-		)
+		QRCodePupilShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			let link = "../../Art/images/pupil_\(g.name).png"
 
-		for shape in images {
-			let imageData = try shape.image.imageData(for: .png())
-			let link = try markdown.add(filename: shape.name + ".png", imageData: imageData)
+			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"75\" /></a> "
+			markdown += "| __\(g.name)__ "
+			let typename = "\(type(of: g))"
+			markdown += "| `QRCode.PixelShape.\(typename)` "
+			markdown += "| "
 
-			markdown += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"50\" /></a><br/>__\(shape.name)__ | "
+			do {
+				var settings: String = ""
 
-			let generator = try QRCodePupilShapeFactory.shared.named(shape.name)
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
+					settings += "• __Corner radius__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
+					settings += "• __Optional Inner corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
+					settings += "• __Configurable corners__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
+						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+					settings += "• __Flippable__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
+					settings += "• __Pixel rotation__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel rotation generator<br/>"
+				}
 
-			var settings: String = ""
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetFraction) {
+					settings += "• __Pixel inset__<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
+					settings += "&nbsp;&nbsp;- Supports pixel inset generator<br/>"
+				}
 
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) {
-				settings += "• __Corner radius__<br/>"
+				markdown += (settings.count > 0) ? settings : "_none_"
+				markdown += " |\n"
 			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners) {
-				settings += "• __Optional Inner corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
-				settings += "• __Configurable corners__<br/>"
-			}
-			if generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-					|| generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
-				settings += "• __Flippable__<br/>"
-			}
-
-			if settings.count > 0 {
-				markdown += settings
-			}
-			else {
-				markdown += "_none_"
-			}
-
-			markdown += " |\n"
 		}
+	}
+}
+
+
+final class InlineDocumentationGenerations: XCTestCase {
+
+	let markdown = MarkdownContainer(testName: "inline-documentation-image-lists.md")
+
+	override func tearDownWithError() throws {
+		// Write out the markdown
+		try markdown.write()
+	}
+
+	func testGenerateInlineEyeImagesForDocumentation() throws {
+		markdown += "## Main doco inline pixel shape markdown\n\n"
+		QRCodePixelShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			markdown += "<img src=\"./Art/images/data_\(g.name).png\" width=\"60\" title=\"\(g.title)\" /> "
+		}
+		markdown += "\n\n"
+
+		markdown += "## Main doco inline eye shape markdown\n\n"
+		QRCodeEyeShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			markdown += "<img src=\"./Art/images/eye_\(g.name).png\" width=\"60\" title=\"\(g.title)\" /> "
+		}
+		markdown += "\n\n"
+
+		markdown += "## Main doco inline pupil shape markdown\n\n"
+		QRCodePupilShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			markdown += "<img src=\"./Art/images/pupil_\(g.name).png\" width=\"30\" title=\"\(g.title)\" /> "
+		}
+		markdown += "\n\n"
 	}
 }
