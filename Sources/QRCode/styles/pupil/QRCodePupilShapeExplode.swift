@@ -40,11 +40,19 @@ extension QRCode.PupilShape {
 		@objc public func setSettingValue(_: Any?, forKey _: String) -> Bool { false }
 
 		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath { _path() }
+		@objc public func pupilPath() -> CGPath { pupilPath__ }
 	}
 }
 
-private func _path() -> CGPath {
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Explode {
+	/// Create an explode pupil shape generator
+	/// - Returns: A pupil shape generator
+	@inlinable static func explode() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Explode() }
+}
+
+// MARK: - Paths
+
+private let pupilPath__: CGPath =
 	CGPath.make { explodeeyepupilPath in
 		explodeeyepupilPath.move(to: CGPoint(x: 32.5, y: 45.5))
 		explodeeyepupilPath.curve(to: CGPoint(x: 30, y: 30), controlPoint1: CGPoint(x: 32.5, y: 38), controlPoint2: CGPoint(x: 30, y: 30))
@@ -57,10 +65,3 @@ private func _path() -> CGPath {
 		explodeeyepupilPath.curve(to: CGPoint(x: 32.5, y: 45.5), controlPoint1: CGPoint(x: 30, y: 60), controlPoint2: CGPoint(x: 32.5, y: 53))
 		explodeeyepupilPath.close()
 	}
-}
-
-public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Explode {
-	/// Create an explode pupil shape generator
-	/// - Returns: A pupil shape generator
-	@inlinable static func explode() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Explode() }
-}

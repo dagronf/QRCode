@@ -12,7 +12,7 @@ import QRCode
 struct ContentView: View {
 	@State var content = "Hello, world!"
 
-	let style1 = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.8, hasInnerCorners: true)
+	let pixelShape = QRCode.PixelShape.RoundedPath(cornerRadiusFraction: 0.8, hasInnerCorners: true)
 
 	var body: some View {
 		VStack {
@@ -21,9 +21,9 @@ struct ContentView: View {
 			Divider()
 			QRCodeViewUI(
 				content: content,
-				pixelStyle: style1,
 				additionalQuietZonePixels: 3,
-				backgroundFractionalCornerRadius: 2
+				backgroundFractionalCornerRadius: 2,
+				onPixelShape: pixelShape
 			)
 			.frame(minWidth: 300, minHeight: 300)
 		}

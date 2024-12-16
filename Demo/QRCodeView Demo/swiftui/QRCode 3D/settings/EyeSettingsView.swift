@@ -43,7 +43,7 @@ struct EyeSettingsView: View {
 	@State var radiusFraction: CGFloat = 0
 	@State var supportsRadiusFraction = false
 
-	@State var flipped = false
+	@State var flipped = QRCode.Flip.none
 	@State var supportsFlipped = false
 
 	@State var corners = QRCode.Corners.all
@@ -85,12 +85,15 @@ struct EyeSettingsView: View {
 					document.objectWillChange.send()
 				}
 
-				Toggle(isOn: $flipped) {
-					Text("flipped")
+				Picker("flip", selection: $flipped) {
+					Text("none").tag(QRCode.Flip.none)
+					Text("horizontally").tag(QRCode.Flip.horizontally)
+					Text("vertically").tag(QRCode.Flip.vertically)
+					Text("both").tag(QRCode.Flip.both)
 				}
 				.disabled(!supportsFlipped)
 				.onChange(of: flipped) { newValue in
-					_ = document.qrcode.design.shape.eye.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+					_ = document.qrcode.design.shape.eye.setSettingValue(newValue.rawValue, forKey: QRCode.SettingsKey.flip)
 					document.objectWillChange.send()
 				}
 
@@ -116,8 +119,9 @@ struct EyeSettingsView: View {
 		supportsRadiusFraction = generator.supportsSettingValue(forKey: QRCode.SettingsKey.cornerRadiusFraction)
 		radiusFraction = generator.settingsValue(forKey: QRCode.SettingsKey.cornerRadiusFraction) ?? 0
 
-		supportsFlipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-		flipped = generator.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
+		supportsFlipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip)
+		let fVal = generator.settingsValue(forKey: QRCode.SettingsKey.flip) ?? 0
+		flipped = QRCode.Flip(rawValue: fVal) ?? .none
 
 		supportsCorners = generator.supportsSettingValue(forKey: QRCode.SettingsKey.corners)
 		let c: Int = generator.settingsValue(forKey: QRCode.SettingsKey.corners) ?? 0

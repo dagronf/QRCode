@@ -43,8 +43,8 @@ public extension QRCode.EyeShape {
 			QRCode.EyeShape.Eye(settings: settings)
 		}
 
-		/// Is the eye shape vertically flipped?
-		@objc public var isFlipped: Bool = false
+		/// Is the eye shape flipped
+		@objc public var flip: QRCode.Flip = .none
 
 		/// The inner curve state for the eye
 		@objc public var eyeInnerStyle: Style = .both
@@ -53,8 +53,8 @@ public extension QRCode.EyeShape {
 		/// - Parameters:
 		///   - isFlipped: If true, flip the eye on the horizontal axis
 		///   - eyeInnerStyle: The eye's inner style
-		@objc public init(isFlipped: Bool = false, eyeInnerStyle: Style = .both) {
-			self.isFlipped = isFlipped
+		@objc public init(flip: QRCode.Flip = .none, eyeInnerStyle: Style = .both) {
+			self.flip = flip
 			self.eyeInnerStyle = eyeInnerStyle
 			super.init()
 		}
@@ -74,7 +74,7 @@ public extension QRCode.EyeShape {
 
 		/// Reset the eye shape generator back to defaults
 		@objc public func reset() {
-			self.isFlipped = false
+			self.flip = .none
 			self.eyeInnerStyle = .both
 		}
 
@@ -88,25 +88,44 @@ public extension QRCode.EyeShape {
 				}
 			}()
 
-			if self.isFlipped {
-				return CGPath.make { n in
+			switch self.flip {
+			case .none:
+				return core
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(core, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(core, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
-					n.closeSubpath()
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(core, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
 				}
 			}
-			return core
 		}
 
 		/// The eye's background path
 		@objc public func eyeBackgroundPath() -> CGPath {
 			let core = self.fullBackground()
-			if self.isFlipped == false {
-				return CGPath.make { n in
+
+			switch self.flip {
+			case .none:
+				return core
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(core, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(core, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
-					n.closeSubpath()
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(core, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
 				}
 			}
-			return core
 		}
 
 		private static let _defaultPupil = QRCode.PupilShape.Circle()
@@ -118,17 +137,18 @@ public extension QRCode.EyeShape {
 
 public extension QRCode.EyeShape.Eye {
 	@objc func settings() -> [String: Any] { [
-		QRCode.SettingsKey.isFlipped: self.isFlipped,
+		QRCode.SettingsKey.flip: self.flip.rawValue,
 		QRCode.SettingsKey.eyeInnerStyle: self.eyeInnerStyle.rawValue,
 	] }
 
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
-		key == QRCode.SettingsKey.isFlipped || key == QRCode.SettingsKey.eyeInnerStyle
+		key == QRCode.SettingsKey.flip || key == QRCode.SettingsKey.eyeInnerStyle
 	}
 
 	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-		if key == QRCode.SettingsKey.isFlipped {
-			self.isFlipped = BoolValue(value) ?? false
+		if key == QRCode.SettingsKey.flip,
+			let value = IntValue(value) {
+			self.flip = QRCode.Flip(rawValue: value) ?? .none
 		}
 		else if key == QRCode.SettingsKey.eyeInnerStyle {
 			let value = IntValue(value) ?? 0
@@ -218,6 +238,7 @@ private extension QRCode.EyeShape.Eye {
 			safeZonePath.line(to: CGPoint(x: 90, y: 90))
 			safeZonePath.close()
 		}
+		.applyingTransform(CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 	}
 }
 

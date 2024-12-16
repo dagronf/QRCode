@@ -39,12 +39,12 @@ public extension QRCode.PupilShape {
 		}
 
 		/// Is the pupil shape flipped?
-		@objc public var isFlipped: Bool = false
+		@objc public var flip: QRCode.Flip = .none
 
 		/// Create a pupil
 		/// - Parameter isFlipped: Flip the shape
-		@objc public init(isFlipped: Bool = false) {
-			self.isFlipped = isFlipped
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
 			super.init()
 		}
 
@@ -58,34 +58,57 @@ public extension QRCode.PupilShape {
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
-			Leaf(isFlipped: self.isFlipped)
+			Leaf(flip: self.flip)
 		}
 
 		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { self.isFlipped = false }
-
-		@objc public func settings() -> [String : Any] {
-			[QRCode.SettingsKey.isFlipped: self.isFlipped]
-		}
-		@objc public func supportsSettingValue(forKey key: String) -> Bool {
-			key == QRCode.SettingsKey.isFlipped
-		}
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-			if key == QRCode.SettingsKey.isFlipped {
-				self.isFlipped = BoolValue(value) ?? false
-			}
-			return false
-		}
+		@objc public func reset() { self.flip = .none }
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
-			let roundedPupil = CGPath.RoundedRect(
-				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-				cornerRadius: 6,
-				byRoundingCorners: self.isFlipped ? [.bottomRight, .topLeft] : [.topRight, .bottomLeft]
-			)
-			return roundedPupil
+			switch self.flip {
+			case .none:
+				return pupilPath__
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilPath__, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
 		}
+	}
+}
+
+public extension QRCode.PupilShape.Leaf {
+	@objc func settings() -> [String: Any] {
+		[QRCode.SettingsKey.flip: self.flip.rawValue]
+	}
+
+	/// Returns true if the generator supports settings values for the given key
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		key == QRCode.SettingsKey.flip
+	}
+
+	/// Set the key's value in the generator
+	/// - Parameters:
+	///   - value: The value to set
+	///   - key: The setting key
+	/// - Returns: True if the setting was able to be change, false otherwise
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == QRCode.SettingsKey.flip,
+			let which = IntValue(value)
+		{
+			self.flip = QRCode.Flip(rawValue: which) ?? .none
+			return true
+		}
+		return false
 	}
 }
 
@@ -94,3 +117,12 @@ public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Leaf 
 	/// - Returns: A pupil shape generator
 	@inlinable static func leaf() -> QRCodePupilShapeGenerator { QRCode.PupilShape.Leaf() }
 }
+
+// MARK: - Paths
+
+private let pupilPath__: CGPath =
+	CGPath.RoundedRect(
+		rect: CGRect(x: 30, y: 30, width: 30, height: 30),
+		cornerRadius: 6,
+		byRoundingCorners: [.topRight, .bottomLeft]
+	)

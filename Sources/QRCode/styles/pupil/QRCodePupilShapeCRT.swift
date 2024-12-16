@@ -42,23 +42,8 @@ extension QRCode.PupilShape {
 		@objc public func setSettingValue(_: Any?, forKey _: String) -> Bool { false }
 
 		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath { _path() }
+		@objc public func pupilPath() -> CGPath { pupilPath__ }
 	}
-}
-
-private func _path() -> CGPath {
-	let crt_pupilPath = CGMutablePath()
-	crt_pupilPath.move(to: CGPoint(x: 30, y: 45))
-	crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 31.29), controlPoint1: CGPoint(x: 30, y: 37.5), controlPoint2: CGPoint(x: 31.29, y: 31.29))
-	crt_pupilPath.curve(to: CGPoint(x: 45, y: 30), controlPoint1: CGPoint(x: 31.29, y: 31.29), controlPoint2: CGPoint(x: 37.5, y: 30))
-	crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 31.29), controlPoint1: CGPoint(x: 52.5, y: 30), controlPoint2: CGPoint(x: 58.71, y: 31.29))
-	crt_pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 58.71, y: 31.29), controlPoint2: CGPoint(x: 60, y: 37.5))
-	crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 58.71), controlPoint1: CGPoint(x: 60, y: 52.5), controlPoint2: CGPoint(x: 58.71, y: 58.71))
-	crt_pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 58.71, y: 58.71), controlPoint2: CGPoint(x: 52.5, y: 60))
-	crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 58.71), controlPoint1: CGPoint(x: 37.5, y: 60), controlPoint2: CGPoint(x: 31.29, y: 58.71))
-	crt_pupilPath.curve(to: CGPoint(x: 30, y: 45), controlPoint1: CGPoint(x: 31.29, y: 58.71), controlPoint2: CGPoint(x: 30, y: 52.5))
-	crt_pupilPath.close()
-	return crt_pupilPath
 }
 
 public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.CRT {
@@ -66,3 +51,19 @@ public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.CRT {
 	/// - Returns: A pupil shape generator
 	@inlinable static func crt() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CRT() }
 }
+
+// MARK: - Paths
+
+private let pupilPath__: CGPath =
+	CGPath.make { crt_pupilPath in
+		crt_pupilPath.move(to: CGPoint(x: 30, y: 45))
+		crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 31.29), controlPoint1: CGPoint(x: 30, y: 37.5), controlPoint2: CGPoint(x: 31.29, y: 31.29))
+		crt_pupilPath.curve(to: CGPoint(x: 45, y: 30), controlPoint1: CGPoint(x: 31.29, y: 31.29), controlPoint2: CGPoint(x: 37.5, y: 30))
+		crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 31.29), controlPoint1: CGPoint(x: 52.5, y: 30), controlPoint2: CGPoint(x: 58.71, y: 31.29))
+		crt_pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 58.71, y: 31.29), controlPoint2: CGPoint(x: 60, y: 37.5))
+		crt_pupilPath.curve(to: CGPoint(x: 58.71, y: 58.71), controlPoint1: CGPoint(x: 60, y: 52.5), controlPoint2: CGPoint(x: 58.71, y: 58.71))
+		crt_pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 58.71, y: 58.71), controlPoint2: CGPoint(x: 52.5, y: 60))
+		crt_pupilPath.curve(to: CGPoint(x: 31.29, y: 58.71), controlPoint1: CGPoint(x: 37.5, y: 60), controlPoint2: CGPoint(x: 31.29, y: 58.71))
+		crt_pupilPath.curve(to: CGPoint(x: 30, y: 45), controlPoint1: CGPoint(x: 31.29, y: 58.71), controlPoint2: CGPoint(x: 30, y: 52.5))
+		crt_pupilPath.close()
+	}

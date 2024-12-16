@@ -34,7 +34,7 @@ struct PupilSettingsView: View {
 	@EnvironmentObject var document: QRCode_3DDocument
 	@State var generator: QRCodePupilShapeGenerator = QRCode.PupilShape.Square()
 
-	@State var flipped = false
+	@State var flipped: QRCode.Flip = .none
 	@State var supportsFlipped = false
 
 	@State var hasInnerCorners = false
@@ -63,20 +63,22 @@ struct PupilSettingsView: View {
 			Divider()
 
 			Form {
-			//VStack(alignment: .leading, spacing: 6) {
 				LabeledContent("style") {
 					StyleSelectorView(current: document.qrcode.design.style.actualPupilStyle) { newFill in
 						document.qrcode.design.style.pupil = newFill
 						document.objectWillChange.send()
 					}
 				}
-				
-				Toggle(isOn: $flipped) {
-					Text("flipped")
+
+				Picker("flip", selection: $flipped) {
+					Text("none").tag(QRCode.Flip.none)
+					Text("horizontally").tag(QRCode.Flip.horizontally)
+					Text("vertically").tag(QRCode.Flip.vertically)
+					Text("both").tag(QRCode.Flip.both)
 				}
 				.disabled(!supportsFlipped)
 				.onChange(of: flipped) { newValue in
-					_ = document.qrcode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
+					_ = document.qrcode.design.shape.pupil?.setSettingValue(newValue.rawValue, forKey: QRCode.SettingsKey.flip)
 					document.objectWillChange.send()
 				}
 
@@ -109,8 +111,9 @@ struct PupilSettingsView: View {
 	func sync() {
 		generator = document.qrcode.design.shape.actualPupilShape
 
-		supportsFlipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-		flipped = generator.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
+		supportsFlipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip)
+		let fVal = generator.settingsValue(forKey: QRCode.SettingsKey.flip) ?? 0
+		flipped = QRCode.Flip(rawValue: fVal) ?? .none
 
 		supportsHasInnerCorners = generator.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
 		hasInnerCorners = generator.settingsValue(forKey: QRCode.SettingsKey.hasInnerCorners) ?? false

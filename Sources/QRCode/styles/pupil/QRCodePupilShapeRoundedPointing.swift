@@ -1,6 +1,4 @@
 //
-//  QRCodePupilShapeRoundedOuter.swift
-//
 //  Copyright © 2024 Darren Ford. All rights reserved.
 //
 //  MIT license
@@ -25,17 +23,18 @@ import Foundation
 // MARK: - Pupil shape
 
 public extension QRCode.PupilShape {
-	/// A 'square with a rounded outer corner' style pupil design
-	@objc(QRCodePupilShapeRoundedOuter) class RoundedOuter: NSObject, QRCodePupilShapeGenerator {
-		@objc public static var Name: String { "roundedOuter" }
+	/// A 'rounded rect with a pointy bit facing inwards' style pupil design
+	@objc(QRCodePupilShapeRoundedPointing) class RoundedPointingIn: NSObject, QRCodePupilShapeGenerator {
+		/// The unique name for identifying the pupil shape
+		@objc public static var Name: String { "roundedPointingIn" }
 		/// The generator title
-		@objc public static var Title: String { "Rounded outer" }
-		/// Create a rounded outer pupil generator
+		@objc public static var Title: String { "Rounded Pointing In" }
+		/// Create a pupil shape generator using the provided settings
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			RoundedOuter(settings: settings)
+			RoundedPointingIn(settings: settings)
 		}
 
-		/// Flip the pupil shape
+		/// Flip the eye shape
 		@objc public var flip: QRCode.Flip = .none
 
 		/// Create a pupil
@@ -54,15 +53,20 @@ public extension QRCode.PupilShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodePupilShapeGenerator { RoundedOuter(flip: self.flip) }
+		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
+			RoundedPointingIn(flip: self.flip)
+		}
 		/// Reset the pupil shape generator back to defaults
-		@objc public func reset() { self.flip = .none }
+		@objc public func reset() {
+			self.flip = .none
+		}
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
 			let roundedPupil = CGPath.RoundedRect(
 				rect: CGRect(x: 30, y: 30, width: 30, height: 30),
-				topLeftRadius: CGSize(width: 6, height: 6)
+				cornerRadius: 6,
+				byRoundingCorners: [.topLeft, .bottomLeft, .topRight]
 			)
 
 			switch self.flip {
@@ -85,12 +89,13 @@ public extension QRCode.PupilShape {
 	}
 }
 
-public extension QRCode.PupilShape.RoundedOuter {
+public extension QRCode.PupilShape.RoundedPointingIn {
+	/// The pupil generator settings
 	@objc func settings() -> [String: Any] {
 		[QRCode.SettingsKey.flip: self.flip.rawValue]
 	}
 
-	/// Returns true if the generator supports settings values for the given key
+	/// Does the shape generator support setting values for a particular key?
 	@objc func supportsSettingValue(forKey key: String) -> Bool {
 		key == QRCode.SettingsKey.flip
 	}
@@ -111,8 +116,8 @@ public extension QRCode.PupilShape.RoundedOuter {
 	}
 }
 
-public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.RoundedOuter {
-	/// Create a rounded outer pupil shape generator
+public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.RoundedPointingIn {
+	/// Create a rounded pointing pupil shape generator
 	/// - Returns: A pupil shape generator
-	@inlinable static func roundedOuter() -> QRCodePupilShapeGenerator { QRCode.PupilShape.RoundedOuter() }
+	@inlinable static func roundedPointing() -> QRCodePupilShapeGenerator { QRCode.PupilShape.RoundedPointingIn() }
 }

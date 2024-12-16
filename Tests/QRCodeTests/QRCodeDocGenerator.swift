@@ -1652,35 +1652,132 @@ final class QRCodeDocGeneratorTests: XCTestCase {
 
 		doc.design.style.background = QRCode.FillStyle.Solid(1, 0, 0)
 
-		markdownText += "|  eye  | flipped |   0   |   2   |   4   |\n"
-		markdownText += "|:------|:-------:|:-----:|:-----:|:-----:|\n"
+		let flips: [QRCode.Flip] = [.none, .horizontally, .vertically, .both]
 
 		try QRCodeEyeShapeFactory.shared.all().sorted(by: { $0.name < $1.name }).forEach { generator in
 			doc.design.shape.eye = generator
 			doc.design.style.eyeBackground = .commonWhite
 
-			let flipped = generator.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped) ? [false, true] : [false]
+			markdownText += "## \(generator.name)\n\n"
 
-			try flipped.forEach { isFlipped in
+			markdownText += "| flipped |   0   |   2   |   4   |\n"
+			markdownText += "|:-------:|:-----:|:-----:|:-----:|\n"
 
-				markdownText += "|\(generator.name)|\(isFlipped)"
+			let flips = generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) ? flips : [.none]
+
+			try flips.forEach { flip in
+
+				let flipName = flip.name
+
+				markdownText += "| \(flipName)"
 
 				try [0, 2, 4].forEach { (quietZone: UInt) in
 
 					markdownText += "|"
 
-					_ = doc.design.shape.eye.setSettingValue(isFlipped, forKey: QRCode.SettingsKey.isFlipped)
+					_ = doc.design.shape.eye.setSettingValue(flip.rawValue, forKey: QRCode.SettingsKey.flip)
 
 					doc.design.additionalQuietZonePixels = quietZone
 
 					let image = try doc.imageData(.png(), dimension: dimension)
-					let filename = "eye-background-exclusion-zone-\(generator.name)-\(quietZone)-\(isFlipped).png"
+					let filename = "eye-background-exclusion-zone-\(generator.name)-\(quietZone)-\(flipName).png"
 					let link = try imageStore.store(image, filename: filename)
 					markdownText += "<a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
 				}
 				markdownText += "|\n"
 			}
+
+			markdownText += "\n\n"
 		}
 		markdownText += "\n\n"
+	}
+
+	func testPupilFlips() throws {
+
+		let flips: [QRCode.Flip] = [.horizontally, .vertically, .both]
+
+		markdownText += "<hr/>\n\n"
+
+		markdownText += "# Verify pupil flipping\n\n"
+
+		let doc = try QRCode.Document(utf8String: "Validate pupil flips")
+
+		try QRCodePupilShapeFactory.shared.all().sorted(by: { $0.name < $1.name }).forEach { generator in
+			doc.design.shape.pupil = generator
+			doc.design.style.pupil = QRCode.FillStyle.Solid(1, 0, 0)
+
+			markdownText += "## \(generator.name)\n\n"
+
+			let flips = generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) ? flips : []
+
+			markdownText += "| none    | horizontally | vertically | both |\n"
+			markdownText += "|:-------:|:-----:|:-----:|:-----:|\n"
+
+			let image = try doc.imageData(.svg, dimension: dimension)
+			let filename = "pupil-flipping-\(generator.name)-none.svg"
+			let link = try imageStore.store(image, filename: filename)
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+
+			if flips.count == 0 {
+				markdownText += "| | |\n"
+			}
+			else
+			{
+				try flips.forEach { flip in
+					_ = generator.setSettingValue(flip.rawValue, forKey: QRCode.SettingsKey.flip)
+
+					let image = try doc.imageData(.svg, dimension: dimension)
+					let filename = "pupil-flipping-\(generator.name)-\(flip.name).svg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " |\n"
+			}
+		}
+	}
+
+	func testEyeFlips() throws {
+
+		let flips: [QRCode.Flip] = [.horizontally, .vertically, .both]
+
+		markdownText += "<hr/>\n\n"
+
+		markdownText += "# Verify eye flipping\n\n"
+
+		let doc = try QRCode.Document(utf8String: "Validate eye flips")
+
+		markdownText += "| name  | none    | horizontally | vertically | both |\n"
+		markdownText += "|-------|:-------:|:-----:|:-----:|:-----:|\n"
+
+		try QRCodeEyeShapeFactory.shared.all().sorted(by: { $0.name < $1.name }).forEach { generator in
+			doc.design.shape.eye = generator
+			doc.design.style.eye = QRCode.FillStyle.Solid(1, 0, 0)
+			doc.design.style.eyeBackground = CGColor(red: 0, green: 1, blue: 0, alpha: 1)
+
+			markdownText += "| \(generator.name) "
+
+			let flips = generator.supportsSettingValue(forKey: QRCode.SettingsKey.flip) ? flips : []
+
+			let image = try doc.imageData(.svg, dimension: dimension)
+			let filename = "eye-flipping-\(generator.name)-none.svg"
+			let link = try imageStore.store(image, filename: filename)
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+
+			if flips.count == 0 {
+				markdownText += "| | |\n"
+			}
+			else
+			{
+				try flips.forEach { flip in
+					_ = generator.setSettingValue(flip.rawValue, forKey: QRCode.SettingsKey.flip)
+
+					let image = try doc.imageData(.svg, dimension: dimension)
+					let filename = "eye-flipping-\(generator.name)-\(flip.name).svg"
+					let link = try imageStore.store(image, filename: filename)
+					markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"150\" /></a> "
+				}
+				markdownText += " |\n"
+			}
+		}
 	}
 }

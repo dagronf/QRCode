@@ -25,7 +25,7 @@ class ViewController: NSViewController {
 		q2.rebuildQRCode()
 
 		q3.design.shape.onPixels = QRCode.PixelShape.RoundedPath()
-		q3.design.shape.eye  = QRCode.EyeShape.RoundedPointingIn()
+		q3.design.shape.eye = QRCode.EyeShape.RoundedPointingIn()
 		q3.rebuildQRCode()
 
 		let gr = QRCode.FillStyle.RadialGradient(

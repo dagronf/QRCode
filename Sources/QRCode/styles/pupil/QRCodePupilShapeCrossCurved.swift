@@ -45,28 +45,7 @@ public extension QRCode.PupilShape {
 		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
 
 		/// The pupil centered in the 90x90 square
-		@objc public func pupilPath() -> CGPath {
-			let crossPath = CGMutablePath()
-			crossPath.move(to: CGPoint(x: 30, y: 50))
-			crossPath.curve(to: CGPoint(x: 34, y: 45), controlPoint1: CGPoint(x: 30, y: 50), controlPoint2: CGPoint(x: 34, y: 49))
-			crossPath.curve(to: CGPoint(x: 30, y: 40), controlPoint1: CGPoint(x: 34, y: 41), controlPoint2: CGPoint(x: 30, y: 40))
-			crossPath.line(to: CGPoint(x: 30, y: 30))
-			crossPath.line(to: CGPoint(x: 40, y: 30))
-			crossPath.curve(to: CGPoint(x: 45, y: 34), controlPoint1: CGPoint(x: 40, y: 30), controlPoint2: CGPoint(x: 41, y: 34))
-			crossPath.curve(to: CGPoint(x: 50, y: 30), controlPoint1: CGPoint(x: 49, y: 34), controlPoint2: CGPoint(x: 50, y: 30))
-			crossPath.line(to: CGPoint(x: 60, y: 30))
-			crossPath.line(to: CGPoint(x: 60, y: 40))
-			crossPath.curve(to: CGPoint(x: 56, y: 45), controlPoint1: CGPoint(x: 60, y: 40), controlPoint2: CGPoint(x: 56, y: 41))
-			crossPath.curve(to: CGPoint(x: 60, y: 50), controlPoint1: CGPoint(x: 56, y: 49), controlPoint2: CGPoint(x: 60, y: 50))
-			crossPath.line(to: CGPoint(x: 60, y: 60))
-			crossPath.line(to: CGPoint(x: 50, y: 60))
-			crossPath.curve(to: CGPoint(x: 45, y: 56), controlPoint1: CGPoint(x: 50, y: 60), controlPoint2: CGPoint(x: 49, y: 56))
-			crossPath.curve(to: CGPoint(x: 40, y: 60), controlPoint1: CGPoint(x: 41, y: 56), controlPoint2: CGPoint(x: 40, y: 60))
-			crossPath.line(to: CGPoint(x: 30, y: 60))
-			crossPath.line(to: CGPoint(x: 30, y: 50))
-			crossPath.close()
-			return crossPath
-		}
+		@objc public func pupilPath() -> CGPath { pupilShape__ }
 	}
 }
 
@@ -75,3 +54,27 @@ public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.Cross
 	/// - Returns: A pupil shape generator
 	@inlinable static func crossCurved() -> QRCodePupilShapeGenerator { QRCode.PupilShape.CrossCurved() }
 }
+
+// MARK: - Paths
+
+private let pupilShape__: CGPath =
+	CGPath.make { crossPath in
+		crossPath.move(to: CGPoint(x: 30, y: 50))
+		crossPath.curve(to: CGPoint(x: 34, y: 45), controlPoint1: CGPoint(x: 30, y: 50), controlPoint2: CGPoint(x: 34, y: 49))
+		crossPath.curve(to: CGPoint(x: 30, y: 40), controlPoint1: CGPoint(x: 34, y: 41), controlPoint2: CGPoint(x: 30, y: 40))
+		crossPath.line(to: CGPoint(x: 30, y: 30))
+		crossPath.line(to: CGPoint(x: 40, y: 30))
+		crossPath.curve(to: CGPoint(x: 45, y: 34), controlPoint1: CGPoint(x: 40, y: 30), controlPoint2: CGPoint(x: 41, y: 34))
+		crossPath.curve(to: CGPoint(x: 50, y: 30), controlPoint1: CGPoint(x: 49, y: 34), controlPoint2: CGPoint(x: 50, y: 30))
+		crossPath.line(to: CGPoint(x: 60, y: 30))
+		crossPath.line(to: CGPoint(x: 60, y: 40))
+		crossPath.curve(to: CGPoint(x: 56, y: 45), controlPoint1: CGPoint(x: 60, y: 40), controlPoint2: CGPoint(x: 56, y: 41))
+		crossPath.curve(to: CGPoint(x: 60, y: 50), controlPoint1: CGPoint(x: 56, y: 49), controlPoint2: CGPoint(x: 60, y: 50))
+		crossPath.line(to: CGPoint(x: 60, y: 60))
+		crossPath.line(to: CGPoint(x: 50, y: 60))
+		crossPath.curve(to: CGPoint(x: 45, y: 56), controlPoint1: CGPoint(x: 50, y: 60), controlPoint2: CGPoint(x: 49, y: 56))
+		crossPath.curve(to: CGPoint(x: 40, y: 60), controlPoint1: CGPoint(x: 41, y: 56), controlPoint2: CGPoint(x: 40, y: 60))
+		crossPath.line(to: CGPoint(x: 30, y: 60))
+		crossPath.line(to: CGPoint(x: 30, y: 50))
+		crossPath.close()
+	}

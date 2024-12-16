@@ -31,81 +31,92 @@ public extension QRCode.PupilShape {
 		/// The generator title
 		@objc public static var Title: String { "UFO" }
 		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
-			if let settings = settings {
-				return UFO(settings: settings)
-			}
-			return UFO()
+			UFO(settings: settings)
 		}
 
-		@objc public init(isFlipped: Bool = false) {
-			self.isFlipped = isFlipped
+		/// Flip the pupil shape
+		@objc public var flip: QRCode.Flip = .none
+
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
 			super.init()
 		}
 
 		/// Create a navigator pupil shape using the specified settings
-		@objc public init(settings: [String: Any]) {
+		@objc public init(settings: [String: Any]?) {
 			super.init()
-			settings.forEach { (key: String, value: Any) in
+			settings?.forEach { (key: String, value: Any) in
 				_ = self.setSettingValue(value, forKey: key)
 			}
 		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodePupilShapeGenerator {
-			UFO(isFlipped: self.isFlipped)
+			UFO(flip: self.flip)
 		}
 		/// Reset the pupil shape generator back to defaults
 		@objc public func reset() {
-			self.isFlipped = false
+			self.flip = .none
 		}
-
-		@objc public func settings() -> [String : Any] {
-			[QRCode.SettingsKey.isFlipped: self.isFlipped]
-		}
-		
-		/// Does this pupil support this setting?
-		/// - Parameter key: The key
-		/// - Returns: True if this pupil type supports this settings, false otherwise
-		@objc public func supportsSettingValue(forKey key: String) -> Bool {
-			key == QRCode.SettingsKey.isFlipped
-		}
-		
-		/// Set the key value for this pupil
-		/// - Parameters:
-		///   - value: The value to set
-		///   - key: The key
-		/// - Returns: True if the setting was able to be set, false otherwise
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
-			if key == QRCode.SettingsKey.isFlipped {
-				self.isFlipped = BoolValue(value) ?? false
-			}
-			return false
-		}
-
-		/// Is the pupil shape flipped?
-		@objc public var isFlipped: Bool = false
 
 		/// The pupil centered in the 90x90 square
 		@objc public func pupilPath() -> CGPath {
-			let pupilPath = CGMutablePath()
-			pupilPath.move(to: CGPoint(x: 60, y: 60))
-			pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 60, y: 60), controlPoint2: CGPoint(x: 60, y: 45))
-			pupilPath.curve(to: CGPoint(x: 45, y: 30), controlPoint1: CGPoint(x: 60, y: 36.72), controlPoint2: CGPoint(x: 53.28, y: 30))
-			pupilPath.line(to: CGPoint(x: 30, y: 30))
-			pupilPath.line(to: CGPoint(x: 30, y: 45))
-			pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 30, y: 53.28), controlPoint2: CGPoint(x: 36.72, y: 60))
-			pupilPath.line(to: CGPoint(x: 60, y: 60))
-			pupilPath.line(to: CGPoint(x: 60, y: 60))
-			pupilPath.close()
-
-			if isFlipped {
-				let n = CGMutablePath()
-				n.addPath(pupilPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
-				return n
+			switch self.flip {
+			case .none:
+				return pupilShape__
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilShape__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilShape__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(pupilShape__, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
 			}
-
-			return pupilPath
 		}
+	}
+}
+
+private let pupilShape__: CGPath =
+	CGPath.make { pupilPath in
+		pupilPath.move(to: CGPoint(x: 60, y: 60))
+		pupilPath.curve(to: CGPoint(x: 60, y: 45), controlPoint1: CGPoint(x: 60, y: 60), controlPoint2: CGPoint(x: 60, y: 45))
+		pupilPath.curve(to: CGPoint(x: 45, y: 30), controlPoint1: CGPoint(x: 60, y: 36.72), controlPoint2: CGPoint(x: 53.28, y: 30))
+		pupilPath.line(to: CGPoint(x: 30, y: 30))
+		pupilPath.line(to: CGPoint(x: 30, y: 45))
+		pupilPath.curve(to: CGPoint(x: 45, y: 60), controlPoint1: CGPoint(x: 30, y: 53.28), controlPoint2: CGPoint(x: 36.72, y: 60))
+		pupilPath.line(to: CGPoint(x: 60, y: 60))
+		pupilPath.line(to: CGPoint(x: 60, y: 60))
+		pupilPath.close()
+	}
+
+public extension QRCode.PupilShape.UFO {
+	@objc func settings() -> [String: Any] {
+		[QRCode.SettingsKey.flip: self.flip.rawValue]
+	}
+
+	/// Returns true if the generator supports settings values for the given key
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		key == QRCode.SettingsKey.flip
+	}
+
+	/// Set the key's value in the generator
+	/// - Parameters:
+	///   - value: The value to set
+	///   - key: The setting key
+	/// - Returns: True if the setting was able to be change, false otherwise
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == QRCode.SettingsKey.flip,
+			let which = IntValue(value)
+		{
+			self.flip = QRCode.Flip(rawValue: which) ?? .none
+			return true
+		}
+		return false
 	}
 }
 
@@ -113,7 +124,7 @@ public extension QRCodePupilShapeGenerator where Self == QRCode.PupilShape.UFO {
 	/// Create a ufo pupil shape generator with curved insets
 	/// - Parameter isFlipped: if true, flips the pupil shape horizontally
 	/// - Returns: A pupil shape generator
-	@inlinable static func ufo(isFlipped: Bool = false) -> QRCodePupilShapeGenerator {
-		QRCode.PupilShape.UFO(isFlipped: isFlipped)
+	@inlinable static func ufo(flip: QRCode.Flip = .none) -> QRCodePupilShapeGenerator {
+		QRCode.PupilShape.UFO(flip: flip)
 	}
 }

@@ -29,7 +29,9 @@ public extension QRCode.PupilShape {
 		/// The generator title
 		@objc public static var Title: String { "Forest" }
 		/// Create a pupil generator with the provided settings
-		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator { Forest() }
+		@objc public static func Create(_ settings: [String : Any]?) -> any QRCodePupilShapeGenerator {
+			Forest(settings: settings)
+		}
 
 		/// Create a pupil generator
 		/// - Parameter flip: The flip state for the pupil

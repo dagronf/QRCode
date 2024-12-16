@@ -11,6 +11,7 @@ import AppKit
 import DSFAppKitBuilder
 import QRCode
 import DSFValueBinders
+import DSFMenuBuilder
 
 class PupilStylesView: Element {
 
@@ -75,16 +76,21 @@ class PupilStylesView: Element {
 				}
 
 				HStack {
-					Label("Flipped:").font(.callout)
-					Toggle()
-						.controlSize(.small)
-						.bindOnOff(pupilFlipped)
-						.bindIsEnabled(pupilFlippedEnabled)
+					Label("Flip:").font(.callout)
+					PopupButton {
+						MenuItem("none")
+						MenuItem("horizontally")
+						MenuItem("vertically")
+						MenuItem("both")
+					}
+					.bindSelection(pupilFlipped)
+					.bindIsEnabled(pupilFlippedEnabled)
+					.onChange { [weak self] popupIndex in
+						let newVal = QRCode.Flip(rawValue: popupIndex) ?? .none
+						_ = self?.qrCode.design.shape.pupil?.setSettingValue(newVal.rawValue, forKey: QRCode.SettingsKey.flip)
+						self?.update()
+					}
 					EmptyView()
-				}
-				.onChange(of: pupilFlipped) { [weak self] newValue in
-					_ = self?.qrCode.design.shape.pupil?.setSettingValue(newValue, forKey: QRCode.SettingsKey.isFlipped)
-					self?.update()
 				}
 
 				HStack {
@@ -115,12 +121,14 @@ class PupilStylesView: Element {
 				}
 			}
 		}
+		.hugging(h: 1)
 		.edgeInsets(top: 4, left: 4, bottom: 4, right: 4)
 
 	private func sync() {
 		let item = qrCode.design.shape.actualPupilShape
-		self.pupilFlippedEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-		self.pupilFlipped.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.isFlipped) ?? false
+
+		self.pupilFlippedEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.flip)
+		self.pupilFlipped.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.flip) ?? 0
 
 		self.pupilHasInnerCornersEnabled.wrappedValue = item.supportsSettingValue(forKey: QRCode.SettingsKey.hasInnerCorners)
 		self.pupilHasInnerCorners.wrappedValue = item.settingsValue(forKey: QRCode.SettingsKey.hasInnerCorners) ?? false
@@ -160,7 +168,7 @@ class PupilStylesView: Element {
 
 	private lazy var pupilSelection: ValueBinder<Int> = ValueBinder(0)
 
-	private lazy var pupilFlipped = ValueBinder(false)
+	private lazy var pupilFlipped = ValueBinder(0)
 	private var pupilFlippedEnabled = ValueBinder(false)
 
 	private lazy var pupilHasInnerCorners = ValueBinder(false)

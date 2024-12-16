@@ -25,30 +25,107 @@ public extension QRCode.EyeShape {
 	@objc(QRCodeEyeShapeHeadlight) class Headlight: NSObject, QRCodeEyeShapeGenerator {
 		@objc public static let Name = "headlight"
 		@objc public static var Title: String { "Headlight" }
-		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator { Headlight() }
+		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodeEyeShapeGenerator {
+			Headlight(settings: settings)
+		}
+
+		/// Flip the eye shape
+		@objc public var flip: QRCode.Flip = .none
+
+		/// Create a headlight eye generator
+		@objc public init(flip: QRCode.Flip = .none) {
+			self.flip = flip
+			super.init()
+		}
+
+		@objc public init(settings: [String: Any]?) {
+			super.init()
+			settings?.forEach { (key: String, value: Any) in
+				_ = self.setSettingValue(value, forKey: key)
+			}
+		}
 
 		/// Make a copy of the object
 		@objc public func copyShape() -> any QRCodeEyeShapeGenerator { Headlight() }
 		/// Reset the eye shape generator back to defaults
-		@objc public func reset() { }
-
-		// Has no configurable settings
-		@objc public func settings() -> [String: Any] { return [:] }
-		@objc public func supportsSettingValue(forKey key: String) -> Bool { false }
-		@objc public func setSettingValue(_ value: Any?, forKey key: String) -> Bool { false }
+		@objc public func reset() {
+			self.flip = .none
+		}
 
 		/// The eye path
-		@objc public func eyePath() -> CGPath { eyeShape__ }
+		@objc public func eyePath() -> CGPath {
+			switch self.flip {
+			case .none:
+				return eyePath__
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyePath__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyePath__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyePath__, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
+		}
 
 		/// The background path for the eye
-		@objc public func eyeBackgroundPath() -> CGPath { eyeBackgroundShape__ }
+		public func eyeBackgroundPath() -> CGPath {
+			switch self.flip {
+			case .none:
+				return eyeBackgroundPath__
+			case .vertically:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyeBackgroundPath__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
+				}
+			case .horizontally:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyeBackgroundPath__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+				}
+			case .both:
+				return CGPath.make(forceClosePath: true) { n in
+					n.addPath(eyeBackgroundPath__, transform: .init(scaleX: -1, y: -1).translatedBy(x: -90, y: -90))
+				}
+			}
+		}
 
 		private static let _defaultPupil = QRCode.PupilShape.Circle()
 		public func defaultPupil() -> any QRCodePupilShapeGenerator { Self._defaultPupil }
 	}
 }
 
-private let eyeBackgroundShape__: CGPath =
+public extension QRCode.EyeShape.Headlight {
+	@objc func settings() -> [String: Any] {
+		[QRCode.SettingsKey.flip: self.flip.rawValue]
+	}
+
+	/// Returns true if the generator supports settings values for the given key
+	@objc func supportsSettingValue(forKey key: String) -> Bool {
+		key == QRCode.SettingsKey.flip
+	}
+
+	/// Set the key's value in the generator
+	/// - Parameters:
+	///   - value: The value to set
+	///   - key: The setting key
+	/// - Returns: True if the setting was able to be change, false otherwise
+	@objc func setSettingValue(_ value: Any?, forKey key: String) -> Bool {
+		if key == QRCode.SettingsKey.flip,
+			let which = IntValue(value)
+		{
+			self.flip = QRCode.Flip(rawValue: which) ?? .none
+			return true
+		}
+		return false
+	}
+}
+
+// MARK: - Paths
+
+private let eyeBackgroundPath__: CGPath =
 	CGPath.make { headlightEyeBackgroundPath in
 		headlightEyeBackgroundPath.move(to: CGPoint(x: 0, y: 0))
 		headlightEyeBackgroundPath.line(to: CGPoint(x: 90, y: 0))
@@ -59,7 +136,7 @@ private let eyeBackgroundShape__: CGPath =
 		headlightEyeBackgroundPath.close()
 	}
 
-private let eyeShape__: CGPath = {
+private let eyePath__: CGPath = {
 	CGPath.make { headlightEyeOuterPath in
 		headlightEyeOuterPath.move(to: CGPoint(x: 45, y: 70))
 		headlightEyeOuterPath.curve(to: CGPoint(x: 20, y: 45), controlPoint1: CGPoint(x: 31.19, y: 70), controlPoint2: CGPoint(x: 20, y: 58.81))

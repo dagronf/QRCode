@@ -105,8 +105,7 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 					settings += "• __Configurable corners__<br/>"
 				}
-				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 					settings += "• __Flippable__<br/>"
 				}
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
@@ -121,6 +120,9 @@ final class QRCodeEyeShapeConfigurationTests: XCTestCase {
 				}
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.insetGeneratorName) {
 					settings += "&nbsp;&nbsp;- Supports pixel inset generator<br/>"
+				}
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.eyeInnerStyle) {
+					settings += "• __Configurable eye corners__<br/>"
 				}
 
 				markdown += (settings.count > 0) ? settings : "_none_"
@@ -171,8 +173,7 @@ final class QRCodePixelShapeConfigurationTests: XCTestCase {
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 					settings += "• __Configurable corners__<br/>"
 				}
-				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 					settings += "• __Flippable__<br/>"
 				}
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {
@@ -235,8 +236,7 @@ final class QRCodePupilShapeConfigurationTests: XCTestCase {
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.corners) {
 					settings += "• __Configurable corners__<br/>"
 				}
-				if g.supportsSettingValue(forKey: QRCode.SettingsKey.isFlipped)
-						|| g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
+				if g.supportsSettingValue(forKey: QRCode.SettingsKey.flip) {
 					settings += "• __Flippable__<br/>"
 				}
 				if g.supportsSettingValue(forKey: QRCode.SettingsKey.rotationFraction) {

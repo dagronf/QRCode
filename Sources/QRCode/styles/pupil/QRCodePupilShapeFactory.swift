@@ -79,7 +79,6 @@ import CoreGraphics
 			QRCode.PupilShape.Leaf.self,
 			QRCode.PupilShape.BarsVertical.self,
 			QRCode.PupilShape.BarsHorizontal.self,
-			QRCode.PupilShape.RoundedPointingOut.self,
 			QRCode.PupilShape.Shield.self,
 			QRCode.PupilShape.UsePixelShape.self,
 			QRCode.PupilShape.HexagonLeaf.self,

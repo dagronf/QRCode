@@ -53,5 +53,15 @@ public extension QRCode {
 		case vertically = 2
 		/// Flip along both axes
 		case both = 3
+
+		/// String representation
+		var name: String {
+			switch self {
+			case .none: return "none"
+			case .horizontally: return "horizontally"
+			case .vertically: return "vertically"
+			case .both: return "both"
+			}
+		}
 	}
 }
