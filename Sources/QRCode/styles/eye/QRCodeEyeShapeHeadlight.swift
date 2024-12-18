@@ -46,7 +46,9 @@ public extension QRCode.EyeShape {
 		}
 
 		/// Make a copy of the object
-		@objc public func copyShape() -> any QRCodeEyeShapeGenerator { Headlight() }
+		@objc public func copyShape() -> any QRCodeEyeShapeGenerator {
+			Headlight(flip: self.flip)
+		}
 		/// Reset the eye shape generator back to defaults
 		@objc public func reset() {
 			self.flip = .none
