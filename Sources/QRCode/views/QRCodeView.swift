@@ -64,6 +64,7 @@ import UIKit
 		set { self._document.design = newValue; self.rebuildQRCode() }
 	}
 
+	/// The logo to apply to the qr code
 	@objc public var logoTemplate: QRCode.LogoTemplate? {
 		get { self._document.logoTemplate }
 		set { self._document.logoTemplate = newValue; self.rebuildQRCode() }

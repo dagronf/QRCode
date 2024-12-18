@@ -104,13 +104,15 @@ public extension QRCodeEyeShapeFactory {
 	///   - dimension: The dimension of the image to output
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
+	///   - eyeBackgroundColor: The eye background color (optional)
 	/// - Returns: A CGImage representation of the eye
 	func image(
 		eyeGenerator: any QRCodeEyeShapeGenerator,
 		pupilGenerator: (any QRCodePupilShapeGenerator)? = nil,
 		dimension: CGFloat,
 		foregroundColor: CGColor,
-		backgroundColor: CGColor? = nil
+		backgroundColor: CGColor? = nil,
+		eyeBackgroundColor: CGColor? = nil
 	) throws -> CGImage {
 		let width = Int(dimension)
 		let height = Int(dimension)
@@ -141,6 +143,18 @@ public extension QRCodeEyeShapeFactory {
 		let fitScale = dimension / 90
 		var scaleTransform = CGAffineTransform.identity
 		scaleTransform = scaleTransform.scaledBy(x: fitScale, y: fitScale)
+
+		if let eyeBackgroundColor = eyeBackgroundColor {
+			let p = CGMutablePath()
+			let eb = eyeGenerator.eyeBackgroundPath()
+				.applyingTransform(CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
+			p.addPath(eb, transform: scaleTransform)
+			context.usingGState { ctx in
+				ctx.addPath(p)
+				ctx.setFillColor(eyeBackgroundColor)
+				ctx.fillPath()
+			}
+		}
 
 		// Draw the qr with the required styles
 		let path = CGMutablePath()
@@ -176,13 +190,13 @@ public extension QRCodeEyeShapeFactory {
 	///   - dimension: The dimension of the sample images to generate
 	///   - foregroundColor: The foreground color
 	///   - backgroundColor: The background color (optional)
-	///   - isOn: If true, draws the 'on' pixels in the qrcode, else draws the 'off' pixels
+	///   - eyebackgroundColor: The eye background color (optional)
 	/// - Returns: A CGImage representation of the data
 	func generateSampleImages(
 		dimension: CGFloat,
 		foregroundColor: CGColor,
 		backgroundColor: CGColor? = nil,
-		isOn: Bool = true
+		eyeBackgroundColor: CGColor? = nil
 	) throws -> [(name: String, image: CGImage)] {
 		try QRCodeEyeShapeFactory.shared.all()
 			.map {
@@ -190,7 +204,8 @@ public extension QRCodeEyeShapeFactory {
 					eyeGenerator: $0,
 					dimension: dimension,
 					foregroundColor: foregroundColor,
-					backgroundColor: backgroundColor
+					backgroundColor: backgroundColor,
+					eyeBackgroundColor: eyeBackgroundColor
 				)
 				return (name: $0.name, image: eyeImage)
 			}

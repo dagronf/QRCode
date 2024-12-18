@@ -146,26 +146,20 @@ public extension QRCode.Document {
 	}
 
 	/// Generate a JSON string representation of the document.
-	@objc func jsonData() throws -> Data {
-		try JSONSerialization.data(withJSONObject: self.settings())
+	/// - Parameter formatted: If true, pretty-prints the JSON output
+	/// - Returns: JSON data
+	@objc func jsonData(formatted: Bool = false) throws -> Data {
+		let dict = try self.settings()
+		let options: JSONSerialization.WritingOptions = formatted ? [.prettyPrinted, .sortedKeys] : []
+		return try JSONSerialization.data(withJSONObject: dict, options: options)
 	}
 
 	/// Generate a pretty-printed JSON string representation of the document.
 	@objc func jsonStringFormatted() throws -> String {
-		let dict = try self.settings()
-		if #available(macOS 10.13, *) {
-			let data = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted, .sortedKeys])
-			guard let str = String(data: data, encoding: .utf8) else {
-				throw QRCodeError.cannotGenerateJSON
-			}
-			return str
+		let data = try self.jsonData(formatted: true)
+		guard let str = String(data: data, encoding: .utf8) else {
+			throw QRCodeError.cannotGenerateJSON
 		}
-		else {
-			let data = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted])
-			guard let str = String(data: data, encoding: .utf8) else {
-				throw QRCodeError.cannotGenerateJSON
-			}
-			return str
-		}
+		return str
 	}
 }
