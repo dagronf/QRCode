@@ -40,6 +40,7 @@ internal extension QRCode.PixelShape {
 			case arrow
 			case wave
 			case spikyCircle
+			case stitch
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -257,6 +258,14 @@ internal extension QRCode.PixelShape {
 							))
 						let sq = Donut.donutPixel10x10()
 						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .stitch {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm),
+								y: yoff + (CGFloat(row) * dm)
+							))
+						path.addPath(Stitch.pixelShape_, transform: transform)
 					}
 					else {
 						path.addPath(CGPath(rect: ri, transform: &rotateTransform))
