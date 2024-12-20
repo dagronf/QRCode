@@ -9,6 +9,7 @@
 | <a href="../../Art/images/pupil_blade.png"><img src="../../Art/images/pupil_blade.png" width="75" /></a> | __blade__ | `QRCode.PixelShape.Blade` | _none_ |
 | <a href="../../Art/images/pupil_blobby.png"><img src="../../Art/images/pupil_blobby.png" width="75" /></a> | __blobby__ | `QRCode.PixelShape.Blobby` | _none_ |
 | <a href="../../Art/images/pupil_circle.png"><img src="../../Art/images/pupil_circle.png" width="75" /></a> | __circle__ | `QRCode.PixelShape.Circle` | _none_ |
+| <a href="../../Art/images/pupil_cloud.png"><img src="../../Art/images/pupil_cloud.png" width="75" /></a> | __cloud__ | `QRCode.PixelShape.Cloud` | _none_ |
 | <a href="../../Art/images/pupil_corneredPixels.png"><img src="../../Art/images/pupil_corneredPixels.png" width="75" /></a> | __corneredPixels__ | `QRCode.PixelShape.CorneredPixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/pupil_cross.png"><img src="../../Art/images/pupil_cross.png" width="75" /></a> | __cross__ | `QRCode.PixelShape.Cross` | _none_ |
 | <a href="../../Art/images/pupil_crossCurved.png"><img src="../../Art/images/pupil_crossCurved.png" width="75" /></a> | __crossCurved__ | `QRCode.PixelShape.CrossCurved` | _none_ |
