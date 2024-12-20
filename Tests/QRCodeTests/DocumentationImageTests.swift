@@ -769,30 +769,54 @@ final class DocumentationImageTests: XCTestCase {
 
 			.generate.svg(dimension: 800)
 
-		//try svgData.write(to: URL(fileURLWithPath: "/tmp/output.svg"))
+		try outputFolder.write(svgData, to: "lcd.svg")
 	}
 
 	func testOffPixelExtendIntoBlankSpace() throws {
-		let pngData = try QRCode.build
-			.text("https://uglychristmassweaters.com.au/product-category/mens-christmas-sweater/")
-			.quietZonePixelCount(1)
-			.backgroundColor(CGColor(srgbRed: 0.4, green: 0, blue: 0, alpha: 1))
+		do {
+			let pngData = try QRCode.build
+				.text("https://uglychristmassweaters.com.au/product-category/mens-christmas-sweater/")
+				.quietZonePixelCount(1)
+				.backgroundColor(CGColor(srgbRed: 0.4, green: 0, blue: 0, alpha: 1))
 
-			.onPixels.shape(.stitch())
-			.onPixels.style(QRCode.FillStyle.Solid(gray: 1, alpha: 0.9))
+				.onPixels.shape(.stitch())
+				.onPixels.style(QRCode.FillStyle.Solid(gray: 1, alpha: 0.9))
 
-			.offPixels.shape(.stitch())
-			.offPixels.style(QRCode.FillStyle.Solid(1, 0, 0, alpha: 0.95))
-			.offPixels.extendIntoEmptyQRCodeComponents(true)
+				.offPixels.shape(.stitch())
+				.offPixels.style(QRCode.FillStyle.Solid(1, 0, 0, alpha: 0.95))
+				.offPixels.extendIntoEmptyQRCodeComponents(true)
 
-			.eye.shape(.usePixelShape())
-			.eye.mirrorEyePathsAroundQRCodeCenter(false)
+				.eye.shape(.usePixelShape())
+				.eye.mirrorEyePathsAroundQRCodeCenter(false)
 
-			.pupil.shape(.usePixelShape())
+				.pupil.shape(.usePixelShape())
 
-			.generate.png(dimension: 600)
+				.generate.png(dimension: 600)
 
-		//try pngData.write(to: URL(fileURLWithPath: "/tmp/ugly-sweater.png"))
+			try outputFolder.write(pngData, to: "ugly-sweater.png")
+		}
+
+		do {
+			let pngData = try QRCode.build
+				.text("https://uglychristmassweaters.com.au/product-category/mens-christmas-sweater/")
+				.quietZonePixelCount(1)
+				.backgroundColor(CGColor(srgbRed: 0.4, green: 0, blue: 0, alpha: 1))
+			
+				.onPixels.shape(.stitch())
+				.onPixels.style(QRCode.FillStyle.Solid(gray: 1, alpha: 0.9))
+			
+				.offPixels.shape(.stitch())
+				.offPixels.style(QRCode.FillStyle.Solid(1, 0, 0, alpha: 0.95))
+				.offPixels.extendIntoEmptyQRCodeComponents(false)
+			
+				.eye.shape(.usePixelShape())
+				.eye.mirrorEyePathsAroundQRCodeCenter(false)
+			
+				.pupil.shape(.usePixelShape())
+			
+				.generate.png(dimension: 600)
+			
+			try outputFolder.write(pngData, to: "ugly-sweater-non-extended.png")
+		}
 	}
-
 }
