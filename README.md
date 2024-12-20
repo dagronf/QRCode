@@ -83,6 +83,9 @@ A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector
    <a href="./Examples/lcd/index.md"> 
       <img src="./Examples/lcd/lcd.svg" width="80"/>
    </a>
+   <a href="./Examples/ugly-sweater/index.md"> 
+      <img src="./Examples/ugly-sweater/ugly-sweater.png" width="80"/>
+   </a>
 </p>
 
 ## Why?

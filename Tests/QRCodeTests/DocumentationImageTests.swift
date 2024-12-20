@@ -792,7 +792,7 @@ final class DocumentationImageTests: XCTestCase {
 
 			.generate.png(dimension: 600)
 
-		try pngData.write(to: URL(fileURLWithPath: "/tmp/ugly-sweater.png"))
+		//try pngData.write(to: URL(fileURLWithPath: "/tmp/ugly-sweater.png"))
 	}
 
 }
