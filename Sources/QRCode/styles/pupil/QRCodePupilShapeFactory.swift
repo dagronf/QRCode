@@ -97,6 +97,7 @@ import CoreGraphics
 			QRCode.PupilShape.DotDragVertical.self,
 			QRCode.PupilShape.Orbits.self,
 			QRCode.PupilShape.Blade.self,
+			QRCode.PupilShape.Cloud.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 
