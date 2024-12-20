@@ -801,10 +801,7 @@ public extension QRCode.Builder.Generate {
 	///   - dimension: The dimension of the image
 	///   - representation: The image representation to use when generating the image data
 	/// - Returns: Image data
-	@discardableResult func image(
-		dimension: Int,
-		representation: ImageExportType
-	) throws -> Data {
+	@discardableResult func image(dimension: Int, representation: ImageExportType) throws -> Data {
 		try self.image(dimension: dimension).imageData(for: representation)
 	}
 
@@ -813,10 +810,7 @@ public extension QRCode.Builder.Generate {
 	///   - dimension: The dimension of the resulting pdf
 	///   - pdfResolution: The resolution to use when generating the pdf
 	/// - Returns: pdf data
-	@discardableResult func pdf(
-		dimension: Int,
-		pdfResolution: CGFloat = 72.0
-	) throws -> Data {
+	@discardableResult func pdf(dimension: Int, pdfResolution: CGFloat = 72.0) throws -> Data {
 		try builder.document.pdfData(dimension: dimension, pdfResolution: pdfResolution)
 	}
 
@@ -825,6 +819,25 @@ public extension QRCode.Builder.Generate {
 	/// - Returns: SVG data
 	@discardableResult func svg(dimension: Int) throws -> Data {
 		try builder.document.svgData(dimension: dimension)
+	}
+
+	/// Generate a PNG representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimension of the resulting png
+	///   - dpi: The DPI for the resulting image
+	/// - Returns: png data
+	@discardableResult func png(dimension: Int, dpi: CGFloat = 72.0) throws -> Data {
+		try builder.document.pngData(dimension: dimension, dpi: dpi)
+	}
+
+	/// Generate a JPEG representation of the QR code
+	/// - Parameters:
+	///   - dimension: The dimension of the resulting png
+	///   - dpi: The DPI for the resulting image
+	///   - compression: The compression ratio to apply to the image
+	/// - Returns: JPEG data
+	@discardableResult func jpeg(dimension: Int, dpi: CGFloat = 72.0, compression: Double = 0.9) throws -> Data {
+		try builder.document.jpegData(dimension: dimension, dpi: dpi, compression: compression)
 	}
 }
 
