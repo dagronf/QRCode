@@ -118,7 +118,7 @@ public extension QRCode {
 			if let eyeBackgroundColor = design.style.eyeBackground,
 				let hexEyeBackgroundColor = try design.style.eyeBackground?.hexRGBCode()
 			{
-				let eyeBackgroundPath = self.path(finalRect.size, components: .eyeBackground, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
+				let eyeBackgroundPath = self.path(finalRect.size, components: .eyeBackground, shape: design.shape, additionalQuietSpace: additionalQuietSpace, mirrorEyePathsAroundQRCodeCenter: design.shape.mirrorEyePathsAroundQRCodeCenter)
 				let alphaStr = _SVGF(eyeBackgroundColor.alpha)
 				svg += "   <path id='eye-background-shape' fill=\"\(hexEyeBackgroundColor)\" fill-opacity=\"\(alphaStr)\" d=\"\(eyeBackgroundPath.svgDataPath()))\" />\n"
 			}
@@ -126,7 +126,7 @@ public extension QRCode {
 			// Pupil
 
 			do {
-				let eyePupilPath = self.path(finalRect.size, components: .eyePupil, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
+				let eyePupilPath = self.path(finalRect.size, components: .eyePupil, shape: design.shape, additionalQuietSpace: additionalQuietSpace, mirrorEyePathsAroundQRCodeCenter: design.shape.mirrorEyePathsAroundQRCodeCenter)
 				let pupilFill = try design.style.actualPupilStyle.svgRepresentation(styleIdentifier: "pupil-fill", expectedPixelSize: pixelSize, shadow: shadow)
 				svg += "   <path id='pupil-shape' \(pupilFill.styleAttribute) d=\"\(eyePupilPath.svgDataPath())\" />\n"
 				if let def = pupilFill.styleDefinition {
@@ -137,7 +137,7 @@ public extension QRCode {
 			// Eye
 
 			do {
-				let eyeOuterPath = self.path(finalRect.size, components: .eyeOuter, shape: design.shape, additionalQuietSpace: additionalQuietSpace)
+				let eyeOuterPath = self.path(finalRect.size, components: .eyeOuter, shape: design.shape, additionalQuietSpace: additionalQuietSpace, mirrorEyePathsAroundQRCodeCenter: design.shape.mirrorEyePathsAroundQRCodeCenter)
 				let eyeOuterFill = try design.style.actualEyeStyle.svgRepresentation(styleIdentifier: "eye-outer-fill", expectedPixelSize: pixelSize, shadow: shadow)
 				svg += "   <path id='eye-shape' \(eyeOuterFill.styleAttribute) d=\"\(eyeOuterPath.svgDataPath())\" />\n"
 				if let def = eyeOuterFill.styleDefinition {
@@ -150,7 +150,7 @@ public extension QRCode {
 			do {
 				if let color = design.style.offPixelsBackground {
 					let offPixelsBackground = try QRCode.FillStyle.Solid(color).svgRepresentation(styleIdentifier: "off-pixels-background-color", expectedPixelSize: pixelSize, shadow: nil)
-					let offPixelsBackgroundPath = self.path(finalRect.size, components: .offPixelsBackground, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
+					let offPixelsBackgroundPath = self.path(finalRect.size, components: .offPixelsBackground, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace, extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern)
 					svg += "   <path id='off-pixels-background-shape' \(offPixelsBackground.styleAttribute) d=\"\(offPixelsBackgroundPath.svgDataPath())\" />\n"
 				}
 			}
@@ -159,7 +159,7 @@ public extension QRCode {
 
 			do {
 				if let _ = design.shape.offPixels {
-					let offPixelsPath = self.path(finalRect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace)
+					let offPixelsPath = self.path(finalRect.size, components: .offPixels, shape: design.shape, logoTemplate: logoTemplate, additionalQuietSpace: additionalQuietSpace, extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern)
 					if let offPixels = try design.style.offPixels?.svgRepresentation(styleIdentifier: "off-pixels", expectedPixelSize: pixelSize, shadow: nil) {
 						svg += "   <path id='off-pixels-shape' \(offPixels.styleAttribute) d=\"\(offPixelsPath.svgDataPath())\" />\n"
 						if let def = offPixels.styleDefinition {

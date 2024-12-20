@@ -543,6 +543,14 @@ public extension QRCode.Builder {
 			return self.backgroundColor(c)
 		}
 
+		/// Set whether the eye shapes are mirrored around the center of the QR code
+		/// - Parameter mirrorEyePathsAroundQRCodeCenter: If true, mirrors the eye shapes
+		/// - Returns: self
+		@discardableResult public func mirrorEyePathsAroundQRCodeCenter(_ mirrorEyePathsAroundQRCodeCenter: Bool) -> QRCode.Builder {
+			self.builder.document.design.shape.mirrorEyePathsAroundQRCodeCenter = mirrorEyePathsAroundQRCodeCenter
+			return self.builder
+		}
+
 		// Private
 		fileprivate let builder: QRCode.Builder
 		fileprivate init(builder: QRCode.Builder) { self.builder = builder }
@@ -674,6 +682,14 @@ public extension QRCode.Builder {
 		@discardableResult public func backgroundColor(hexString: String) throws -> QRCode.Builder {
 			let c = try CGColor.fromHexString(hexString)
 			return self.backgroundColor(c)
+		}
+
+		/// Set if the off pixels are extended into the 'off' pixels of the eye pattern
+		/// - Parameter extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+		/// - Returns: self
+		@discardableResult public func extendIntoEyePattern(_ extendIntoEyePattern: Bool) -> QRCode.Builder {
+			self.builder.document.design.shape.extendOffPixelsIntoFinderPattern = extendIntoEyePattern
+			return self.builder
 		}
 
 		// Private

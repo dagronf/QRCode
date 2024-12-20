@@ -30,3 +30,12 @@
 | <a href="../../Art/images/eye_teardrop.png"><img src="../../Art/images/eye_teardrop.png" width="75" /></a> | __teardrop__ | `QRCode.EyeShape.Teardrop` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_ufo.png"><img src="../../Art/images/eye_ufo.png" width="75" /></a> | __ufo__ | `QRCode.EyeShape.UFO` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_usePixelShape.png"><img src="../../Art/images/eye_usePixelShape.png" width="75" /></a> | __usePixelShape__ | `QRCode.EyeShape.UsePixelShape` | _none_ |
+
+## Eye mirroring
+
+By default, the eye and pupil shapes are mirrored around the center of the generated QR code. you can disabled this
+behaviour by setting `mirrorEyePathsAroundQRCodeCenter` on the shape object to `false` 
+
+| mirrored = true | mirrored = false |
+|-----------------|------------------|
+| <img src="../../Art/images/mirror-eyes-true.png" width="150" title="mirrored" /> | <img src="../../Art/images/mirror-eyes-false.png" width="150" title="mirrored" /> |

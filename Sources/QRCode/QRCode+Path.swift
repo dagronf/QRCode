@@ -80,20 +80,26 @@ public extension QRCode {
 	///   - shape: The shape definitions for genering the path components
 	///   - logoTemplate: The definition for the logo
 	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
+	///   - extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+	///   - mirrorEyePathsAroundQRCodeCenter: If true, flips the eye paths to mirror arround the center of the QR code
 	/// - Returns: A path containing the components
 	@objc func path(
 		dimension: CGFloat,
 		components: Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: LogoTemplate? = nil,
-		additionalQuietSpace: CGFloat = 0
+		additionalQuietSpace: CGFloat = 0,
+		extendOffPixelsIntoFinderPattern: Bool = false,
+		mirrorEyePathsAroundQRCodeCenter: Bool = true
 	) -> CGPath {
 		self.path(
 			.init(dimension: dimension),
 			components: components,
 			shape: shape,
 			logoTemplate: logoTemplate,
-			additionalQuietSpace: additionalQuietSpace
+			additionalQuietSpace: additionalQuietSpace,
+			extendOffPixelsIntoFinderPattern: extendOffPixelsIntoFinderPattern,
+			mirrorEyePathsAroundQRCodeCenter: mirrorEyePathsAroundQRCodeCenter
 		)
 	}
 
@@ -104,13 +110,17 @@ public extension QRCode {
 	///   - shape: The shape definitions for genering the path components
 	///   - logoTemplate: The definition for the logo
 	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
+	///   - extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+	///   - mirrorEyePathsAroundQRCodeCenter: If true, flips the eye paths to mirror arround the center of the QR code
 	/// - Returns: A path containing the components
 	@objc func path(
 		_ size: CGSize,
 		components: Components = .all,
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: LogoTemplate? = nil,
-		additionalQuietSpace: CGFloat = 0
+		additionalQuietSpace: CGFloat = 0,
+		extendOffPixelsIntoFinderPattern: Bool = false,
+		mirrorEyePathsAroundQRCodeCenter: Bool = true
 	) -> CGPath {
 		if self.cellDimension == 0 {
 			// There is no data in the qrcode
@@ -156,6 +166,32 @@ public extension QRCode {
 			return path
 		}
 
+		let scaledTopLeft = scaleTransform.concatenating(posTransform).concatenating(quietspaceTransform)
+
+		// The transform for flipping eye components for the bottom-left eye in the qr code
+		let flipBottomLeftTransform: CGAffineTransform = {
+			if mirrorEyePathsAroundQRCodeCenter {
+				return CGAffineTransform(scaleX: 1, y: -1)
+					.concatenating(CGAffineTransform(translationX: 0, y: 90))
+					.concatenating(scaledTopLeft)
+			}
+			else {
+				return scaledTopLeft
+			}
+		}()
+
+		// The transform for flipping eye components for the top-right eye in the qr code
+		let flipTopRightTransform: CGAffineTransform = {
+			if mirrorEyePathsAroundQRCodeCenter {
+				return CGAffineTransform(scaleX: -1, y: 1)
+					.concatenating(CGAffineTransform(translationX: 90, y: 0))
+					.concatenating(scaledTopLeft)
+			}
+			else {
+				return scaledTopLeft
+			}
+		}()
+
 		// The outer part of the eye
 		let eyeShape = shape.eye
 
@@ -174,20 +210,28 @@ public extension QRCode {
 			path.addPath(tl)
 
 			// bottom left
-			var blt = CGAffineTransform(scaleX: 1, y: -1)
-				.concatenating(CGAffineTransform(translationX: 0, y: 90))
-				.concatenating(scaledTopLeft)
-
+			var blt: CGAffineTransform = {
+				if mirrorEyePathsAroundQRCodeCenter {
+					return CGAffineTransform(scaleX: 1, y: -1)
+						.concatenating(CGAffineTransform(translationX: 0, y: 90))
+						.concatenating(scaledTopLeft)
+				}
+				return scaledTopLeft
+			}()
 			var bl = p.copy(using: &blt)!
 			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
 			// top right
-			var tlt = CGAffineTransform(scaleX: -1, y: 1)
-				.concatenating(CGAffineTransform(translationX: 90, y: 0))
-				.concatenating(scaledTopLeft)
-
+			var tlt: CGAffineTransform = {
+				if mirrorEyePathsAroundQRCodeCenter {
+					return CGAffineTransform(scaleX: -1, y: 1)
+						.concatenating(CGAffineTransform(translationX: 90, y: 0))
+						.concatenating(scaledTopLeft)
+				}
+				return scaledTopLeft
+			}()
 			var br = p.copy(using: &tlt)!
 			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
@@ -203,20 +247,14 @@ public extension QRCode {
 			path.addPath(tl)
 
 			// bottom left
-			var blt = CGAffineTransform(scaleX: 1, y: -1)
-				.concatenating(CGAffineTransform(translationX: 0, y: 90))
-				.concatenating(scaledTopLeft)
-
+			var blt = flipBottomLeftTransform
 			var bl = p.copy(using: &blt)!
 			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
 			// top right
-			var tlt = CGAffineTransform(scaleX: -1, y: 1)
-				.concatenating(CGAffineTransform(translationX: 90, y: 0))
-				.concatenating(scaledTopLeft)
-
+			var tlt = flipTopRightTransform
 			var br = p.copy(using: &tlt)!
 			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
@@ -235,20 +273,14 @@ public extension QRCode {
 			path.addPath(tl)
 
 			// bottom left
-			var blt = CGAffineTransform(scaleX: 1, y: -1)
-				.concatenating(CGAffineTransform(translationX: 0, y: 90))
-				.concatenating(scaledTopLeft)
-
+			var blt = flipBottomLeftTransform
 			var bl = p.copy(using: &blt)!
 			var bltrans = CGAffineTransform(translationX: 0, y: (dm * CGFloat(self.cellDimension)) - (9 * dm))
 			bl = bl.copy(using: &bltrans)!
 			path.addPath(bl)
 
 			// top right
-			var tlt = CGAffineTransform(scaleX: -1, y: 1)
-				.concatenating(CGAffineTransform(translationX: 90, y: 0))
-				.concatenating(scaledTopLeft)
-
+			var tlt = flipTopRightTransform
 			var br = p.copy(using: &tlt)!
 			var brtrans = CGAffineTransform(translationX: (dm * CGFloat(self.cellDimension)) - (9 * dm), y: 0)
 			br = br.copy(using: &brtrans)!
@@ -258,7 +290,9 @@ public extension QRCode {
 		// The background squares for the 'off' pixels
 		if components.contains(.offPixelsBackground) {
 			var masked = self.current.inverted()
-			masked = masked.maskingQREyes(inverted: false)
+			if extendOffPixelsIntoFinderPattern == false {
+				masked = masked.maskingQREyes(inverted: false)
+			}
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}
@@ -270,7 +304,9 @@ public extension QRCode {
 			let offPixelShape = shape.offPixels ?? QRCode.PixelShape.Square()
 
 			var masked = self.current.inverted()
-			masked = masked.maskingQREyes(inverted: false)
+			if extendOffPixelsIntoFinderPattern == false {
+				masked = masked.maskingQREyes(inverted: false)
+			}
 			if let template = logoTemplate {
 				masked = template.applyingMask(matrix: masked, dimension: sz)
 			}

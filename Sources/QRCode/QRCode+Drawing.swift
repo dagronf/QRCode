@@ -58,6 +58,8 @@ public extension QRCode {
 		let style = design.style
 		let shadow = style.shadow
 
+		let mirrorEyePathsAroundQRCodeCenter = design.shape.mirrorEyePathsAroundQRCodeCenter
+
 		//
 		// Special case handling for the 'use pixel shape' eye and pupil types
 		//
@@ -105,7 +107,28 @@ public extension QRCode {
 					)
 				}
 			}
-			
+
+			// If the design specifies off pixels, add them
+			if let s = style.offPixels, let shape = design.shape.offPixels {
+				let offPath = self.path(
+					finalRect.size,
+					shape: QRCode.Shape(offPixels: shape),
+					logoTemplate: logoTemplate,
+					additionalQuietSpace: additionalQuietSpace,
+					extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
+				)
+				ctx.usingGState { context in
+					s.fill(
+						ctx: context,
+						rect: finalRect,
+						path: offPath,
+						expectedPixelSize: pixelSize,
+						shadow: shadow
+					)
+				}
+
+			}
+
 			let negatedPath = self.path(
 				finalRect.size,
 				components: .negative,
@@ -132,7 +155,8 @@ public extension QRCode {
 					components: .eyeBackground,
 					shape: design.shape,
 					logoTemplate: logoTemplate,
-					additionalQuietSpace: additionalQuietSpace
+					additionalQuietSpace: additionalQuietSpace,
+					mirrorEyePathsAroundQRCodeCenter: mirrorEyePathsAroundQRCodeCenter
 				)
 				ctx.usingGState { context in
 					ctx.setFillColor(eColor)
@@ -147,7 +171,8 @@ public extension QRCode {
 				components: .eyeOuter,
 				shape: design.shape,
 				logoTemplate: logoTemplate,
-				additionalQuietSpace: additionalQuietSpace
+				additionalQuietSpace: additionalQuietSpace,
+				mirrorEyePathsAroundQRCodeCenter: mirrorEyePathsAroundQRCodeCenter
 			)
 			ctx.usingGState { context in
 				style.actualEyeStyle.fill(
@@ -165,7 +190,8 @@ public extension QRCode {
 				components: .eyePupil,
 				shape: design.shape,
 				logoTemplate: logoTemplate,
-				additionalQuietSpace: additionalQuietSpace
+				additionalQuietSpace: additionalQuietSpace,
+				mirrorEyePathsAroundQRCodeCenter: mirrorEyePathsAroundQRCodeCenter
 			)
 			ctx.usingGState { context in
 				style.actualPupilStyle.fill(
@@ -186,14 +212,16 @@ public extension QRCode {
 						let d = QRCode.Design()
 						d.shape.offPixels = QRCode.PixelShape.Square()
 						d.style.offPixels = QRCode.FillStyle.Solid(c)
+						d.shape.extendOffPixelsIntoFinderPattern = design.shape.extendOffPixelsIntoFinderPattern
 						return d
 					}()
 					let qrPath2 = self.path(
 						finalRect.size,
-						components: .offPixels,
+						components: .offPixelsBackground,
 						shape: design.shape,
 						logoTemplate: logoTemplate,
-						additionalQuietSpace: additionalQuietSpace
+						additionalQuietSpace: additionalQuietSpace,
+						extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
 					)
 					ctx.usingGState { context in
 						design.style.offPixels?.fill(
@@ -211,7 +239,8 @@ public extension QRCode {
 					components: .offPixels,
 					shape: design.shape,
 					logoTemplate: logoTemplate,
-					additionalQuietSpace: additionalQuietSpace
+					additionalQuietSpace: additionalQuietSpace,
+					extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
 				)
 				ctx.usingGState { context in
 					s.fill(

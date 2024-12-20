@@ -290,3 +290,91 @@ final class InlineDocumentationGenerations: XCTestCase {
 		markdown += "\n\n"
 	}
 }
+
+
+final class EyeMirroringGenerationTests: XCTestCase {
+
+	let markdown = MarkdownContainer(testName: "eye-mirroring.md")
+
+	override func tearDownWithError() throws {
+		// Write out the markdown
+		try markdown.write()
+	}
+
+	func testGenerateInlineEyeImagesForDocumentation() throws {
+		markdown += "## Eye mirroring\n\n"
+
+		let doc = try QRCode.Document(utf8String: "Eye mirroring tests")
+
+		markdown += "| name | png-mirror-true | svg-mirror-true | png-mirror-false | svg-mirror-false|\n"
+		markdown += "|------|------|------|------|------|\n"
+
+		try QRCodeEyeShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+			doc.design.shape.eye = g
+			doc.design.style.eye = QRCode.FillStyle.Solid(1, 0, 0)
+			doc.design.style.eyeBackground = .RGBA(0, 1, 0)
+
+			markdown += "| \(g.name) "
+
+			doc.design.shape.mirrorEyePathsAroundQRCodeCenter = true
+			let png = try doc.pngData(dimension: 300)
+			let orig = try markdown.add(filename: "eye-mirror-true-\(g.name).png", imageData: png)
+			markdown += "| <a href=\"\(orig)\"><img src=\"\(orig)\" width=\"200\" /></a> "
+
+			doc.design.shape.mirrorEyePathsAroundQRCodeCenter = true
+			let svg1 = try doc.svgData(dimension: 300)
+			let orig3 = try markdown.add(filename: "eye-mirror-true-\(g.name).svg", imageData: svg1)
+			markdown += "| <a href=\"\(orig3)\"><img src=\"\(orig3)\" width=\"200\" /></a> "
+
+			doc.design.shape.mirrorEyePathsAroundQRCodeCenter = false
+			let png2 = try doc.pngData(dimension: 300)
+			let orig2 = try markdown.add(filename: "eye-mirror-false-\(g.name).png", imageData: png2)
+			markdown += "| <a href=\"\(orig2)\"><img src=\"\(orig2)\" width=\"200\" /></a> "
+
+			doc.design.shape.mirrorEyePathsAroundQRCodeCenter = false
+			let svg2 = try doc.svgData(dimension: 300)
+			let orig4 = try markdown.add(filename: "eye-mirror-false-\(g.name).svg", imageData: svg2)
+			markdown += "| <a href=\"\(orig4)\"><img src=\"\(orig4)\" width=\"200\" /></a> "
+
+			markdown += "|\n"
+		}
+
+		markdown += "\n\n"
+
+		do {
+			let doc = try QRCode.Document(utf8String: "Pupil mirroring tests")
+
+			markdown += "| name | png-mirror-true | svg-mirror-true | png-mirror-false | svg-mirror-false|\n"
+			markdown += "|------|------|------|------|------|\n"
+
+			try QRCodePupilShapeFactory.shared.all().sorted(by: { a, b in a.name < b.name }).forEach { g in
+				doc.design.shape.pupil = g
+				doc.design.style.pupil = QRCode.FillStyle.Solid(1, 0, 0)
+
+				markdown += "| \(g.name) "
+
+				doc.design.shape.mirrorEyePathsAroundQRCodeCenter = true
+				let png = try doc.pngData(dimension: 300)
+				let orig = try markdown.add(filename: "pupil-mirror-true-\(g.name).png", imageData: png)
+				markdown += "| <a href=\"\(orig)\"><img src=\"\(orig)\" width=\"200\" /></a> "
+
+				doc.design.shape.mirrorEyePathsAroundQRCodeCenter = true
+				let svg1 = try doc.svgData(dimension: 300)
+				let orig3 = try markdown.add(filename: "pupil-mirror-true-\(g.name).svg", imageData: svg1)
+				markdown += "| <a href=\"\(orig3)\"><img src=\"\(orig3)\" width=\"200\" /></a> "
+
+				doc.design.shape.mirrorEyePathsAroundQRCodeCenter = false
+				let png2 = try doc.pngData(dimension: 300)
+				let orig2 = try markdown.add(filename: "pupil-mirror-false-\(g.name).png", imageData: png2)
+				markdown += "| <a href=\"\(orig2)\"><img src=\"\(orig2)\" width=\"200\" /></a> "
+
+				doc.design.shape.mirrorEyePathsAroundQRCodeCenter = false
+				let svg2 = try doc.svgData(dimension: 300)
+				let orig4 = try markdown.add(filename: "pupil-mirror-false-\(g.name).svg", imageData: svg2)
+				markdown += "| <a href=\"\(orig4)\"><img src=\"\(orig4)\" width=\"200\" /></a> "
+
+				markdown += "|\n"
+			}
+		}
+	}
+}
