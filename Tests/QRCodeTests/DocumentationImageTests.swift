@@ -783,7 +783,7 @@ final class DocumentationImageTests: XCTestCase {
 
 			.offPixels.shape(.stitch())
 			.offPixels.style(QRCode.FillStyle.Solid(1, 0, 0, alpha: 0.95))
-			.offPixels.extendIntoEyePattern(true)
+			.offPixels.extendIntoEmptyQRCodeComponents(true)
 
 			.eye.shape(.usePixelShape())
 			.eye.mirrorEyePathsAroundQRCodeCenter(false)

@@ -685,10 +685,10 @@ public extension QRCode.Builder {
 		}
 
 		/// Set if the off pixels are extended into the 'off' pixels of the eye pattern
-		/// - Parameter extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+		/// - Parameter extendIntoEmptyQRCodeComponents: If true, extends off-pixels into the blank areas of the QR Code
 		/// - Returns: self
-		@discardableResult public func extendIntoEyePattern(_ extendIntoEyePattern: Bool) -> QRCode.Builder {
-			self.builder.document.design.shape.extendOffPixelsIntoFinderPattern = extendIntoEyePattern
+		@discardableResult public func extendIntoEmptyQRCodeComponents(_ extendIntoEyePattern: Bool) -> QRCode.Builder {
+			self.builder.document.design.shape.extendOffPixelsIntoEmptyQRCodeComponents = extendIntoEyePattern
 			return self.builder
 		}
 

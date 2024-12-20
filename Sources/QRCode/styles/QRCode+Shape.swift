@@ -32,7 +32,7 @@ public extension QRCode {
 		///   - onPixels: The onPixels shape
 		///   - offPixels: The offPixels shape
 		///   - negatedOnPixelsOnly: If true, only draw the off pixels in the resulting QR code
-		///   - extendOffPixelsIntoFinderPattern: If true, extends off pixels into the empty zones
+		///   - extendOffPixelsIntoEmptyQRCodeComponents: If true, extends off-pixels into the blank areas of the QR code
 		///   - mirrorEyePathsAroundQRCodeCenter: If true, flips the eye paths to mirror arround the center of the QR code
 		///   - eye: The eye shape
 		///   - pupil: The pupil shape
@@ -40,7 +40,7 @@ public extension QRCode {
 			onPixels: any QRCodePixelShapeGenerator = QRCode.PixelShape.Square(),
 			offPixels: (any QRCodePixelShapeGenerator)? = nil,
 			negatedOnPixelsOnly: Bool = false,
-			extendOffPixelsIntoFinderPattern: Bool = false,
+			extendOffPixelsIntoEmptyQRCodeComponents: Bool = false,
 			mirrorEyePathsAroundQRCodeCenter: Bool = true,
 			eye: any QRCodeEyeShapeGenerator = QRCode.EyeShape.Square(),
 			pupil: (any QRCodePupilShapeGenerator)? = nil
@@ -48,7 +48,7 @@ public extension QRCode {
 			self.onPixels = onPixels
 			self.offPixels = offPixels
 			self.negatedOnPixelsOnly = negatedOnPixelsOnly
-			self.extendOffPixelsIntoFinderPattern = extendOffPixelsIntoFinderPattern
+			self.extendOffPixelsIntoEmptyQRCodeComponents = extendOffPixelsIntoEmptyQRCodeComponents
 			self.mirrorEyePathsAroundQRCodeCenter = mirrorEyePathsAroundQRCodeCenter
 			self.eye = eye
 			self.pupil = pupil
@@ -69,8 +69,8 @@ public extension QRCode {
 		/// A negative path shape is filled using the 'onPixels' style
 		@objc public var negatedOnPixelsOnly: Bool = false
 
-		/// If true, draws 'offPixels' in the empty areas of the finder (eye) pattern
-		@objc public var extendOffPixelsIntoFinderPattern: Bool = false
+		/// If true, draws 'offPixels' in the empty areas of the code
+		@objc public var extendOffPixelsIntoEmptyQRCodeComponents: Bool = false
 
 		/// If true, flips the eye paths to mirror arround the center of the QR code
 		@objc public var mirrorEyePathsAroundQRCodeCenter: Bool = true
@@ -96,7 +96,7 @@ public extension QRCode {
 			c.eye = self.eye.copyShape()
 			c.pupil = self.pupil?.copyShape()
 			c.negatedOnPixelsOnly = self.negatedOnPixelsOnly
-			c.extendOffPixelsIntoFinderPattern = self.extendOffPixelsIntoFinderPattern
+			c.extendOffPixelsIntoEmptyQRCodeComponents = self.extendOffPixelsIntoEmptyQRCodeComponents
 			return c
 		}
 	}
@@ -136,7 +136,7 @@ public extension QRCode.Shape {
 		result["negatedOnPixelsOnly"] = negatedOnPixelsOnly
 
 		// Extend setting
-		result["extendOffPixelsIntoFinderPattern"] = extendOffPixelsIntoFinderPattern
+		result["extendOffPixelsIntoEmptyQRCodeComponents"] = extendOffPixelsIntoEmptyQRCodeComponents
 
 		// Eye mirror setting
 		result["mirrorEyePathsAroundQRCodeCenter"] = mirrorEyePathsAroundQRCodeCenter
@@ -193,8 +193,8 @@ public extension QRCode.Shape {
 			result.negatedOnPixelsOnly = negatedOnPixelsOnly
 		}
 
-		if let extendOffPixelsIntoFinderPattern = settings["extendOffPixelsIntoFinderPattern"] as? Bool {
-			result.extendOffPixelsIntoFinderPattern = extendOffPixelsIntoFinderPattern
+		if let extendOffPixelsIntoEmptyQRCodeComponents = settings["extendOffPixelsIntoEmptyQRCodeComponents"] as? Bool {
+			result.extendOffPixelsIntoEmptyQRCodeComponents = extendOffPixelsIntoEmptyQRCodeComponents
 		}
 
 		if let mirrorEyePathsAroundQRCodeCenter = settings["mirrorEyePathsAroundQRCodeCenter"] as? Bool {

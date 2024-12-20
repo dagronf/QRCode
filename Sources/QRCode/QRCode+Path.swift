@@ -80,7 +80,7 @@ public extension QRCode {
 	///   - shape: The shape definitions for genering the path components
 	///   - logoTemplate: The definition for the logo
 	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
-	///   - extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+	///   - extendOffPixelsIntoEmptyQRCodeComponents: If true, extends off-pixels into the blank areas of the QR code
 	///   - mirrorEyePathsAroundQRCodeCenter: If true, flips the eye paths to mirror arround the center of the QR code
 	/// - Returns: A path containing the components
 	@objc func path(
@@ -89,7 +89,7 @@ public extension QRCode {
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: LogoTemplate? = nil,
 		additionalQuietSpace: CGFloat = 0,
-		extendOffPixelsIntoFinderPattern: Bool = false,
+		extendOffPixelsIntoEmptyQRCodeComponents: Bool = false,
 		mirrorEyePathsAroundQRCodeCenter: Bool = true
 	) -> CGPath {
 		self.path(
@@ -98,7 +98,7 @@ public extension QRCode {
 			shape: shape,
 			logoTemplate: logoTemplate,
 			additionalQuietSpace: additionalQuietSpace,
-			extendOffPixelsIntoFinderPattern: extendOffPixelsIntoFinderPattern,
+			extendOffPixelsIntoEmptyQRCodeComponents: extendOffPixelsIntoEmptyQRCodeComponents,
 			mirrorEyePathsAroundQRCodeCenter: mirrorEyePathsAroundQRCodeCenter
 		)
 	}
@@ -110,7 +110,7 @@ public extension QRCode {
 	///   - shape: The shape definitions for genering the path components
 	///   - logoTemplate: The definition for the logo
 	///   - additionalQuietSpace: Additional spacing around the outside of the QR code
-	///   - extendOffPixelsIntoFinderPattern: If true, extends off-pixels into the blank areas of the eye
+	///   - extendOffPixelsIntoEmptyQRCodeComponents: If true, extends off-pixels into the blank areas of the QR code
 	///   - mirrorEyePathsAroundQRCodeCenter: If true, flips the eye paths to mirror arround the center of the QR code
 	/// - Returns: A path containing the components
 	@objc func path(
@@ -119,7 +119,7 @@ public extension QRCode {
 		shape: QRCode.Shape = QRCode.Shape(),
 		logoTemplate: LogoTemplate? = nil,
 		additionalQuietSpace: CGFloat = 0,
-		extendOffPixelsIntoFinderPattern: Bool = false,
+		extendOffPixelsIntoEmptyQRCodeComponents: Bool = false,
 		mirrorEyePathsAroundQRCodeCenter: Bool = true
 	) -> CGPath {
 		if self.cellDimension == 0 {
@@ -290,7 +290,7 @@ public extension QRCode {
 		// The background squares for the 'off' pixels
 		if components.contains(.offPixelsBackground) {
 			var masked = self.current.inverted()
-			if extendOffPixelsIntoFinderPattern == false {
+			if extendOffPixelsIntoEmptyQRCodeComponents == false {
 				masked = masked.maskingQREyes(inverted: false)
 			}
 			if let template = logoTemplate {
@@ -304,7 +304,7 @@ public extension QRCode {
 			let offPixelShape = shape.offPixels ?? QRCode.PixelShape.Square()
 
 			var masked = self.current.inverted()
-			if extendOffPixelsIntoFinderPattern == false {
+			if extendOffPixelsIntoEmptyQRCodeComponents == false {
 				masked = masked.maskingQREyes(inverted: false)
 			}
 			if let template = logoTemplate {

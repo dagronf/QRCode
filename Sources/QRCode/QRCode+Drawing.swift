@@ -115,7 +115,7 @@ public extension QRCode {
 					shape: QRCode.Shape(offPixels: shape),
 					logoTemplate: logoTemplate,
 					additionalQuietSpace: additionalQuietSpace,
-					extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
+					extendOffPixelsIntoEmptyQRCodeComponents: design.shape.extendOffPixelsIntoEmptyQRCodeComponents
 				)
 				ctx.usingGState { context in
 					s.fill(
@@ -212,7 +212,7 @@ public extension QRCode {
 						let d = QRCode.Design()
 						d.shape.offPixels = QRCode.PixelShape.Square()
 						d.style.offPixels = QRCode.FillStyle.Solid(c)
-						d.shape.extendOffPixelsIntoFinderPattern = design.shape.extendOffPixelsIntoFinderPattern
+						d.shape.extendOffPixelsIntoEmptyQRCodeComponents = design.shape.extendOffPixelsIntoEmptyQRCodeComponents
 						return d
 					}()
 					let qrPath2 = self.path(
@@ -221,7 +221,7 @@ public extension QRCode {
 						shape: design.shape,
 						logoTemplate: logoTemplate,
 						additionalQuietSpace: additionalQuietSpace,
-						extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
+						extendOffPixelsIntoEmptyQRCodeComponents: design.shape.extendOffPixelsIntoEmptyQRCodeComponents
 					)
 					ctx.usingGState { context in
 						design.style.offPixels?.fill(
@@ -240,7 +240,7 @@ public extension QRCode {
 					shape: design.shape,
 					logoTemplate: logoTemplate,
 					additionalQuietSpace: additionalQuietSpace,
-					extendOffPixelsIntoFinderPattern: design.shape.extendOffPixelsIntoFinderPattern
+					extendOffPixelsIntoEmptyQRCodeComponents: design.shape.extendOffPixelsIntoEmptyQRCodeComponents
 				)
 				ctx.usingGState { context in
 					s.fill(

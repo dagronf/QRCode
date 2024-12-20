@@ -77,6 +77,7 @@ public extension QRCode.Document {
 			shape: self.design.shape,
 			logoTemplate: self.logoTemplate,
 			additionalQuietSpace: additionalQuietSpace,
+			extendOffPixelsIntoEmptyQRCodeComponents: self.design.shape.extendOffPixelsIntoEmptyQRCodeComponents,
 			mirrorEyePathsAroundQRCodeCenter: self.design.shape.mirrorEyePathsAroundQRCodeCenter
 		)
 	}
