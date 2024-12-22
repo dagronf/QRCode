@@ -77,6 +77,7 @@ import Foundation
 		QRCode.EyeShape.Pixels.self,
 		QRCode.EyeShape.CorneredPixels.self,
 		QRCode.EyeShape.RoundedPointingIn.self,
+		QRCode.EyeShape.RoundedPointingOut.self,
 		QRCode.EyeShape.Shield.self,
 		QRCode.EyeShape.UsePixelShape.self,
 		QRCode.EyeShape.Teardrop.self,

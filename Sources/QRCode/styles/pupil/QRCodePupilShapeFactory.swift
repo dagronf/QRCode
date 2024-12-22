@@ -72,6 +72,7 @@ import CoreGraphics
 			QRCode.PupilShape.Edges.self,
 			QRCode.PupilShape.RoundedRect.self,
 			QRCode.PupilShape.RoundedPointingIn.self,
+			QRCode.PupilShape.RoundedPointingOut.self,
 			QRCode.PupilShape.Squircle.self,
 			QRCode.PupilShape.RoundedOuter.self,
 			QRCode.PupilShape.Square.self,

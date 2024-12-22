@@ -21,6 +21,7 @@
 | <a href="../../Art/images/eye_pixels.png"><img src="../../Art/images/eye_pixels.png" width="75" /></a> | __pixels__ | `QRCode.EyeShape.Pixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/eye_roundedOuter.png"><img src="../../Art/images/eye_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.EyeShape.RoundedOuter` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_roundedPointingIn.png"><img src="../../Art/images/eye_roundedPointingIn.png" width="75" /></a> | __roundedPointingIn__ | `QRCode.EyeShape.RoundedPointingIn` | • __Flippable__<br/> |
+| <a href="../../Art/images/eye_roundedPointingOut.png"><img src="../../Art/images/eye_roundedPointingOut.png" width="75" /></a> | __roundedPointingOut__ | `QRCode.EyeShape.RoundedPointingOut` | _none_ |
 | <a href="../../Art/images/eye_roundedRect.png"><img src="../../Art/images/eye_roundedRect.png" width="75" /></a> | __roundedRect__ | `QRCode.EyeShape.RoundedRect` | • __Corner radius__<br/> |
 | <a href="../../Art/images/eye_shield.png"><img src="../../Art/images/eye_shield.png" width="75" /></a> | __shield__ | `QRCode.EyeShape.Shield` | • __Configurable corners__<br/> |
 | <a href="../../Art/images/eye_spikyCircle.png"><img src="../../Art/images/eye_spikyCircle.png" width="75" /></a> | __spikyCircle__ | `QRCode.EyeShape.SpikyCircle` | _none_ |

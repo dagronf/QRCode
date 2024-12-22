@@ -26,6 +26,7 @@
 | <a href="../../Art/images/pupil_pixels.png"><img src="../../Art/images/pupil_pixels.png" width="75" /></a> | __pixels__ | `QRCode.PixelShape.Pixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/pupil_roundedOuter.png"><img src="../../Art/images/pupil_roundedOuter.png" width="75" /></a> | __roundedOuter__ | `QRCode.PixelShape.RoundedOuter` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_roundedPointingIn.png"><img src="../../Art/images/pupil_roundedPointingIn.png" width="75" /></a> | __roundedPointingIn__ | `QRCode.PixelShape.RoundedPointingIn` | • __Flippable__<br/> |
+| <a href="../../Art/images/pupil_roundedPointingOut.png"><img src="../../Art/images/pupil_roundedPointingOut.png" width="75" /></a> | __roundedPointingOut__ | `QRCode.PixelShape.RoundedPointingOut` | _none_ |
 | <a href="../../Art/images/pupil_roundedRect.png"><img src="../../Art/images/pupil_roundedRect.png" width="75" /></a> | __roundedRect__ | `QRCode.PixelShape.RoundedRect` | • __Corner radius__<br/> |
 | <a href="../../Art/images/pupil_seal.png"><img src="../../Art/images/pupil_seal.png" width="75" /></a> | __seal__ | `QRCode.PixelShape.Seal` | _none_ |
 | <a href="../../Art/images/pupil_shield.png"><img src="../../Art/images/pupil_shield.png" width="75" /></a> | __shield__ | `QRCode.PixelShape.Shield` | • __Configurable corners__<br/> |

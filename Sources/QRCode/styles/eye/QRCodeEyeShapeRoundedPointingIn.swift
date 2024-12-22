@@ -135,10 +135,10 @@ public extension QRCode.EyeShape.RoundedPointingIn {
 }
 
 public extension QRCodeEyeShapeGenerator where Self == QRCode.EyeShape.RoundedPointingIn {
-	/// Create a 'roundedPointing' eye shape generator
+	/// Create a 'roundedPointingIn' eye shape generator
 	/// - Returns: An eye shape generator
-	@inlinable static func roundedPointing() -> QRCodeEyeShapeGenerator {
-		QRCode.EyeShape.RoundedPointingIn()
+	@inlinable static func roundedPointing(flip: QRCode.Flip = .none) -> QRCodeEyeShapeGenerator {
+		QRCode.EyeShape.RoundedPointingIn(flip: flip)
 	}
 }
 

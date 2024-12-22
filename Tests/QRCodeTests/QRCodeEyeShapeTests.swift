@@ -24,6 +24,103 @@ final class QRCodeEyeShapeTests: XCTestCase {
 		try! outputFolder.write(markdownText, to: "eye-shapes-\(OSString()).md", encoding: .utf8)
 	}
 
+	func testRoundedPointingOut() throws {
+
+		markdownText += "## RoundedPointingOut check (\(OSString()))\n\n"
+
+		markdownText += "## Eye shape\n\n"
+
+		markdownText += "|  roundedPointingOut  |   roundedPointingIn   |   roundedPointingIn (flipped)   |\n"
+		markdownText += "|-------------|-------------|-------------|\n"
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingOut")
+				.eye.shape(QRCode.EyeShape.RoundedPointingOut())
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "eye-roundedPointingOut-check1.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> "
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingIn")
+				.eye.shape(QRCode.EyeShape.RoundedPointingIn())
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "eye-roundedPointingIn-check1.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> "
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingInFlip ")
+				.eye.shape(QRCode.EyeShape.RoundedPointingIn(flip: .both))
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "eye-roundedPointingIn-flip.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |\n\n"
+		}
+
+		markdownText += " |\n\n"
+
+		markdownText += "## Pupil shape\n\n"
+
+		markdownText += "|  roundedPointingOut  |   roundedPointingIn   |   roundedPointingIn (flipped)   |\n"
+		markdownText += "|-------------|-------------|-------------|\n"
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingOut")
+				.pupil.shape(QRCode.PupilShape.RoundedPointingOut())
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "pupil-roundedPointingOut-check1.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> "
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingIn")
+				.pupil.shape(QRCode.PupilShape.RoundedPointingIn())
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "pupil-roundedPointingIn-check1.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> "
+		}
+
+		do {
+			let doc = try QRCode.build
+				.text("roundedPointingInFlip ")
+				.pupil.shape(QRCode.PupilShape.RoundedPointingIn(flip: .both))
+				.document
+
+			let image = try doc.pngData(dimension: 200)
+			let filename = "pupil-roundedPointingIn-flip.png"
+			let link = try imageStore.store(image, filename: filename)
+
+			markdownText += "| <a href=\"\(link)\"><img src=\"\(link)\" width=\"200\" /></a> |\n\n"
+		}
+
+		markdownText += " |\n\n"
+	}
+
 	func testEyeCornerRadius() throws {
 		markdownText += "## Rounded Rect eye radius configuration (\(OSString()))\n\n"
 
