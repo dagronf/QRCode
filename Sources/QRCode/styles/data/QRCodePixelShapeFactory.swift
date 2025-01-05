@@ -94,6 +94,8 @@ import Foundation
 		QRCode.PixelShape.Grid4x4.self,
 		QRCode.PixelShape.Abstract.self,
 		QRCode.PixelShape.Stitch.self,
+		QRCode.PixelShape.Hexagon.self,
+		QRCode.PixelShape.Wex.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images

@@ -15,6 +15,7 @@
 | <a href="../../Art/images/data_grid3x3.png"><img src="../../Art/images/data_grid3x3.png" width="75" /></a> | __grid3x3__ | `QRCode.PixelShape.Grid3x3` | _none_ |
 | <a href="../../Art/images/data_grid4x4.png"><img src="../../Art/images/data_grid4x4.png" width="75" /></a> | __grid4x4__ | `QRCode.PixelShape.Grid4x4` | _none_ |
 | <a href="../../Art/images/data_heart.png"><img src="../../Art/images/data_heart.png" width="75" /></a> | __heart__ | `QRCode.PixelShape.Heart` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
+| <a href="../../Art/images/data_hexagon.png"><img src="../../Art/images/data_hexagon.png" width="75" /></a> | __hexagon__ | `QRCode.PixelShape.Hexagon` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_horizontal.png"><img src="../../Art/images/data_horizontal.png" width="75" /></a> | __horizontal__ | `QRCode.PixelShape.Horizontal` | • __Corner radius__<br/>• __Pixel inset__<br/> |
 | <a href="../../Art/images/data_pointy.png"><img src="../../Art/images/data_pointy.png" width="75" /></a> | __pointy__ | `QRCode.PixelShape.Pointy` | _none_ |
 | <a href="../../Art/images/data_razor.png"><img src="../../Art/images/data_razor.png" width="75" /></a> | __razor__ | `QRCode.PixelShape.Razor` | _none_ |
@@ -31,3 +32,4 @@
 | <a href="../../Art/images/data_vertical.png"><img src="../../Art/images/data_vertical.png" width="75" /></a> | __vertical__ | `QRCode.PixelShape.Vertical` | • __Corner radius__<br/>• __Pixel inset__<br/> |
 | <a href="../../Art/images/data_vortex.png"><img src="../../Art/images/data_vortex.png" width="75" /></a> | __vortex__ | `QRCode.PixelShape.Vortex` | _none_ |
 | <a href="../../Art/images/data_wave.png"><img src="../../Art/images/data_wave.png" width="75" /></a> | __wave__ | `QRCode.PixelShape.Wave` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
+| <a href="../../Art/images/data_wex.png"><img src="../../Art/images/data_wex.png" width="75" /></a> | __wex__ | `QRCode.PixelShape.Wex` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |

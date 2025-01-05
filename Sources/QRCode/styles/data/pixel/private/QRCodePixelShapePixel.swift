@@ -41,6 +41,8 @@ internal extension QRCode.PixelShape {
 			case wave
 			case spikyCircle
 			case stitch
+			case hexagon
+			case wex
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -266,6 +268,26 @@ internal extension QRCode.PixelShape {
 								y: yoff + (CGFloat(row) * dm)
 							))
 						path.addPath(Stitch.pixelShape_, transform: transform)
+					}
+					else if self.pixelType == .hexagon {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Hexagon.HexagonPixel10x10
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .wex {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Wex.WexPixel10x10
+						path.addPath(sq, transform: transform)
 					}
 					else {
 						path.addPath(CGPath(rect: ri, transform: &rotateTransform))
