@@ -31,6 +31,7 @@
 | <a href="../../Art/images/eye_surroundingBars.png"><img src="../../Art/images/eye_surroundingBars.png" width="75" /></a> | __surroundingBars__ | `QRCode.EyeShape.SurroundingBars` | _none_ |
 | <a href="../../Art/images/eye_teardrop.png"><img src="../../Art/images/eye_teardrop.png" width="75" /></a> | __teardrop__ | `QRCode.EyeShape.Teardrop` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_ufo.png"><img src="../../Art/images/eye_ufo.png" width="75" /></a> | __ufo__ | `QRCode.EyeShape.UFO` | • __Flippable__<br/> |
+| <a href="../../Art/images/eye_ufoRounded.png"><img src="../../Art/images/eye_ufoRounded.png" width="75" /></a> | __ufoRounded__ | `QRCode.EyeShape.UFORounded` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_usePixelShape.png"><img src="../../Art/images/eye_usePixelShape.png" width="75" /></a> | __usePixelShape__ | `QRCode.EyeShape.UsePixelShape` | _none_ |
 
 ## Eye mirroring

@@ -84,6 +84,7 @@ import Foundation
 		QRCode.EyeShape.Fireball.self,
 		QRCode.EyeShape.Peacock.self,
 		QRCode.EyeShape.UFO.self,
+		QRCode.EyeShape.UFORounded.self,
 		QRCode.EyeShape.Pinch.self,
 		QRCode.EyeShape.CRT.self,
 		QRCode.EyeShape.SquarePeg.self,

@@ -87,6 +87,7 @@ import CoreGraphics
 			QRCode.PupilShape.Blobby.self,
 			QRCode.PupilShape.Teardrop.self,
 			QRCode.PupilShape.UFO.self,
+			QRCode.PupilShape.UFORounded.self,
 			QRCode.PupilShape.Pinch.self,
 			QRCode.PupilShape.CRT.self,
 			QRCode.PupilShape.SquareBarsHorizontal.self,

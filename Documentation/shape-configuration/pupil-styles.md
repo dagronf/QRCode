@@ -35,4 +35,5 @@
 | <a href="../../Art/images/pupil_squircle.png"><img src="../../Art/images/pupil_squircle.png" width="75" /></a> | __squircle__ | `QRCode.PixelShape.Squircle` | _none_ |
 | <a href="../../Art/images/pupil_teardrop.png"><img src="../../Art/images/pupil_teardrop.png" width="75" /></a> | __teardrop__ | `QRCode.PixelShape.Teardrop` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_ufo.png"><img src="../../Art/images/pupil_ufo.png" width="75" /></a> | __ufo__ | `QRCode.PixelShape.UFO` | • __Flippable__<br/> |
+| <a href="../../Art/images/pupil_ufoRounded.png"><img src="../../Art/images/pupil_ufoRounded.png" width="75" /></a> | __ufoRounded__ | `QRCode.PixelShape.UFORounded` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_usePixelShape.png"><img src="../../Art/images/pupil_usePixelShape.png" width="75" /></a> | __usePixelShape__ | `QRCode.PixelShape.UsePixelShape` | _none_ |
