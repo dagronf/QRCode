@@ -9,6 +9,7 @@
 | <a href="../../Art/images/data_circuit.png"><img src="../../Art/images/data_circuit.png" width="75" /></a> | __circuit__ | `QRCode.PixelShape.Circuit` | _none_ |
 | <a href="../../Art/images/data_crt.png"><img src="../../Art/images/data_crt.png" width="75" /></a> | __crt__ | `QRCode.PixelShape.CRT` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_curvePixel.png"><img src="../../Art/images/data_curvePixel.png" width="75" /></a> | __curvePixel__ | `QRCode.PixelShape.CurvePixel` | • __Corner radius__<br/> |
+| <a href="../../Art/images/data_diamond.png"><img src="../../Art/images/data_diamond.png" width="75" /></a> | __diamond__ | `QRCode.PixelShape.Diamond` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_donut.png"><img src="../../Art/images/data_donut.png" width="75" /></a> | __donut__ | `QRCode.PixelShape.Donut` | _none_ |
 | <a href="../../Art/images/data_flower.png"><img src="../../Art/images/data_flower.png" width="75" /></a> | __flower__ | `QRCode.PixelShape.Flower` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_grid2x2.png"><img src="../../Art/images/data_grid2x2.png" width="75" /></a> | __grid2x2__ | `QRCode.PixelShape.Grid2x2` | _none_ |
