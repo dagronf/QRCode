@@ -1,7 +1,5 @@
 //
-//  QRCodePupilShapeFactory.swift
-//
-//  Copyright © 2024 Darren Ford. All rights reserved.
+//  Copyright © 2025 Darren Ford. All rights reserved.
 //
 //  MIT license
 //

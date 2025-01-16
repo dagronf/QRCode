@@ -1,7 +1,5 @@
 //
-//  QRCodePupilShapeHexagonLeaf.swift
-//
-//  Copyright © 2024 Darren Ford, Aydin Aghayev. All rights reserved.
+//  Copyright © 2025 Darren Ford, Aydin Aghayev. All rights reserved.
 //
 //  MIT license
 //
