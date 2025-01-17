@@ -64,11 +64,11 @@ public extension QRCode.EyeShape {
 			switch self.flip {
 			case .none:
 				return eyePath__
-			case .vertically:
+			case .horizontally:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(eyePath__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
 				}
-			case .horizontally:
+			case .vertically:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(eyePath__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 				}
@@ -83,11 +83,11 @@ public extension QRCode.EyeShape {
 			switch self.flip {
 			case .none:
 				return eyeBackgroundPath__
-			case .vertically:
+			case .horizontally:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(eyeBackgroundPath__, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
 				}
-			case .horizontally:
+			case .vertically:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(eyeBackgroundPath__, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 				}

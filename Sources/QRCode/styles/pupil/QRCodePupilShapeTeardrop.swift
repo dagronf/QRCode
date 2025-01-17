@@ -99,11 +99,11 @@ public extension QRCode.PupilShape {
 			switch self.flip {
 			case .none:
 				return pupilPath
-			case .vertically:
+			case .horizontally:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(pupilPath, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
 				}
-			case .horizontally:
+			case .vertically:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(pupilPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 				}

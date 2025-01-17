@@ -83,11 +83,11 @@ public extension QRCode.EyeShape {
 			switch self.flip {
 			case .none:
 				return roundedSharpOuterPath
-			case .vertically:
+			case .horizontally:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(roundedSharpOuterPath, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
 				}
-			case .horizontally:
+			case .vertically:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(roundedSharpOuterPath, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 				}
@@ -112,11 +112,11 @@ public extension QRCode.EyeShape {
 			switch self.flip {
 			case .none:
 				return roundedRectEye2Path
-			case .vertically:
+			case .horizontally:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(roundedRectEye2Path, transform: .init(scaleX: -1, y: 1).translatedBy(x: -90, y: 0))
 				}
-			case .horizontally:
+			case .vertically:
 				return CGPath.make(forceClosePath: true) { n in
 					n.addPath(roundedRectEye2Path, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -90))
 				}
