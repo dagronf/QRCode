@@ -42,6 +42,7 @@ internal extension QRCode.PixelShape {
 			case hexagon
 			case wex
 			case diamond
+			case koala
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -296,6 +297,16 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Wex.WexPixel10x10
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .koala {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Koala.koala10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else {
