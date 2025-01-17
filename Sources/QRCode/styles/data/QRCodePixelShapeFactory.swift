@@ -96,6 +96,7 @@ import Foundation
 		QRCode.PixelShape.Wex.self,
 		QRCode.PixelShape.Diamond.self,
 		QRCode.PixelShape.Koala.self,
+		QRCode.PixelShape.Diagonal.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images
