@@ -83,8 +83,7 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Stitc
 
 internal extension QRCode.PixelShape.Stitch {
 	// A 10x10 'pixel' representation
-	static let pixelShape_: CGPath =
-	CGPath.make { a in
+	static let pixelShape_ = CGPath.make { a in
 		a.move(to: CGPoint(x: 5, y: 4.77))
 		a.curve(to: CGPoint(x: 5, y: 0.9), controlPoint1: CGPoint(x: 5, y: 4.77), controlPoint2: CGPoint(x: 5, y: 1.3))
 		a.curve(to: CGPoint(x: 4.63, y: 0.5), controlPoint1: CGPoint(x: 5, y: 0.5), controlPoint2: CGPoint(x: 4.63, y: 0.5))

@@ -121,20 +121,18 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Diagonal {
 	// A 10x10 'pixel' representation of a diagonal stripe pixel
-	static func diagonal10x10() -> CGPath {
-		CGPath.make { path in
-			path.move(to: CGPoint(x: 0, y: 10))
-			path.line(to: CGPoint(x: 0, y: 5))
-			path.line(to: CGPoint(x: 5, y: 0))
-			path.line(to: CGPoint(x: 10, y: 0))
-			path.line(to: CGPoint(x: 10, y: 5))
-			path.line(to: CGPoint(x: 5, y: 10))
-			path.line(to: CGPoint(x: 0, y: 10))
-			path.close()
-		}
-		.flipped()
-	}
+	static func diagonal10x10() -> CGPath { generatedPixelPath__ }
 }
+
+private let generatedPixelPath__ = CGPath.make { path in
+	path.move(to: CGPoint(x: 0, y: 10))
+	path.line(to: CGPoint(x: 0, y: 5))
+	path.line(to: CGPoint(x: 5, y: 0))
+	path.line(to: CGPoint(x: 10, y: 0))
+	path.line(to: CGPoint(x: 10, y: 5))
+	path.line(to: CGPoint(x: 5, y: 10))
+	path.line(to: CGPoint(x: 0, y: 10))
+}.flipped()
 
 // MARK: - Settings
 

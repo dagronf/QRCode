@@ -55,38 +55,38 @@ public extension QRCode.PixelShape {
 
 		// A 10x10 'pixel' representation of a star pixel
 		static func pathShiny(row: Int, col: Int) -> CGPath {
-			if row.isOdd && col.isOdd || col.isEven && row.isEven {
-				let oddpathPath = CGMutablePath()
-				oddpathPath.move(to: CGPoint(x: 1.47, y: 5.88))
-				oddpathPath.curve(to: CGPoint(x: 1.47, y: 4.12), controlPoint1: CGPoint(x: 0.98, y: 5.4), controlPoint2: CGPoint(x: 0.98, y: 4.6))
-				oddpathPath.line(to: CGPoint(x: 4.12, y: 1.47))
-				oddpathPath.curve(to: CGPoint(x: 5.88, y: 1.47), controlPoint1: CGPoint(x: 4.6, y: 0.98), controlPoint2: CGPoint(x: 5.4, y: 0.98))
-				oddpathPath.line(to: CGPoint(x: 8.53, y: 4.12))
-				oddpathPath.curve(to: CGPoint(x: 8.53, y: 5.88), controlPoint1: CGPoint(x: 9.02, y: 4.6), controlPoint2: CGPoint(x: 9.02, y: 5.4))
-				oddpathPath.line(to: CGPoint(x: 5.88, y: 8.53))
-				oddpathPath.curve(to: CGPoint(x: 4.12, y: 8.53), controlPoint1: CGPoint(x: 5.4, y: 9.02), controlPoint2: CGPoint(x: 4.6, y: 9.02))
-				oddpathPath.line(to: CGPoint(x: 1.47, y: 5.88))
-				oddpathPath.close()
-				return oddpathPath
-			}
-			else {
-				let evenpathPath = CGMutablePath()
-				evenpathPath.move(to: CGPoint(x: 3, y: 5))
-				evenpathPath.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 3, y: 3.33), controlPoint2: CGPoint(x: 0, y: 0))
-				evenpathPath.curve(to: CGPoint(x: 5, y: 3), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 3.33, y: 3))
-				evenpathPath.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 6.67, y: 3), controlPoint2: CGPoint(x: 10, y: 0))
-				evenpathPath.curve(to: CGPoint(x: 7, y: 5), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 7, y: 3.33))
-				evenpathPath.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 7, y: 6.67), controlPoint2: CGPoint(x: 10, y: 10))
-				evenpathPath.curve(to: CGPoint(x: 5, y: 7), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 6.67, y: 7))
-				evenpathPath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 3.33, y: 7), controlPoint2: CGPoint(x: 0, y: 10))
-				evenpathPath.curve(to: CGPoint(x: 3, y: 5), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 3, y: 6.67))
-				evenpathPath.close()
-				return evenpathPath
-			}
+			let which = row.isOdd && col.isOdd || col.isEven && row.isEven
+			return which ? generatedOddPixelPath__ : generatedEvenPixelPath__
 		}
-
+		
 		private let common: CommonPixelGenerator
 	}
+}
+
+private let generatedOddPixelPath__ = CGPath.make { oddpathPath in
+	oddpathPath.move(to: CGPoint(x: 1.47, y: 5.88))
+	oddpathPath.curve(to: CGPoint(x: 1.47, y: 4.12), controlPoint1: CGPoint(x: 0.98, y: 5.4), controlPoint2: CGPoint(x: 0.98, y: 4.6))
+	oddpathPath.line(to: CGPoint(x: 4.12, y: 1.47))
+	oddpathPath.curve(to: CGPoint(x: 5.88, y: 1.47), controlPoint1: CGPoint(x: 4.6, y: 0.98), controlPoint2: CGPoint(x: 5.4, y: 0.98))
+	oddpathPath.line(to: CGPoint(x: 8.53, y: 4.12))
+	oddpathPath.curve(to: CGPoint(x: 8.53, y: 5.88), controlPoint1: CGPoint(x: 9.02, y: 4.6), controlPoint2: CGPoint(x: 9.02, y: 5.4))
+	oddpathPath.line(to: CGPoint(x: 5.88, y: 8.53))
+	oddpathPath.curve(to: CGPoint(x: 4.12, y: 8.53), controlPoint1: CGPoint(x: 5.4, y: 9.02), controlPoint2: CGPoint(x: 4.6, y: 9.02))
+	oddpathPath.line(to: CGPoint(x: 1.47, y: 5.88))
+	oddpathPath.close()
+}
+
+private let generatedEvenPixelPath__ = CGPath.make { evenpathPath in
+	evenpathPath.move(to: CGPoint(x: 3, y: 5))
+	evenpathPath.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 3, y: 3.33), controlPoint2: CGPoint(x: 0, y: 0))
+	evenpathPath.curve(to: CGPoint(x: 5, y: 3), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 3.33, y: 3))
+	evenpathPath.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 6.67, y: 3), controlPoint2: CGPoint(x: 10, y: 0))
+	evenpathPath.curve(to: CGPoint(x: 7, y: 5), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 7, y: 3.33))
+	evenpathPath.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 7, y: 6.67), controlPoint2: CGPoint(x: 10, y: 10))
+	evenpathPath.curve(to: CGPoint(x: 5, y: 7), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 6.67, y: 7))
+	evenpathPath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 3.33, y: 7), controlPoint2: CGPoint(x: 0, y: 10))
+	evenpathPath.curve(to: CGPoint(x: 3, y: 5), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 3, y: 6.67))
+	evenpathPath.close()
 }
 
 // MARK: - Settings

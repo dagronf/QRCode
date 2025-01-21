@@ -114,23 +114,22 @@ public extension QRCode.PixelShape {
 		}
 
 		// A 10x10 'pixel' representation of a wex
-		static let WexPixel10x10: CGPath =
-			CGPath.make { wexshapePath in
-				wexshapePath.move(to: CGPoint(x: 0, y: 2))
-				wexshapePath.line(to: CGPoint(x: 1, y: 5))
-				wexshapePath.line(to: CGPoint(x: 0, y: 8))
-				wexshapePath.line(to: CGPoint(x: 2, y: 10))
-				wexshapePath.line(to: CGPoint(x: 5, y: 9))
-				wexshapePath.line(to: CGPoint(x: 8, y: 10))
-				wexshapePath.line(to: CGPoint(x: 10, y: 8))
-				wexshapePath.line(to: CGPoint(x: 9, y: 5))
-				wexshapePath.line(to: CGPoint(x: 10, y: 2))
-				wexshapePath.line(to: CGPoint(x: 8, y: 0))
-				wexshapePath.line(to: CGPoint(x: 5, y: 1))
-				wexshapePath.line(to: CGPoint(x: 2, y: 0))
-				wexshapePath.line(to: CGPoint(x: 0, y: 2))
-				wexshapePath.close()
-			}
+		static let WexPixel10x10 = CGPath.make { wexshapePath in
+			wexshapePath.move(to: CGPoint(x: 0, y: 2))
+			wexshapePath.line(to: CGPoint(x: 1, y: 5))
+			wexshapePath.line(to: CGPoint(x: 0, y: 8))
+			wexshapePath.line(to: CGPoint(x: 2, y: 10))
+			wexshapePath.line(to: CGPoint(x: 5, y: 9))
+			wexshapePath.line(to: CGPoint(x: 8, y: 10))
+			wexshapePath.line(to: CGPoint(x: 10, y: 8))
+			wexshapePath.line(to: CGPoint(x: 9, y: 5))
+			wexshapePath.line(to: CGPoint(x: 10, y: 2))
+			wexshapePath.line(to: CGPoint(x: 8, y: 0))
+			wexshapePath.line(to: CGPoint(x: 5, y: 1))
+			wexshapePath.line(to: CGPoint(x: 2, y: 0))
+			wexshapePath.line(to: CGPoint(x: 0, y: 2))
+			wexshapePath.close()
+		}
 
 		private let common: CommonPixelGenerator
 	}

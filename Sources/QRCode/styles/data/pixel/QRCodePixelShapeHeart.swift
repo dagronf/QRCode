@@ -121,23 +121,22 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Heart {
 	// A 10x10 'pixel' representation of a heart pixel
-	static func heart10x10() -> CGPath {
-		CGPath.make { heartPath in
-			heartPath.move(to: CGPoint(x: 9.24, y: 9.12))
-			heartPath.curve(to: CGPoint(x: 5.59, y: 9.12), controlPoint1: CGPoint(x: 8.23, y: 10.29), controlPoint2: CGPoint(x: 6.6, y: 10.29))
-			heartPath.line(to: CGPoint(x: 5, y: 8.44))
-			heartPath.line(to: CGPoint(x: 4.41, y: 9.12))
-			heartPath.curve(to: CGPoint(x: 0.76, y: 9.12), controlPoint1: CGPoint(x: 3.4, y: 10.29), controlPoint2: CGPoint(x: 1.76, y: 10.29))
-			heartPath.curve(to: CGPoint(x: 0.76, y: 4.9), controlPoint1: CGPoint(x: -0.25, y: 7.96), controlPoint2: CGPoint(x: -0.25, y: 6.07))
-			heartPath.line(to: CGPoint(x: 5, y: 0))
-			heartPath.line(to: CGPoint(x: 8.65, y: 4.22))
-			heartPath.line(to: CGPoint(x: 9.24, y: 4.9))
-			heartPath.curve(to: CGPoint(x: 9.24, y: 9.12), controlPoint1: CGPoint(x: 10.25, y: 6.07), controlPoint2: CGPoint(x: 10.25, y: 7.96))
-			heartPath.close()
-		}
-		.flipped()
-	}
+	static func heart10x10() -> CGPath { generatedPixelPath__ }
 }
+
+private let generatedPixelPath__: CGPath = CGPath.make { heartPath in
+	heartPath.move(to: CGPoint(x: 9.24, y: 9.12))
+	heartPath.curve(to: CGPoint(x: 5.59, y: 9.12), controlPoint1: CGPoint(x: 8.23, y: 10.29), controlPoint2: CGPoint(x: 6.6, y: 10.29))
+	heartPath.line(to: CGPoint(x: 5, y: 8.44))
+	heartPath.line(to: CGPoint(x: 4.41, y: 9.12))
+	heartPath.curve(to: CGPoint(x: 0.76, y: 9.12), controlPoint1: CGPoint(x: 3.4, y: 10.29), controlPoint2: CGPoint(x: 1.76, y: 10.29))
+	heartPath.curve(to: CGPoint(x: 0.76, y: 4.9), controlPoint1: CGPoint(x: -0.25, y: 7.96), controlPoint2: CGPoint(x: -0.25, y: 6.07))
+	heartPath.line(to: CGPoint(x: 5, y: 0))
+	heartPath.line(to: CGPoint(x: 8.65, y: 4.22))
+	heartPath.line(to: CGPoint(x: 9.24, y: 4.9))
+	heartPath.curve(to: CGPoint(x: 9.24, y: 9.12), controlPoint1: CGPoint(x: 10.25, y: 6.07), controlPoint2: CGPoint(x: 10.25, y: 7.96))
+	heartPath.close()
+}.flipped()
 
 // MARK: - Settings
 

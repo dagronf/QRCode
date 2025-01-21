@@ -113,6 +113,9 @@ public extension QRCode.PixelShape {
 			common.generatePath(from: matrix, size: size)
 		}
 
+		// 10x10 pixel shape
+		static let Square10x10 = CGPath(rect: CGRect(x: 0, y: 0, width: 10, height: 10), transform: nil)
+
 		// private
 
 		private let common: CommonPixelGenerator

@@ -114,19 +114,18 @@ public extension QRCode.PixelShape {
 		}
 
 		// A 10x10 'pixel' representation of a hex pixel
-		static let HexagonPixel10x10: CGPath =
-			CGPath.make { hexPath in
-				hexPath.move(to: CGPoint(x: 0, y: 2))
-				hexPath.line(to: CGPoint(x: 0, y: 8))
-				hexPath.line(to: CGPoint(x: 2, y: 10))
-				hexPath.line(to: CGPoint(x: 8, y: 10))
-				hexPath.line(to: CGPoint(x: 10, y: 8))
-				hexPath.line(to: CGPoint(x: 10, y: 2))
-				hexPath.line(to: CGPoint(x: 8, y: 0))
-				hexPath.line(to: CGPoint(x: 2, y: 0))
-				hexPath.line(to: CGPoint(x: 0, y: 2))
-				hexPath.close()
-			}
+		static let HexagonPixel10x10 = CGPath.make { hexPath in
+			hexPath.move(to: CGPoint(x: 0, y: 2))
+			hexPath.line(to: CGPoint(x: 0, y: 8))
+			hexPath.line(to: CGPoint(x: 2, y: 10))
+			hexPath.line(to: CGPoint(x: 8, y: 10))
+			hexPath.line(to: CGPoint(x: 10, y: 8))
+			hexPath.line(to: CGPoint(x: 10, y: 2))
+			hexPath.line(to: CGPoint(x: 8, y: 0))
+			hexPath.line(to: CGPoint(x: 2, y: 0))
+			hexPath.line(to: CGPoint(x: 0, y: 2))
+			hexPath.close()
+		}
 
 		private let common: CommonPixelGenerator
 	}

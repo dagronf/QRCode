@@ -114,23 +114,23 @@ public extension QRCode.PixelShape {
 		}
 		
 		// A 10x10 'pixel' representation of a sharp pixel
-		internal static func sharp10x10() -> CGPath {
-			let rectanglePath = CGMutablePath()
-			rectanglePath.move(to: CGPoint(x: 1, y: 5))
-			rectanglePath.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 1, y: 2.5), controlPoint2: CGPoint(x: 0, y: 0))
-			rectanglePath.curve(to: CGPoint(x: 5, y: 1), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 2.5, y: 1))
-			rectanglePath.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 7.5, y: 1), controlPoint2: CGPoint(x: 10, y: 0))
-			rectanglePath.curve(to: CGPoint(x: 9, y: 5), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 9, y: 2.5))
-			rectanglePath.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 9, y: 7.5), controlPoint2: CGPoint(x: 10, y: 10))
-			rectanglePath.curve(to: CGPoint(x: 5, y: 9), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 7.5, y: 9))
-			rectanglePath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 2.5, y: 9), controlPoint2: CGPoint(x: 0, y: 10))
-			rectanglePath.curve(to: CGPoint(x: 1, y: 5), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 1, y: 7.5))
-			rectanglePath.close()
-			return rectanglePath
-		}
+		internal static func sharp10x10() -> CGPath { pixelPath__ }
 
 		private let common: CommonPixelGenerator
 	}
+}
+
+private let pixelPath__: CGPath = CGPath.make { rectanglePath in
+	rectanglePath.move(to: CGPoint(x: 1, y: 5))
+	rectanglePath.curve(to: CGPoint(x: 0, y: 0), controlPoint1: CGPoint(x: 1, y: 2.5), controlPoint2: CGPoint(x: 0, y: 0))
+	rectanglePath.curve(to: CGPoint(x: 5, y: 1), controlPoint1: CGPoint(x: 0, y: 0), controlPoint2: CGPoint(x: 2.5, y: 1))
+	rectanglePath.curve(to: CGPoint(x: 10, y: 0), controlPoint1: CGPoint(x: 7.5, y: 1), controlPoint2: CGPoint(x: 10, y: 0))
+	rectanglePath.curve(to: CGPoint(x: 9, y: 5), controlPoint1: CGPoint(x: 10, y: 0), controlPoint2: CGPoint(x: 9, y: 2.5))
+	rectanglePath.curve(to: CGPoint(x: 10, y: 10), controlPoint1: CGPoint(x: 9, y: 7.5), controlPoint2: CGPoint(x: 10, y: 10))
+	rectanglePath.curve(to: CGPoint(x: 5, y: 9), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 7.5, y: 9))
+	rectanglePath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 2.5, y: 9), controlPoint2: CGPoint(x: 0, y: 10))
+	rectanglePath.curve(to: CGPoint(x: 1, y: 5), controlPoint1: CGPoint(x: 0, y: 10), controlPoint2: CGPoint(x: 1, y: 7.5))
+	rectanglePath.close()
 }
 
 // MARK: - Settings

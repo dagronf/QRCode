@@ -121,22 +121,22 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Wave {
 	// A 10x10 'pixel' representation of a arrow pixel
-	static func wave10x10() -> CGPath {
-		let wavePath = CGMutablePath()
-		wavePath.move(to: CGPoint(x: 0, y: 2))
-		wavePath.curve(to: CGPoint(x: 2.5, y: 1), controlPoint1: CGPoint(x: 0, y: 2), controlPoint2: CGPoint(x: 1, y: 2))
-		wavePath.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 4, y: 0), controlPoint2: CGPoint(x: 5, y: 0))
-		wavePath.curve(to: CGPoint(x: 7.5, y: 1), controlPoint1: CGPoint(x: 5, y: 0), controlPoint2: CGPoint(x: 6, y: 0))
-		wavePath.curve(to: CGPoint(x: 10, y: 2), controlPoint1: CGPoint(x: 9, y: 2), controlPoint2: CGPoint(x: 10, y: 2))
-		wavePath.line(to: CGPoint(x: 10, y: 10))
-		wavePath.curve(to: CGPoint(x: 7.5, y: 9), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 9, y: 10))
-		wavePath.curve(to: CGPoint(x: 5, y: 8), controlPoint1: CGPoint(x: 6, y: 8), controlPoint2: CGPoint(x: 5, y: 8))
-		wavePath.curve(to: CGPoint(x: 2.5, y: 9), controlPoint1: CGPoint(x: 5, y: 8), controlPoint2: CGPoint(x: 4, y: 8))
-		wavePath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 1, y: 10), controlPoint2: CGPoint(x: 0, y: 10))
-		wavePath.line(to: CGPoint(x: 0, y: 2))
-		wavePath.close()
-		return wavePath
-	}
+	static func wave10x10() -> CGPath { generatedPixelPath__ }
+}
+
+private let generatedPixelPath__: CGPath = CGPath.make { wavePath in
+	wavePath.move(to: CGPoint(x: 0, y: 2))
+	wavePath.curve(to: CGPoint(x: 2.5, y: 1), controlPoint1: CGPoint(x: 0, y: 2), controlPoint2: CGPoint(x: 1, y: 2))
+	wavePath.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 4, y: 0), controlPoint2: CGPoint(x: 5, y: 0))
+	wavePath.curve(to: CGPoint(x: 7.5, y: 1), controlPoint1: CGPoint(x: 5, y: 0), controlPoint2: CGPoint(x: 6, y: 0))
+	wavePath.curve(to: CGPoint(x: 10, y: 2), controlPoint1: CGPoint(x: 9, y: 2), controlPoint2: CGPoint(x: 10, y: 2))
+	wavePath.line(to: CGPoint(x: 10, y: 10))
+	wavePath.curve(to: CGPoint(x: 7.5, y: 9), controlPoint1: CGPoint(x: 10, y: 10), controlPoint2: CGPoint(x: 9, y: 10))
+	wavePath.curve(to: CGPoint(x: 5, y: 8), controlPoint1: CGPoint(x: 6, y: 8), controlPoint2: CGPoint(x: 5, y: 8))
+	wavePath.curve(to: CGPoint(x: 2.5, y: 9), controlPoint1: CGPoint(x: 5, y: 8), controlPoint2: CGPoint(x: 4, y: 8))
+	wavePath.curve(to: CGPoint(x: 0, y: 10), controlPoint1: CGPoint(x: 1, y: 10), controlPoint2: CGPoint(x: 0, y: 10))
+	wavePath.line(to: CGPoint(x: 0, y: 2))
+	wavePath.close()
 }
 
 // MARK: - Settings

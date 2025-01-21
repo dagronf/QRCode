@@ -121,18 +121,18 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Arrow {
 	// A 10x10 'pixel' representation of a arrow pixel
-	static func arrow10x10() -> CGPath {
-		let arrowPath = CGMutablePath()
-		arrowPath.move(to: CGPoint(x: 5, y: 0))
-		arrowPath.line(to: CGPoint(x: 10, y: 2))
-		arrowPath.line(to: CGPoint(x: 10, y: 10))
-		arrowPath.line(to: CGPoint(x: 5, y: 8))
-		arrowPath.line(to: CGPoint(x: 0, y: 10))
-		arrowPath.line(to: CGPoint(x: 0, y: 2))
-		arrowPath.line(to: CGPoint(x: 5, y: 0))
-		arrowPath.close()
-		return arrowPath
-	}
+	static func arrow10x10() -> CGPath { generatedPixelPath__ }
+}
+
+private let generatedPixelPath__: CGPath = CGPath.make { arrowPath in
+	arrowPath.move(to: CGPoint(x: 5, y: 0))
+	arrowPath.line(to: CGPoint(x: 10, y: 2))
+	arrowPath.line(to: CGPoint(x: 10, y: 10))
+	arrowPath.line(to: CGPoint(x: 5, y: 8))
+	arrowPath.line(to: CGPoint(x: 0, y: 10))
+	arrowPath.line(to: CGPoint(x: 0, y: 2))
+	arrowPath.line(to: CGPoint(x: 5, y: 0))
+	arrowPath.close()
 }
 
 // MARK: - Settings

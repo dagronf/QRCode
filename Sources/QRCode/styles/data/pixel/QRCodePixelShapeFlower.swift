@@ -121,35 +121,35 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Flower {
 	// A 10x10 'pixel' representation of a flower pixel
-	static func flower10x10() -> CGPath {
-		let flowerPath = CGMutablePath()
-		flowerPath.move(to: CGPoint(x: 10, y: 7.5))
-		flowerPath.curve(to: CGPoint(x: 8.49, y: 5.21), controlPoint1: CGPoint(x: 10, y: 6.47), controlPoint2: CGPoint(x: 9.38, y: 5.59))
-		flowerPath.curve(to: CGPoint(x: 8.5, y: 5), controlPoint1: CGPoint(x: 8.5, y: 5.14), controlPoint2: CGPoint(x: 8.5, y: 5.07))
-		flowerPath.curve(to: CGPoint(x: 8.49, y: 4.79), controlPoint1: CGPoint(x: 8.5, y: 4.93), controlPoint2: CGPoint(x: 8.5, y: 4.86))
-		flowerPath.curve(to: CGPoint(x: 10, y: 2.5), controlPoint1: CGPoint(x: 9.38, y: 4.41), controlPoint2: CGPoint(x: 10, y: 3.53))
-		flowerPath.curve(to: CGPoint(x: 7.5, y: 0), controlPoint1: CGPoint(x: 10, y: 1.12), controlPoint2: CGPoint(x: 8.88, y: 0))
-		flowerPath.curve(to: CGPoint(x: 5.36, y: 1.2), controlPoint1: CGPoint(x: 6.59, y: 0), controlPoint2: CGPoint(x: 5.8, y: 0.48))
-		flowerPath.curve(to: CGPoint(x: 5.21, y: 1.51), controlPoint1: CGPoint(x: 5.3, y: 1.3), controlPoint2: CGPoint(x: 5.25, y: 1.4))
-		flowerPath.curve(to: CGPoint(x: 5, y: 1.5), controlPoint1: CGPoint(x: 5.14, y: 1.5), controlPoint2: CGPoint(x: 5.07, y: 1.5))
-		flowerPath.curve(to: CGPoint(x: 4.79, y: 1.51), controlPoint1: CGPoint(x: 4.93, y: 1.5), controlPoint2: CGPoint(x: 4.86, y: 1.5))
-		flowerPath.curve(to: CGPoint(x: 2.5, y: 0), controlPoint1: CGPoint(x: 4.41, y: 0.62), controlPoint2: CGPoint(x: 3.53, y: 0))
-		flowerPath.curve(to: CGPoint(x: 1.04, y: 0.47), controlPoint1: CGPoint(x: 1.96, y: 0), controlPoint2: CGPoint(x: 1.45, y: 0.17))
-		flowerPath.line(to: CGPoint(x: 0.95, y: 0.54))
-		flowerPath.curve(to: CGPoint(x: 0, y: 2.5), controlPoint1: CGPoint(x: 0.37, y: 0.99), controlPoint2: CGPoint(x: 0, y: 1.7))
-		flowerPath.curve(to: CGPoint(x: 1.51, y: 4.79), controlPoint1: CGPoint(x: 0, y: 3.53), controlPoint2: CGPoint(x: 0.62, y: 4.41))
-		flowerPath.curve(to: CGPoint(x: 1.5, y: 5), controlPoint1: CGPoint(x: 1.5, y: 4.86), controlPoint2: CGPoint(x: 1.5, y: 4.93))
-		flowerPath.curve(to: CGPoint(x: 1.51, y: 5.21), controlPoint1: CGPoint(x: 1.5, y: 5.07), controlPoint2: CGPoint(x: 1.5, y: 5.14))
-		flowerPath.curve(to: CGPoint(x: 0, y: 7.5), controlPoint1: CGPoint(x: 0.62, y: 5.59), controlPoint2: CGPoint(x: 0, y: 6.47))
-		flowerPath.curve(to: CGPoint(x: 2.5, y: 10), controlPoint1: CGPoint(x: 0, y: 8.88), controlPoint2: CGPoint(x: 1.12, y: 10))
-		flowerPath.curve(to: CGPoint(x: 4.79, y: 8.49), controlPoint1: CGPoint(x: 3.53, y: 10), controlPoint2: CGPoint(x: 4.41, y: 9.38))
-		flowerPath.curve(to: CGPoint(x: 5, y: 8.5), controlPoint1: CGPoint(x: 4.86, y: 8.5), controlPoint2: CGPoint(x: 4.93, y: 8.5))
-		flowerPath.curve(to: CGPoint(x: 5.21, y: 8.49), controlPoint1: CGPoint(x: 5.07, y: 8.5), controlPoint2: CGPoint(x: 5.14, y: 8.5))
-		flowerPath.curve(to: CGPoint(x: 7.5, y: 10), controlPoint1: CGPoint(x: 5.59, y: 9.38), controlPoint2: CGPoint(x: 6.47, y: 10))
-		flowerPath.curve(to: CGPoint(x: 10, y: 7.5), controlPoint1: CGPoint(x: 8.88, y: 10), controlPoint2: CGPoint(x: 10, y: 8.88))
-		flowerPath.close()
-		return flowerPath
-	}
+	static func flower10x10() -> CGPath { generatedPixelPath__ }
+}
+
+private let generatedPixelPath__: CGPath = CGPath.make { flowerPath in
+	flowerPath.move(to: CGPoint(x: 10, y: 7.5))
+	flowerPath.curve(to: CGPoint(x: 8.49, y: 5.21), controlPoint1: CGPoint(x: 10, y: 6.47), controlPoint2: CGPoint(x: 9.38, y: 5.59))
+	flowerPath.curve(to: CGPoint(x: 8.5, y: 5), controlPoint1: CGPoint(x: 8.5, y: 5.14), controlPoint2: CGPoint(x: 8.5, y: 5.07))
+	flowerPath.curve(to: CGPoint(x: 8.49, y: 4.79), controlPoint1: CGPoint(x: 8.5, y: 4.93), controlPoint2: CGPoint(x: 8.5, y: 4.86))
+	flowerPath.curve(to: CGPoint(x: 10, y: 2.5), controlPoint1: CGPoint(x: 9.38, y: 4.41), controlPoint2: CGPoint(x: 10, y: 3.53))
+	flowerPath.curve(to: CGPoint(x: 7.5, y: 0), controlPoint1: CGPoint(x: 10, y: 1.12), controlPoint2: CGPoint(x: 8.88, y: 0))
+	flowerPath.curve(to: CGPoint(x: 5.36, y: 1.2), controlPoint1: CGPoint(x: 6.59, y: 0), controlPoint2: CGPoint(x: 5.8, y: 0.48))
+	flowerPath.curve(to: CGPoint(x: 5.21, y: 1.51), controlPoint1: CGPoint(x: 5.3, y: 1.3), controlPoint2: CGPoint(x: 5.25, y: 1.4))
+	flowerPath.curve(to: CGPoint(x: 5, y: 1.5), controlPoint1: CGPoint(x: 5.14, y: 1.5), controlPoint2: CGPoint(x: 5.07, y: 1.5))
+	flowerPath.curve(to: CGPoint(x: 4.79, y: 1.51), controlPoint1: CGPoint(x: 4.93, y: 1.5), controlPoint2: CGPoint(x: 4.86, y: 1.5))
+	flowerPath.curve(to: CGPoint(x: 2.5, y: 0), controlPoint1: CGPoint(x: 4.41, y: 0.62), controlPoint2: CGPoint(x: 3.53, y: 0))
+	flowerPath.curve(to: CGPoint(x: 1.04, y: 0.47), controlPoint1: CGPoint(x: 1.96, y: 0), controlPoint2: CGPoint(x: 1.45, y: 0.17))
+	flowerPath.line(to: CGPoint(x: 0.95, y: 0.54))
+	flowerPath.curve(to: CGPoint(x: 0, y: 2.5), controlPoint1: CGPoint(x: 0.37, y: 0.99), controlPoint2: CGPoint(x: 0, y: 1.7))
+	flowerPath.curve(to: CGPoint(x: 1.51, y: 4.79), controlPoint1: CGPoint(x: 0, y: 3.53), controlPoint2: CGPoint(x: 0.62, y: 4.41))
+	flowerPath.curve(to: CGPoint(x: 1.5, y: 5), controlPoint1: CGPoint(x: 1.5, y: 4.86), controlPoint2: CGPoint(x: 1.5, y: 4.93))
+	flowerPath.curve(to: CGPoint(x: 1.51, y: 5.21), controlPoint1: CGPoint(x: 1.5, y: 5.07), controlPoint2: CGPoint(x: 1.5, y: 5.14))
+	flowerPath.curve(to: CGPoint(x: 0, y: 7.5), controlPoint1: CGPoint(x: 0.62, y: 5.59), controlPoint2: CGPoint(x: 0, y: 6.47))
+	flowerPath.curve(to: CGPoint(x: 2.5, y: 10), controlPoint1: CGPoint(x: 0, y: 8.88), controlPoint2: CGPoint(x: 1.12, y: 10))
+	flowerPath.curve(to: CGPoint(x: 4.79, y: 8.49), controlPoint1: CGPoint(x: 3.53, y: 10), controlPoint2: CGPoint(x: 4.41, y: 9.38))
+	flowerPath.curve(to: CGPoint(x: 5, y: 8.5), controlPoint1: CGPoint(x: 4.86, y: 8.5), controlPoint2: CGPoint(x: 4.93, y: 8.5))
+	flowerPath.curve(to: CGPoint(x: 5.21, y: 8.49), controlPoint1: CGPoint(x: 5.07, y: 8.5), controlPoint2: CGPoint(x: 5.14, y: 8.5))
+	flowerPath.curve(to: CGPoint(x: 7.5, y: 10), controlPoint1: CGPoint(x: 5.59, y: 9.38), controlPoint2: CGPoint(x: 6.47, y: 10))
+	flowerPath.curve(to: CGPoint(x: 10, y: 7.5), controlPoint1: CGPoint(x: 8.88, y: 10), controlPoint2: CGPoint(x: 10, y: 8.88))
+	flowerPath.close()
 }
 
 // MARK: - Settings

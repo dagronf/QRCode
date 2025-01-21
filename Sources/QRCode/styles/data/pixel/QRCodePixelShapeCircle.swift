@@ -93,6 +93,9 @@ public extension QRCode.PixelShape {
 		// private
 
 		private let common: CommonPixelGenerator
+
+		// 10x10 pixel shape
+		static let Circle10x10 = CGPath(ellipseIn: CGRect(x: 0, y: 0, width: 10, height: 10), transform: nil)
 	}
 }
 

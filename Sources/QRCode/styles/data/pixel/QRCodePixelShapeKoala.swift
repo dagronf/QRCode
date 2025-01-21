@@ -121,17 +121,16 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Koala {
 	// A 10x10 'pixel' representation of a Koala pixel
-	static func koala10x10() -> CGPath {
-		CGPath.make { koalaPath in
-			koalaPath.move(to: CGPoint(x: 0.82, y: 9.18))
-			koalaPath.curve(to: CGPoint(x: 9.62, y: 6.38), controlPoint1: CGPoint(x: 2.32, y: 10.68), controlPoint2: CGPoint(x: 8.92, y: 8.58))
-			koalaPath.curve(to: CGPoint(x: 3.62, y: 0.38), controlPoint1: CGPoint(x: 10.32, y: 4.18), controlPoint2: CGPoint(x: 5.82, y: -0.32))
-			koalaPath.curve(to: CGPoint(x: 0.82, y: 9.18), controlPoint1: CGPoint(x: 1.42, y: 1.08), controlPoint2: CGPoint(x: -0.68, y: 7.68))
-			koalaPath.close()
-		}
-		.flipped()
-	}
+	static func koala10x10() -> CGPath { generatedPixelPath__ }
 }
+
+private let generatedPixelPath__ = CGPath.make { koalaPath in
+	koalaPath.move(to: CGPoint(x: 0.82, y: 9.18))
+	koalaPath.curve(to: CGPoint(x: 9.62, y: 6.38), controlPoint1: CGPoint(x: 2.32, y: 10.68), controlPoint2: CGPoint(x: 8.92, y: 8.58))
+	koalaPath.curve(to: CGPoint(x: 3.62, y: 0.38), controlPoint1: CGPoint(x: 10.32, y: 4.18), controlPoint2: CGPoint(x: 5.82, y: -0.32))
+	koalaPath.curve(to: CGPoint(x: 0.82, y: 9.18), controlPoint1: CGPoint(x: 1.42, y: 1.08), controlPoint2: CGPoint(x: -0.68, y: 7.68))
+	koalaPath.close()
+}.flipped()
 
 // MARK: - Settings
 

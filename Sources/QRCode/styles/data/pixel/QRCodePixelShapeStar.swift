@@ -121,21 +121,21 @@ public extension QRCode.PixelShape {
 
 internal extension QRCode.PixelShape.Star {
 	// A 10x10 'pixel' representation of a star pixel
-	static func star10x10() -> CGPath {
-		let starPath = CGMutablePath()
-		starPath.move(to: CGPoint(x: 5, y: 0))
-		starPath.line(to: CGPoint(x: 6.85, y: 2.83))
-		starPath.line(to: CGPoint(x: 9.99, y: 3.8))
-		starPath.line(to: CGPoint(x: 8, y: 6.52))
-		starPath.line(to: CGPoint(x: 8.09, y: 9.95))
-		starPath.line(to: CGPoint(x: 5, y: 8.8))
-		starPath.line(to: CGPoint(x: 1.91, y: 9.95))
-		starPath.line(to: CGPoint(x: 2, y: 6.52))
-		starPath.line(to: CGPoint(x: 0.01, y: 3.8))
-		starPath.line(to: CGPoint(x: 3.15, y: 2.83))
-		starPath.close()
-		return starPath
-	}
+	static func star10x10() -> CGPath { pixelPath__ }
+}
+
+private let pixelPath__: CGPath = CGPath.make { starPath in
+	starPath.move(to: CGPoint(x: 5, y: 0))
+	starPath.line(to: CGPoint(x: 6.85, y: 2.83))
+	starPath.line(to: CGPoint(x: 9.99, y: 3.8))
+	starPath.line(to: CGPoint(x: 8, y: 6.52))
+	starPath.line(to: CGPoint(x: 8.09, y: 9.95))
+	starPath.line(to: CGPoint(x: 5, y: 8.8))
+	starPath.line(to: CGPoint(x: 1.91, y: 9.95))
+	starPath.line(to: CGPoint(x: 2, y: 6.52))
+	starPath.line(to: CGPoint(x: 0.01, y: 3.8))
+	starPath.line(to: CGPoint(x: 3.15, y: 2.83))
+	starPath.close()
 }
 
 // MARK: - Settings

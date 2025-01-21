@@ -83,22 +83,22 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Donut
 
 internal extension QRCode.PixelShape.Donut {
 	// A 10x10 'pixel' representation
-	static func donutPixel10x10() -> CGPath {
-		let ch_pixelPath = CGMutablePath()
-		ch_pixelPath.move(to: CGPoint(x: 5, y: 6.5))
-		ch_pixelPath.curve(to: CGPoint(x: 3.5, y: 5), controlPoint1: CGPoint(x: 4.17, y: 6.5), controlPoint2: CGPoint(x: 3.5, y: 5.83))
-		ch_pixelPath.curve(to: CGPoint(x: 4.72, y: 3.53), controlPoint1: CGPoint(x: 3.5, y: 4.27), controlPoint2: CGPoint(x: 4.03, y: 3.66))
-		ch_pixelPath.curve(to: CGPoint(x: 5, y: 3.5), controlPoint1: CGPoint(x: 4.81, y: 3.51), controlPoint2: CGPoint(x: 4.91, y: 3.5))
-		ch_pixelPath.curve(to: CGPoint(x: 6.5, y: 5), controlPoint1: CGPoint(x: 5.83, y: 3.5), controlPoint2: CGPoint(x: 6.5, y: 4.17))
-		ch_pixelPath.curve(to: CGPoint(x: 5, y: 6.5), controlPoint1: CGPoint(x: 6.5, y: 5.83), controlPoint2: CGPoint(x: 5.83, y: 6.5))
-		ch_pixelPath.close()
-		ch_pixelPath.move(to: CGPoint(x: 10, y: 5))
-		ch_pixelPath.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 10, y: 2.24), controlPoint2: CGPoint(x: 7.76, y: 0))
-		ch_pixelPath.curve(to: CGPoint(x: 2.04, y: 0.97), controlPoint1: CGPoint(x: 3.89, y: 0), controlPoint2: CGPoint(x: 2.87, y: 0.36))
-		ch_pixelPath.curve(to: CGPoint(x: 0, y: 5), controlPoint1: CGPoint(x: 0.8, y: 1.88), controlPoint2: CGPoint(x: 0, y: 3.35))
-		ch_pixelPath.curve(to: CGPoint(x: 5, y: 10), controlPoint1: CGPoint(x: 0, y: 7.76), controlPoint2: CGPoint(x: 2.24, y: 10))
-		ch_pixelPath.curve(to: CGPoint(x: 10, y: 5), controlPoint1: CGPoint(x: 7.76, y: 10), controlPoint2: CGPoint(x: 10, y: 7.76))
-		ch_pixelPath.close()
-		return ch_pixelPath
-	}
+	static func donutPixel10x10() -> CGPath { generatedPixelPath__ }
+}
+
+private let generatedPixelPath__ = CGPath.make { ch_pixelPath in
+	ch_pixelPath.move(to: CGPoint(x: 5, y: 6.5))
+	ch_pixelPath.curve(to: CGPoint(x: 3.5, y: 5), controlPoint1: CGPoint(x: 4.17, y: 6.5), controlPoint2: CGPoint(x: 3.5, y: 5.83))
+	ch_pixelPath.curve(to: CGPoint(x: 4.72, y: 3.53), controlPoint1: CGPoint(x: 3.5, y: 4.27), controlPoint2: CGPoint(x: 4.03, y: 3.66))
+	ch_pixelPath.curve(to: CGPoint(x: 5, y: 3.5), controlPoint1: CGPoint(x: 4.81, y: 3.51), controlPoint2: CGPoint(x: 4.91, y: 3.5))
+	ch_pixelPath.curve(to: CGPoint(x: 6.5, y: 5), controlPoint1: CGPoint(x: 5.83, y: 3.5), controlPoint2: CGPoint(x: 6.5, y: 4.17))
+	ch_pixelPath.curve(to: CGPoint(x: 5, y: 6.5), controlPoint1: CGPoint(x: 6.5, y: 5.83), controlPoint2: CGPoint(x: 5.83, y: 6.5))
+	ch_pixelPath.close()
+	ch_pixelPath.move(to: CGPoint(x: 10, y: 5))
+	ch_pixelPath.curve(to: CGPoint(x: 5, y: 0), controlPoint1: CGPoint(x: 10, y: 2.24), controlPoint2: CGPoint(x: 7.76, y: 0))
+	ch_pixelPath.curve(to: CGPoint(x: 2.04, y: 0.97), controlPoint1: CGPoint(x: 3.89, y: 0), controlPoint2: CGPoint(x: 2.87, y: 0.36))
+	ch_pixelPath.curve(to: CGPoint(x: 0, y: 5), controlPoint1: CGPoint(x: 0.8, y: 1.88), controlPoint2: CGPoint(x: 0, y: 3.35))
+	ch_pixelPath.curve(to: CGPoint(x: 5, y: 10), controlPoint1: CGPoint(x: 0, y: 7.76), controlPoint2: CGPoint(x: 2.24, y: 10))
+	ch_pixelPath.curve(to: CGPoint(x: 10, y: 5), controlPoint1: CGPoint(x: 7.76, y: 10), controlPoint2: CGPoint(x: 10, y: 7.76))
+	ch_pixelPath.close()
 }

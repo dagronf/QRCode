@@ -145,7 +145,12 @@ internal extension QRCode.PixelShape {
 						path.addPath(CGPath(roundedRect: ri, cornerWidth: cr, cornerHeight: cr, transform: &rotateTransform))
 					}
 					else if self.pixelType == .circle {
-						path.addPath(CGPath(ellipseIn: ri, transform: nil))
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+						path.addPath(Circle.Circle10x10, transform: transform)
 					}
 					else if self.pixelType == .squircle {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -319,6 +324,15 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 						let sq = Diagonal.diagonal10x10()
 						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .square {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						path.addPath(Square.Square10x10, transform: transform)
 					}
 					else {
 						path.addPath(CGPath(rect: ri, transform: &rotateTransform))

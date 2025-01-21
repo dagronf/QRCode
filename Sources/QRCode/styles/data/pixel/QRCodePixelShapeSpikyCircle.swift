@@ -210,7 +210,7 @@ public extension QRCodePixelShapeGenerator where Self == QRCode.PixelShape.Spiky
 
 // MARK: - Paths
 
-private let generatedPixelPath__: CGPath = {
+private let generatedPixelPath__: CGPath =
 	CGPath.make { spikyCirclePath in
 		spikyCirclePath.move(to: CGPoint(x: 9, y: 1.87))
 		spikyCirclePath.curve(to: CGPoint(x: 7.27, y: 1.63), controlPoint1: CGPoint(x: 9, y: 1.87), controlPoint2: CGPoint(x: 7.67, y: 1.92))
@@ -235,4 +235,3 @@ private let generatedPixelPath__: CGPath = {
 		spikyCirclePath.curve(to: CGPoint(x: 9, y: 1.87), controlPoint1: CGPoint(x: 8.58, y: 3.18), controlPoint2: CGPoint(x: 9, y: 1.87))
 		spikyCirclePath.close()
 	}
-}()
