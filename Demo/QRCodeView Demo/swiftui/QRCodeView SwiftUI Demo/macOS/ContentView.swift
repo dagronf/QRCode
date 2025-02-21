@@ -87,7 +87,7 @@ struct ContentView: View {
 					ForEach(pixelGenerators, id: \.identifier) { gen in
 						Text(gen.title).tag(gen.identifier)
 					}
-				}.pickerStyle(RadioGroupPickerStyle())
+				}.pickerStyle(MenuPickerStyle())
 				HStack {
 					Slider(value: $dataInset, in: 0.0 ... 1.0, label: { Text("Inset") })
 					Toggle("Random", isOn: $randomInset)
@@ -99,15 +99,16 @@ struct ContentView: View {
 						ForEach(eyeGenerators, id: \.identifier) { gen in
 							Text(gen.title).tag(gen.identifier)
 						}
-					}.pickerStyle(RadioGroupPickerStyle())
+					}.pickerStyle(MenuPickerStyle())
 					Picker(selection: $pupilStyle, label: Text("Pupil Shape:")) {
 						ForEach(pupilGenerators, id: \.identifier) { gen in
 							Text(gen.title).tag(gen.identifier)
 						}
-					}.pickerStyle(RadioGroupPickerStyle())
+					}.pickerStyle(MenuPickerStyle())
 				}
 				.onChange(of: eyeStyle) { newValue in
-					pupilStyle = newValue
+					let dp = eyeShapeHandler(newValue).defaultPupil().name
+					pupilStyle = dp // _eyeStyle.defaultPupil().name
 				}
 
 				HStack {

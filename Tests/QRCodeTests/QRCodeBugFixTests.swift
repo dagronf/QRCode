@@ -104,4 +104,34 @@ final class BugFixTests: XCTestCase {
 		try outputFolder.write(op1, to: "nsimage_generation_dpi_x3.png")
 	}
 #endif
+
+	func testingBug64_1() throws {
+
+		// https://github.com/dagronf/QRCode/issues/64
+
+		let g = QRCode.PixelShape.Shiny()
+
+		let b = BoolMatrix(
+			dimension: 7,
+			rawFlattenedInt: [
+				0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 1, 0, 0,
+				0, 0, 0, 0, 1, 0, 0,
+				0, 1, 0, 1, 1, 1, 0,
+				0, 1, 1, 1, 1, 0, 0,
+				0, 0, 0, 1, 0, 1, 0,
+				0, 0, 0, 0, 0, 0, 0,
+			])
+
+		let cgimage = try QRCodePixelShapeFactory.shared.image(
+			pixelGenerator: g,
+			dimension: 200,
+			foregroundColor: CGColor(gray: 0, alpha: 1),
+			backgroundColor: CGColor(gray: 1, alpha: 1),
+			samplePixelMatrix: b
+		)
+
+		let data = try cgimage.representation.png()
+		try outputFolder.write(data, to: "bug_64.png")
+	}
 }
