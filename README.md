@@ -96,7 +96,7 @@ A quick, stylish and beautiful macOS/iOS/tvOS/watchOS QR Code generator/detector
 ## Features
 
 * Supports Swift, SwiftUI and Objective-C.
-* Supports Swift Package Manager and CocoaPods
+* Supports Swift Package Manager
 * Generate a QR code without access to a UI.
 * Supports all error correction levels.
 * Configurable quiet zone
@@ -120,15 +120,6 @@ To use in your project, add the following dependency to your Package.swift:
 
 ```swift
 .package(url: "https://github.com/dagronf/qrcode.git", from: "20.0.0")
-```
-</details>
-
-<details>
-<summary>Cocoapods</summary>
-To install it, simply add the following line to your Podfile
-
-```ruby
-pod 'DSF_QRCode', '~> 20.0.0'
 ```
 </details>
 
