@@ -79,6 +79,21 @@ public extension QRCode.FillStyle {
 			self.endPoint = endPoint
 		}
 
+		/// Fill the specified path/rect with a gradient
+		/// - Parameters:
+		///   - pins: An array of pins for the gradient
+		///   - startPoint: The fractional position within the fill rect to start the gradient (0.0 -> 1.0)
+		///   - endPoint: The fractional position within the fill rect to end the gradient (0.0 -> 1.0)
+		@objc public init(
+			pins: [DSFGradient.Pin],
+			startPoint: CGPoint = CGPoint(x: 0, y: 0),
+			endPoint: CGPoint = CGPoint(x: 1, y: 1)
+		) throws {
+			self.gradient = try DSFGradient(pins: pins)
+			self.startPoint = startPoint
+			self.endPoint = endPoint
+		}
+
 		/// Fill the specified rect with the gradient
 		public func fill(ctx: CGContext, rect: CGRect) {
 			ctx.drawLinearGradient(

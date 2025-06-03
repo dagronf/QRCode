@@ -159,11 +159,11 @@ final class DocumentationImageTests: XCTestCase {
 			.eye.shape(.crt())
 			.onPixels.shape(QRCode.PixelShape.Blob())
 			.onPixels.style(
-				QRCode.FillStyle.LinearGradient(
-					try DSFGradient(pins: [
+				try QRCode.FillStyle.LinearGradient(
+					pins: [
 						DSFGradient.Pin(CGColor.RGBA(1, 0.589, 0, 1), 0),
 						DSFGradient.Pin(CGColor.RGBA(1, 0, 0.3, 1), 1),
-					]),
+					],
 					startPoint: CGPoint(x: 0, y: 1),
 					endPoint: CGPoint(x: 0, y: 0)
 				)
@@ -195,11 +195,11 @@ final class DocumentationImageTests: XCTestCase {
 		doc3.design.style.background = QRCode.FillStyle.Solid(.commonWhite)
 
 		// Set the fill color for the data to radial gradient
-		let radial = QRCode.FillStyle.RadialGradient(
-			try DSFGradient(pins: [
+		let radial = try QRCode.FillStyle.RadialGradient(
+			pins: [
 				DSFGradient.Pin(CGColor.RGBA(0.8, 0, 0, 1), 0),
 				DSFGradient.Pin(CGColor.RGBA(0.1, 0, 0, 1), 1)
-			]),
+			],
 			centerPoint: CGPoint(x: 0.5, y: 0.5)
 		)
 		doc3.design.style.onPixels = radial
@@ -346,11 +346,11 @@ final class DocumentationImageTests: XCTestCase {
 			let doc = try QRCode.Document(utf8String: "https://en.wikipedia.org/wiki/The_Wombles")
 			let image = try resourceImage(for: "wombles", extension: "jpeg")
 
-			let pixelFill = QRCode.FillStyle.LinearGradient(
-				try DSFGradient(pins: [
+			let pixelFill = try QRCode.FillStyle.LinearGradient(
+				pins: [
 					DSFGradient.Pin(CGColor.RGBA(0, 0, 1), 0),
 					DSFGradient.Pin(CGColor.RGBA(1, 0, 0), 1),
-				]),
+				],
 				startPoint: CGPoint(x: 0, y: 0),
 				endPoint: CGPoint(x: 0, y: 1)
 			)
@@ -511,12 +511,11 @@ final class DocumentationImageTests: XCTestCase {
 
 			doc.design.shape.onPixels = QRCode.PixelShape.Squircle(insetFraction: 0.1)
 
-			let c = QRCode.FillStyle.RadialGradient(
-				try DSFGradient(pins: [
-					DSFGradient.Pin(CGColor.RGBA(1, 1, 0.75, 1), 1),
-					DSFGradient.Pin(CGColor.RGBA(1, 1, 0.95, 1), 0),
-					]
-				),
+			let c = try QRCode.FillStyle.RadialGradient(
+				pins: [
+					.pin(CGColor.RGBA(1, 1, 0.75, 1), 1),
+					.pin(CGColor.RGBA(1, 1, 0.95, 1), 0),
+				],
 				centerPoint: CGPoint(x: 0.5, y: 0.5))
 
 			doc.design.style.background = c

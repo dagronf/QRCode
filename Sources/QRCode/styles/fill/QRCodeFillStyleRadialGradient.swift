@@ -59,8 +59,23 @@ public extension QRCode.FillStyle {
 		/// - Parameters:
 		///   - gradient: The color gradient to use
 		///   - centerPoint: The fractional position within the fill rect to start the radial fill (0.0 -> 1.0)
-		@objc public init(_ gradient: DSFGradient, centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)) {
+		@objc public init(
+			_ gradient: DSFGradient,
+			centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)
+		) {
 			self.gradient = gradient
+			self.centerPoint = centerPoint
+		}
+
+		/// Fill the specified path/rect with a gradient
+		/// - Parameters:
+		///   - pins: An array of pins for the gradient
+		///   - centerPoint: The fractional position within the fill rect to start the radial fill (0.0 -> 1.0)
+		@objc public init(
+			pins: [DSFGradient.Pin],
+			centerPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)
+		) throws {
+			self.gradient = try DSFGradient(pins: pins)
 			self.centerPoint = centerPoint
 		}
 

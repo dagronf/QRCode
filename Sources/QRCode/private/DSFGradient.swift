@@ -30,6 +30,14 @@ import Foundation
 		/// - Parameters:
 		///   - color: The pin's color
 		///   - position: The pin's unit position (0 ... 1)
+		@inlinable public static func pin(_ color: CGColor, _ position: CGFloat) -> Pin {
+			Pin(color, position)
+		}
+
+		/// Create a color pin
+		/// - Parameters:
+		///   - color: The pin's color
+		///   - position: The pin's unit position (0 ... 1)
 		@objc public init(_ color: CGColor, _ position: CGFloat) {
 			self.color = color
 			self.position = max(0, min(position, 1.0))
