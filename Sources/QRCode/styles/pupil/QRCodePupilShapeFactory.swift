@@ -98,6 +98,7 @@ import CoreGraphics
 			QRCode.PupilShape.Orbits.self,
 			QRCode.PupilShape.Blade.self,
 			QRCode.PupilShape.Cloud.self,
+			QRCode.PupilShape.FabricScissors.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 

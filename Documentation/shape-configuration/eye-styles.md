@@ -13,6 +13,7 @@
 | <a href="../../Art/images/eye_edges.png"><img src="../../Art/images/eye_edges.png" width="75" /></a> | __edges__ | `QRCode.EyeShape.Edges` | • __Corner radius__<br/> |
 | <a href="../../Art/images/eye_explode.png"><img src="../../Art/images/eye_explode.png" width="75" /></a> | __explode__ | `QRCode.EyeShape.Explode` | _none_ |
 | <a href="../../Art/images/eye_eye.png"><img src="../../Art/images/eye_eye.png" width="75" /></a> | __eye__ | `QRCode.EyeShape.Eye` | • __Flippable__<br/>• __Configurable eye corners__<br/> |
+| <a href="../../Art/images/eye_fabricScissors.png"><img src="../../Art/images/eye_fabricScissors.png" width="75" /></a> | __fabricScissors__ | `QRCode.EyeShape.FabricScissors` | _none_ |
 | <a href="../../Art/images/eye_fireball.png"><img src="../../Art/images/eye_fireball.png" width="75" /></a> | __fireball__ | `QRCode.EyeShape.Fireball` | _none_ |
 | <a href="../../Art/images/eye_headlight.png"><img src="../../Art/images/eye_headlight.png" width="75" /></a> | __headlight__ | `QRCode.EyeShape.Headlight` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_leaf.png"><img src="../../Art/images/eye_leaf.png" width="75" /></a> | __leaf__ | `QRCode.EyeShape.Leaf` | _none_ |

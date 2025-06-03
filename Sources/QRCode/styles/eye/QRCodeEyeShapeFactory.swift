@@ -94,6 +94,7 @@ import Foundation
 		QRCode.EyeShape.Headlight.self,
 		QRCode.EyeShape.SurroundingBars.self,
 		QRCode.EyeShape.Cloud.self,
+		QRCode.EyeShape.FabricScissors.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 
