@@ -44,6 +44,7 @@ internal extension QRCode.PixelShape {
 			case diamond
 			case koala
 			case diagonal
+			case diagonalStripes
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -333,6 +334,15 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						path.addPath(Square.Square10x10, transform: transform)
+					}
+					else if self.pixelType == .diagonalStripes {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm),
+								y: yoff + (CGFloat(row) * dm)
+							))
+						let sq = DiagonalStripes.pixelShape_
+						path.addPath(sq, transform: transform)
 					}
 					else {
 						path.addPath(CGPath(rect: ri, transform: &rotateTransform))
