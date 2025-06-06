@@ -42,10 +42,18 @@ extension CGPath {
 		return pth
 	}
 
+	/// Flip based on the bounding-box height
 	func flipped() -> CGPath {
 		let flipped = CGMutablePath()
 		let y = self.boundingBox.height
 		flipped.addPath(self, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -y))
+		return flipped
+	}
+
+	/// Flip vertically
+	func flippedVertically(height: CGFloat) -> CGPath {
+		let flipped = CGMutablePath()
+		flipped.addPath(self, transform: .init(scaleX: 1, y: -1).translatedBy(x: 0, y: -height))
 		return flipped
 	}
 }

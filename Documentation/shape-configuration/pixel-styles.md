@@ -7,6 +7,7 @@
 | <a href="../../Art/images/data_blob.png"><img src="../../Art/images/data_blob.png" width="75" /></a> | __blob__ | `QRCode.PixelShape.Blob` | _none_ |
 | <a href="../../Art/images/data_circle.png"><img src="../../Art/images/data_circle.png" width="75" /></a> | __circle__ | `QRCode.PixelShape.Circle` | • __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_circuit.png"><img src="../../Art/images/data_circuit.png" width="75" /></a> | __circuit__ | `QRCode.PixelShape.Circuit` | _none_ |
+| <a href="../../Art/images/data_crosshatch.png"><img src="../../Art/images/data_crosshatch.png" width="75" /></a> | __crosshatch__ | `QRCode.PixelShape.Crosshatch` | _none_ |
 | <a href="../../Art/images/data_crt.png"><img src="../../Art/images/data_crt.png" width="75" /></a> | __crt__ | `QRCode.PixelShape.CRT` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_curvePixel.png"><img src="../../Art/images/data_curvePixel.png" width="75" /></a> | __curvePixel__ | `QRCode.PixelShape.CurvePixel` | • __Corner radius__<br/> |
 | <a href="../../Art/images/data_diagonal.png"><img src="../../Art/images/data_diagonal.png" width="75" /></a> | __diagonal__ | `QRCode.PixelShape.Diagonal` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
