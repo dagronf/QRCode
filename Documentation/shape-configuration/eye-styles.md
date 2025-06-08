@@ -1,6 +1,6 @@
 # Eye shape options
 
-|  Preview  |  Name  | Class |  Options  | 
+|  Preview  |  Name  | Class |  Options  |
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/eye_barsHorizontal.png"><img src="../../Art/images/eye_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.EyeShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/eye_barsVertical.png"><img src="../../Art/images/eye_barsVertical.png" width="75" /></a> | __barsVertical__ | `QRCode.EyeShape.BarsVertical` | _none_ |
@@ -8,6 +8,7 @@
 | <a href="../../Art/images/eye_cloud.png"><img src="../../Art/images/eye_cloud.png" width="75" /></a> | __cloud__ | `QRCode.EyeShape.Cloud` | _none_ |
 | <a href="../../Art/images/eye_corneredPixels.png"><img src="../../Art/images/eye_corneredPixels.png" width="75" /></a> | __corneredPixels__ | `QRCode.EyeShape.CorneredPixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/eye_crt.png"><img src="../../Art/images/eye_crt.png" width="75" /></a> | __crt__ | `QRCode.EyeShape.CRT` | _none_ |
+| <a href="../../Art/images/eye_diagonalStripes.png"><img src="../../Art/images/eye_diagonalStripes.png" width="75" /></a> | __diagonalStripes__ | `QRCode.EyeShape.DiagonalStripes` | _none_ |
 | <a href="../../Art/images/eye_dotDragHorizontal.png"><img src="../../Art/images/eye_dotDragHorizontal.png" width="75" /></a> | __dotDragHorizontal__ | `QRCode.EyeShape.DotDragHorizontal` | _none_ |
 | <a href="../../Art/images/eye_dotDragVertical.png"><img src="../../Art/images/eye_dotDragVertical.png" width="75" /></a> | __dotDragVertical__ | `QRCode.EyeShape.DotDragVertical` | _none_ |
 | <a href="../../Art/images/eye_edges.png"><img src="../../Art/images/eye_edges.png" width="75" /></a> | __edges__ | `QRCode.EyeShape.Edges` | • __Corner radius__<br/> |

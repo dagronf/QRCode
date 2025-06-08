@@ -21,7 +21,7 @@ import CoreGraphics
 import Foundation
 
 public extension QRCode.PixelShape {
-	/// A donut pixel shape
+	/// A diagonal stripes pixel shape
 	@objc(QRCodePixelShapeDiagonalStripes) class DiagonalStripes: NSObject, QRCodePixelShapeGenerator {
 		/// The generator name
 		@objc public static let Name: String = "diagonalStripes"
@@ -31,12 +31,6 @@ public extension QRCode.PixelShape {
 		/// This pupil generator can be used when generating eye and pupil shapes
 		@objc public var canGenerateEyeAndPupilShapes: Bool { true }
 
-		/// Create a donut pixel shape
-		@objc public override init() {
-			self.common = CommonPixelGenerator(pixelType: .diagonalStripes)
-			super.init()
-		}
-
 		/// Create an instance of this path generator with the specified settings
 		@objc public static func Create(_ settings: [String: Any]?) -> any QRCodePixelShapeGenerator { DiagonalStripes() }
 		/// Make a copy of the object
@@ -44,19 +38,40 @@ public extension QRCode.PixelShape {
 
 		/// Reset the generator back to defaults
 		@objc public func reset() { }
+	}
+}
 
-		/// Generate a CGPath from the matrix contents
-		/// - Parameters:
-		///   - matrix: The matrix to generate
-		///   - size: The size of the resulting CGPath
-		/// - Returns: A path
-		public func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
-			self.common.generatePath(from: matrix, size: size)
+public extension QRCode.PixelShape.DiagonalStripes {
+	/// Generate a CGPath from the matrix contents
+	/// - Parameters:
+	///   - matrix: The matrix to generate
+	///   - size: The size of the resulting CGPath
+	/// - Returns: A path
+	func generatePath(from matrix: BoolMatrix, size: CGSize) -> CGPath {
+		let dx = size.width / CGFloat(matrix.dimension)
+		let dy = size.height / CGFloat(matrix.dimension)
+		let dm = min(dx, dy)
+
+		let xoff = (size.width - (CGFloat(matrix.dimension) * dm)) / 2.0
+		let yoff = (size.height - (CGFloat(matrix.dimension) * dm)) / 2.0
+
+		// The scale required to convert our template paths to output path size
+		let w = QRCode.PixelShape.RoundedPath.DefaultSize.width
+		let scaleTransform = CGAffineTransform(scaleX: dm / w, y: dm / w)
+
+		let path = CGMutablePath()
+
+		for row in 0 ..< matrix.dimension {
+			for col in 0 ..< matrix.dimension {
+				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
+				if matrix[row, col] == true {
+					path.addPath(Self.pixelShape_, transform: scaleTransform.concatenating(translate))
+				}
+			}
 		}
 
-		// private
-
-		private let common: CommonPixelGenerator
+		path.closeSubpath()
+		return path
 	}
 }
 

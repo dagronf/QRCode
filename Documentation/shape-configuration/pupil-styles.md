@@ -2,6 +2,7 @@
 
 |  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
+| <a href="../../Art/images/pupil_arrow.png"><img src="../../Art/images/pupil_arrow.png" width="75" /></a> | __arrow__ | `QRCode.PixelShape.Arrow` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_barsHorizontal.png"><img src="../../Art/images/pupil_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.PixelShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/pupil_barsHorizontalSquare.png"><img src="../../Art/images/pupil_barsHorizontalSquare.png" width="75" /></a> | __barsHorizontalSquare__ | `QRCode.PixelShape.SquareBarsHorizontal` | _none_ |
 | <a href="../../Art/images/pupil_barsVertical.png"><img src="../../Art/images/pupil_barsVertical.png" width="75" /></a> | __barsVertical__ | `QRCode.PixelShape.BarsVertical` | _none_ |
@@ -14,6 +15,7 @@
 | <a href="../../Art/images/pupil_cross.png"><img src="../../Art/images/pupil_cross.png" width="75" /></a> | __cross__ | `QRCode.PixelShape.Cross` | _none_ |
 | <a href="../../Art/images/pupil_crossCurved.png"><img src="../../Art/images/pupil_crossCurved.png" width="75" /></a> | __crossCurved__ | `QRCode.PixelShape.CrossCurved` | _none_ |
 | <a href="../../Art/images/pupil_crt.png"><img src="../../Art/images/pupil_crt.png" width="75" /></a> | __crt__ | `QRCode.PixelShape.CRT` | _none_ |
+| <a href="../../Art/images/pupil_diagonalStripes.png"><img src="../../Art/images/pupil_diagonalStripes.png" width="75" /></a> | __diagonalStripes__ | `QRCode.PixelShape.DiagonalStripes` | _none_ |
 | <a href="../../Art/images/pupil_dotDragHorizontal.png"><img src="../../Art/images/pupil_dotDragHorizontal.png" width="75" /></a> | __dotDragHorizontal__ | `QRCode.PixelShape.DotDragHorizontal` | _none_ |
 | <a href="../../Art/images/pupil_dotDragVertical.png"><img src="../../Art/images/pupil_dotDragVertical.png" width="75" /></a> | __dotDragVertical__ | `QRCode.PixelShape.DotDragVertical` | _none_ |
 | <a href="../../Art/images/pupil_edges.png"><img src="../../Art/images/pupil_edges.png" width="75" /></a> | __edges__ | `QRCode.PixelShape.Edges` | • __Corner radius__<br/> |

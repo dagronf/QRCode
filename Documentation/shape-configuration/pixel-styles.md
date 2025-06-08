@@ -14,6 +14,8 @@
 | <a href="../../Art/images/data_diagonalStripes.png"><img src="../../Art/images/data_diagonalStripes.png" width="75" /></a> | __diagonalStripes__ | `QRCode.PixelShape.DiagonalStripes` | _none_ |
 | <a href="../../Art/images/data_diamond.png"><img src="../../Art/images/data_diamond.png" width="75" /></a> | __diamond__ | `QRCode.PixelShape.Diamond` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_donut.png"><img src="../../Art/images/data_donut.png" width="75" /></a> | __donut__ | `QRCode.PixelShape.Donut` | _none_ |
+| <a href="../../Art/images/data_dripHorizontal.png"><img src="../../Art/images/data_dripHorizontal.png" width="75" /></a> | __dripHorizontal__ | `QRCode.PixelShape.DripHorizontal` | _none_ |
+| <a href="../../Art/images/data_dripVertical.png"><img src="../../Art/images/data_dripVertical.png" width="75" /></a> | __dripVertical__ | `QRCode.PixelShape.DripVertical` | _none_ |
 | <a href="../../Art/images/data_flower.png"><img src="../../Art/images/data_flower.png" width="75" /></a> | __flower__ | `QRCode.PixelShape.Flower` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_grid2x2.png"><img src="../../Art/images/data_grid2x2.png" width="75" /></a> | __grid2x2__ | `QRCode.PixelShape.Grid2x2` | _none_ |
 | <a href="../../Art/images/data_grid3x3.png"><img src="../../Art/images/data_grid3x3.png" width="75" /></a> | __grid3x3__ | `QRCode.PixelShape.Grid3x3` | _none_ |
