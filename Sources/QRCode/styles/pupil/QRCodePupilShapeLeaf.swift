@@ -40,7 +40,7 @@ public extension QRCode.PupilShape {
 		@objc public var flip: QRCode.Flip = .none
 
 		/// Create a pupil
-		/// - Parameter isFlipped: Flip the shape
+		/// - Parameter flip: The flip transform to apply to the style
 		@objc public init(flip: QRCode.Flip = .none) {
 			self.flip = flip
 			super.init()

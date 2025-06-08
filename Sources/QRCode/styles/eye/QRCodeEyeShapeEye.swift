@@ -50,7 +50,7 @@ public extension QRCode.EyeShape {
 
 		/// Create an eye
 		/// - Parameters:
-		///   - isFlipped: If true, flip the eye on the horizontal axis
+		///   - flip: The flip transform to apply to the style
 		///   - eyeInnerStyle: The eye's inner style
 		@objc public init(flip: QRCode.Flip = .none, eyeInnerStyle: Style = .both) {
 			self.flip = flip
