@@ -1,6 +1,6 @@
 # Eye shape options
 
-|  Preview  |  Name  | Class |  Options  |
+|  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/eye_barsHorizontal.png"><img src="../../Art/images/eye_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.EyeShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/eye_barsVertical.png"><img src="../../Art/images/eye_barsVertical.png" width="75" /></a> | __barsVertical__ | `QRCode.EyeShape.BarsVertical` | _none_ |
@@ -16,6 +16,7 @@
 | <a href="../../Art/images/eye_eye.png"><img src="../../Art/images/eye_eye.png" width="75" /></a> | __eye__ | `QRCode.EyeShape.Eye` | • __Flippable__<br/>• __Configurable eye corners__<br/> |
 | <a href="../../Art/images/eye_fabricScissors.png"><img src="../../Art/images/eye_fabricScissors.png" width="75" /></a> | __fabricScissors__ | `QRCode.EyeShape.FabricScissors` | _none_ |
 | <a href="../../Art/images/eye_fireball.png"><img src="../../Art/images/eye_fireball.png" width="75" /></a> | __fireball__ | `QRCode.EyeShape.Fireball` | _none_ |
+| <a href="../../Art/images/eye_flame.png"><img src="../../Art/images/eye_flame.png" width="75" /></a> | __flame__ | `QRCode.EyeShape.Flame` | _none_ |
 | <a href="../../Art/images/eye_headlight.png"><img src="../../Art/images/eye_headlight.png" width="75" /></a> | __headlight__ | `QRCode.EyeShape.Headlight` | • __Flippable__<br/> |
 | <a href="../../Art/images/eye_leaf.png"><img src="../../Art/images/eye_leaf.png" width="75" /></a> | __leaf__ | `QRCode.EyeShape.Leaf` | _none_ |
 | <a href="../../Art/images/eye_peacock.png"><img src="../../Art/images/eye_peacock.png" width="75" /></a> | __peacock__ | `QRCode.EyeShape.Peacock` | _none_ |

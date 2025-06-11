@@ -21,7 +21,7 @@ import CoreGraphics
 import Foundation
 
 /// A data shape factory
-@objc public final class QRCodePixelShapeFactory: NSObject, Sendable {
+@objc public final class QRCodePixelShapeFactory: NSObject {
 	/// Shared data shape factory
 	@objc public static let shared = QRCodePixelShapeFactory()
 
@@ -101,6 +101,7 @@ import Foundation
 		QRCode.PixelShape.Crosshatch.self,
 		QRCode.PixelShape.DripVertical.self,
 		QRCode.PixelShape.DripHorizontal.self,
+		QRCode.PixelShape.Flame.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images

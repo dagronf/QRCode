@@ -21,7 +21,7 @@ import CoreGraphics
 import Foundation
 
 /// An eye shape factory
-@objc public final class QRCodeEyeShapeFactory: NSObject, Sendable {
+@objc public final class QRCodeEyeShapeFactory: NSObject {
 	/// A shared eye shape factory
 	@objc public static let shared = QRCodeEyeShapeFactory()
 
@@ -96,6 +96,7 @@ import Foundation
 		QRCode.EyeShape.Cloud.self,
 		QRCode.EyeShape.FabricScissors.self,
 		QRCode.EyeShape.DiagonalStripes.self,
+		QRCode.EyeShape.Flame.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 
