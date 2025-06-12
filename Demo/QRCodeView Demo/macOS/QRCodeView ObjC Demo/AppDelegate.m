@@ -96,6 +96,8 @@
 
 		doc.design.shape.onPixels = [QRCodePixelShapeRazor new];
 
+		doc.design.shape.pupil = [QRCodePupilShapeKoala new];
+
 		NSError* error = NULL;
 		CGImageRef image = [doc cgImageWithDimension:600 error:&error];
 		assert(error == nil);

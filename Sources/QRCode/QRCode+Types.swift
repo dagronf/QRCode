@@ -42,9 +42,9 @@ public extension QRCode {
 
 public extension QRCode {
 	/// Flip
-	@objc enum Flip: Int {
+	@objc(QRCodeFlip) enum Flip: Int {
 		/// No Flip
-		case none
+		case none = 0
 		/// Flip along the horizontal axis
 		case horizontally = 1
 		/// Flip along the vertical axis

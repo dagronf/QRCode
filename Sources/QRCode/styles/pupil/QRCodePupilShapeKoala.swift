@@ -36,8 +36,14 @@ public extension QRCode.PupilShape {
 		@objc public var flip: QRCode.Flip = .none
 
 		/// Create a koala-node style pupil generator
+		@objc public override init() {
+			self.flip = .none
+			super.init()
+		}
+
+		/// Create a koala-node style pupil generator with a transform
 		/// - Parameter flip: The flip transform to apply to the pupil
-		@objc public init(flip: QRCode.Flip = .none) {
+		@objc public init(flip: QRCode.Flip) {
 			self.flip = flip
 			super.init()
 		}
