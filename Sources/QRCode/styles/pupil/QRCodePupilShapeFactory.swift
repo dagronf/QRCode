@@ -103,6 +103,8 @@ import CoreGraphics
 			QRCode.PupilShape.Arrow.self,
 			QRCode.PupilShape.Flame.self,
 			QRCode.PupilShape.Koala.self,
+			QRCode.PupilShape.Gear.self,
+			QRCode.PupilShape.CloudCircle.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 

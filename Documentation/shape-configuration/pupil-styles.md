@@ -11,6 +11,7 @@
 | <a href="../../Art/images/pupil_blobby.png"><img src="../../Art/images/pupil_blobby.png" width="75" /></a> | __blobby__ | `QRCode.PixelShape.Blobby` | _none_ |
 | <a href="../../Art/images/pupil_circle.png"><img src="../../Art/images/pupil_circle.png" width="75" /></a> | __circle__ | `QRCode.PixelShape.Circle` | _none_ |
 | <a href="../../Art/images/pupil_cloud.png"><img src="../../Art/images/pupil_cloud.png" width="75" /></a> | __cloud__ | `QRCode.PixelShape.Cloud` | _none_ |
+| <a href="../../Art/images/pupil_cloudCircle.png"><img src="../../Art/images/pupil_cloudCircle.png" width="75" /></a> | __cloudCircle__ | `QRCode.PixelShape.CloudCircle` | _none_ |
 | <a href="../../Art/images/pupil_corneredPixels.png"><img src="../../Art/images/pupil_corneredPixels.png" width="75" /></a> | __corneredPixels__ | `QRCode.PixelShape.CorneredPixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/pupil_cross.png"><img src="../../Art/images/pupil_cross.png" width="75" /></a> | __cross__ | `QRCode.PixelShape.Cross` | _none_ |
 | <a href="../../Art/images/pupil_crossCurved.png"><img src="../../Art/images/pupil_crossCurved.png" width="75" /></a> | __crossCurved__ | `QRCode.PixelShape.CrossCurved` | _none_ |
@@ -23,6 +24,7 @@
 | <a href="../../Art/images/pupil_fabricScissors.png"><img src="../../Art/images/pupil_fabricScissors.png" width="75" /></a> | __fabricScissors__ | `QRCode.PixelShape.FabricScissors` | _none_ |
 | <a href="../../Art/images/pupil_flame.png"><img src="../../Art/images/pupil_flame.png" width="75" /></a> | __flame__ | `QRCode.PixelShape.Flame` | _none_ |
 | <a href="../../Art/images/pupil_forest.png"><img src="../../Art/images/pupil_forest.png" width="75" /></a> | __forest__ | `QRCode.PixelShape.Forest` | • __Flippable__<br/> |
+| <a href="../../Art/images/pupil_gear.png"><img src="../../Art/images/pupil_gear.png" width="75" /></a> | __gear__ | `QRCode.PixelShape.Gear` | _none_ |
 | <a href="../../Art/images/pupil_hexagonLeaf.png"><img src="../../Art/images/pupil_hexagonLeaf.png" width="75" /></a> | __hexagonLeaf__ | `QRCode.PixelShape.HexagonLeaf` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_koala.png"><img src="../../Art/images/pupil_koala.png" width="75" /></a> | __koala__ | `QRCode.PixelShape.Koala` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_leaf.png"><img src="../../Art/images/pupil_leaf.png" width="75" /></a> | __leaf__ | `QRCode.PixelShape.Leaf` | • __Flippable__<br/> |

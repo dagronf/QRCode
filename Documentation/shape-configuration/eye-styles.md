@@ -6,6 +6,7 @@
 | <a href="../../Art/images/eye_barsVertical.png"><img src="../../Art/images/eye_barsVertical.png" width="75" /></a> | __barsVertical__ | `QRCode.EyeShape.BarsVertical` | _none_ |
 | <a href="../../Art/images/eye_circle.png"><img src="../../Art/images/eye_circle.png" width="75" /></a> | __circle__ | `QRCode.EyeShape.Circle` | _none_ |
 | <a href="../../Art/images/eye_cloud.png"><img src="../../Art/images/eye_cloud.png" width="75" /></a> | __cloud__ | `QRCode.EyeShape.Cloud` | _none_ |
+| <a href="../../Art/images/eye_cloudCircle.png"><img src="../../Art/images/eye_cloudCircle.png" width="75" /></a> | __cloudCircle__ | `QRCode.EyeShape.CloudCircle` | _none_ |
 | <a href="../../Art/images/eye_corneredPixels.png"><img src="../../Art/images/eye_corneredPixels.png" width="75" /></a> | __corneredPixels__ | `QRCode.EyeShape.CorneredPixels` | • __Corner radius__<br/> |
 | <a href="../../Art/images/eye_crt.png"><img src="../../Art/images/eye_crt.png" width="75" /></a> | __crt__ | `QRCode.EyeShape.CRT` | _none_ |
 | <a href="../../Art/images/eye_diagonalStripes.png"><img src="../../Art/images/eye_diagonalStripes.png" width="75" /></a> | __diagonalStripes__ | `QRCode.EyeShape.DiagonalStripes` | _none_ |
