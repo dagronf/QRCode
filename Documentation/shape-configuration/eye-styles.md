@@ -19,6 +19,7 @@
 | <a href="../../Art/images/eye_fireball.png"><img src="../../Art/images/eye_fireball.png" width="75" /></a> | __fireball__ | `QRCode.EyeShape.Fireball` | _none_ |
 | <a href="../../Art/images/eye_flame.png"><img src="../../Art/images/eye_flame.png" width="75" /></a> | __flame__ | `QRCode.EyeShape.Flame` | _none_ |
 | <a href="../../Art/images/eye_headlight.png"><img src="../../Art/images/eye_headlight.png" width="75" /></a> | __headlight__ | `QRCode.EyeShape.Headlight` | • __Flippable__<br/> |
+| <a href="../../Art/images/eye_holePunch.png"><img src="../../Art/images/eye_holePunch.png" width="75" /></a> | __holePunch__ | `QRCode.EyeShape.HolePunch` | _none_ |
 | <a href="../../Art/images/eye_leaf.png"><img src="../../Art/images/eye_leaf.png" width="75" /></a> | __leaf__ | `QRCode.EyeShape.Leaf` | _none_ |
 | <a href="../../Art/images/eye_peacock.png"><img src="../../Art/images/eye_peacock.png" width="75" /></a> | __peacock__ | `QRCode.EyeShape.Peacock` | _none_ |
 | <a href="../../Art/images/eye_pinch.png"><img src="../../Art/images/eye_pinch.png" width="75" /></a> | __pinch__ | `QRCode.EyeShape.Pinch` | _none_ |
