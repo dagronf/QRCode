@@ -86,6 +86,7 @@ import Foundation
 		QRCode.PixelShape.Wave.self,
 		QRCode.PixelShape.Heart.self,
 		QRCode.PixelShape.SpikyCircle.self,
+		QRCode.PixelShape.Gear.self,
 		QRCode.PixelShape.Vortex.self,
 		QRCode.PixelShape.Grid2x2.self,
 		QRCode.PixelShape.Grid3x3.self,

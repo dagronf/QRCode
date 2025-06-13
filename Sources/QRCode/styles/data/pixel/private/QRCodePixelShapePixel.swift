@@ -37,6 +37,7 @@ internal extension QRCode.PixelShape {
 			case arrow
 			case wave
 			case spikyCircle
+			case gear
 			case stitch
 			case hexagon
 			case wex
@@ -213,6 +214,16 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = SpikyCircle.spikyCircle10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .gear {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Gear.gear10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .arrow {
