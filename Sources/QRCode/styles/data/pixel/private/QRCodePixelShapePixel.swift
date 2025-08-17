@@ -45,6 +45,7 @@ internal extension QRCode.PixelShape {
 			case koala
 			case diagonal
 			case flame
+			case roundedTriangle
 			static var availableTypes: [String] = Self.allCases.map { $0.rawValue }
 		}
 
@@ -194,6 +195,16 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Star.star10x10()
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .roundedTriangle {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = RoundedTriangle.roundedTriangle10x10()
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .heart {
