@@ -2,6 +2,7 @@
 
 |  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
+| <a href="../../Art/images/pupil_arc.png"><img src="../../Art/images/pupil_arc.png" width="75" /></a> | __arc__ | `QRCode.PixelShape.Arc` | _none_ |
 | <a href="../../Art/images/pupil_arrow.png"><img src="../../Art/images/pupil_arrow.png" width="75" /></a> | __arrow__ | `QRCode.PixelShape.Arrow` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_barsHorizontal.png"><img src="../../Art/images/pupil_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.PixelShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/pupil_barsHorizontalSquare.png"><img src="../../Art/images/pupil_barsHorizontalSquare.png" width="75" /></a> | __barsHorizontalSquare__ | `QRCode.PixelShape.SquareBarsHorizontal` | _none_ |

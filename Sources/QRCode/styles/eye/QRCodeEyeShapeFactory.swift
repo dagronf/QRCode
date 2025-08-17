@@ -99,6 +99,7 @@ import Foundation
 		QRCode.EyeShape.Flame.self,
 		QRCode.EyeShape.CloudCircle.self,
 		QRCode.EyeShape.HolePunch.self,
+		QRCode.EyeShape.Arc.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 }
 

@@ -2,6 +2,7 @@
 
 |  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
+| <a href="../../Art/images/eye_arc.png"><img src="../../Art/images/eye_arc.png" width="75" /></a> | __arc__ | `QRCode.EyeShape.Arc` | _none_ |
 | <a href="../../Art/images/eye_barsHorizontal.png"><img src="../../Art/images/eye_barsHorizontal.png" width="75" /></a> | __barsHorizontal__ | `QRCode.EyeShape.BarsHorizontal` | _none_ |
 | <a href="../../Art/images/eye_barsVertical.png"><img src="../../Art/images/eye_barsVertical.png" width="75" /></a> | __barsVertical__ | `QRCode.EyeShape.BarsVertical` | _none_ |
 | <a href="../../Art/images/eye_circle.png"><img src="../../Art/images/eye_circle.png" width="75" /></a> | __circle__ | `QRCode.EyeShape.Circle` | _none_ |
