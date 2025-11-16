@@ -177,6 +177,22 @@ public extension QRCode.Builder {
 	}
 }
 
+// MARK: - If condition
+
+public extension QRCode.Builder {
+    /// Conditionally apply qr code style if a boolean is `true`, just like a regular `if` statement
+    ///  - Parameter condition: A condition that has to be `true`
+    ///  - Parameter configure: The `QRCode.Builder` modifier(s) that you want to apply if `condition == true`
+    ///  - Returns: `QRCode.Builder`
+    func `if`(condition: Bool, configure: (QRCode.Builder) -> Void) -> QRCode.Builder {
+        let builder = self
+        if condition {
+            configure(builder)
+        }
+        return builder
+    }
+}
+
 // MARK: - Foreground
 
 public extension QRCode.Builder {
