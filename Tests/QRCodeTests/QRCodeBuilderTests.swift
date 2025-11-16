@@ -181,4 +181,30 @@ final class QRCodeBuilderTests: XCTestCase {
 			try outputFolder.write(image, to: "builder-generated-rotate2.svg")
 		}
 	}
+
+	func testIfConditionBuilding() throws {
+		do {
+			// Check that the block is NOT executed if the condition is false
+			let qr1 = try QRCode.build
+				.text("Fish and chips")
+				.errorCorrection(.low)
+				.if(false) { builder in
+					builder.errorCorrection(.high)
+				}
+				.document
+			XCTAssertEqual(qr1.errorCorrection, .low)
+		}
+		do {
+			// Check that the block is executed if the condition is true
+			let qr1 = try QRCode.build
+				.text("Fish and chips")
+				.errorCorrection(.low)
+				.if(true) { builder in
+					builder.errorCorrection(.high)
+				}
+				.document
+			XCTAssertEqual(qr1.errorCorrection, .high)
+		}
+	}
+
 }
