@@ -1,6 +1,6 @@
 # Pupil shape options
 
-|  Preview  |  Name  | Class |  Options  | 
+|  Preview  |  Name  | Class |  Options  |
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/pupil_arc.png"><img src="../../Art/images/pupil_arc.png" width="75" /></a> | __arc__ | `QRCode.PixelShape.Arc` | _none_ |
 | <a href="../../Art/images/pupil_arrow.png"><img src="../../Art/images/pupil_arrow.png" width="75" /></a> | __arrow__ | `QRCode.PixelShape.Arrow` | • __Flippable__<br/> |
@@ -26,6 +26,7 @@
 | <a href="../../Art/images/pupil_flame.png"><img src="../../Art/images/pupil_flame.png" width="75" /></a> | __flame__ | `QRCode.PixelShape.Flame` | _none_ |
 | <a href="../../Art/images/pupil_forest.png"><img src="../../Art/images/pupil_forest.png" width="75" /></a> | __forest__ | `QRCode.PixelShape.Forest` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_gear.png"><img src="../../Art/images/pupil_gear.png" width="75" /></a> | __gear__ | `QRCode.PixelShape.Gear` | _none_ |
+| <a href="../../Art/images/pupil_heart.png"><img src="../../Art/images/pupil_heart.png" width="75" /></a> | __heart__ | `QRCode.PixelShape.Heart` | _none_ |
 | <a href="../../Art/images/pupil_hexagonLeaf.png"><img src="../../Art/images/pupil_hexagonLeaf.png" width="75" /></a> | __hexagonLeaf__ | `QRCode.PixelShape.HexagonLeaf` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_koala.png"><img src="../../Art/images/pupil_koala.png" width="75" /></a> | __koala__ | `QRCode.PixelShape.Koala` | • __Flippable__<br/> |
 | <a href="../../Art/images/pupil_leaf.png"><img src="../../Art/images/pupil_leaf.png" width="75" /></a> | __leaf__ | `QRCode.PixelShape.Leaf` | • __Flippable__<br/> |
