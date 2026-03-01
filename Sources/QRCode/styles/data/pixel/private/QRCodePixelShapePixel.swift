@@ -40,6 +40,7 @@ internal extension QRCode.PixelShape {
 			case gear
 			case stitch
 			case hexagon
+			case hexa
 			case wex
 			case diamond
 			case koala
@@ -306,6 +307,16 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Hexagon.HexagonPixel10x10
+						path.addPath(sq, transform: transform)
+					}
+					else if self.pixelType == .hexa {
+						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
+							.concatenating(CGAffineTransform(
+								translationX: xoff + (CGFloat(col) * dm) + insetValue,
+								y: yoff + (CGFloat(row) * dm) + insetValue
+							))
+							.concatenating(rotateTransform)
+						let sq = Hexa.HexaPixel10x10
 						path.addPath(sq, transform: transform)
 					}
 					else if self.pixelType == .wex {

@@ -1,6 +1,6 @@
 # Pixel shape options
 
-|  Preview  |  Name  | Class |  Options  | 
+|  Preview  |  Name  | Class |  Options  |
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/data_abstract.png"><img src="../../Art/images/data_abstract.png" width="75" /></a> | __abstract__ | `QRCode.PixelShape.Abstract` | _none_ |
 | <a href="../../Art/images/data_arrow.png"><img src="../../Art/images/data_arrow.png" width="75" /></a> | __arrow__ | `QRCode.PixelShape.Arrow` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
@@ -23,6 +23,7 @@
 | <a href="../../Art/images/data_grid3x3.png"><img src="../../Art/images/data_grid3x3.png" width="75" /></a> | __grid3x3__ | `QRCode.PixelShape.Grid3x3` | _none_ |
 | <a href="../../Art/images/data_grid4x4.png"><img src="../../Art/images/data_grid4x4.png" width="75" /></a> | __grid4x4__ | `QRCode.PixelShape.Grid4x4` | _none_ |
 | <a href="../../Art/images/data_heart.png"><img src="../../Art/images/data_heart.png" width="75" /></a> | __heart__ | `QRCode.PixelShape.Heart` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
+| <a href="../../Art/images/data_hexa.png"><img src="../../Art/images/data_hexa.png" width="75" /></a> | __hexa__ | `QRCode.PixelShape.Hexa` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_hexagon.png"><img src="../../Art/images/data_hexagon.png" width="75" /></a> | __hexagon__ | `QRCode.PixelShape.Hexagon` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_horizontal.png"><img src="../../Art/images/data_horizontal.png" width="75" /></a> | __horizontal__ | `QRCode.PixelShape.Horizontal` | • __Corner radius__<br/>• __Pixel inset__<br/> |
 | <a href="../../Art/images/data_koala.png"><img src="../../Art/images/data_koala.png" width="75" /></a> | __koala__ | `QRCode.PixelShape.Koala` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |

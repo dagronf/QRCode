@@ -104,6 +104,7 @@ import Foundation
 		QRCode.PixelShape.DripHorizontal.self,
 		QRCode.PixelShape.Flame.self,
 		QRCode.PixelShape.RoundedTriangle.self,
+		QRCode.PixelShape.Hexa.self,
 	].sorted(by: { a, b in a.Title < b.Title })
 
 	/// The default matrix to use when generating pixel sample images
