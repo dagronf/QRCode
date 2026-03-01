@@ -54,6 +54,7 @@ extension QRCode {
 		@objc public static let generators: [QRCodePixelInsetGenerator.Type] = [
 			QRCode.PixelInset.Fixed.self,
 			QRCode.PixelInset.Random.self,
+			QRCode.PixelInset.Pinch.self,
 			QRCode.PixelInset.Punch.self,
 			QRCode.PixelInset.HorizontalWave.self,
 			QRCode.PixelInset.VerticalWave.self,
