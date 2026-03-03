@@ -1,6 +1,6 @@
 # Pixel shape options
 
-|  Preview  |  Name  | Class |  Options  |
+|  Preview  |  Name  | Class |  Options  | 
 |:-------------:|-----------|---------|---------|
 | <a href="../../Art/images/data_abstract.png"><img src="../../Art/images/data_abstract.png" width="75" /></a> | __abstract__ | `QRCode.PixelShape.Abstract` | _none_ |
 | <a href="../../Art/images/data_arrow.png"><img src="../../Art/images/data_arrow.png" width="75" /></a> | __arrow__ | `QRCode.PixelShape.Arrow` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
@@ -27,6 +27,7 @@
 | <a href="../../Art/images/data_hexagon.png"><img src="../../Art/images/data_hexagon.png" width="75" /></a> | __hexagon__ | `QRCode.PixelShape.Hexagon` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_horizontal.png"><img src="../../Art/images/data_horizontal.png" width="75" /></a> | __horizontal__ | `QRCode.PixelShape.Horizontal` | • __Corner radius__<br/>• __Pixel inset__<br/> |
 | <a href="../../Art/images/data_koala.png"><img src="../../Art/images/data_koala.png" width="75" /></a> | __koala__ | `QRCode.PixelShape.Koala` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
+| <a href="../../Art/images/data_leaf.png"><img src="../../Art/images/data_leaf.png" width="75" /></a> | __leaf__ | `QRCode.PixelShape.Leaf` | • __Pixel rotation__<br/>&nbsp;&nbsp;- Supports pixel rotation generator<br/>• __Pixel inset__<br/>&nbsp;&nbsp;- Supports pixel inset generator<br/> |
 | <a href="../../Art/images/data_pointy.png"><img src="../../Art/images/data_pointy.png" width="75" /></a> | __pointy__ | `QRCode.PixelShape.Pointy` | _none_ |
 | <a href="../../Art/images/data_razor.png"><img src="../../Art/images/data_razor.png" width="75" /></a> | __razor__ | `QRCode.PixelShape.Razor` | _none_ |
 | <a href="../../Art/images/data_roundedEndIndent.png"><img src="../../Art/images/data_roundedEndIndent.png" width="75" /></a> | __roundedEndIndent__ | `QRCode.PixelShape.RoundedEndIndent` | • __Corner radius__<br/>• __Optional Inner corners__<br/> |
