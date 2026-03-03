@@ -1,5 +1,5 @@
 //
-//  Copyright © 2025 Darren Ford, Aydin Aghayev. All rights reserved.
+//  Copyright © 2026 Darren Ford, Aydin Aghayev. All rights reserved.
 //
 //  MIT license
 //

@@ -1,7 +1,7 @@
 //
 //  CGPath+hexagon.swift
 //
-//  Copyright © 2025 Aydin Aghayev. All rights reserved.
+//  Copyright © 2026 Aydin Aghayev. All rights reserved.
 //
 //  MIT license
 //
