@@ -119,7 +119,7 @@ public extension QRCode {
 		}
 
 		public required init(from decoder: any Decoder) throws {
-			let container = try decoder.container(keyedBy: Self.CodingKeys)
+			let container = try decoder.container(keyedBy: QRCode.LogoTemplate.CodingKeys.self)
 			self.image = try container.decode(CGImageCodable.self, forKey: .image).image
 			self.maskImage = try container.decodeIfPresent(CGImageCodable.self, forKey: .maskImage)?.image
 			self.path = try container.decode(CGPathCodable.self, forKey: .path).path
@@ -129,7 +129,7 @@ public extension QRCode {
 		}
 
 		public func encode(to encoder: any Encoder) throws {
-			var container = encoder.container(keyedBy: Self.CodingKeys)
+			var container = encoder.container(keyedBy: QRCode.LogoTemplate.CodingKeys.self)
 			try container.encode(useImageMasking, forKey: .useImageMasking)
 			try container.encode(masksQRCodePixels, forKey: .masksQRCodePixels)
 			try container.encode(inset, forKey: .inset)
