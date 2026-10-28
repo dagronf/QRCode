@@ -69,57 +69,57 @@ public extension QRCode.PixelShape.Circuit {
 				if matrix[row, col] == true {
 					
 					if ne.top, !ne.bottom, !ne.leading, !ne.trailing {
-						path.addPath(Self.templateBottom, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBottom, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, ne.bottom, !ne.leading, !ne.trailing {
-						path.addPath(Self.templateTop, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTop, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, !ne.bottom, ne.leading, !ne.trailing {
-						path.addPath(Self.templateLeft, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateLeft, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, !ne.bottom, !ne.leading, ne.trailing {
-						path.addPath(Self.templateRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateRight, transform: scaleTransform.concatenating(translate))
 					}
 
 					else if ne.top, ne.bottom, !ne.leading, !ne.trailing {
-						path.addPath(Self.templateTopBottom, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopBottom, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, !ne.bottom, ne.leading, ne.trailing {
-						path.addPath(Self.templateLeftRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateLeftRight, transform: scaleTransform.concatenating(translate))
 					}
 
 					else if ne.top, !ne.bottom, ne.leading, !ne.trailing {
-						path.addPath(Self.templateBottomLeft, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBottomLeft, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.top, !ne.bottom, !ne.leading, ne.trailing {
-						path.addPath(Self.templateBottomRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBottomRight, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, ne.bottom, ne.leading, !ne.trailing {
-						path.addPath(Self.templateTopLeft, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopLeft, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, ne.bottom, !ne.leading, ne.trailing {
-						path.addPath(Self.templateTopRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopRight, transform: scaleTransform.concatenating(translate))
 					}
 
 					else if ne.top, !ne.bottom, ne.leading, ne.trailing {
-						path.addPath(Self.templateLeftBottomRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateLeftBottomRight, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.top, ne.bottom, ne.leading, ne.trailing {
-						path.addPath(Self.templateTopLeftRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopLeftRight, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.top, ne.bottom, !ne.leading, ne.trailing {
-						path.addPath(Self.templateTopRightBottom, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopRightBottom, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.top, ne.bottom, ne.leading, !ne.trailing {
-						path.addPath(Self.templateTopLeftBottom, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopLeftBottom, transform: scaleTransform.concatenating(translate))
 					}
 
 					else if ne.top, ne.bottom, ne.leading, ne.trailing {
-						path.addPath(Self.templateTopLeftBottomRight, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTopLeftBottomRight, transform: scaleTransform.concatenating(translate))
 					}
 
 					else {
-						path.addPath(Self.templateCentroid, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateCentroid, transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}

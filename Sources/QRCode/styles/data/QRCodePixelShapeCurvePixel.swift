@@ -130,63 +130,63 @@ extension QRCode.PixelShape.CurvePixel {
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateCircle(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundBottom(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, !hasTop, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundTop(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else if hasLeft, hasTop, !hasRight, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateBottomRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasTop, hasRight, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateBottomLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasTop, !hasRight, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateTopRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasTop, hasRight, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateTopLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else {
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.CurvePixel.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)

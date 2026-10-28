@@ -65,7 +65,7 @@ public extension QRCode.PixelShape.Donut {
 			for col in 0 ..< matrix.dimension {
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 				if matrix[row, col] == true {
-					path.addPath(donutsPixelPath__, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(donutsPixelPath__, transform: scaleTransform.concatenating(translate))
 				}
 			}
 		}

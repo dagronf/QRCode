@@ -70,16 +70,16 @@ public extension QRCode.PixelShape.DripHorizontal {
 				if matrix[row, col] == true {
 					let ne = Neighbours(matrix: matrix, row: row, col: col)
 					if !ne.leading, ne.trailing {
-						path.addPath(dripPixelPathTrailing__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathTrailing__, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.leading, ne.trailing {
-						path.addPath(dripPixelPathBoth__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathBoth__, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.leading, !ne.trailing {
-						path.addPath(dripPixelPathLeading__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathLeading__, transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(dripPixelPathNone__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathNone__, transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}

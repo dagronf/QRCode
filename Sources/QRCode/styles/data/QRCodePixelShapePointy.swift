@@ -141,41 +141,41 @@ public extension QRCode.PixelShape.Pointy {
 
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
 					// isolated block
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, !hasTop, hasBottom {
 					// pointing up block
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templatePointingUp,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, !hasBottom, hasTop {
 					// pointing down block
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templatePointingDown,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasTop, !hasRight, !hasBottom, hasLeft {
 					// pointing right block
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templatePointingRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasTop, !hasLeft, !hasBottom, hasRight {
 					// pointing left block
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templatePointingLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else {
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.Pointy.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)
