@@ -79,45 +79,45 @@ public extension QRCode.PixelShape.Vortex {
 				if col == inset {
 					// Left 'corner'
 					if n.trailing, n.bottom {
-						path.addPath(templateTopLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateTopLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.trailing {
-						path.addPath(templateLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.bottom {
-						path.addPath(templateTop(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateTop(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 				else if col == matrix.dimension - inset - 1 {
 					// Right 'corner'
 					if n.leading, n.bottom {
-						path.addPath(templateTopRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateTopRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.leading {
-						path.addPath(templateRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.bottom {
-						path.addPath(templateTop(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateTop(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 				else {
 					if !n.leading, !n.trailing {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 					else if !n.trailing {
-						path.addPath(templateRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else if !n.leading {
-						path.addPath(templateLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateHorizontal(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateHorizontal(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}
@@ -132,45 +132,45 @@ public extension QRCode.PixelShape.Vortex {
 				if col == inset {
 					// Left 'corner'
 					if n.trailing, n.top {
-						path.addPath(templateBottomLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateBottomLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.top {
-						path.addPath(templateBottom(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateBottom(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.trailing {
-						path.addPath(templateLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 				else if col == matrix.dimension - inset - 1 {
 					// Right 'corner'
 					if n.leading, n.top {
-						path.addPath(templateBottomRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateBottomRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.top {
-						path.addPath(templateBottom(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateBottom(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.leading {
-						path.addPath(templateRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 				else {
 					if n.leading, n.trailing {
-						path.addPath(templateHorizontal(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateHorizontal(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.leading {
-						path.addPath(templateRight(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateRight(), transform: scaleTransform.concatenating(translate))
 					}
 					else if n.trailing {
-						path.addPath(templateLeft(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateLeft(), transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}
@@ -186,16 +186,16 @@ public extension QRCode.PixelShape.Vortex {
 					continue
 				}
 				else if n.top, n.bottom {
-					path.addPath(templateVertical(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateVertical(), transform: scaleTransform.concatenating(translate))
 				}
 				else if n.top {
-					path.addPath(templateBottom(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateBottom(), transform: scaleTransform.concatenating(translate))
 				}
 				else if n.bottom {
-					path.addPath(templateTop(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateTop(), transform: scaleTransform.concatenating(translate))
 				}
 				else {
-					path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 				}
 			}
 
@@ -210,16 +210,16 @@ public extension QRCode.PixelShape.Vortex {
 					continue
 				}
 				else if n.top, n.bottom {
-					path.addPath(templateVertical(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateVertical(), transform: scaleTransform.concatenating(translate))
 				}
 				else if n.top {
-					path.addPath(templateBottom(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateBottom(), transform: scaleTransform.concatenating(translate))
 				}
 				else if n.bottom {
-					path.addPath(templateTop(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateTop(), transform: scaleTransform.concatenating(translate))
 				}
 				else {
-					path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 				}
 			}
 
@@ -229,7 +229,7 @@ public extension QRCode.PixelShape.Vortex {
 				let col = row
 				if matrix[row, col] == true {
 					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
-					path.addPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(templateIsolated(), transform: scaleTransform.concatenating(translate))
 				}
 			}
 		}

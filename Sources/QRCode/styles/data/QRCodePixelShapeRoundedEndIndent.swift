@@ -165,25 +165,25 @@ extension QRCode.PixelShape.RoundedEndIndent {
 					}()
 
 					if hasLeft, hasTop, hasTopLeft {
-						path.addPath(
+						path.addPixelPath(
 							self.templateRoundTopLeft(),
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if hasRight, hasTop, hasTopRight {
-						path.addPath(
+						path.addPixelPath(
 							self.templateRoundTopRight(),
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if hasLeft, hasBottom, hasBottomLeft {
-						path.addPath(
+						path.addPixelPath(
 							self.templateRoundBottomLeft(),
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if hasRight, hasBottom, hasBottomRight {
-						path.addPath(
+						path.addPixelPath(
 							self.templateRoundBottomRight(),
 							transform: scaleTransform.concatenating(translate)
 						)
@@ -192,63 +192,63 @@ extension QRCode.PixelShape.RoundedEndIndent {
 				}
 
 				if !hasLeft, !hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateCircle(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasRight, !hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, hasTop, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundBottom(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasRight, !hasTop, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateRoundTop(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else if hasLeft, hasTop, !hasRight, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateBottomRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, hasTop, hasRight, !hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateBottomLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if hasLeft, !hasTop, !hasRight, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateTopRight(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if !hasLeft, !hasTop, hasRight, hasBottom {
-					path.addPath(
+					path.addPixelPath(
 						self.templateTopLeft(),
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else {
-					path.addPath(
+					path.addPixelPath(
 						QRCode.PixelShape.RoundedEndIndent.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)

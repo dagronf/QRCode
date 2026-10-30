@@ -154,7 +154,7 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm) + insetValue,
 								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
-						path.addPath(Circle.Circle10x10, transform: transform)
+						path.addPixelPath(Circle.Circle10x10, transform: transform)
 					}
 					else if self.pixelType == .squircle {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -165,7 +165,7 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 
 						let sq = Squircle.squircle10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .crt {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -176,7 +176,7 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 
 						let sq = CRT.crtPixel10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .sharp {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -187,7 +187,7 @@ internal extension QRCode.PixelShape {
 							.concatenating(rotateTransform)
 
 						let sq = Sharp.sharp10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .star {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -197,7 +197,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Star.star10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .roundedTriangle {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -207,7 +207,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = RoundedTriangle.roundedTriangle10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .heart {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -217,7 +217,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Heart.heart10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .leaf {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -227,7 +227,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Leaf.leaf10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .spikyCircle {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -237,7 +237,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = SpikyCircle.spikyCircle10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .gear {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -247,7 +247,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Gear.gear10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .arrow {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -257,7 +257,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Arrow.arrow10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .diamond {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -267,7 +267,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Diamond.diamond10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .wave {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -277,7 +277,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Wave.wave10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .flower {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -287,7 +287,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Flower.flower10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .shiny {
 						let transform = CGAffineTransform(scaleX: ri.width / 8, y: ri.width / 8)
@@ -300,7 +300,7 @@ internal extension QRCode.PixelShape {
 								y: -(ri.width / 8)
 							))
 						let sq = Shiny.pathShiny(row: row, col: col)
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .stitch {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -308,7 +308,7 @@ internal extension QRCode.PixelShape {
 								translationX: xoff + (CGFloat(col) * dm),
 								y: yoff + (CGFloat(row) * dm)
 							))
-						path.addPath(Stitch.pixelShape_, transform: transform)
+						path.addPixelPath(Stitch.pixelShape_, transform: transform)
 					}
 					else if self.pixelType == .hexagon {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -318,7 +318,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Hexagon.HexagonPixel10x10
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .hexa {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -328,7 +328,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Hexa.HexaPixel10x10
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .wex {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -338,7 +338,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Wex.WexPixel10x10
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .koala {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -348,7 +348,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Koala.koala10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .flame {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -358,7 +358,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Flame.flame10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .diagonal {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -368,7 +368,7 @@ internal extension QRCode.PixelShape {
 							))
 							.concatenating(rotateTransform)
 						let sq = Diagonal.diagonal10x10()
-						path.addPath(sq, transform: transform)
+						path.addPixelPath(sq, transform: transform)
 					}
 					else if self.pixelType == .square {
 						let transform = CGAffineTransform(scaleX: ri.width / 10, y: ri.width / 10)
@@ -377,7 +377,7 @@ internal extension QRCode.PixelShape {
 								y: yoff + (CGFloat(row) * dm) + insetValue
 							))
 							.concatenating(rotateTransform)
-						path.addPath(Square.Square10x10, transform: transform)
+						path.addPixelPath(Square.Square10x10, transform: transform)
 					}
 					else {
 						path.addPath(CGPath(rect: ri, transform: &rotateTransform))

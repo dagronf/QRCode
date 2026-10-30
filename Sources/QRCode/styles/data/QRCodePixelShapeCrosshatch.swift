@@ -69,65 +69,65 @@ public extension QRCode.PixelShape.Crosshatch {
 				if matrix[row, col] == true {
 
 					if !ne.topLeading, !ne.bottomLeading, !ne.bottomTrailing, !ne.topTrailing {
-						path.addPath(Self.templateNone, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateNone, transform: scaleTransform.concatenating(translate))
 					}
 
 					// Single arm
 
 					else if ne.topLeading, !ne.topTrailing, !ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTL, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTL, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, ne.topTrailing, !ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTR, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, !ne.topTrailing, ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateBL, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBL, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, !ne.topTrailing, !ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBR, transform: scaleTransform.concatenating(translate))
 					}
 
 					// Double arm
 
 					else if ne.topLeading, ne.topTrailing, !ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTLTR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLTR, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.topLeading, !ne.topTrailing, ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTLBL, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLBL, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, !ne.topTrailing, ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateBLBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateBLBR, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, ne.topTrailing, !ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateTRBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTRBR, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, ne.topTrailing, ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTRBL, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTRBL, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.topLeading, !ne.topTrailing, !ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateTLBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLBR, transform: scaleTransform.concatenating(translate))
 					}
 
 					// Three arm
 
 					else if ne.topLeading, ne.topTrailing, ne.bottomLeading, !ne.bottomTrailing {
-						path.addPath(Self.templateTLTRBL, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLTRBL, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.topLeading, ne.topTrailing, !ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateTLTRBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLTRBR, transform: scaleTransform.concatenating(translate))
 					}
 					else if !ne.topLeading, ne.topTrailing, ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateTRBLBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTRBLBR, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.topLeading, !ne.topTrailing, ne.bottomLeading, ne.bottomTrailing {
-						path.addPath(Self.templateTLBLBR, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateTLBLBR, transform: scaleTransform.concatenating(translate))
 					}
 
 					// All arms!
 
 					else {
 						// do nothing?
-						path.addPath(Self.templateAll, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(Self.templateAll, transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}

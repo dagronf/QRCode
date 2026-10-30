@@ -86,7 +86,7 @@ public extension QRCode.PixelShape {
 						bottomRightRadius: br
 					)
 
-					path.addPath(pth, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(pth, transform: scaleTransform.concatenating(translate))
 				}
 			}
 			return path

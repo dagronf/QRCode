@@ -72,25 +72,25 @@ public extension QRCode.PixelShape.Razor {
 				if matrix[row, col] == false {
 					// Attach inner corners if needed
 					if ne.leading, ne.top, ne.topLeading {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundTopLeft,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.trailing, ne.top, ne.topTrailing {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundTopRight,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.leading, ne.bottom, ne.bottomLeading {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundBottomLeft,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.trailing, ne.bottom, ne.bottomTrailing {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundBottomRight,
 							transform: scaleTransform.concatenating(translate)
 						)
@@ -99,62 +99,62 @@ public extension QRCode.PixelShape.Razor {
 				}
 
 				if !ne.bottom, !ne.trailing, !ne.top, !ne.leading {
-					path.addPath(
+					path.addPixelPath(
 						Self.templateIsolated,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.bottom, ne.trailing, !ne.top, !ne.leading {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingUpperLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.bottom, ne.leading, !ne.trailing, !ne.top {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingUpperRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.top, ne.trailing, !ne.leading, !ne.bottom {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingLowerLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.top, ne.leading, !ne.bottom, !ne.trailing {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingLowerRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 
 				else if ne.bottom, !ne.trailing, !ne.top, !ne.leading {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingUp,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.top, !ne.trailing, !ne.bottom, !ne.leading  {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingDown,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.leading, !ne.trailing, !ne.bottom, !ne.top {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingRight,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else if ne.trailing, !ne.leading, !ne.bottom, !ne.top {
-					path.addPath(
+					path.addPixelPath(
 						Self.templatePointingLeft,
 						transform: scaleTransform.concatenating(translate)
 					)
 				}
 				else {
-					path.addPath(
+					path.addPixelPath(
 						Self.templateSquare,
 						transform: scaleTransform.concatenating(translate)
 					)

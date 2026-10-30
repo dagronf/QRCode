@@ -68,7 +68,7 @@ public extension QRCode.PixelShape {
 				for col in 0 ..< matrix.dimension {
 					guard matrix[row, col] == true else { continue }
 					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
-					path.addPath(_2x2template, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(_2x2template, transform: scaleTransform.concatenating(translate))
 				}
 			}
 			return path
@@ -150,7 +150,7 @@ public extension QRCode.PixelShape {
 				for col in 0 ..< matrix.dimension {
 					guard matrix[row, col] == true else { continue }
 					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
-					path.addPath(_3x3template, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(_3x3template, transform: scaleTransform.concatenating(translate))
 				}
 			}
 			return path
@@ -262,7 +262,7 @@ public extension QRCode.PixelShape {
 				for col in 0 ..< matrix.dimension {
 					guard matrix[row, col] == true else { continue }
 					let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
-					path.addPath(_4x4template, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(_4x4template, transform: scaleTransform.concatenating(translate))
 				}
 			}
 			return path

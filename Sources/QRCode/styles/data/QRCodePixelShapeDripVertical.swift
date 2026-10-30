@@ -70,16 +70,16 @@ public extension QRCode.PixelShape.DripVertical {
 				if matrix[row, col] == true {
 					let ne = Neighbours(matrix: matrix, row: row, col: col)
 					if !ne.top, ne.bottom {
-						path.addPath(dripPixelPathBottom__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathBottom__, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.top, ne.bottom {
-						path.addPath(dripPixelPathMid__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathMid__, transform: scaleTransform.concatenating(translate))
 					}
 					else if ne.top, !ne.bottom {
-						path.addPath(dripPixelPathTop__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathTop__, transform: scaleTransform.concatenating(translate))
 					}
 					else {
-						path.addPath(dripPixelPathNone__, transform: scaleTransform.concatenating(translate))
+						path.addPixelPath(dripPixelPathNone__, transform: scaleTransform.concatenating(translate))
 					}
 				}
 			}

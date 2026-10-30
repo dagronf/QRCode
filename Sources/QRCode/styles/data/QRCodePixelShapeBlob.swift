@@ -71,25 +71,25 @@ public extension QRCode.PixelShape.Blob {
 				if matrix[row, col] == false {
 					// Attach inner corners if needed
 					if ne.leading, ne.top {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundBottomLeft,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.trailing, ne.top {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundBottomRight,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.leading, ne.bottom {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundTopLeft,
 							transform: scaleTransform.concatenating(translate)
 						)
 					}
 					if ne.trailing, ne.bottom {
-						path.addPath(
+						path.addPixelPath(
 							Self.templateRoundTopRight,
 							transform: scaleTransform.concatenating(translate)
 						)
@@ -121,7 +121,7 @@ public extension QRCode.PixelShape.Blob {
 						bottomLeftRadius: bl,
 						bottomRightRadius: br
 					)
-					path.addPath(pth, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(pth, transform: scaleTransform.concatenating(translate))
 				}
 			}
 		}

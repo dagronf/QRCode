@@ -65,7 +65,7 @@ public extension QRCode.PixelShape.DiagonalStripes {
 			for col in 0 ..< matrix.dimension {
 				let translate = CGAffineTransform(translationX: CGFloat(col) * dm + xoff, y: CGFloat(row) * dm + yoff)
 				if matrix[row, col] == true {
-					path.addPath(Self.pixelShape_, transform: scaleTransform.concatenating(translate))
+					path.addPixelPath(Self.pixelShape_, transform: scaleTransform.concatenating(translate))
 				}
 			}
 		}
