@@ -22,4 +22,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run tests on iOS
-        run: xcodebuild -scheme QRCode test -destination "platform=iOS Simulator,name=iPhone 16 Pro Max,OS=latest"
+        run: xcodebuild -scheme QRCode test -destination "platform=iOS Simulator,name=iPhone 17,OS=latest"
