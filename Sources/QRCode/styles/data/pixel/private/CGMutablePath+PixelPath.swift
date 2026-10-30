@@ -26,9 +26,11 @@ internal extension CGMutablePath {
 	/// entire accumulated path to update its bounds. Transforming the small incoming
 	/// shape first avoids that repeated work.
 	///
-	/// For pixel generation only: each shape starts a new subpath, and neither path
+	/// **For pixel generation only:**  each shape starts a new subpath, and neither path
 	/// may end with a lone `move(to:)`. The reported `boundingBox` can differ from
 	/// native transformed append even when the rendered shape is the same.
+	///
+	/// Many thanks to [Chase Carnaroli](https://github.com/ChaseC99)
 	func addPixelPath(_ path: CGPath, transform: CGAffineTransform) {
 		var transform = transform
 		guard let transformed = path.copy(using: &transform) else {

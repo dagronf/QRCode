@@ -869,10 +869,12 @@ public extension QRCode.Builder.Generate {
 
 public extension QRCode.Builder.Generate {
 	/// Generate a CGPath
-	/// - Parameter dimension: The dimension of the resulting path
+	/// - Parameters:
+	///   - dimension: The dimension of the generated path
+	///   - components: The components of the QR code to include in the path
 	/// - Returns: A path
-	@discardableResult func path(dimension: Int) -> CGPath {
-		builder.document.path(dimension: dimension)
+	@discardableResult func path(dimension: Int, components: QRCode.Components = .all) -> CGPath {
+		builder.document.path(dimension: dimension, components: components)
 	}
 
 	#if os(macOS)
